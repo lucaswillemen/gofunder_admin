@@ -86,11 +86,6 @@ export default {
       max-width: 80px;
     }
   }
-  .actions {
-    .md-button {
-      margin: 0;
-    }
-  }
   .form {
     margin-bottom: 60px;
   }

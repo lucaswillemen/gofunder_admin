@@ -4,6 +4,7 @@ import Router from 'vue-router';
 import Login from '@/pages/Login.vue';
 import Register from '@/pages/Register.vue';
 import Root from '@/pages/Root.vue';
+import Create from '@/pages/Create.vue';
 
 
 Vue.use(Router);
@@ -21,6 +22,15 @@ export default new Router({
     return { x: 0, y: 0 };
   },
   routes: [
+    {
+      path: '/create',
+      name: 'Create',
+      component: Create,
+      meta: {
+        layout: 'public',
+        onlyPublic: true
+      }
+    },
     {
       path: '/login',
       name: 'Login',
