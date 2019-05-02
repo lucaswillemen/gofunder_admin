@@ -7,24 +7,24 @@
         <div class="md-title">Vue Material</div>
       </div>
 
-      <div class="form">
+      <div class="form" @keyup.enter="registerUser()">
         <md-field>
           <label>Name</label>
-          <md-input v-model="login.name" autofocus></md-input>
+          <md-input v-model="register.name" autofocus></md-input>
         </md-field>
         <md-field>
           <label>E-mail</label>
-          <md-input v-model="login.email" autofocus></md-input>
+          <md-input v-model="register.email" autofocus></md-input>
         </md-field>
 
         <md-field md-has-password>
           <label>Password</label>
-          <md-input v-model="login.password" type="password"></md-input>
+          <md-input v-model="register.password" type="password"></md-input>
         </md-field>
         <router-link to="/login">Already have an account?</router-link>
       </div>
       <div class="">
-        <md-button class="md-raised md-primary" @click="auth">Register</md-button>
+        <md-button class="md-raised md-primary" @click="registerUser()">Register</md-button>
       </div>
 
 
@@ -44,26 +44,40 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
-  name: "App",
+  name: "Register",
   data() {
     return {
       first: false,
       loading: false,
-      login: {
-        email: "",
-        password: ""
+      register: {
+        name: null,
+        email: null,
+        password: null
       }
     };
   },
   methods: {
-    auth() {
+    ...mapActions('user', ['userSet']),
+    registerUser() {
+      this.loading = true;
       // your code to login user
       // this is only for example of loading
-      this.loading = true;
-      setTimeout(() => {
-        this.loading = false;
-      }, 5000);
+       global.$post("/Auth/register", this.register)
+        .then(response => {
+            // logado armazenar informações na store
+            console.log('registrado', response)
+            this.userSet(response.data)
+            this.$router.push('/create')
+        })
+        .catch(err => {
+          let validErr = (err && err.response && err.response.data && err.response.data.error)
+          alert(validErr ? err.response.data.error : "INVALID_ERROR") // enviar alerta
+        })
+        .finally(() => {
+          this.loading = false // ao terminar finalizar o loading
+        })
     }
   }
 };

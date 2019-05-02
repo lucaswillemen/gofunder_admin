@@ -49,7 +49,7 @@ import {
 
 
 export default {
-  name: "App",
+  name: "Login",
   computed: {
     ...mapState(['user']) // pegar as variaveis do usuario this.user.btc this.user.name etc
   },
@@ -69,6 +69,7 @@ export default {
       global.$post("/Auth/login", this.login)
         .then(response => {
           this.userSet(response.data) // logado armazenar informações na store
+          this.$router.push('/create')
         })
         .catch(err => {
           let validErr = (err && err.response && err.response.data && err.response.data.error)
