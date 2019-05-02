@@ -15,20 +15,21 @@ Vue.use(Router);
 
 export default new Router({
   mode: 'history',
-  base: process.env.BASE_URL,
   linkActiveClass: 'active',
   linkExactActiveClass: 'exact-active',
   scrollBehavior() {
-    return { x: 0, y: 0 };
+    return {
+      x: 0,
+      y: 0
+    };
   },
-  routes: [
-    {
+  routes: [{
       path: '/create',
       name: 'Create',
       component: Create,
       meta: {
         layout: 'public',
-        onlyPublic: true
+        onlyAuth: true
       }
     },
     {
@@ -55,7 +56,7 @@ export default new Router({
       component: Root,
       meta: {
         layout: 'public',
-        onlyPublic: true
+        onlyAuth: true
       }
     },
     {
