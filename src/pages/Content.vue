@@ -147,7 +147,7 @@
 </template>
 <script>
     export default {
-        name: 'AutocompleteStatic',
+        name: 'Content',
         data: () => ({
             selectedEmployee: null,
             started: true,

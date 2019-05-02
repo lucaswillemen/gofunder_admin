@@ -3,49 +3,57 @@
     <md-tabs class="md-transparent" md-alignment="fixed">
         <md-tab id="tab-home" md-label="Objetivo" md-icon="home">
             <div class="md-layout md-gutter md-alignment-center-center">
-                <md-layout class="md-layout-item  md-size-25">
-                    <md-card class="md-layout md-alignment-center-center md-primary">
-                            <md-empty-state class="md-empty-state-icon-first"
-                              md-icon="account_balance_wallet"
-                              md-label="Arrecadar fundos"
-                              md-description="Receba doacoes e envie recompensas para os apioadores da sua campanha em forma de gratidao pela ajuda.">
-                            </md-empty-state>
+                <md-layout class="md-layout-item  md-size-25" >
+                    <div @click="objetivo.allow_funds = !objetivo.allow_funds" style="cursor:pointer;">
+                        <md-card  class="md-layout md-alignment-center-center " :class="{'md-primary': objetivo.allow_funds}">
+                                <md-empty-state class="md-empty-state-icon-first"
+                                md-icon="account_balance_wallet"
+                                md-label="Arrecadar fundos"
+                                md-description="Receba doacoes e envie recompensas para os apioadores da sua campanha em forma de gratidao pela ajuda.">
+                                </md-empty-state>
 
-                    </md-card>
+                        </md-card>
+                    </div>
                     <br>
                     <br>
-                    <md-card class="md-layout md-alignment-center-center md-primary">
-                            <md-empty-state class="md-empty-state-icon-first"
-                              md-icon="fast_forward"
-                              md-label="Acelerar seu projeto"
-                              md-description="Mostre seu projeto para tutores e investidores para ganhar apoio qualificado para fazer sua ideia acontecer.">
-                            </md-empty-state>
-                            
+                    <div @click="objetivo.allow_sppedup = !objetivo.allow_sppedup" style="cursor:pointer;">
+                        <md-card  class="md-layout md-alignment-center-center " :class="{'md-primary': objetivo.allow_sppedup}">
+                                <md-empty-state class="md-empty-state-icon-first"
+                                md-icon="fast_forward"
+                                md-label="Acelerar seu projeto"
+                                md-description="Mostre seu projeto para tutores e investidores para ganhar apoio qualificado para fazer sua ideia acontecer.">
+                                </md-empty-state>
+                                
 
-                    </md-card>
+                        </md-card>
+                    </div>
                 </md-layout>
                 <md-layout class="md-layout-item  md-size-25">
-                    <md-card class="md-layout md-alignment-center-center md-primary">
-                            <md-empty-state class="md-empty-state-icon-first"
-                              md-icon="shopping_basket"
-                              md-label="Venda antes de terminar"
-                              md-description="Faca uma prevenda do seu produto enquanto vc finaliza seu projeto e analise o comportamento e aprovacao do publico.">
-                            </md-empty-state>
-                            
+                    <div @click="objetivo.allow_presale = !objetivo.allow_presale" style="cursor:pointer;">
+                        <md-card class="md-layout md-alignment-center-center " :class="{'md-primary': objetivo.allow_presale}">
+                                <md-empty-state class="md-empty-state-icon-first"
+                                md-icon="shopping_basket"
+                                md-label="Venda antes de terminar"
+                                md-description="Faca uma prevenda do seu produto enquanto vc finaliza seu projeto e analise o comportamento e aprovacao do publico.">
+                                </md-empty-state>
+                                
 
-                    </md-card>
+                        </md-card>
+                    </div>
                     <br>
                     <br>
-                    <md-card class="md-layout md-alignment-center-center md-primary">
+                    <div @click="objetivo.allow_share = !objetivo.allow_share" style="cursor:pointer;">
+                        <md-card class="md-layout md-alignment-center-center " :class="{'md-primary': objetivo.allow_share}">
 
-                            <md-empty-state class="md-empty-state-icon-first"
-                              md-icon="share"
-                              md-label="Compartilhe sua ideia"
-                              md-description="Encontre acionistas que irao ajudar a financiar seu projeto e divida os lucros com quem te ajudou.">
-                            </md-empty-state>
-                            
+                                <md-empty-state class="md-empty-state-icon-first"
+                                md-icon="share"
+                                md-label="Compartilhe sua ideia"
+                                md-description="Encontre acionistas que irao ajudar a financiar seu projeto e divida os lucros com quem te ajudou.">
+                                </md-empty-state>
+                                
 
-                    </md-card>
+                        </md-card>
+                    </div>
                 </md-layout>
             </div>
         </md-tab>
@@ -57,35 +65,27 @@
                     </md-card-header>
                     <md-card-content>
                         <md-field>
-                            <label for="movie">O seu projeto esta sendo desenvolvido por</label>
-                            <md-select v-model="movie" name="movie" id="movie">
-                                <md-option value="fight-club">Uma pessoa ou grupo</md-option>
-                                <md-option value="fight-club">Uma empresa instalada</md-option>
-                                <md-option value="fight-club">Organizacao sem fins lucrativos</md-option>
+                            <label for="developSelect">O seu projeto esta sendo desenvolvido por</label>
+                            <md-select v-model="caracteristicas.opt_develop" id="developSelect">
+                                <md-option :value="opt.id" v-for="(opt, index) in options.campaing_develop" :key="index" >{{opt.name}}</md-option>
                             </md-select>
                         </md-field>
                         <md-field>
-                            <label for="movie">Qual tipo de seu projeto</label>
-                            <md-select v-model="movie" name="movie" id="movie">
-                                <md-option value="fight-club">Software / Aplicativo</md-option>
-                                <md-option value="fight-club">Produto</md-option>
-                                <md-option value="fight-club">Servico</md-option>
+                            <label for="typeSelect">Qual tipo de seu projeto</label>
+                            <md-select v-model="caracteristicas.opt_type" id="typeSelect">
+                                <md-option :value="opt.id" v-for="(opt, index) in options.campaing_type" :key="index" >{{opt.name}}</md-option>
                             </md-select>
                         </md-field>
                         <md-field>
-                            <label for="movie">Escolha a categoria que melhor se adapta ao seu projeto</label>
-                            <md-select v-model="movie" name="movie" id="movie">
-                                <md-option value="fight-club">Eletronicos</md-option>
-                                <md-option value="fight-club">Viagens</md-option>
-                                <md-option value="fight-club">Bem estar e saude</md-option>
+                            <label for="categorySelect">Escolha a categoria que melhor se adapta ao seu projeto</label>
+                            <md-select v-model="caracteristicas.opt_category" id="categorySelect">
+                                <md-option :value="opt.id" v-for="(opt, index) in options.campaing_category" :key="index" >{{opt.name}}</md-option>
                             </md-select>
                         </md-field>
                         <md-field>
-                            <label for="movie">Como voce gostaria de receber seus fundos</label>
-                            <md-select v-model="movie" name="movie" id="movie" md-layout="box">
-                                <md-option value="fight-club">Moeda local</md-option>
-                                <md-option value="fight-club">Dolar</md-option>
-                                <md-option value="fight-club">Criptomoedas</md-option>
+                            <label for="mfundsSelectovie">Como voce gostaria de receber seus fundos</label>
+                            <md-select v-model="caracteristicas.opt_funds" id="fundsSelect">
+                                <md-option :value="opt.id" v-for="(opt, index) in options.campaing_funds" :key="index" >{{opt.name}}</md-option>
                             </md-select>
                         </md-field>
                     </md-card-content>
@@ -101,27 +101,35 @@
                     <md-card-content>
                         <md-field>
                             <label>Qual o nome/titulo do seu projeto</label>
-                            <md-input v-model="noError"></md-input>
+                            <md-input v-model="informacoes.title"></md-input>
                         </md-field>
                         <md-field>
                             <label>Faca um resumo basico do seu projeto</label>
-                            <md-textarea v-model="textarea" md-counter="80"></md-textarea>
+                            <md-textarea v-model="informacoes.description" md-counter="80"></md-textarea>
                         </md-field>
 
-                        <md-autocomplete v-model="selectedEmployee" :md-options="countries" md-dense md-layout="box">
+                        <!-- <md-autocomplete v-model="selectedCountry" :md-options="options.country" md-dense md-layout="box" :md-open-on-focus="false" @md-selected="selected()">
                             <label>Em qual pais o seu projeto esta sendo desenvolvido?</label>
-                        </md-autocomplete>
-                        <md-checkbox v-model="started" class="md-primary">Seu projeto ja foi iniciado?</md-checkbox>
+                            <template slot="md-autocomplete-item" slot-scope="{item, term }">
+                                <md-highlight-text :item="item.country_name" :md-term="term">{{ item.country_name }} ({{item.country_code}})</md-highlight-text>
+                            </template>
+                        </md-autocomplete> -->
+                       <md-field>
+                            <md-select v-model="informacoes.country_id" name="movie" id="movie" placeholder="Em qual pais o seu projeto esta sendo desenvolvido?">
+                                <md-option :value="opt.id" v-for="(opt, index) in options.country" :key="index" >{{opt.country_name}}</md-option>
+                            </md-select>
+                       </md-field>
+                        <md-checkbox v-model="informacoes.isStarted" class="md-primary">Seu projeto ja foi iniciado?</md-checkbox>
 
-                        <md-datepicker v-model="selectedDate" md-immediately v-if="!started">
+                        <md-datepicker v-model="informacoes.startAt" md-immediately>
                             <label>Quando pretende iniciar</label>
                         </md-datepicker>
 
-                        <md-datepicker v-model="selectedDate" md-immediately>
+                        <md-datepicker v-model="informacoes.finishAt" md-immediately>
                             <label>E quando pretende finalizar</label>
                         </md-datepicker>
 
-                        <md-checkbox v-model="started" class="md-primary">Voce gostariai que pessoas de outros paises vissem seu projeto?</md-checkbox>
+                        <md-checkbox v-model="informacoes.isCountryShared" class="md-primary">Voce gostaria que pessoas de outros paises vissem seu projeto?</md-checkbox>
                     </md-card-content>
                 </md-card>
             </div>
@@ -139,6 +147,7 @@
             <div class="md-layout md-gutter md-alignment-center-center">
                 <md-card class="md-layout-item md-size-50 md-small-size-100">
                     <md-empty-state md-icon="access_time" md-label="Por enquanto e so!" md-description="Para manter nossa plataforma sempre atrativa para as pessoas interessados, cuidamos manualmente de cada projeto publicado com muito carinho. Nosso time de especialista vai analizar a sua proposta e retornaremos em breve">
+                    <md-button class="md-raised md-primary" @click="createCampaing()">Finalizar Camapanha</md-button>
                     </md-empty-state>
                 </md-card>
             </div>
@@ -146,23 +155,75 @@
     </md-tabs>
 </template>
 <script>
-    export default {
-        name: 'AutocompleteStatic',
-        data: () => ({
-            selectedEmployee: null,
-            started: true,
-            countries: [
-                'Algeria',
-                'Argentina',
-                'Brazil',
-                'Canada',
-                'Italy',
-                'Japan',
-                'United Kingdom',
-                'United States'
-            ],
-        })
+import {mapState} from 'vuex'
+export default {
+  name: 'Create',
+  data() {
+    return {
+      objetivo : {
+          allow_funds: false,
+          allow_sppedup: false,
+          allow_presale: false,
+          allow_share: false
+      },
+      caracteristicas: {
+            opt_category: null,
+            opt_develop: null,
+            opt_funds: null,
+            opt_type: null,
+      },
+      informacoes: {
+          title: null,
+          description: null,
+          isStarted: false,
+          startAt: null,
+          finishAt: null,
+          country_id: null,
+          isCountryShared: false,
+      },
+      options: {},
     }
+  },
+  computed: {
+      ...mapState(['user']),
+  },
+  methods: {
+      getOptions() {
+        global.$get("/Campaing/option", {}, this.user.token)
+            .then(response => {
+                console.log('deu', response)
+                this.options = {...response.data}
+            })
+            .catch(err => {
+                let validErr = (err && err.response && err.response.data && err.response.data.error)
+                alert(validErr ? err.response.data.error : "INVALID_ERROR") // enviar alerta
+            })  
+      },
+      createCampaing() {
+          let data = {
+                ...this.objetivo,
+                ...this.caracteristicas,
+                ...this.informacoes,
+                finishAt: this.informacoes.finishAt ? this.informacoes.finishAt.toISOString(): null,
+                startAt: this.informacoes.startAt ? this.informacoes.startAt.toISOString(): null
+            }
+                console.log('data:', data)
+
+          global.$get("/Campaing/create", data, this.user.token)
+            .then(response => {
+                console.log('deu', response)
+            })
+            .catch(err => {
+                let validErr = (err && err.response && err.response.data && err.response.data.error)
+                alert(validErr ? err.response.data.error : "INVALID_ERROR") // enviar alerta
+            })  
+          
+      },
+  },
+  mounted() {
+      this.getOptions()
+  }
+}
 </script>
 
 <style lang="scss">

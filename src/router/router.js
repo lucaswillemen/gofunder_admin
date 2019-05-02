@@ -28,7 +28,6 @@ export default new Router({
       name: 'Create',
       component: Create,
       meta: {
-        layout: 'public',
         onlyAuth: true
       }
     },
@@ -37,7 +36,6 @@ export default new Router({
       name: 'Login',
       component: Login,
       meta: {
-        layout: 'public',
         onlyPublic: true
       }
     },
@@ -46,7 +44,6 @@ export default new Router({
       name: 'Register',
       component: Register,
       meta: {
-        layout: 'public',
         onlyPublic: true
       }
     },
@@ -55,7 +52,6 @@ export default new Router({
       name: 'Root',
       component: Root,
       meta: {
-        layout: 'public',
         onlyAuth: true
       }
     },
