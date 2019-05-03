@@ -67,20 +67,6 @@ export default {
       }
       return next()
     })
-  },
-  mounted() {
-    // this.intervalTimer = setInterval(() => {
-    //   if (this.isUserLogged) {
-    //     global.$post("/Auth/check", {})
-    //       .then(res => {
-    //         console.log('check',res)
-    //         this.userSet(res)
-    //       })
-    //   }
-    // }, 10000)
-  },
-  beforeDestroy() {
-    // clearInterval(this.intervalTimer)
   }
 }
 </script>

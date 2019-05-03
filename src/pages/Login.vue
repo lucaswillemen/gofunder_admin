@@ -1,25 +1,21 @@
 <template>
 <div class="centered-container">
   <md-content class="md-elevation-3">
-
     <div class="title">
       <img src="../../public/go-funder-icon.png">
       <div class="md-title">Login</div>
     </div>
-
     <div class="form">
       <md-field>
         <label>E-mail</label>
         <md-input v-model="login.email" autofocus></md-input>
       </md-field>
-
       <md-field md-has-password>
         <label>Password</label>
         <md-input v-model="login.password" type="password"></md-input>
       </md-field>
       <a href="/resetpassword">Reset password</a>
     </div>
-
     <div class="md-alignment-center">
       <md-button class="md-raised md-primary md-alignment-center" @click="auth()">Log in</md-button>
     </div>
@@ -28,13 +24,9 @@
         <md-button class="md-raised md-primary">Create new account</md-button>
       </div>
     </router-link>
-
-
     <div class="loading-overlay" v-if="loading">
       <md-progress-spinner md-mode="indeterminate" :md-stroke="2"></md-progress-spinner>
     </div>
-
-
   </md-content>
 
   <div class="background" />
@@ -51,7 +43,7 @@ import {
 export default {
   name: "Login",
   computed: {
-    ...mapState(['user']) // pegar as variaveis do usuario this.user.btc this.user.name etc
+    ...mapState(['user'])
   },
   data() {
     return {
@@ -63,33 +55,27 @@ export default {
     };
   },
   methods: {
-    ...mapActions('user', ['userSet']), //carregar as actions pra salvar as informacoes do usuario na store
+    ...mapActions('user', ['userSet']),
     auth() {
       this.loading = true
       global.$post("/Auth/login", this.login)
         .then(response => {
-          this.userSet(response.data) // logado armazenar informações na store
-          this.$router.push('/create')
+          this.userSet(response.data)
+          location.href = '/create'
         })
         .catch(err => {
           let validErr = (err && err.response && err.response.data && err.response.data.error)
-          alert(validErr ? err.response.data.error : "INVALID_ERROR") // enviar alerta
+          alert(validErr ? err.response.data.error : "INVALID_ERROR")
         })
         .finally(() => {
-          this.loading = false // ao terminar finalizar o loading
+          this.loading = false
         })
-
     }
   },
   mounted() {
-    // mounted roda quando abre os script
-    // vou deixar aqui uma validação simples de como verificar se ele está logado
-    // depois vamos colocar essas validações direto na "src/router/router.js" com onlyPrivate e onlyPublic
-    if(this.user.token) {
-      alert("voce já está logado: " + this.user.name)
-    }
+
   }
-};
+}
 </script>
 
 <style lang="scss">
