@@ -49,10 +49,11 @@ export default new Router({
       },
       children: [
         {
-          // UserProfile will be rendered inside User's <router-view>
-          // when /user/:id/profile is matched
           path: '/create',
-          component: Create
+          component: Create,
+          meta: {
+            onlyAuth: true
+          }
         }
         ]
     },

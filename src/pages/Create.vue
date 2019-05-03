@@ -1,6 +1,6 @@
 <template>
-        <md-steppers md-alternative>
-            <md-step id="first" md-label="Objetivo">
+        <md-steppers :md-active-step.sync="actualStep" md-linear md-alternative>
+            <md-step id="first" md-label="Objetivo" :md-done.sync="steps.first" >
                 <div class="md-layout md-gutter md-alignment-center-center">
                     <md-layout class="md-layout-item  md-size-40 md-small-size-100 md-medium-size-50 ">
                         <div @click="objetivo.allow_funds = !objetivo.allow_funds" style="cursor:pointer;">
@@ -18,7 +18,7 @@
                             </md-card>
                         </div>
                     </md-layout>
-                    <md-layout class="md-layout-item  md-size-40 md-small-size-100 md-medium-size-50">
+                    <md-layout class="md-layout-item  md-size-40 md-small-size-100 md-medium-size-50" >
                         <div @click="objetivo.allow_presale = !objetivo.allow_presale" style="cursor:pointer;">
                             <md-card class="md-layout md-alignment-center-center " :class="{'md-primary': objetivo.allow_presale}">
                                 <md-empty-state class="md-empty-state-icon-first" md-icon="shopping_basket" md-label="Venda antes de terminar" md-description="Faca uma prevenda do seu produto enquanto vc finaliza seu projeto e analise o comportamento e aprovacao do publico.">
@@ -37,14 +37,14 @@
                     </md-layout>
                 </div>
                 <div class="md-layout md-alignment-center-center">
-                    <md-button class="md-fab md-primary">
+                    <md-button class="md-fab md-primary" :disabled="!Object.values(objetivo).includes(true)" @click="moveStep('first', 'second')">
                         <md-icon>arrow_forward</md-icon>
                     </md-button>
                 </div>
 
             </md-step>
 
-            <md-step id="second" md-label="Caracteristicas">
+            <md-step id="second" md-label="Caracteristicas" :md-done.sync="steps.second" :md-editable="false">
                 <div class="md-layout md-gutter md-alignment-center-center">
                     <md-card class="md-layout-item md-size-50 md-small-size-100">
                         <md-card-header class="md-layout md-gutter md-alignment-center-center">
@@ -52,10 +52,10 @@
                         </md-card-header>
                         <md-card-content>
 
-                            <md-field>
-                                <label>Qual valor vc espera arrecar para concluir seu projeto?</label>
+                            <md-field >
+                                <label>Qual valor vc espera arrecadar para concluir seu projeto?</label>
                                 <span class="md-prefix">$</span>
-                                <md-input v-model="initial"></md-input>
+                                <md-input v-model="caracteristicas.amount" required></md-input>
                             </md-field>
                             <md-field>
                                 <label for="developSelect">O seu projeto esta sendo desenvolvido por</label>
@@ -85,13 +85,13 @@
                     </md-card>
                 </div>
                 <div class="md-layout md-alignment-center-center">
-                    <md-button class="md-fab md-primary">
+                    <md-button class="md-fab md-primary" @click="moveStep('second', 'third')">
                         <md-icon>arrow_forward</md-icon>
                     </md-button>
                 </div>
             </md-step>
 
-            <md-step id="third" md-label="Informacoes">
+            <md-step id="third" md-label="Informacoes" :md-done.sync="steps.third">
                 <div class="md-layout md-gutter md-alignment-center-center">
                     <md-card class="md-layout-item md-size-50 md-small-size-100">
                         <md-card-header class="md-layout md-gutter md-alignment-center-center">
@@ -139,7 +139,7 @@
                 </div>
             </md-step>
 
-            <md-step id="fifth" md-label="Third Step">
+            <md-step id="fourth" md-label="Fourth Step" :md-done.sync="steps.fourth">
                 <div class="md-layout md-gutter md-alignment-center-center">
                     <md-card class="md-layout-item md-size-50 md-small-size-100">
                         <md-empty-state md-icon="access_time" md-label="Por enquanto e so!" md-description="Para manter nossa plataforma sempre atrativa para as pessoas interessados, cuidamos manualmente de cada projeto publicado com muito carinho. Nosso time de especialista vai analizar a sua proposta e retornaremos em breve">
@@ -152,79 +152,90 @@
 
 </template>
 <script>
-    import {
-        mapState
-    }
-    from 'vuex'
-    export default {
-        name: 'Create',
-        data() {
-            return {
-                objetivo: {
-                    allow_funds: false,
-                    allow_sppedup: false,
-                    allow_presale: false,
-                    allow_share: false
-                },
-                caracteristicas: {
-                    opt_category: null,
-                    opt_develop: null,
-                    opt_funds: null,
-                    opt_type: null,
-                },
-                informacoes: {
-                    title: null,
-                    description: null,
-                    isStarted: false,
-                    startAt: null,
-                    finishAt: null,
-                    country_id: null,
-                    isCountryShared: false,
-                },
-                options: {},
-            }
-        },
-        computed: {
-            ...mapState(['user']),
-        },
-        methods: {
-            getOptions() {
-                    global.$get("/Campaing/option", {}, this.user.token)
-                        .then(response => {
-                            console.log('deu', response)
-                            this.options = {...response.data
-                            }
-                        })
-                        .catch(err => {
-                            let validErr = (err && err.response && err.response.data && err.response.data.error)
-                            alert(validErr ? err.response.data.error : "INVALID_ERROR") // enviar alerta
-                        })
-                },
-                createCampaing() {
-                    let data = {
-                        ...this.objetivo,
-                            ...this.caracteristicas,
-                            ...this.informacoes,
-                            finishAt: this.informacoes.finishAt ? this.informacoes.finishAt.toISOString() : null,
-                            startAt: this.informacoes.startAt ? this.informacoes.startAt.toISOString() : null
-                    }
-                    console.log('data:', data)
-
-                    global.$get("/Campaing/create", data, this.user.token)
-                        .then(response => {
-                            console.log('deu', response)
-                        })
-                        .catch(err => {
-                            let validErr = (err && err.response && err.response.data && err.response.data.error)
-                            alert(validErr ? err.response.data.error : "INVALID_ERROR") // enviar alerta
-                        })
-
-                },
-        },
-        mounted() {
-            this.getOptions()
+import { mapState } from 'vuex'
+export default {
+    name: 'Create',
+    data() {
+        return {
+            objetivo: {
+                allow_funds: false,
+                allow_sppedup: false,
+                allow_presale: false,
+                allow_share: false
+            },
+            caracteristicas: {
+                amout: null,
+                opt_category: null,
+                opt_develop: null,
+                opt_funds: null,
+                opt_type: null,
+            },
+            informacoes: {
+                title: null,
+                description: null,
+                isStarted: false,
+                startAt: null,
+                finishAt: null,
+                country_id: null,
+                isCountryShared: false,
+            },
+            options: {},
+            steps: {
+                first: false,
+                second: false,
+                third: false,
+                fourth: false
+            },
+            actualStep: null
         }
+    },
+    computed: {
+        ...mapState(['user']),
+    },
+    methods: {
+        getOptions() {
+                global.$get("/Campaing/option", {}, this.user.token)
+                    .then(response => {
+                        console.log('deu', response)
+                        this.options = {...response.data}
+                    })
+                    .catch(err => {
+                        let validErr = (err && err.response && err.response.data && err.response.data.error)
+                        alert(validErr ? err.response.data.error : "INVALID_ERROR") // enviar alerta
+                    })
+            },
+            createCampaing() {
+                let data = {
+                    ...this.objetivo,
+                    ...this.caracteristicas,
+                    ...this.informacoes,
+                    finishAt: this.informacoes.finishAt ? this.informacoes.finishAt.toISOString() : null,
+                    startAt: this.informacoes.startAt ? this.informacoes.startAt.toISOString() : null
+                }
+                console.log('data:', data)
+
+                global.$get("/Campaing/create", data, this.user.token)
+                    .then(response => {
+                        console.log('deu', response)
+                    })
+                    .catch(err => {
+                        let validErr = (err && err.response && err.response.data && err.response.data.error)
+                        alert(validErr ? err.response.data.error : "INVALID_ERROR") // enviar alerta
+                    })
+
+            },
+            moveStep(actual, next) {
+                this.steps[actual] = true
+                 if (next) {
+                    this.actualStep = next
+                }
+            },
+
+    },
+    mounted() {
+        this.getOptions()
     }
+}
 </script>
 
 <style lang="scss">

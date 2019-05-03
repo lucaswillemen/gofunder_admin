@@ -3,8 +3,8 @@
     <md-content class="md-elevation-3">
 
       <div class="title">
-        <img src="https://vuematerial.io/assets/logo-color.png">
-        <div class="md-title">Vue Material</div>
+        <img src="../../public/go-funder-icon.png">
+        <div class="md-title">Register</div>
       </div>
 
       <div class="form" @keyup.enter="registerUser()">
