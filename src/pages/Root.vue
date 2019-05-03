@@ -4,32 +4,35 @@
     <span class="md-title">Page name</span>
   </md-app-toolbar>
 
-  <md-app-drawer md-permanent="full" class="md-elevation-4">
+  <md-app-drawer md-permanent="full" class="md-elevation-0">
     <md-toolbar class="md-primary" md-elevation="0">
       LOGO
     </md-toolbar>
-
     <md-list>
-      <md-list-item>
-        <md-icon>dashboard</md-icon>
-        <a href="/"><span class="md-list-item-text">Dashboard</span></a>
-      </md-list-item>
-
-      <md-list-item>
-        <md-icon>add</md-icon>
-        <a href="/create"><span class="md-list-item-text">Create new campaign</span></a>
-      </md-list-item>
-
-      <md-list-item>
-        <md-icon>send</md-icon>
-        <a href="/my_campaigns"><span class="md-list-item-text">My campaigns</span></a>
-      </md-list-item>
-      <router-link to="login">
-        <md-list-item>
-          <md-icon>close</md-icon>
-          <a href="#" @click="logout()"><span class="md-list-item-text">Logout</span></a>
+      <router-link to="/">
+        <md-list-item class="nav-item ">
+          <md-icon>dashboard</md-icon>
+          <span class="md-list-item-text">Dashboard</span>
         </md-list-item>
       </router-link>
+      <router-link to="/create">
+        <md-list-item class="nav-item active">
+          <md-icon>add</md-icon>
+          <span class="md-list-item-text">Create new campaign</span>
+        </md-list-item>
+      </router-link>
+      <router-link to="/create">
+        <md-list-item class="nav-item">
+          <md-icon>send</md-icon>
+          <span class="md-list-item-text">My campaigns</span>
+        </md-list-item>
+      </router-link>
+      <a href="#" @click="logout()">
+        <md-list-item class="nav-item">
+          <md-icon>close</md-icon>
+          <span class="md-list-item-text">Logout</span>
+        </md-list-item>
+      </a>
     </md-list>
   </md-app-drawer>
   <md-app-content>
@@ -38,11 +41,27 @@
 </md-app>
 </template>
 
+
 <style lang="scss" scoped>
-// Demo purposes only
 .md-drawer {
     width: 230px;
     max-width: calc(100vw - 125px);
+}
+.nav-item {
+    margin-top: 12px;
+}
+.nav-item.active {
+    border-left: #448aff;
+    border-left-style: solid;
+    background: #448aff24;
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+}
+.md-app .md-content.md-theme-default {
+    border-left-color: rgba(0,0,0,0);
+}
+.topbar{
+      box-shadow: 0 0 0 0 rgba(0,0,0,0), 0 0 0 0 rgba(0,0,0,.0), 0 0 0 0 rgba(0,0,0,0)!important;
 }
 </style>
 

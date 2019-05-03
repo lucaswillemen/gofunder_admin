@@ -243,7 +243,6 @@ export default {
   methods: {
     getValidationClassSecond(fieldName) {
       const field = this.$v.caracteristicas[fieldName]
-
       if (field) {
         return {
           'md-invalid': field.$invalid && field.$dirty
@@ -261,7 +260,6 @@ export default {
     },
     getValidationClassThird(fieldName) {
       const field = this.$v.informacoes[fieldName]
-
       if (field) {
         return {
           'md-invalid': field.$invalid && field.$dirty
