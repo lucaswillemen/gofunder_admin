@@ -92,7 +92,7 @@
     </form>
   </md-step>
 
-  <md-step id="third" md-label="Informacoes" :md-done.sync="steps.third" :md-editable="$v.caracteristicas.$invalid" :md-error="thirdError">
+  <md-step id="third" md-label="Informacoes" :md-done.sync="steps.third" :md-editable="true" :md-error="thirdError">
     <form novalidate @submit.prevent="validateThird">
       <div class="md-layout md-gutter md-alignment-center-center">
         <md-card class="md-layout-item md-size-50 md-small-size-100">
@@ -173,25 +173,25 @@ export default {
       secondError: null,
       thirdError: null,
       objetivo: {
-        allow_funds: false,
+        allow_funds: true,
         allow_sppedup: false,
         allow_presale: false,
         allow_share: false
       },
       caracteristicas: {
-        amount: null,
-        opt_category: null,
-        opt_develop: null,
-        opt_funds: null,
-        opt_type: null,
+        amount: "123",
+        opt_category: 1,
+        opt_develop: 1,
+        opt_funds: 7,
+        opt_type: 4,
       },
       informacoes: {
-        title: null,
-        description: null,
+        title: "asd",
+        description: "asd",
         isStarted: false,
         startAt: null,
         finishAt: null,
-        country_id: null,
+        country_id: 1,
         isCountryShared: false,
       },
       options: {},
@@ -252,9 +252,10 @@ export default {
     validateSecond() {
       this.$v.caracteristicas.$touch()
       if (!this.$v.caracteristicas.$invalid) {
-        this.moveStep('second', 'third')
         this.secondError = null
+        this.moveStep('second', 'third')
       } else {
+        this.steps.second = false  
         this.secondError = "Reveja as informacoes"
       }
     },
@@ -266,13 +267,13 @@ export default {
         }
       }
     },
-    validateThird() {
-      console.log("submit 3")
+    validateThird() {       
       this.$v.informacoes.$touch()
       if (!this.$v.informacoes.$invalid) {
-        this.moveStep('third', 'fourth')
         this.thirdError = null
+        this.moveStep('third', 'fourth')
       } else {
+        this.steps.third = false  
         this.thirdError = "Reveja as informacoes"
       }
       
@@ -291,8 +292,24 @@ export default {
         })
     },
     createCampaing() {
-      this.validateSecond()
-      this.validateThird()
+        // this.validateThird()
+        // this.validateSecond()
+
+
+      if (this.$v.caracteristicas.$invalid) {   
+            this.$v.caracteristicas.$touch()
+            this.steps.second = false  
+            this.moveStep('fourth', 'second')   
+            this.secondError = "Reveja as informacoes"
+            return false
+      }
+      if (this.$v.informacoes.$invalid) { 
+            this.$v.informacoes.$touch()
+            this.steps.third = false  
+            this.moveStep('fourth', 'third')
+            this.thirdError = "Reveja as informacoes"
+            return false
+      }
       if(!this.secondError && !this.thirdError && Object.values(this.objetivo).includes(true)){
          let data = {
           ...this.objetivo,
@@ -309,11 +326,9 @@ export default {
             })
             .catch(err => {
                 let validErr = (err && err.response && err.response.data && err.response.data.error)
-                alert(validErr ? err.response.data.error : "INVALID_ERROR") // enviar alerta
+                // alert(validErr ? err.response.data.error : "INVALID_ERROR") // enviar alerta
             })
         }
-     
-
     },
 
     moveStep(actual, next) {
