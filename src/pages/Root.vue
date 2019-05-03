@@ -27,12 +27,12 @@
           <span class="md-list-item-text">My campaigns</span>
         </md-list-item>
       </router-link>
-      <router-link to="#" @click="logout()">
+      <a href="#" @click="logout()">
         <md-list-item>
           <md-icon>close</md-icon>
           <span class="md-list-item-text">Logout</span>
         </md-list-item>
-      </router-link>
+      </a>
     </md-list>
   </md-app-drawer>
   <md-app-content>
