@@ -10,19 +10,19 @@
     </md-toolbar>
     <md-list>
       <router-link to="/">
-        <md-list-item class="nav-item ">
+        <md-list-item v-bind:class="{'nav-item': true, 'active': $router.currentRoute.path=='/'}">
           <md-icon>dashboard</md-icon>
           <span class="md-list-item-text">Dashboard</span>
         </md-list-item>
       </router-link>
       <router-link to="/create">
-        <md-list-item class="nav-item active">
+        <md-list-item  v-bind:class="{'nav-item': true, 'active': $router.currentRoute.path=='/create'}">
           <md-icon>add</md-icon>
           <span class="md-list-item-text">Create new campaign</span>
         </md-list-item>
       </router-link>
       <router-link to="/create">
-        <md-list-item class="nav-item">
+        <md-list-item v-bind:class="{'nav-item': true, 'active': $router.currentRoute.path=='/send'}">
           <md-icon>send</md-icon>
           <span class="md-list-item-text">My campaigns</span>
         </md-list-item>
