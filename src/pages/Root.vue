@@ -5,7 +5,7 @@
         <span class="md-title">Page name</span>
       </md-app-toolbar>
 
-      <md-app-drawer md-permanent="full">
+      <md-app-drawer md-permanent="full" class="md-elevation-4">
         <md-toolbar class="md-primary" md-elevation="0">
           LOGO
         </md-toolbar>

@@ -10,7 +10,7 @@
           LOGO
         </md-toolbar>
 
-        <md-list>
+        <md-list class="md-elevation-4">
           <md-list-item @click="alert">
             <md-icon>dashboard</md-icon>
             <span class="md-list-item-text">Dashboard</span>
