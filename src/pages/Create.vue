@@ -39,7 +39,6 @@
     </div>
   </md-step>
   <md-step id="second" md-label="Caracteristicas" :md-done.sync="steps.second" :md-editable="true" :md-error="setSecondError">
-
     <form novalidate @submit.prevent="validateSecond">
       <div class="md-layout md-gutter md-alignment-center-center">
         <md-card class="md-layout-item md-size-50 md-small-size-100">
@@ -242,7 +241,6 @@ export default {
   methods: {
     getValidationClassSecond(fieldName) {
       const field = this.$v.caracteristicas[fieldName]
-
       if (field) {
         return {
           'md-invalid': field.$invalid && field.$dirty
@@ -255,13 +253,11 @@ export default {
         this.moveStep('second', 'third')
         this.setSecondError = null
       } else {
-
         this.setSecondError = "Reveja as informacoes"
       }
     },
     getValidationClassThird(fieldName) {
       const field = this.$v.informacoes[fieldName]
-
       if (field) {
         return {
           'md-invalid': field.$invalid && field.$dirty
@@ -275,7 +271,6 @@ export default {
         this.moveStep('second', 'third')
         this.setThirdError = null
       } else {
-
         this.setThirdError = "Reveja as informacoes"
       }
     },
