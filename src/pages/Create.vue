@@ -38,7 +38,7 @@
       </md-button>
     </div>
   </md-step>
-  <md-step id="second" md-label="Caracteristicas" :md-done.sync="steps.second" :md-editable="true" :md-error="setSecondError">
+  <md-step id="second" md-label="Caracteristicas" :md-done.sync="steps.second" :md-editable="true" :md-error="secondError">
 
     <form novalidate @submit.prevent="validateSecond">
       <div class="md-layout md-gutter md-alignment-center-center">
@@ -88,11 +88,11 @@
         <md-button type="submit" class="md-fab md-primary">
           <md-icon>arrow_forward</md-icon>
         </md-button>
-      </div>{{$v.caracteristicas.$invalid}}
+      </div>
     </form>
   </md-step>
 
-  <md-step id="third" md-label="Informacoes" :md-done.sync="steps.third" :md-editable="$v.caracteristicas.$invalid">
+  <md-step id="third" md-label="Informacoes" :md-done.sync="steps.third" :md-editable="$v.caracteristicas.$invalid" :md-error="thirdError">
     <form novalidate @submit.prevent="validateThird">
       <div class="md-layout md-gutter md-alignment-center-center">
         <md-card class="md-layout-item md-size-50 md-small-size-100">
@@ -102,12 +102,12 @@
           <md-card-content>
             <md-field :class="getValidationClassThird('title')">
               <label>Qual o nome/titulo do seu projeto</label>
-              <md-input v-model="informacoes.title" name="title"></md-input>
+              <md-input v-model="informacoes.title" name="title" required></md-input>
               <span class="md-error">Informe o titulo</span>
             </md-field>
-            <md-field>
+            <md-field :class="getValidationClassThird('description')">
               <label>Faca um resumo basico do seu projeto</label>
-              <md-textarea v-model="informacoes.description" md-counter="80"></md-textarea>
+              <md-textarea v-model="informacoes.description" md-counter="80" required></md-textarea>
             </md-field>
 
             <!-- <md-autocomplete v-model="selectedCountry" :md-options="options.country" md-dense md-layout="box" :md-open-on-focus="false" @md-selected="selected()">
@@ -116,19 +116,19 @@
                                     <md-highlight-text :item="item.country_name" :md-term="term">{{ item.country_name }} ({{item.country_code}})</md-highlight-text>
                                 </template>
                             </md-autocomplete> -->
-            <md-field>
-              <md-select v-model="informacoes.country_id" name="movie" id="movie" placeholder="Em qual pais o seu projeto esta sendo desenvolvido?">
+            <md-field :class="getValidationClassThird('country_id')">
+              <md-select v-model="informacoes.country_id" placeholder="Em qual pais o seu projeto esta sendo desenvolvido?" required>
                 <md-option :value="opt.id" v-for="(opt, index) in options.country" :key="index">{{opt.country_name}}</md-option>
               </md-select>
             </md-field>
             <md-checkbox v-model="informacoes.isStarted" class="md-primary">Seu projeto ja foi iniciado?</md-checkbox>
 
-            <md-datepicker v-model="informacoes.startAt" md-immediately>
+            <md-datepicker v-if="informacoes.isStarted" v-model="informacoes.startAt" md-immediately>
               <label>Quando pretende iniciar</label>
             </md-datepicker>
 
-            <md-datepicker v-model="informacoes.finishAt" md-immediately>
-              <label>E quando pretende finalizar</label>
+            <md-datepicker :class="getValidationClassThird('finishAt')" v-model="informacoes.finishAt" md-immediately >
+              <label >E quando pretende finalizar</label>
             </md-datepicker>
 
             <md-checkbox v-model="informacoes.isCountryShared" class="md-primary">Voce gostaria que pessoas de outros paises vissem seu projeto?</md-checkbox>
@@ -170,7 +170,8 @@ export default {
   mixins: [validationMixin],
   data() {
     return {
-      setSecondError: null,
+      secondError: null,
+      thirdError: null,
       objetivo: {
         allow_funds: false,
         allow_sppedup: false,
@@ -250,13 +251,12 @@ export default {
       }
     },
     validateSecond() {
-      this.$v.$touch()
+      this.$v.caracteristicas.$touch()
       if (!this.$v.caracteristicas.$invalid) {
         this.moveStep('second', 'third')
-        this.setSecondError = null
+        this.secondError = null
       } else {
-
-        this.setSecondError = "Reveja as informacoes"
+        this.secondError = "Reveja as informacoes"
       }
     },
     getValidationClassThird(fieldName) {
@@ -270,14 +270,14 @@ export default {
     },
     validateThird() {
       console.log("submit 3")
-      this.$v.$touch()
+      this.$v.informacoes.$touch()
       if (!this.$v.informacoes.$invalid) {
-        this.moveStep('second', 'third')
-        this.setThirdError = null
+        this.moveStep('third', 'fourth')
+        this.thirdError = null
       } else {
-
-        this.setThirdError = "Reveja as informacoes"
+        this.thirdError = "Reveja as informacoes"
       }
+      
     },
     getOptions() {
       global.$get("/Campaing/option", {}, this.user.token)
@@ -293,24 +293,28 @@ export default {
         })
     },
     createCampaing() {
-      //validateSecond()
-      // let data = {
-      //     ...this.objetivo,
-      //     ...this.caracteristicas,
-      //     ...this.informacoes,
-      //     finishAt: this.informacoes.finishAt ? this.informacoes.finishAt.toISOString() : null,
-      //     startAt: this.informacoes.startAt ? this.informacoes.startAt.toISOString() : null
-      // }
-      // console.log('data:', data)
+      this.validateSecond()
+      this.validateThird()
+      if(!this.secondError && !this.thirdError && Object.values(this.objetivo).includes(true)){
+         let data = {
+          ...this.objetivo,
+          ...this.caracteristicas,
+          ...this.informacoes,
+          finishAt: this.informacoes.finishAt ? this.informacoes.finishAt.toISOString() : null,
+          startAt: this.informacoes.startAt ? this.informacoes.startAt.toISOString() : null
+        }
+        console.log('data:', data)
 
-      // global.$get("/Campaing/create", data, this.user.token)
-      //     .then(response => {
-      //         console.log('deu', response)
-      //     })
-      //     .catch(err => {
-      //         let validErr = (err && err.response && err.response.data && err.response.data.error)
-      //         alert(validErr ? err.response.data.error : "INVALID_ERROR") // enviar alerta
-      //     })
+        global.$get("/Campaing/create", data, this.user.token)
+            .then(response => {
+                console.log('deu', response)
+            })
+            .catch(err => {
+                let validErr = (err && err.response && err.response.data && err.response.data.error)
+                alert(validErr ? err.response.data.error : "INVALID_ERROR") // enviar alerta
+            })
+        }
+     
 
     },
 
