@@ -1,9 +1,8 @@
 <template>
-    <md-layout>
         <md-steppers md-alternative>
             <md-step id="first" md-label="Objetivo">
                 <div class="md-layout md-gutter md-alignment-center-center">
-                    <md-layout class="md-layout-item  md-size-25 md-small-size-100 md-medium-size-50 ">
+                    <md-layout class="md-layout-item  md-size-40 md-small-size-100 md-medium-size-50 ">
                         <div @click="objetivo.allow_funds = !objetivo.allow_funds" style="cursor:pointer;">
                             <md-card class="md-layout md-alignment-center-center md-elevation-4" :class="{'md-primary': objetivo.allow_funds}">
                                 <md-empty-state class="md-empty-state-icon-first" md-icon="account_balance_wallet" md-label="Arrecadar fundos" md-description="Receba doacoes e envie recompensas para os apioadores da sua campanha em forma de gratidao pela ajuda.">
@@ -19,7 +18,7 @@
                             </md-card>
                         </div>
                     </md-layout>
-                    <md-layout class="md-layout-item  md-size-25 md-small-size-100 md-medium-size-50">
+                    <md-layout class="md-layout-item  md-size-40 md-small-size-100 md-medium-size-50">
                         <div @click="objetivo.allow_presale = !objetivo.allow_presale" style="cursor:pointer;">
                             <md-card class="md-layout md-alignment-center-center " :class="{'md-primary': objetivo.allow_presale}">
                                 <md-empty-state class="md-empty-state-icon-first" md-icon="shopping_basket" md-label="Venda antes de terminar" md-description="Faca uma prevenda do seu produto enquanto vc finaliza seu projeto e analise o comportamento e aprovacao do publico.">
@@ -150,7 +149,6 @@
                 </div>
             </md-step>
         </md-steppers>
-    </md-layout>
 
 </template>
 <script>
@@ -238,14 +236,6 @@
     margin-bottom: 40px;
 }
     
-    .md-empty-state.md-theme-default .md-empty-state-icon.md-icon-font {
-        color: rgba(0, 0, 0, 0);
-        color: rgba(0, 0, 0, 0.08);
-    }
-    
-    .md-icon.md-theme-default.md-icon-font {
-        /* color: rgba(0, 0, 0, 0.35); */
-    }
     
     .md-empty-state-icon-first > div > .md-empty-state-icon {
         color: var(--md-theme-default-icon-on-background, rgba(0, 0, 0, 0.08))!important;

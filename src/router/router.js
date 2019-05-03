@@ -23,14 +23,7 @@ export default new Router({
       y: 0
     };
   },
-  routes: [{
-      path: '/create',
-      name: 'Create',
-      component: Create,
-      meta: {
-        onlyAuth: true
-      }
-    },
+  routes: [
     {
       path: '/login',
       name: 'Login',
@@ -53,7 +46,15 @@ export default new Router({
       component: Root,
       meta: {
         onlyAuth: true
-      }
+      },
+      children: [
+        {
+          // UserProfile will be rendered inside User's <router-view>
+          // when /user/:id/profile is matched
+          path: '/create',
+          component: Create
+        }
+        ]
     },
     {
       path: '*',
