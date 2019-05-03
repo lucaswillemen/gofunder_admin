@@ -1,0 +1,957 @@
+<template>
+<div class="paymentContribution">
+  <main-header></main-header>
+  <div class="container mt-5 mb-5">
+    <b-row>
+      <b-col cols="12" md="7" class="wrap-left pageContribution">
+        <b-row>
+          <b-col>
+            <div class="mb-5">
+              <small>Você está contribuindo com {{campaign.owner_name}}</small>
+              <h4>{{campaign.title}}</h4>
+            </div>
+            <div v-if="!user.token">
+              <h6>
+                Checkout como convidado ou <a href="/#/login"><span class="orange">Log-in</span></a>
+              </h6>
+              <b-row>
+                <b-col cols="6" style="padding-right:3px;">
+                  <b-input-group prepend="<i class='fa fa-user'></i>">
+                    <b-form-input :disabled="bitcoinPaymentProcessing" type="text" v-model="donator.name" placeholder="Nome do doador"></b-form-input>
+                  </b-input-group>
+                </b-col>
+                <b-col cols="6" style="padding-left:3px;">
+                  <b-input-group prepend="<i class='fa fa-envelope'></i>">
+                    <b-form-input :disabled="bitcoinPaymentProcessing" type="text" v-model="donator.email" placeholder="E-mail doador"></b-form-input>
+                  </b-input-group>
+                </b-col>
+              </b-row>
+            </div>
+
+            <div v-if="user.token">
+
+              <div class="userTab">
+                <h6>
+                  Checkout com conta autenticada
+                </h6>
+                <div class="userImg">
+                  <img class="img" v-bind:src='user && user.img ? this.$apiEndpoint+"/uploads/profile/"+user.img : "/static/anonymous-icon.svg"'></img>
+                </div>
+                <div class="user">
+                  <div class="name">{{user.name}}</div>
+                  <div class="email">{{user.email}}</div>
+                  <div class="logout">
+                    <a href="/#/login"><span class="orange">Logout</span></a>
+                  </div>
+                </div>
+              </div>
+
+              <b-row>
+                <b-col cols="6" style="padding-right:3px;">
+                  <b-input-group prepend="<i class='fa fa-user'></i>">
+                    <b-form-input :disabled="bitcoinPaymentProcessing" type="text" v-model="donator.name" placeholder="Nome do doador"></b-form-input>
+                  </b-input-group>
+                </b-col>
+                <b-col cols="6" style="padding-left:3px;">
+                  <b-input-group prepend="<i class='fa fa-envelope'></i>">
+                    <b-form-input :disabled="bitcoinPaymentProcessing" type="text" v-model="donator.email" placeholder="E-mail doador"></b-form-input>
+                  </b-input-group>
+                </b-col>
+              </b-row>
+            </div>
+          </b-col>
+        </b-row>
+        <b-row class="mt-5">
+          <b-col lg="6" class="mt-4">
+            <div>
+              <h6>Exibição da contribuição</h6>
+              <small>Escolha um nome para ser exibido publicamente ao lado de sua contribuição na página da campanha.</small>
+            </div>
+            <b-form-group>
+              <b-form-checkbox-group :disabled="bitcoinPaymentProcessing || cardProcessing" stacked v-model="selectedDonationTitleInfo" name="name" :options="donationTitleInfo" class="checkboxes checkbox-block">
+              </b-form-checkbox-group>
+            </b-form-group>
+          </b-col>
+          <b-col lg="6" class="mt-4">
+            <div>
+              <h6>Método de pagamento</h6>
+              <small>Escolha um método de pagamento para ser utilizado na doação da campanha.</small>
+            </div>
+            <b-form-group>
+              <b-form-checkbox-group :disabled="bitcoinPaymentProcessing || cardProcessing" stacked v-model="selectedMethodPayment" name="name" :options="methodsPayment" class="checkboxes checkbox-block">
+              </b-form-checkbox-group>
+            </b-form-group>
+          </b-col>
+        </b-row>
+        <div class="mt-5" v-show="selectedMethodPayment =='card'">
+          <b-row v-if="user.token">
+            <!--<b-col cols="12">
+                <h6>Pagar com cartão de crédito salvo</h6>
+
+              </b-col>!-->
+          </b-row>
+
+          <b-row class="mt-5">
+            <b-col cols="12" md="6">
+              <!--<h6 v-if="!user.token">Cartão de Crédito</h6>
+                <h6 v-if="user.token">Pagar com outro cartão de crédito</h6>!-->
+              <div class="card-wrapper" />
+            </b-col>
+            <b-col cols="12" lg="6" class="card-form">
+              <h6 class="mb-4">Insira os dados do cartão</h6>
+              <b-form-group>
+                <b-input-group prepend="<i class='fa fa-user'></i>">
+                  <b-form-input id="card-form-name" type="text" placeholder="Nome titular cartão" name="name" v-model="card.name"></b-form-input>
+                </b-input-group>
+              </b-form-group>
+              <b-form-group>
+                <b-input-group prepend="<i class='fa fa-credit-card'></i>">
+                  <b-form-input id="card-form-number" type="text" placeholder="Número de Cartão de Crédito" name="number" v-model="card.number"></b-form-input>
+                </b-input-group>
+              </b-form-group>
+              <b-row>
+                <b-col cols="12" lg="6">
+                  <b-form-group>
+                    <b-input-group prepend="<i class='fa fa-calendar'></i>">
+                      <b-form-input id="card-form-expiry" size="md" type="text" placeholder="01/2019" name="expiry" v-model="card.expiry"></b-form-input>
+                    </b-input-group>
+                  </b-form-group>
+                </b-col>
+                <b-col cols="12" lg="6">
+                  <b-form-group>
+                    <b-input-group prepend="<i class='fa fa-lock'></i>">
+                      <b-form-input id="card-form-cvc" size="md" placeholder="XXX" type="text" name="cvc" v-model="card.cvc"></b-form-input>
+                    </b-input-group>
+                  </b-form-group>
+                </b-col>
+              </b-row>
+            </b-col>
+          </b-row>
+        </div>
+        <div class="mt-5" v-show="havePerk && worldCountries.length">
+          <div class="mb-3">
+            <h6>Detalhes para entrega</h6>
+            <small>Os detalhes da entrega servirão para receber o produto de recompensa após a doação.</small>
+          </div>
+          <b-row>
+            <b-col cols="12" lg="6" style="padding-right:2px;padding-left:2px;">
+              <b-input-group prepend="<i class='fa fa-user'></i>">
+                <b-form-input type="text" v-model="delivery.name" placeholder="Nome destinatário"></b-form-input>
+              </b-input-group>
+            </b-col>
+            <b-col cols="12" lg="6" style="padding-right:2px;padding-left:2px;">
+              <b-input-group prepend="<i class='fa fa-phone'></i>">
+                <b-form-input type="text" v-model="delivery.phone" placeholder="Telefone para Contato"></b-form-input>
+              </b-input-group>
+            </b-col>
+          </b-row>
+          <b-row class="mt-3">
+            <b-col cols="12" lg="4" style="padding-right:2px;padding-left:2px;">
+              <b-input-group prepend="<i class='fa fa-flag'></i>">
+
+                <v-select class="adjustCountriesSelect" placeholder="Pais" v-model="delivery.country" :options="worldCountries" label="label">
+                  <template slot="option" slot-scope="option">
+                    <span :class="option.icon"></span>
+                    ({{option.priceShipping}} {{campaign.coin_type}}) {{option.label}}
+                  </template>
+                </v-select>
+
+              </b-input-group>
+            </b-col>
+            <b-col cols="12" lg="4" style="padding-right:2px;padding-left:2px;">
+              <b-input-group prepend="<i class='fa fa-map-marked'></i>">
+                <b-form-input type="text" v-model="delivery.state" placeholder="Estado"></b-form-input>
+              </b-input-group>
+            </b-col>
+            <b-col cols="12" lg="4" style="padding-right:2px;padding-left:2px;">
+              <b-input-group prepend="<i class='fa fa-city'></i>">
+                <b-form-input type="text" v-model="delivery.city" placeholder="Cidade"></b-form-input>
+              </b-input-group>
+            </b-col>
+          </b-row>
+          <b-row class="mt-3">
+            <b-col cols="12" lg="8" style="padding-right:2px;padding-left:2px;">
+              <b-input-group prepend="<i class='fa fa-font'></i>">
+                <b-form-input type="text" v-model="delivery.address" placeholder="Endereço"></b-form-input>
+              </b-input-group>
+            </b-col>
+            <b-col cols="12" lg="4" style="padding-right:2px;padding-left:2px;">
+              <b-input-group prepend="<i class='fa fa-list-ol'></i>">
+                <b-form-input type="text" v-model="delivery.zipcode" placeholder="Zipcode"></b-form-input>
+              </b-input-group>
+            </b-col>
+          </b-row>
+        </div>
+      </b-col>
+      <b-col v-show="!bitcoinPaymentProcessing && !cardProcessing" cols="12" md="5" class="wrap-right pageContribution">
+        <div class="buy-wrap">
+          <div class="mt-3">
+            <h5 class="mb-2">
+              VALOR DE CONTRIBUIÇÃO
+            </h5>
+
+            <b-input-group size="sm" :prepend="$" class="mb-1">
+              <b-form-input type="number" v-model="donator.value" step="0.01" placeholder="Valor para Doação"></b-form-input>
+            </b-input-group>
+
+
+            <div class="subtitle text-danger" v-show="donator.value < minDonationValue">
+              Sua recompensa deve ser maior que {{minDonationValue | currency}}
+            </div>
+          </div>
+
+
+
+          <div v-show="havePerk">
+            <div style="margin-top:50px;">
+              <h5>
+                DADOS DA RECOMPENSA
+              </h5>
+              <div>
+                <div style="font-size:15px;font-weight:500">
+
+                  {{this.perkInfo.perk_title}}
+                </div>
+                <div style="font-size:13px;">
+                  {{this.perkInfo.perk_description}}
+                </div>
+              </div>
+
+              <div>
+                <div class="datePerk" style="margin-top:35px;font-size:14px;font-weight:400">
+                  SEUS ITENS
+                </div>
+                <div class="datePerkDescription" style="font-size:12px;">
+                  <div v-for="item in perkItems" class="ml-2">
+                    {{item.title}}
+                    <i class="removeBorderSelect">
+                      <select class="form-control_aqui form-control" v-on:input="react()" v-for="(item_values, item_param) in  item.options" v-model="itemsSelected[item.id][item_param]">
+                        <option>{{item_param}}</option>
+                        <option v-for="item_value in item_values">{{item_value}}</option>
+                      </select>
+                    </i>
+                    <br>
+                  </div>
+
+                </div>
+              </div>
+
+              <div>
+                <div class="datePerk" style="margin-top:50px;font-size:15px;font-weight:500">
+                  Data Estimada Entrega
+                </div>
+                <div class="datePerkDescription" style="font-size:12px;">
+                  {{this.perkInfo.perk_delivery_date}}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <hr class="mt-3 mb-3">
+          </hr>
+          <b-row v-show="havePerk">
+            <b-col cols="7">
+              <div>
+                <h5>VALOR</h5>
+              </div>
+            </b-col>
+            <b-col cols="5">
+              <div>
+                <span style="font-size:14px;font-weight:450">Frete {{(!this.delivery.country.priceShipping ? 0 : this.delivery.country.priceShipping) | currency}}</span>
+              </div>
+              <div>
+                <div>
+                  <span style="font-size:14px;font-weight:450;">Total {{donator.value | currency}}</span>
+                </div>
+              </div>
+            </b-col>
+          </b-row>
+          <b-row class="mt-5" v-show="!havePerk">
+            <b-col cols="8">
+              <h5>VALOR</h5>
+            </b-col>
+            <b-col cols="4">
+              <h5>Total {{donator.value | currency}}</h5>
+            </b-col>
+          </b-row>
+          <b-row class="ml-1 mt-4">
+            <small style="font-size:10px;">
+              O valor real cobrado pelo emissor do seu cartão pode diferir da nossa estimativa com base na taxa de câmbio e nas taxas aplicáveis.
+              Ao clicar em Enviar pagamento, você também concorda com nossos <a class="orange" href="/#//terms">Termos de Uso e Privacidade</a>
+            </small>
+          </b-row>
+          <b-row class="mt-5">
+            <div class="btn-noborder-blue ml-3">
+              <b-button @click="payment()" :disabled="isComplete() !== 'VALID'">REALIZAR PAGAMENTO</b-button>
+            </div>
+          </b-row>
+        </div>
+      </b-col>
+      <b-col v-show="bitcoinPaymentProcessing" cols="12" md="5" class="wrap-right pageContribution">
+        <b-row class="pay-info-wrap">
+          <b-col cols="12" v-show="bitcoinPayedProcessed">
+            <div style="font-size:15px;">
+              <h3>Sucesso <span class="text-success"><i class="fas fa-check"></i></span></h3><br>
+              Seu pagamento em Bitcoin foi recebido<br>
+              Para ver seu comprovante <a target="_blank" :href="'https://www.blockchain.com/pt/btc/address/'+bitcoinPaymentInfo.address">clique aqui</a><br><br>
+              Obrigado pela sua doação
+            </div>
+          </b-col>
+          <b-col cols="8" v-show="!bitcoinPayedProcessed">
+            <div class="header">
+              <div class="title">
+                <span>Pague com Bitcoin</span>
+
+              </div>
+              <div class="subtitle">
+                <span>Por favor, envie <span class="text-warning" @click="copyToClipboard(bitcoinPaymentInfo.amount)" style="cursor:pointer">Ƀ {{bitcoinPaymentInfo.amount}}</span> para:</span>
+              </div>
+            </div>
+            <b-input-group class="wallet-input">
+              <b-form-input id="wallet" type="text" v-model="bitcoinPaymentInfo.address"></b-form-input>
+              <b-input-group-append>
+                <div class="clipboard" @click="copyToClipboard(bitcoinPaymentInfo.address)">
+                  <font-awesome-icon :icon="['far', 'copy']" />
+                </div>
+              </b-input-group-append>
+            </b-input-group>
+
+            <div class="mt-3 waiting-payment">
+              <span><b>{{ bitcoinPaymentInfo.timeout | formatDate}}</b> Restante Esperando pagamento</span>
+            </div>
+          </b-col>
+          <b-col cols="4" v-show="!bitcoinPayedProcessed">
+            <div class="qrcode">
+              <div class="qrcode-wrap">
+                <qrcode-vue :value='bitcoinPaymentInfo.address' :size="100" level="H"></qrcode-vue>
+              </div>
+              <div class="price">
+                <div class="price-wrap">
+                  <span class="bit">1 BTC</span>
+                  <font-awesome-icon :icon="['fas', 'exchange-alt']" />
+                  <span class="qtd">{{Math.round(donator.value/bitcoinPaymentInfo.amount | currency)}} </span>
+                </div>
+              </div>
+            </div>
+          </b-col>
+        </b-row>
+      </b-col>
+
+      <b-col v-show="cardProcessing" cols="12" md="5" class="wrap-right pageContribution">
+        <b-row class="pay-info-wrap">
+          <b-col cols="12" v-show="cardPayed">
+            <div style="font-size:15px;">
+              <h3>Sucesso <span class="text-success"><i class="fas fa-check"></i></span></h3><br>
+              Seu pagamento com cartão de crédito foi recebido<br><br>
+              <b>Obrigado pela sua doação</b>
+            </div>
+          </b-col>
+          <b-col cols="12" v-show="cardError">
+            <div style="font-size:15px;">
+              <h3>Ops <span class="text-danger"><i class="fas fa-exclamation-circle"></i></span></h3><br>
+              Seu pagamento com cartão de crédito foi recusado<br><br>
+              <a @click="retryPay()" style="cursor:pointer;color:blue;">Clique aqui para tentar novamente</a>
+            </div>
+          </b-col>
+
+        </b-row>
+      </b-col>
+    </b-row>
+  </div>
+  <main-footer></main-footer>
+</div>
+</template>
+
+<script>
+import QrcodeVue from 'qrcode.vue'
+import moment from 'moment'
+
+const Card = require('card')
+
+import {
+  mapActions,
+  mapState,
+  mapGetters
+} from 'vuex'
+
+export default {
+  computed: {
+    ...mapState(['user'])
+  },
+  components: {
+    QrcodeVue
+  },
+  filters: {
+    formatDate(value) {
+      return value ? moment("2015-01-01").startOf('day').seconds(value).format('H:mm:ss') : false
+    }
+  },
+  mounted() {
+    this.mountCardComponent()
+    this.loadCampaignData()
+    if (this.user.token != '') {
+      this.donator.email = this.user.email
+      this.donator.name = this.user.name
+    }
+  },
+  data() {
+    return {
+      cardProcessing: false,
+      cardError: false,
+      cardPayed: false,
+      intervalRecheckBitcoinPayment: null,
+      selectedMethodPayment: 'card',
+      selectedDonationTitleInfo: 'anonymous',
+      havePerk: false,
+      minDonationValue: 2,
+      bitcoinPaymentProcessing: false,
+      bitcoinPayedProcessed: false,
+      bitcoinPaymentInfo: {
+        amount: 0.0,
+        txn_id: '',
+        address: '',
+        timeout: 0
+      },
+      campaign: {},
+      card: {
+        name: null,
+        number: null,
+        expiry: null,
+        cvc: null
+      },
+      donator: {
+        name: '',
+        email: '',
+        value: 50.00
+      },
+      delivery: {
+        name: '',
+        phone: '',
+        zipcode: '',
+        address: '',
+        city: '',
+        state: '',
+        country: ''
+      },
+      perkItems: [],
+      perkInfo: [],
+      itemsSelected: {},
+      methodsPayment: [{
+          text: 'Bitcoin',
+          value: 'bitcoin'
+        },
+        {
+          text: 'Cartão de Crédito',
+          value: 'card'
+        }
+      ],
+      donationTitleInfo: [{
+          text: 'Nome Completo',
+          value: 'public'
+        },
+        {
+          text: 'Anônimo',
+          value: 'anonymous'
+        }
+      ],
+      worldCountries: []
+    }
+  },
+  beforeDestroy() {
+    if (this.intervalRecheckBitcoinPayment) {
+      clearInterval(this.intervalRecheckBitcoinPayment)
+    }
+  },
+  methods: {
+    retryPay() {
+      this.cardProcessing = false
+      this.cardPayed = false
+      this.cardError = false
+    },
+    isCompleteSelectionItem() {
+      if (!this.perkItems.length || !this.havePerk)
+        return 'VALID'
+      for (var i in this.perkItems) {
+        for (var x in this.perkItems[i].options) {
+          if (!this.itemsSelected[this.perkItems[i].id]) return 'INVALID_ITEM'
+          if (!this.itemsSelected[this.perkItems[i].id][x]) return 'INVALID_ITEM'
+          if (this.itemsSelected[this.perkItems[i].id][x] == x) return 'INVALID_ITEM'
+        }
+      }
+      return 'VALID'
+    },
+    react() {
+      let name = this.donator.name
+      this.donator.name = ""
+      this.donator.name = name
+    },
+    isCompleteLocation() {
+      if (!this.worldCountries.length || !this.havePerk)
+        return 'VALID';
+      if (!this.delivery.country)
+        return 'COUNTRY'
+      if (!this.delivery.address || !this.delivery.city || !this.delivery.state)
+        return 'ADDRESS, CITY, STATE'
+      if (!this.delivery.name || !this.delivery.phone || !this.delivery.zipcode)
+        return 'NAME, PHONE, ZIPCODE'
+      return 'VALID'
+    },
+    isComplete() {
+      if (this.isCompleteSelectionItem() != 'VALID')
+        return this.isCompleteSelectionItem()
+      if (this.isCompleteLocation() != 'VALID')
+        return this.isCompleteLocation()
+      if (this.selectedDonationTitleInfo !== 'public' && this.selectedDonationTitleInfo !== 'anonymous')
+        return 'DONATION'
+      if (this.selectedMethodPayment !== 'card' && this.selectedMethodPayment !== 'bitcoin')
+        return 'METHOD'
+      if (!this.donator.name || !this.donator.email || this.donator.value < this.minDonationValue)
+        return 'DONATOR_INFO'
+      if (this.selectedMethodPayment == 'card' && (!this.card.name || !this.card.number || !this.card.expiry || !this.card.cvc))
+        return 'CARD'
+      return 'VALID'
+    },
+    copyToClipboard(value) {
+      this.$copyText(value).then((e) => {
+        this.$awn.success("COPIADO")
+      }, (e) => {})
+    },
+    payment() {
+      if (this.selectedMethodPayment == 'bitcoin') {
+        return this.getBitcoinPayment()
+      }
+      if (this.selectedMethodPayment == 'card') {
+        return this.getCardPayment()
+      }
+    },
+    getCardPayment() {
+      this.cardProcessing = true
+      this.$awn.asyncBlock(global.$post("/Card/createToken", {
+          name: this.card.name,
+          number: this.card.number,
+          exp_month: this.card.expiry.replace(/ /g, '').split('/')[0],
+          exp_year: this.card.expiry.replace(/ /g, '').split('/')[1],
+          cvc: this.card.cvc
+        }))
+        .then(response => {
+          return this.$awn.asyncBlock(global.$post("/Card/chargeDonation", {
+              token_card: response.data.MSG.id,
+              donator_value: this.donator.value,
+              donator_name: this.donator.name,
+              donator_email: this.donator.email,
+              campaign_id: this.$route.params.id,
+              donator_type: this.selectedDonationTitleInfo,
+              perk: this.havePerk,
+              perk_id: this.perkInfo.id ? this.perkInfo.id : 0,
+              perk_delivery: JSON.stringify(this.delivery),
+              perk_options: JSON.stringify(this.itemsSelected)
+            }, this.user.token))
+            .then(data => {
+              this.$awn.success("Muito obrigado por sua doação!")
+              this.cardError = false
+              this.cardPayed = true
+            })
+        })
+        .catch(err => {
+          this.$awn.alert("Ocorreu um  erro ao pagar com este cartão!")
+          this.cardError = true
+          this.cardPayed = false
+        })
+
+    },
+    recheckBitcoinPayment() {
+      var self = this
+      this.intervalRecheckBitcoinPayment = setInterval((self) => {
+        if (self.bitcoinPaymentInfo.timeout > 0) {
+          self.bitcoinPaymentInfo.timeout = self.bitcoinPaymentInfo.timeout - 1
+          if (!(self.bitcoinPaymentInfo.timeout % 10)) {
+            global.$post("/DonationBitcoin/checkState", {
+                txn_id: self.bitcoinPaymentInfo.txn_id
+              })
+              .then(response => {
+                self.bitcoinPayedProcessed = true
+                self.bitcoinPaymentProcessing = true
+              })
+              .catch(err => {})
+          }
+        }
+      }, 1000, this)
+    },
+    getBitcoinPayment() {
+      this.$awn.asyncBlock(global.$post("/DonationBitcoin/simpleDonation", {
+          donator_value: this.donator.value,
+          donator_name: this.donator.name,
+          donator_email: this.donator.email,
+          campaign_id: this.$route.params.id,
+          donator_type: this.selectedDonationTitleInfo,
+          perk: this.havePerk,
+          perk_id: this.perkInfo.id ? this.perkInfo.id : 0,
+          perk_delivery: JSON.stringify(this.delivery),
+          perk_options: JSON.stringify(this.itemsSelected)
+        }, this.user.token))
+        .then(response => {
+          if (response.data.MSG.error !== "ok") {
+            return this.$awn.alert(response.data.MSG.error)
+          }
+          this.bitcoinPaymentProcessing = true
+          this.bitcoinPaymentInfo = response.data.MSG.result
+          this.recheckBitcoinPayment()
+        })
+        .catch(err => {
+          return this.$awn.alert("Não foi possível processar pagamento!")
+        })
+    },
+    mountCardComponent() {
+      let card = new Card({
+        form: '.card-form',
+        container: '.card-wrapper',
+        placeholders: {
+          number: '0000 0000 0000 0000',
+          name: "Nome titular",
+          expiry: '00/00',
+          cvc: '000'
+        }
+      })
+    },
+    loadCampaignData() {
+      global.$post("/Campaign/get_public", {
+          id: this.$route.params.id
+        }, this.user.token)
+        .then(response => {
+          this.campaign = response.data.MSG
+          for (var i in this.campaign.perks) {
+            if (this.campaign.perks[i].id != this.$route.params.perk) {
+              continue;
+            }
+            this.havePerk = true
+            this.perkInfo = this.campaign.perks[i]
+            try {
+              this.campaign.perk_shipping_info = JSON.parse(this.campaign.perks[i].perk_shipping_info)
+            } catch (exp) {}
+            try {
+              this.campaign.perk_item_info = JSON.parse(this.campaign.perks[i].perk_item_info)
+            } catch (exp) {}
+            if (this.campaign.perk_item_info.length == 0) {
+              return this.havePerk = false
+            }
+            this.minDonationValue = this.perkInfo.perk_min_donation
+            this.donator.value = this.minDonationValue
+            for (var j in this.campaign.perk_item_info) {
+              let item_options = new Object()
+              for (var x in this.campaign.perk_item_info[j].options) {
+                if (!item_options[this.campaign.perk_item_info[j].options[x].param]) {
+                  item_options[this.campaign.perk_item_info[j].options[x].param] = []
+                }
+                if (!this.itemsSelected[this.campaign.perk_item_info[j].id]) {
+                  this.itemsSelected[this.campaign.perk_item_info[j].id] = {}
+                }
+                if (!this.itemsSelected[this.campaign.perk_item_info[j].id][this.campaign.perk_item_info[j].options[x].param]) {
+                  this.itemsSelected[this.campaign.perk_item_info[j].id][this.campaign.perk_item_info[j].options[x].param] = this.campaign.perk_item_info[j].options[x].param
+                }
+                item_options[this.campaign.perk_item_info[j].options[x].param].push(this.campaign.perk_item_info[j].options[x].value)
+              }
+              this.perkItems.push({
+                title: this.campaign.perk_item_info[j].title,
+                id: this.campaign.perk_item_info[j].id,
+                options: JSON.parse(JSON.stringify(item_options))
+              })
+            }
+          }
+          let configCountries = []
+          for (var i in this.campaign.perk_shipping_info) {
+            configCountries[this.campaign.perk_shipping_info[i].locale.value] = this.campaign.perk_shipping_info[i].price
+          }
+          var countries = require('@/assets/country.json')
+          for (var i in countries) {
+            if (countries[i].value == 'ALL') continue
+            if (countries[i].value == 'REST') continue
+            countries[i].priceShipping = -1
+            if (configCountries['ALL']) {
+              countries[i].priceShipping = configCountries['ALL']
+            } else if (configCountries[countries[i].value]) {
+              countries[i].priceShipping = configCountries[countries[i].value]
+            } else if (configCountries['REST']) {
+              countries[i].priceShipping = configCountries['REST']
+            }
+            if (countries[i].priceShipping != -1) {
+              this.worldCountries.push(countries[i])
+            }
+          }
+        })
+        .catch(err => {
+          this.$awn.alert("Ocorreu um erro ao resgatar as informações")
+        })
+    }
+  }
+
+}
+</script>
+
+<style lang="scss">
+@import "Styles/colors.scss";
+
+.paymentContribution {
+
+    $gray: #616060;
+
+    .adjustCountriesSelect {
+        display: inline!important;
+        position: relative;
+        -ms-flex: 1 1 auto;
+        flex: 1 1 auto;
+        width: 1%;
+        margin-bottom: 0;
+        .dropdown-toggle::after {
+            display: none;
+        }
+        .dropdown-menu {
+            width: 200px;
+            li > a {
+                font-size: 10px!important;
+            }
+        }
+        .dropdown-toggle {
+            .form-control_aqui,
+            .vs__selected-options {
+                height: 38px;
+                white-space: nowrap;
+                max-width: 80%!important;
+            }
+            .selected-tag {
+                margin-top: 7px!important;
+                max-width: 90%!important;
+                text-overflow: ellipsis!important;
+                white-space: nowrap;
+                overflow: hidden;
+            }
+            .open-indicator:before {
+                border-color: rgba(60,60,60,.5);
+                border-style: solid;
+                border-width: 2px 2px 0 0;
+                content: "";
+                display: inline-block;
+                height: 7.5px!important;
+                width: 7.5px!important;
+                vertical-align: text-top;
+                transform: rotate(133deg);
+                box-sizing: inherit;
+            }
+            .vs__actions {
+                right: 10px;
+                margin-top: 5px;
+
+                position: absolute;
+                button,
+                span {
+                    margin-top: 5px!important;
+                    font-size: 18px!important;
+                }
+            }
+            .form-control_aqui {
+                background-color: rgba(255, 255, 255,0.0);
+                width: 80%;
+                margin-top: 0;
+            }
+            color: gray;
+            font-weight: 500;
+            height: 38px!important;
+            font-size: 14px;
+            font-weight: 300;
+            border-radius: 2;
+            border: 1px;
+            background-color: rgba(200, 200, 200,0.1);
+
+        }
+
+    }
+
+    .removeBorderSelect {
+
+        select {
+            width: auto;
+            display: inline;
+            height: 17px;
+            margin-left: 2px;
+            padding: 1px 2px 2px;
+            font-size: 9px;
+            color: #333;
+            background-color: #ffffff;
+            background-image: none;
+            border: 1px solid #cccccc;
+            -ms-word-break: normal;
+            word-break: normal;
+        }
+    }
+
+    .container {
+
+        .pageContribution {
+            .pay-info-wrap {
+                width: 100%;
+                padding: 20px 35px;
+                background-color: white;
+                border-radius: 5px;
+                box-shadow: 0 0 7px;
+                margin-top: 30px;
+                .waiting-payment {
+                    font-size: 11px!important;
+                }
+                .header {
+                    width: 100%;
+                    height: 30px;
+                    font-weight: 500;
+                    margin-bottom: 10px;
+                    .subtitle {
+                        float: left;
+                        margin-top: 5px;
+                        margin-bottom: 5px;
+                    }
+                    .checkboxes {
+                        margin-left: 10px;
+                    }
+                }
+
+                .wallet-input {
+                    input {
+                        border: 1px solid #80808033!important;
+                        background-color: white!important;
+                        color: gray;
+                        font-size: 9px;
+                        font-weight: 500;
+                        height: 30px;
+                    }
+
+                    .clipboard {
+                        height: 30px;
+                        width: 30px;
+                        border: 1px solid #80808033;
+                        background-color: white!important;
+                        position: relative;
+                        cursor: pointer;
+
+                        svg {
+                            position: absolute;
+                            top: 0;
+                            bottom: 0;
+                            left: 0;
+                            right: 0;
+                            margin: auto;
+                            color: gray;
+
+                        }
+                    }
+
+                    .clipboard:hover {
+                        border-width: 2px;
+                    }
+                }
+
+                .bottom {
+                    margin-top: 20px;
+                    font-size: 12px;
+                }
+
+            }
+            .qrcode {
+                margin-top: 15px;
+                width: 100%;
+                .price {
+                    margin-top: 5px;
+                    font-size: 9px;
+                    svg {
+                        margin: 0 5px;
+                    }
+                    .qtd {
+                        color: #158cb1;
+                        font-weight: 500;
+                    }
+                }
+            }
+
+            width: 100%;
+            color: $gray;
+
+            .smallDescription {
+                font-size: 10px;
+                margin-left: 0;
+
+            }
+            h6 {
+                font-weight: 510;
+                font-size: 15px;
+            }
+            h5 {
+                font-weight: 500;
+                font-size: 15px;
+            }
+            h4 {
+                font-weight: 400;
+                font-size: 23px;
+            }
+            .wrap-right {
+                .row {
+                    margin-bottom: 20px;
+                }
+                hr {
+                    margin-bottom: 30px;
+                }
+            }
+            ::placeholder {
+
+                font-size: 14px;
+                font-weight: 300;
+            }
+            .input-group-text,
+            input,
+            input:focus {
+                border-radius: 2;
+                border: 1px;
+                background-color: rgba(200, 200, 200,0.1);
+            }
+            .userTab {
+                margin-top: 30px;
+                margin-bottom: 50px;
+                .userImg {
+                    .img {
+                        width: 60px;
+                        height: 60px;
+                        background-size: cover;
+                        background-repeat: no-repeat;
+                        margin-right: 10px;
+                        float: left;
+                    }
+                }
+                .user {
+                    padding-top: 5px;
+                    line-height: 17px;
+                    .name {
+                        font-weight: 500;
+                        font-size: 15px;
+                    }
+                    .email {
+                        font-size: 12px;
+                    }
+                    .logout {
+                        font-size: 12px;
+                    }
+                }
+            }
+
+            .buy-wrap {
+                width: 100%;
+                padding: 20px 35px;
+                background-color: white;
+                border-radius: 5px;
+                box-shadow: 0 0 7px;
+            }
+        }
+    }
+    @media only screen and (max-width: 800px) {
+        .container {
+            .wrap-right {
+                margin-top: 50px;
+            }
+        }
+    }
+}
+</style>

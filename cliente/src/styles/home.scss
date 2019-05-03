@@ -1,0 +1,706 @@
+.slide-home {
+	position: relative;
+
+	img {
+		height: 470px;
+		object-fit: cover;
+	}
+
+	.carousel-caption {
+		top: 50px;
+		left: 10%;
+		text-align: left;
+	}
+
+	.carousel-caption .title {
+		font-size: 45px;
+		font-weight: 700;
+		width: 345px;
+		line-height: 41px;
+	}
+
+	.carousel-caption .text {
+		width: 390px;
+		font-size: 17px;
+		padding-top: 15px;
+	}
+
+	.carousel-caption .buttons {
+		display: flex;
+		padding-top: 20px;
+	}
+	// controle de slides
+	$pos-v-counter: 55px;
+	$pos-right-arrow: 200px;
+	$pos-left-arrow: ($pos-right-arrow - 65);
+	$pos-h-counter: ($pos-right-arrow - 36);
+
+	.carousel-control-next,
+	.carousel-control-prev {
+		bottom: $pos-v-counter;
+		top: auto;
+		width: 1%;
+		opacity: 1;
+	}
+
+	.carousel-control-prev {
+		left: $pos-left-arrow;
+	}
+
+	.carousel-control-next {
+		left: $pos-right-arrow;
+	}
+
+	.counter {
+		position: absolute;
+		bottom: $pos-v-counter;
+		left: $pos-h-counter;
+		font-size: 13px;
+		color: white;
+	}
+}
+// parte de baixo do slide
+
+.slide-bottom {
+	position: relative;
+	height: 45px;
+	width: 100%;
+
+	.left,
+	.right {
+		height: 100%;
+		width: 50%;
+	}
+
+	.left {
+		background-color: $orange;
+	}
+
+	.right {
+		background-color: $blue;
+	}
+
+	.left span,
+	.right span {
+		font-size: 22px;
+		font-weight: 700;
+		color: white;
+	}
+
+	.left span {
+		padding-right: 13%;
+	}
+
+	.right span {
+		padding-left: 13%;
+	}
+	// circulo com porcentagem
+	.circular-chart {
+		display: block;
+		margin: 10px auto;
+		max-width: 80%;
+		max-height: 250px;
+		position: absolute;
+		top: -34px;
+		margin-left: auto;
+		margin-right: auto;
+		left: 0;
+		right: 0;
+	}
+
+	.circle {
+		stroke: rgba(255, 255, 255, 0.5);
+		fill: none;
+		stroke-width: 0.8;
+		stroke-linecap: round;
+		animation: progress 1s ease-out forwards;
+	}
+	@keyframes progress {
+		0% {
+			stroke-dasharray: 0 100;
+		}
+	}
+
+	.circle {
+		top: -26px;
+		height: 93px;
+		width: 93px;
+		background-color: $orange;
+		border-radius: 57px;
+		box-shadow: 0 0 4px 0;
+	}
+
+	.number {
+		width: 50px;
+		text-align: center;
+		font-size: 30px;
+		top: -1px;
+		font-weight: 500;
+		color: white;
+	}
+}
+// primeira area abaixo do slide
+
+.area-1 {
+	padding-top: 100px;
+	padding-bottom: 50px;
+
+	.left,
+	.right {
+		height: 370px;
+		width: 98%;
+		text-align: center;
+
+		.center-obj {
+			width: 100px;
+			height: 100px;
+			border-radius: 50px;
+			background-color: white;
+			top: -50px;
+			background-repeat: no-repeat;
+			background-position: center;
+		}
+
+		.content {
+			.text,
+			.title {
+				color: white;
+			}
+
+			.title {
+				font-size: 45px;
+				font-weight: 700;
+				// width: 345px;
+				line-height: 41px;
+			}
+
+			.text {
+				width: 100%;
+				font-size: 17px;
+				padding-top: 15px;
+			}
+
+			.buttons {
+				padding-top: 20px;
+				display: -webkit-inline-box;
+			}
+		}
+
+		.center-obj-hv {
+			width: 390px;
+			height: 182px;
+		}
+	}
+
+	.left {
+		.center-obj {
+			border: 1px solid $blue;
+		}
+	}
+
+	.right {
+		.center-obj {
+			border: 1px solid $orange;
+		}
+	}
+}
+
+.area-2 {
+	padding-bottom: 50px;
+
+	.left,
+	.middle,
+	.right {
+		height: 85px;
+		width: 96%;
+		border-radius: 3px;
+		background-repeat: no-repeat;
+
+		img {
+			padding-left: 37px;
+			background-repeat: no-repeat;
+		}
+
+		span {
+			font-size: 23px;
+			color: white;
+			height: 35px;
+		}
+
+		.text1 {
+			padding-left: 189px;
+		}
+
+		.text2 {
+			padding-left: 174px;
+		}
+
+		.text3 {
+			padding-left: 189px;
+			line-height: 21px;
+		}
+	}
+}
+
+.area-3 {
+	position: relative;
+	width: 100%;
+
+	.bg {
+		width: 100%;
+		height: 860px;
+		background-position: center;
+		position: absolute;
+		top: 126px;
+	}
+
+	.linha1 {
+		padding-bottom: 75px;
+
+		.col1,
+		.col2 {
+			width: 98%;
+			height: 253px;
+			position: relative;
+		}
+
+		.title {
+			height: 74px;
+			width: 227px;
+			line-height: 33px;
+			padding-left: 57px;
+			font-size: 42px;
+		}
+
+		.col1 {
+			.title {
+				color: $orange;
+			}
+		}
+
+		.col2 {
+			.title {
+				color: $blue;
+			}
+		}
+	}
+
+	.under-img {
+		padding-top: 10px;
+		float: left;
+		display: -webkit-inline-box;
+
+		span {
+			color: white;
+			font-size: 12px;
+			padding-right: 39px;
+			font-weight: 500;
+		}
+	}
+}
+
+.area-4 {
+	color: white;
+	padding-top: 65px;
+
+	.title {
+		font-size: 37px;
+		line-height: 28px;
+	}
+
+	.content {
+		line-height: 19px;
+		font-size: 11px;
+	}
+
+	.bt1 {
+		width: 333px;
+	}
+
+	.bt1 button,
+	.bt2 button {
+		font-size: 15px;
+		padding-bottom: 36px;
+		padding-top: 16px;
+		font-weight: 500;
+	}
+
+	.bt2 button {
+		margin-left: 73px;
+	}
+}
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 60px; 
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'liga';
+}
+
+.area-5 {
+	padding-top: 50px;
+	position: relative;
+
+	.title {
+		width: 100px;
+		text-align: center;
+		top: 97px;
+		line-height: 14px;
+	}
+	$w: 150px;
+	$h: $w;
+
+	.circle {
+		width: $w;
+		height: $h;
+		border-radius: 100px;
+		background-color: white;
+		border: 1px solid $orange;
+		position: absolute;
+		background-repeat: no-repeat;
+		background-position: center;
+		background-position-y: 32px;
+		-webkit-transition: 0.4s;
+		transition: 0.4s;
+		cursor: pointer;
+		.img {
+			margin-top:-60px;
+			font-size:60px!important;
+			color:#cb4f1c!important;
+		}
+		span {
+			color: #1a2953;
+			font-size: 14px;
+			font-weight: 600;
+
+
+		}
+	}
+
+	.circle1 {
+		z-index: 0;
+	}
+	$pos2: $w - 20;
+
+	.circle2 {
+		left: $pos2;
+		z-index: 1;
+	}
+	$pos3: ($pos2 * 2) - 10;
+
+	.circle3 {
+		left: $pos3;
+		z-index: 2;
+	}
+	$pos4: ($pos3 + $pos2) - 10;
+
+	.circle4 {
+		left: $pos4;
+		z-index: 2;
+	}
+	$pos5: ($pos4 + $pos2) - 10;
+
+	.circle5 {
+		left: $pos5;
+		z-index: 2;
+	}
+	$pos6: ($pos5 + $pos2) - 10;
+
+	.circle6 {
+		left: $pos6;
+		z-index: 2;
+	}
+	$pos7: ($pos6 + $pos2) - 10;
+
+	.circle7 {
+		left: $pos7;
+		z-index: 2;
+	}
+	$pos8: ($pos7 + $pos2) - 10;
+
+	.circle8 {
+		left: $pos8;
+		z-index: 2;
+	}
+	$pos9: ($pos8 + $pos2) - 10;
+
+	.circle9 {
+		left: $pos9;
+		z-index: 2;
+	}
+
+	.act {
+		width: $w + 20;
+		height: $h + 20;
+		background-color: $orange;
+		box-shadow: 1px 1px 8px;
+		z-index: 999;
+		top: -10px;
+
+
+		.img {
+			font-size:60px!important;
+			color:white!important;
+		}
+		span {
+			color: white;
+			left: 65px;
+			font-size: 19px;
+		}
+	}
+
+	.seta {
+		border-right: 7px solid transparent;
+		border-left: 7px solid transparent;
+		border-top: 14px solid $orange;
+		content: " ";
+		height: 34px;
+		left: 77px;
+		position: absolute;
+		bottom: -35px;
+	}
+}
+
+#destaque {
+	margin-top: 200px;
+
+	.img {
+		height: 240px;
+		background-repeat: no-repeat;
+		background-size: cover;
+	}
+
+	.title {
+		padding-bottom: 18px;
+		font-size: 12px;
+		color: #000000b0;
+	}
+
+	.button {
+		padding-top: 20px;
+
+		button {
+			width: 100%;
+			height: 35px;
+		}
+	}
+}
+
+.area-6 {
+	padding-top: 100px;
+	padding-bottom: 100px;
+	position: relative;
+
+	.bg {
+		height: 548px;
+		position: absolute;
+		top: 332px;
+		width: 100%;
+		background-position: center;
+		z-index: -15;
+	}
+
+	.header {
+		margin-bottom: 20px;
+		font-size: 33px;
+		line-height: 22px;
+
+		.title {
+			display: block;
+		}
+
+		.text {
+			font-size: 15px;
+		}
+	}
+
+	.register {
+		padding-top: 50px;
+		color: white;
+		text-align: center;
+		width: 760px;
+		margin: 0 auto;
+
+		.title {
+			font-size: 33px;
+			font-weight: 100;
+
+			b {
+				font-weight: 700;
+			}
+		}
+
+		.text {
+			font-size: 13px;
+		}
+
+		.buttons {
+			display: inline-flex;
+			margin-top: 35px;
+
+			.button,
+			span {
+				padding-right: 14px;
+			}
+
+			.button button {
+				padding: 1px 40px 26px;
+				font-size: 16px;
+			}
+		}
+	}
+	$colorControl: #0000003b;
+
+	.control {
+		border-radius: 15px;
+		background-color: transparent;
+		border: 1px solid $colorControl;
+		width: 27px;
+		height: 27px;
+		color: $colorControl;
+		font-size: 13px;
+		cursor: pointer;
+	}
+
+	.ctrl-left {
+		position: absolute;
+		top: -56px;
+		right: 35px;
+	}
+
+	.ctrl-right {
+		position: absolute;
+		top: -56px;
+		right: 0;
+	}
+
+	.my-card {
+		height: 392px;
+		position: relative;
+		color: white;
+
+		button {
+			position: absolute;
+			bottom: 139px;
+			right: 26px;
+		}
+
+		img {
+			width: 100%;
+		}
+
+		.title {
+			margin-top: 25px;
+			font-size: 18px;
+			font-weight: 600;
+		}
+
+		.text {
+			font-size: 13px;
+			width: 88%;
+		}
+	}
+}
+// mobile
+@media only screen and (max-width: 768px) {
+	.slide-bottom .left span,
+	.slide-bottom .right span {
+		font-size: 14px;
+		line-height: 14px;
+		width: 165px;
+	}
+
+	.slide-bottom .left span {
+		padding-right: 25%;
+	}
+
+	.slide-bottom .right span {
+		padding-left: 34%;
+	}
+
+	.area-1 {
+		.left,
+		.right {
+			width: 100%;
+
+			.center-obj-hv {
+				width: 260px;
+				height: 220px;
+			}
+		}
+	}
+
+	.area-2 {
+		.left,
+		.middle,
+		.right {
+			width: 100%;
+		}
+	}
+
+	.area-3 {
+		.under-img {
+			width: 228px;
+			padding-top: 0;
+
+			span {
+				width: 21px;
+				font-size: 15px;
+			}
+		}
+	}
+
+	.area-5 {
+		.circle {
+			position: relative!important;
+			margin-bottom: 20px;
+		}
+
+		.circle1,
+		.circle3,
+		.circle5,
+		.circle7 {
+			left: 0px!important;
+			float: left;
+		}
+
+		.circle2,
+		.circle4,
+		.circle6,
+		.circle8 {
+			left: 0px!important;
+			float: right;
+		}
+
+		.circle9 {
+			left: 0px!important;
+			float: right;
+		}
+
+		.act {
+			width: 150px!important;
+			height: 150px!important;
+
+		}
+	}
+
+	#destaque,
+	.seta {
+		display: none;
+	}
+
+	.area-3 .bg {
+		height: 2662px;
+	}
+}

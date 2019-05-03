@@ -1,0 +1,127 @@
+.fullwi {
+	background-color: white;
+	border-radius: 4px;
+}
+
+.projects {
+	.header {
+		height: 276px;
+		background-position: center;
+		background-size: cover;
+		position: relative;
+
+		&:before {
+			content: '';
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			background-image: linear-gradient(to right, black, #ffffff00);
+			opacity: 0.8;
+		}
+
+		.container {
+			height: 100%;
+			position: relative;
+
+			img {
+				height: 75px;
+			}
+
+			.title {
+				height: 92px;
+				font-size: 62px;
+				color: white;
+				left: 85px;
+			}
+		}
+	}
+
+	.body {
+		.top {
+			height: 47px;
+			width: 100%;
+			background-color: $orange;
+			top: relative;
+
+			.input-search {
+				width: 67%;
+				float: left;
+				position: relative;
+
+				.icon-search {
+					position: absolute;
+					right: 13px;
+					top: 17px;
+					color: $blue;
+					font-size: 12px;
+					cursor: pointer;
+				}
+			}
+
+			.select-order {
+				width: 32%;
+				float: right;
+
+				button {
+					width: 100%;
+					color: $blue!important;
+				}
+			}
+		}
+
+		.content {
+			margin-top: 60px;
+
+			.btn-showmore {
+				width: 100%;
+				margin-bottom: 20px;
+
+				button {
+					width: 100%;
+				}
+			}
+		}
+	}
+}
+@media only screen and (max-width: 768px) {
+	.header {
+		.container {
+			.title {
+				height: 57px!important;
+				font-size: 33px!important;
+				line-height: 35px;
+				height: 68px!important;
+				font-size: 42px!important;
+			}
+		}
+	}
+
+	.projects {
+		.body {
+			.top {
+				height: 85px!important;
+
+				.col-lg-3 {
+					display: none!important;
+				}
+			}
+
+			.input-search,
+			.select-order {
+				width: 100%!important;
+				float: none!important;
+
+				.icon-search {
+					right: 28px!important;
+					top: 10px!important;
+				}
+			}
+
+			.input-search {
+				margin-bottom: 10px!important;
+			}
+		}
+	}
+}

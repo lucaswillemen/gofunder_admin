@@ -1,0 +1,578 @@
+.marketplace {
+
+	.top {
+
+	    margin-top: 35px;
+
+	    .first-row {
+	    	margin-bottom: 130px;
+	    }
+
+	    .breadcrumb {
+	    	position: absolute;
+		    right: -337px;
+		    padding: 0px; 
+
+		    li {
+    		    padding:4px 42px;
+    			background-color: $orange;
+    			position: relative;
+
+    			a {
+    				color: white;
+    				font-size: 11px;
+    				font-weight: 600;
+    			}
+		    }
+
+		    .active {
+		    	background-color: #e8e8e8;
+
+		    	span {
+		    		color: $blue;
+		    		font-size: 11px;
+    				font-weight: 600;
+		    	}
+		    }
+
+		    :before {
+		    	display: inline-block;
+			    content: "";
+			    border: solid $orange;
+			    border-width: 0 2px 2px 0;
+			    display: inline-block;
+			    background-color: $orange;
+			    padding: 3px;
+			    position: absolute;
+			    left: -4px;
+			    top: 11px;
+			    transform: rotate(-45deg);
+			    -webkit-transform: rotate(-45deg);
+		    }
+
+	    }
+
+	    
+
+	    .slide {
+	    	border: 1px solid $orange;
+
+	    	.carousel-inner {
+	    		height: 75%;
+
+	    		.carousel-item {
+	    			img {
+	    				height: 100%;
+	    				object-fit: cover;
+	    			}
+	    		}
+	    	}
+
+	    	img {
+	    		
+	    	}
+
+	    }
+
+		.thumb-control {
+
+			bottom: -77px;
+
+			.active {
+
+				opacity: 0.7;
+
+			}
+
+			.thumb {	
+
+				cursor: pointer;
+
+				.first {
+					margin-left: 0px!important;
+				}
+
+				img {
+					height: 60px;
+					width: 60px;
+					margin-left: 8px;
+				    border-radius: 4px;	
+				}
+
+			}
+
+		}
+
+		$colorControl: #ffffff99;
+		.control  {
+			border-radius: 15px;
+			background-color: transparent;
+			border: 1px solid $colorControl;
+			width: 27px;
+			height: 27px;
+			color: $colorControl;
+			font-size: 13px;
+			cursor: pointer;
+		}
+
+		.ctrl-left, .ctrl-right {
+			position: absolute;
+			bottom: -77px;
+			z-index: 999;
+		}
+		 
+		.ctrl-right {
+			right: 0px;	
+		}
+
+		.bg-control {
+			height: 60px;
+		    width: 62px;
+		    background: #00000078;
+	        border-radius: 4px;
+
+		    button {
+		    	    right: 0;
+				    color: #ffffff99;
+				    position: absolute;
+				    top: 0;
+				    bottom: 0;
+				    left: 0;
+				    margin: auto;
+
+		    	 svg {
+		    	 	color: #ffffff99;
+		    	 }
+		    }
+		}
+
+		.info {
+
+			.header {
+
+				border-bottom: 1px solid $orange;
+				height: 20px;
+				margin-bottom: 15px; 
+
+				.category {
+					float:left;
+				}
+				.delivery {
+					float:right
+				}
+				span {
+					font-size: 12px;
+					font-weight: 600;
+					color: $blue;
+				}
+
+			}
+
+			.value {
+				font-size: 18px;
+			    color: #838383;
+
+			    .blue {
+			    	font-size: 35px;
+			    	font-weight: 700;
+			    }
+			}
+
+			.title {
+				font-size: 35px;
+			    font-weight: 500;
+			    line-height: 35px;
+			    color: #707070;
+			}
+
+			.text {
+			    float: left;
+			    margin-top: 30px;
+			    font-size: 20px;
+			    color: #838383;
+			    line-height: 25px;
+			}	
+
+			.bottom {
+				float:left;
+				width: 100%;
+			    margin-top: 50px;
+			    margin-bottom: 70px;
+
+			    .owner {
+
+					float: right;
+
+					.title {
+					    display: block;
+					    font-size: 22px;
+					    color: $orange;
+					    font-weight: 700;
+					}
+
+					.img {
+						float: left;
+
+						img {width: 68px;}
+					    
+					}
+
+					.info {
+
+						margin-left: 82px;
+						margin-top: 0px;
+
+						.name, .location, .qt {
+							display: block;
+							font-size: 17px;
+							font-weight: 600;
+							color: #707070;
+						}
+
+					}
+
+				}
+
+				.btn-social {
+
+					float:left;
+
+					.button {
+						margin-bottom: 15px;
+						button {
+							width: 195px;
+						    height: 37px;
+
+						}
+					}
+					
+					.social {
+
+						.social-list {
+							margin-top: 3px;
+
+							li {
+								position: relative;
+							    width: 33px;
+							    height: 33px;
+							    background-color: #c1c1c1;
+							   	color: white;
+							    border-radius: 3px;
+							    margin-right: 7px;
+							    cursor: pointer;
+
+							    a { 
+							    	color: white;
+							    }
+
+
+							}
+
+							svg {
+								position: absolute;
+							    top: 0px;
+							    bottom: 0px;
+							    left: 0;
+							    right: 0;
+							    margin: auto;
+							}
+
+							.active {
+									background-color: $orange;
+								}
+							
+						}
+					}
+				}
+			}
+		}
+	}
+
+	.visao-geral {
+
+		.title {
+			color: $blue;
+			font-size: 22px;
+			font-weight: 600;
+			margin-bottom: 10px;
+		}
+
+		.content {
+			.img {
+				float: left;
+			}
+			.text {
+				font-size: 12px;
+				margin-left: 195px;
+			}
+		}
+	}
+
+	.tabs {
+		margin-top: 50px;
+
+		ul {
+			margin-bottom: 30px;
+		}
+
+		.nav-link {
+		    padding: 6px 39px;
+		    color: $blue;
+		    font-size: 11px;
+		    font-weight: 500;
+		}
+
+		li {
+
+			a {
+			    border: 1px solid #707070;
+			}
+			.active {
+				background-color: $orange;
+				color: white;
+			    border: 1px solid $orange;
+			}
+
+		}
+
+		.projeto {
+
+		    text-align: center;
+
+			.title {
+			    font-size: 22px;
+			    font-weight: 600;
+			    margin-bottom: 0px;
+			    color: #707070;
+			}
+
+			.subtitle {
+				font-size: 20px;
+			    font-weight: 600;
+			    margin-bottom: 5px;
+			    color: #707070;	
+			}
+
+			.text {
+				font-size: 13px;
+			    font-weight: 600;
+			    margin-bottom: 25px;
+			    color: #707070;	
+			}
+
+			.img {
+				margin-bottom: 20px;
+			}
+
+			.img img {
+				width: 100%;
+			}
+
+		}
+	}
+
+	.recompensa {
+		.title {
+			color: $blue;
+			font-size: 22px;
+			font-weight: 600;
+			margin-bottom: 10px;
+		}
+
+		.recompensas {
+			.card {
+			    max-width: 100%;
+    			margin: 0px 0px;
+    			margin-bottom: 30px;
+			}
+		}
+	}
+
+	.tags {
+		.title {
+			font-size: 26px;
+			font-weight: 400;
+			color: $orange;
+			margin-bottom: 15px;
+
+			.blue {
+				font-weight: 700;
+			} 
+		}
+
+		.tag-group {
+			.btn-border-blue {
+				float:left;
+			}
+			.btn-border-blue button {
+			    border: 2px solid #1a295347 !important;
+			    padding: 6px 16px !important;
+			    font-size: 12px !important;
+			    margin-right: 5px;
+			    margin-bottom: 5px;
+			}
+		}
+	}
+
+	.recompensas {
+		.card-body {
+
+			color: #707070;
+
+			.info {
+				margin-top:0px;
+
+				.category, .value {
+				    font-size: 14px;
+				    font-weight: 600;
+				    display: block;
+				}
+
+				.title {
+					font-size: 28px;
+				    font-weight: 600;
+				    display: block;	
+				}
+
+				.text {
+			    	font-size: 12px;
+			    	line-height: 15px;
+				}
+
+				.itens, .delivery {
+					margin-top:25px;
+				    float: left;
+				    width: 100%;
+
+				    .title {
+				    	font-size: 14px;
+				    	font-weight: 600;
+				    	margin-bottom: 0px;
+				    }
+
+				    ul {
+				    	list-style: none;
+				    	padding-left: 1px;
+				    	margin-bottom: 0px;
+				    }
+
+			    	ul li, .due-date {
+			    		font-size: 12px;
+			    		font-weight: 400;		
+			    	}
+				}
+
+				.totals {
+					float:left;
+					width: 100%;
+					margin-top: 20px;
+					font-size: 12px;
+					font-weight: 600;
+				}
+
+			}
+		}
+	}
+
+	.more {
+		.title {
+			font-size: 26px;
+			font-weight: 400;
+			color: $orange;
+			margin-bottom: 15px;
+			margin-top: 45px;
+
+			.blue {
+				font-weight: 700;
+			} 
+		}
+	}
+
+}
+
+@media only screen and (max-width: 768px) {
+ 
+	$bg-h: 33px;
+	$bg-w: $bg-h;
+
+	$ch: $bg-h - 18;
+	$cw: $ch;
+
+	$ih: $ch - 5;
+	$iw: $ch - 11;
+
+    .financial {
+
+
+		.top {
+
+			 .info {
+			    margin-top: 45px;
+
+			    .bottom {
+			    	.button, .social {
+			    		float:none;
+			    	}
+			    }
+			}
+
+			.owner {
+				.info {
+					margin-top:0px;
+				}
+			}
+
+			.ctrl-left, .ctrl-right {
+				bottom: -44px;
+			}
+
+			.control {
+			    width: $ch;
+		        height: $cw;	
+			}
+
+			.bg-control {
+				height: $bg-h;
+    			width: $bg-w;
+
+    			button {
+    				svg {
+    					width: $iw;
+    					height: $ih;
+    				}
+    			}
+			}
+
+		    .thumb-control {
+
+		    	bottom: -43px;
+
+				.thumb {	
+		    	    margin-right: 0px;
+    				margin-left: -2px;
+
+			    	img {
+			    	    height: $bg-h;
+    					width: $bg-w;
+			    	}
+				}
+
+			}
+
+		}
+
+		.visao-geral {
+			.content {
+				.img {
+					float: none;
+				}
+				.text {
+					margin-left: 0px;
+					margin-top:20px;
+				}
+			}
+		}	
+
+	}
+
+}
