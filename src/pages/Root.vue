@@ -8,26 +8,29 @@
     <md-toolbar class="md-primary" md-elevation="0">
       LOGO
     </md-toolbar>
-
     <md-list>
-      <md-list-item>
-        <md-icon>dashboard</md-icon>
-        <a href="/"><span class="md-list-item-text">Dashboard</span></a>
-      </md-list-item>
-
-      <md-list-item>
-        <md-icon>add</md-icon>
-        <a href="/create"><span class="md-list-item-text">Create new campaign</span></a>
-      </md-list-item>
-
-      <md-list-item>
-        <md-icon>send</md-icon>
-        <a href="/my_campaigns"><span class="md-list-item-text">My campaigns</span></a>
-      </md-list-item>
-      <router-link to="login">
+      <router-link to="/">
+        <md-list-item>
+          <md-icon>dashboard</md-icon>
+          <span class="md-list-item-text">Dashboard</span>
+        </md-list-item>
+      </router-link>
+      <router-link to="/create">
+        <md-list-item>
+          <md-icon>add</md-icon>
+          <span class="md-list-item-text">Create new campaign</span>
+        </md-list-item>
+      </router-link>
+      <router-link to="/create">
+        <md-list-item>
+          <md-icon>send</md-icon>
+          <span class="md-list-item-text">My campaigns</span>
+        </md-list-item>
+      </router-link>
+      <router-link to="#" @click="logout()">
         <md-list-item>
           <md-icon>close</md-icon>
-          <a href="#" @click="logout()"><span class="md-list-item-text">Logout</span></a>
+          <span class="md-list-item-text">Logout</span>
         </md-list-item>
       </router-link>
     </md-list>
