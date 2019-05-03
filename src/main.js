@@ -1,5 +1,6 @@
 import App from './App.vue'
 import Vue from 'vue'
+import Vuelidate from 'vuelidate'
 import store from './store'
 import router from './router/router.js'
 import './config/request'
@@ -11,6 +12,7 @@ import 'vue-material/dist/theme/default.css'
 
 Vue.config.productionTip = false
 Vue.use(VueMaterial)
+Vue.use(Vuelidate)
 
 new Vue({
   router,
