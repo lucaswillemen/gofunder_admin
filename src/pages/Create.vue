@@ -1,48 +1,49 @@
-<template>
+<template class="">
+  <md-content>
+  <div class="md-layout md-alignment-center-center">
+    <div class="md-layout-item md-size-60 md-small-size-100">
 <md-steppers :md-active-step.sync="actualStep" md-linear md-alternative>
   <md-step id="first" md-label="Objetivo" :md-done.sync="steps.first">
     <div class="md-layout md-gutter md-alignment-center-center">
-      <div class="md-layout-item  md-size-40 md-small-size-100 md-medium-size-50 ">
-        <div @click="objetivo.allow_funds = !objetivo.allow_funds" style="cursor:pointer;">
-          <md-card class="md-layout md-alignment-center-center md-elevation-4" :class="{'md-primary': objetivo.allow_funds}">
+     
+        <div @click="objetivo.allow_funds = !objetivo.allow_funds" style="cursor:pointer;" class="md-layout-item  md-size-50  md-small-size-100">
+          <md-card class="md-layout md-alignment-center-center md-elevation-5" :class="{'md-primary': objetivo.allow_funds}">
             <md-empty-state class="md-empty-state-icon-first" md-icon="account_balance_wallet" md-label="Arrecadar fundos" md-description="Receba doacoes e envie recompensas para os apioadores da sua campanha em forma de gratidao pela ajuda.">
             </md-empty-state>
           </md-card>
         </div>
-        <div @click="objetivo.allow_sppedup = !objetivo.allow_sppedup" style="cursor:pointer;">
-          <md-card class="md-layout md-alignment-center-center " :class="{'md-primary': objetivo.allow_sppedup}">
+        <div @click="objetivo.allow_sppedup = !objetivo.allow_sppedup" style="cursor:pointer;" class="md-layout-item  md-size-50  md-small-size-100">
+          <md-card class="md-layout md-alignment-center-center md-elevation-5 " :class="{'md-primary': objetivo.allow_sppedup}">
             <md-empty-state class="md-empty-state-icon-first" md-icon="fast_forward" md-label="Acelerar seu projeto" md-description="Mostre seu projeto para tutores e investidores para ganhar apoio qualificado para fazer sua ideia acontecer.">
             </md-empty-state>
           </md-card>
         </div>
-      </div>
-      <div class="md-layout-item  md-size-40 md-small-size-100 md-medium-size-50">
-        <div @click="objetivo.allow_presale = !objetivo.allow_presale" style="cursor:pointer;">
-          <md-card class="md-layout md-alignment-center-center " :class="{'md-primary': objetivo.allow_presale}">
+      
+        <div @click="objetivo.allow_presale = !objetivo.allow_presale" style="cursor:pointer;" class="md-layout-item  md-size-50  md-small-size-100">
+          <md-card class="md-layout md-alignment-center-center md-elevation-5 " :class="{'md-primary': objetivo.allow_presale}">
             <md-empty-state class="md-empty-state-icon-first" md-icon="shopping_basket" md-label="Venda antes de terminar"
               md-description="Faca uma prevenda do seu produto enquanto vc finaliza seu projeto e analise o comportamento e aprovacao do publico.">
             </md-empty-state>
           </md-card>
         </div>
-        <div @click="objetivo.allow_share = !objetivo.allow_share" style="cursor:pointer;">
-          <md-card class="md-layout md-alignment-center-center " :class="{'md-primary': objetivo.allow_share}">
+        <div @click="objetivo.allow_share = !objetivo.allow_share" style="cursor:pointer;" class="md-layout-item  md-size-50  md-small-size-100">
+          <md-card class="md-layout md-alignment-center-center md-elevation-5 " :class="{'md-primary': objetivo.allow_share}">
             <md-empty-state class="md-empty-state-icon-first" md-icon="share" md-label="Compartilhe sua ideia" md-description="Encontre acionistas que irao ajudar a financiar seu projeto e divida os lucros com quem te ajudou.">
             </md-empty-state>
           </md-card>
         </div>
-      </div>
-    </div>
     <div class="md-layout md-alignment-center-center">
       <md-button class="md-fab md-primary" :disabled="!Object.values(objetivo).includes(true)" @click="moveStep('first', 'second')">
         <md-icon>arrow_forward</md-icon>
       </md-button>
     </div>
+    </div>
   </md-step>
   <md-step id="second" md-label="Caracteristicas" :md-done.sync="steps.second" :md-editable="true" :md-error="secondError">
 
     <form novalidate @submit.prevent="validateSecond">
-      <div class="md-layout md-gutter md-alignment-center-center">
-        <md-card class="md-layout-item md-size-50 md-small-size-100">
+      <div class="md-layout md-gutter">
+        <md-card class="md-layout-item md-size-100 md-small-size-100">
           <md-card-header class="md-layout md-gutter md-alignment-center-center">
             <div class="md-title">Vamos identificar o tipo do seu projeto</div>
           </md-card-header>
@@ -94,8 +95,8 @@
 
   <md-step id="third" md-label="Informacoes" :md-done.sync="steps.third" :md-editable="true" :md-error="thirdError">
     <form novalidate @submit.prevent="validateThird">
-      <div class="md-layout md-gutter md-alignment-center-center">
-        <md-card class="md-layout-item md-size-50 md-small-size-100">
+      <div class="md-layout md-gutter">
+        <md-card class="md-layout-item md-size-100 md-small-size-100">
           <md-card-header class="md-layout md-gutter md-alignment-center-center">
             <div class="md-title">Vamos ver como esta o andamento</div>
           </md-card-header>
@@ -144,8 +145,8 @@
   </md-step>
 
   <md-step id="fourth" md-label="Fourth Step" :md-done.sync="steps.fourth">
-    <div class="md-layout md-gutter md-alignment-center-center">
-      <md-card class="md-layout-item md-size-50 md-small-size-100">
+    <div class="md-layout md-gutter">
+      <md-card class="md-layout-item md-size-100 md-small-size-100">
         <md-empty-state md-icon="access_time" md-label="Por enquanto e so!"
           md-description="Para manter nossa plataforma sempre atrativa para as pessoas interessados, cuidamos manualmente de cada projeto publicado com muito carinho. Nosso time de especialista vai analizar a sua proposta e retornaremos em breve">
           <md-button class="md-raised md-primary" @click="createCampaing()">Finalizar Camapanha</md-button>
@@ -154,6 +155,9 @@
     </div>
   </md-step>
 </md-steppers>
+</div>
+</div>
+</md-content>
 </template>
 <script>
 import {
@@ -347,11 +351,7 @@ export default {
 
 <style lang="scss">
 .md-card.md-theme-default {
-    background-color: #fff;
-    background-color: var(--md-theme-default-background, #fff);
-    color: rgba(0,0,0,0.87);
-    color: var(--md-theme-default-text-primary-on-background, rgba(0,0,0,0.87));
-    margin-bottom: 40px;
+    margin:30px
 }
 
 .md-empty-state-icon-first > div > .md-empty-state-icon {
