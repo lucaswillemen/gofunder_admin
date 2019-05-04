@@ -5,6 +5,8 @@ import Login from '@/pages/Login.vue';
 import Register from '@/pages/Register.vue';
 import Root from '@/pages/Root.vue';
 import Create from '@/pages/Create.vue';
+import Campaigns from '@/pages/Campaigns.vue';
+import Edit from '@/pages/Edit.vue';
 
 
 Vue.use(Router);
@@ -51,6 +53,20 @@ export default new Router({
         {
           path: '/create',
           component: Create,
+          meta: {
+            onlyAuth: true
+          }
+        },
+        {
+          path: '/campaigns',
+          component: Campaigns,
+          meta: {
+            onlyAuth: true
+          }
+        },
+        {
+          path: '/edit',
+          component: Edit,
           meta: {
             onlyAuth: true
           }

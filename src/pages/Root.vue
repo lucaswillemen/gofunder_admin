@@ -23,6 +23,8 @@
     <md-toolbar class=" " md-elevation="0" style="background:white">
       <img src="http://gofunder.io/static/img/logo.8941ded.png">
     </md-toolbar>
+      <md-divider></md-divider>
+      <md-subheader>Navigation</md-subheader>
     <md-list>
       <router-link to="/">
         <md-list-item v-bind:class="{'nav-item': true, 'active': $router.currentRoute.path=='/'}">
@@ -36,8 +38,8 @@
           <span class="md-list-item-text">Create new campaign</span>
         </md-list-item>
       </router-link>
-      <router-link to="/create">
-        <md-list-item v-bind:class="{'nav-item': true, 'active': $router.currentRoute.path=='/send'}">
+      <router-link to="/campaigns">
+        <md-list-item v-bind:class="{'nav-item': true, 'active': $router.currentRoute.path=='/campaigns'}">
           <md-icon>send</md-icon>
           <span class="md-list-item-text">My campaigns</span>
         </md-list-item>
@@ -49,6 +51,50 @@
         </md-list-item>
       </a>
     </md-list>
+
+      <md-divider></md-divider>
+
+      <md-divider></md-divider>
+
+      <md-divider></md-divider>
+
+      <md-divider></md-divider>
+    <md-list class="md-triple-line">
+      <router-link to="/edit">
+      <md-list-item>
+        <md-avatar>
+          <img src="https://www.raspberrypi.org/wp-content/uploads/2014/09/IMG_4456.jpg" alt="People">
+        </md-avatar>
+
+        <div class="md-list-item-text">
+          <span>Coffee When Wakeup</span>
+          
+            <span> 12 Investors</span>
+          <md-progress-bar md-mode="determinate" :md-value="15"></md-progress-bar>
+        </div>
+
+      </md-list-item>
+    </router-link>
+
+      <md-divider></md-divider>
+      <router-link to="/edit">
+
+      <md-list-item>
+        <md-avatar>
+          <img src="http://www.coffeeshopexpo.co.uk/showimages/rural_blogs/topimage/ruralblog_7469.jpg" alt="People">
+        </md-avatar>
+
+        <div class="md-list-item-text">
+          <span>Coffee When Wakeup</span>
+          
+            <span> 17 Investors</span>
+          <md-progress-bar md-mode="determinate" :md-value="22"></md-progress-bar>
+        </div>
+
+      </md-list-item>
+    </router-link>
+    </md-list>
+      <md-divider></md-divider>
   </md-app-drawer>
   <md-app-content>
     <router-view></router-view>
