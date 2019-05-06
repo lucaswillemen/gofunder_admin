@@ -147,7 +147,8 @@
                         <md-card>
                             <div>
                                 <md-empty-state md-icon="add_a_photo" md-label="Card picture" md-description="Creating project, you'll be able to upload your design and collaborate with people.">
-                                    <md-button class="md-primary md-raised" @click="moveStep('forth', 'fifth')">Send your card picture</md-button>
+                                    <input type="file" id="img-picker" @change="pickImg()">
+                                    <md-button class="md-primary md-raised" @click="selectImage()">Send your card picture</md-button>
                                 </md-empty-state>
                             </div>
                         </md-card>
@@ -215,6 +216,9 @@
         mixins: [validationMixin],
         data() {
             return {
+                tempURL: null,
+                fileTitle: null,
+                imageToUpload: null,
                 secondError: null,
                 thirdError: null,
                 objetivo: {
@@ -282,105 +286,137 @@
                 }
             }
         },
+        watch: {
+          'imageToUpload': function () {
+            if (this.imageToUpload != undefined) {
+              this.tempURL = URL.createObjectURL(this.imageToUpload)
+              this.fileTitle = this.imageToUpload.name
+              this.uploadImage()
+            }
+          }
+        },
         computed: {
             ...mapState(['user']),
         },
         methods: {
-            getValidationClassSecond(fieldName) {
-                    const field = this.$v.caracteristicas[fieldName]
-                    if (field) {
-                        return {
-                            'md-invalid': field.$invalid && field.$dirty
-                        }
-                    }
-                },
-                validateSecond() {
-                    this.$v.caracteristicas.$touch()
-                    if (!this.$v.caracteristicas.$invalid) {
-                        this.secondError = null
-                        this.moveStep('second', 'third')
-                    } else {
-                        this.steps.second = false
-                        this.secondError = "Reveja as informacoes"
-                    }
-                },
-                getValidationClassThird(fieldName) {
-                    const field = this.$v.informacoes[fieldName]
-                    if (field) {
-                        return {
-                            'md-invalid': field.$invalid && field.$dirty
-                        }
-                    }
-                },
-                validateThird() {
-                    this.$v.informacoes.$touch()
-                    if (!this.$v.informacoes.$invalid) {
-                        this.thirdError = null
-                        this.moveStep('third', 'fourth')
-                    } else {
-                        this.steps.third = false
-                        this.thirdError = "Reveja as informacoes"
-                    }
+          uploadImage() {
+            let data = {
+              image: this.tempURL,
+              title: this.fileTitle
+            }
+             global.$post("/campaing/cover",data, this.user.token)
+                .then(response => {
+                    console.log('deu', response)
+                    this.moveStep('forth', 'fifth')
+                    
+                })
+                .catch(err => {
+                    let validErr = (err && err.response && err.response.data && err.response.data.error)
+                    alert(validErr ? err.response.data.error : "INVALID_ERROR") // enviar alerta
+                })
+          },
+          selectImage() {
+              let pictureInput = document.getElementById('img-picker')
+              pictureInput.click()
+          },
+          pickImg() {
+              this.imageToUpload = document.getElementById('img-picker').files[0]
+          },
+          getValidationClassSecond(fieldName) {
+                  const field = this.$v.caracteristicas[fieldName]
+                  if (field) {
+                      return {
+                          'md-invalid': field.$invalid && field.$dirty
+                      }
+                  }
+              },
+              validateSecond() {
+                  this.$v.caracteristicas.$touch()
+                  if (!this.$v.caracteristicas.$invalid) {
+                      this.secondError = null
+                      this.moveStep('second', 'third')
+                  } else {
+                      this.steps.second = false
+                      this.secondError = "Reveja as informacoes"
+                  }
+              },
+              getValidationClassThird(fieldName) {
+                  const field = this.$v.informacoes[fieldName]
+                  if (field) {
+                      return {
+                          'md-invalid': field.$invalid && field.$dirty
+                      }
+                  }
+              },
+              validateThird() {
+                  this.$v.informacoes.$touch()
+                  if (!this.$v.informacoes.$invalid) {
+                      this.thirdError = null
+                      this.moveStep('third', 'fourth')
+                  } else {
+                      this.steps.third = false
+                      this.thirdError = "Reveja as informacoes"
+                  }
 
-                },
-                getOptions() {
-                    global.$get("/Campaing/option", {}, this.user.token)
-                        .then(response => {
-                            console.log('deu', response)
-                            this.options = {
-                                ...response.data
-                            }
-                        })
-                        .catch(err => {
-                            let validErr = (err && err.response && err.response.data && err.response.data.error)
-                            alert(validErr ? err.response.data.error : "INVALID_ERROR") // enviar alerta
-                        })
-                },
-                createCampaing() {
-                    // this.validateThird()
-                    // this.validateSecond()
+              },
+              getOptions() {
+                  global.$get("/Campaing/option", {}, this.user.token)
+                      .then(response => {
+                          console.log('deu', response)
+                          this.options = {
+                              ...response.data
+                          }
+                      })
+                      .catch(err => {
+                          let validErr = (err && err.response && err.response.data && err.response.data.error)
+                          alert(validErr ? err.response.data.error : "INVALID_ERROR") // enviar alerta
+                      })
+              },
+              createCampaing() {
+                  // this.validateThird()
+                  // this.validateSecond()
 
-                    if (this.$v.caracteristicas.$invalid) {
-                        this.$v.caracteristicas.$touch()
-                        this.steps.second = false
-                        this.moveStep('fourth', 'second')
-                        this.secondError = "Reveja as informacoes"
-                        return false
-                    }
-                    if (this.$v.informacoes.$invalid) {
-                        this.$v.informacoes.$touch()
-                        this.steps.third = false
-                        this.moveStep('fourth', 'third')
-                        this.thirdError = "Reveja as informacoes"
-                        return false
-                    }
-                    if (!this.secondError && !this.thirdError && Object.values(this.objetivo).includes(true)) {
-                        let data = {
-                            ...this.objetivo,
-                                ...this.caracteristicas,
-                                ...this.informacoes,
-                                finishAt: this.informacoes.finishAt ? this.informacoes.finishAt.toISOString() : null,
-                                startAt: this.informacoes.startAt ? this.informacoes.startAt.toISOString() : null
-                        }
-                        console.log('data:', data)
+                  if (this.$v.caracteristicas.$invalid) {
+                      this.$v.caracteristicas.$touch()
+                      this.steps.second = false
+                      this.moveStep('fourth', 'second')
+                      this.secondError = "Reveja as informacoes"
+                      return false
+                  }
+                  if (this.$v.informacoes.$invalid) {
+                      this.$v.informacoes.$touch()
+                      this.steps.third = false
+                      this.moveStep('fourth', 'third')
+                      this.thirdError = "Reveja as informacoes"
+                      return false
+                  }
+                  if (!this.secondError && !this.thirdError && Object.values(this.objetivo).includes(true)) {
+                      let data = {
+                          ...this.objetivo,
+                              ...this.caracteristicas,
+                              ...this.informacoes,
+                              finishAt: this.informacoes.finishAt ? this.informacoes.finishAt.toISOString() : null,
+                              startAt: this.informacoes.startAt ? this.informacoes.startAt.toISOString() : null
+                      }
+                      console.log('data:', data)
 
-                        global.$get("/Campaing/create", data, this.user.token)
-                            .then(response => {
-                                console.log('deu', response)
-                            })
-                            .catch(err => {
-                                let validErr = (err && err.response && err.response.data && err.response.data.error)
-                                    // alert(validErr ? err.response.data.error : "INVALID_ERROR") // enviar alerta
-                            })
-                    }
-                },
+                      global.$get("/Campaing/create", data, this.user.token)
+                          .then(response => {
+                              console.log('deu', response)
+                          })
+                          .catch(err => {
+                              let validErr = (err && err.response && err.response.data && err.response.data.error)
+                                  // alert(validErr ? err.response.data.error : "INVALID_ERROR") // enviar alerta
+                          })
+                  }
+              },
 
-                moveStep(actual, next) {
-                    this.steps[actual] = true
-                    if (next) {
-                        this.actualStep = next
-                    }
-                },
+              moveStep(actual, next) {
+                  this.steps[actual] = true
+                  if (next) {
+                      this.actualStep = next
+                  }
+              },
 
         },
         mounted() {
@@ -403,5 +439,8 @@
         height: 24px;
         font-size: 160px!important;
         margin: 0;
+    }
+    #img-picker {
+      display: none;
     }
 </style>
