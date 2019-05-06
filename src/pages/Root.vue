@@ -108,7 +108,8 @@
 <script>
 import {
   mapGetters,
-  mapActions
+  mapActions,
+  mapState
 } from 'vuex'
 
 
@@ -117,7 +118,8 @@ export default {
   computed: {
     ...mapGetters({
       isUserLogged: 'user/isUserLogged',
-    })
+    }),
+    ...mapState(['user'])
   },
   data() {
     return {
