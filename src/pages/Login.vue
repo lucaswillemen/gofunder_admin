@@ -11,17 +11,17 @@
         <md-input v-model="login.email" autofocus></md-input>
       </md-field>
       <md-field md-has-password>
-        <label>Password</label>
+        <label>Senha</label>
         <md-input v-model="login.password" type="password"></md-input>
       </md-field>
-      <a href="/resetpassword">Reset password</a>
+      <a href="/resetpassword">Eu perdi minha senha</a>
     </div>
     <div class="md-alignment-center">
-      <md-button class="md-raised md-primary md-alignment-center" @click="auth()">Log in</md-button>
+      <md-button class="md-raised md-primary md-alignment-center" @click="auth()">Entrar na minha conta</md-button>
     </div>
     <router-link to="register">
       <div class="">
-        <md-button class="md-raised md-primary">Create new account</md-button>
+        <md-button class="md-raised md-primary">Criar nova conta</md-button>
       </div>
     </router-link>
     <div class="loading-overlay" v-if="loading">

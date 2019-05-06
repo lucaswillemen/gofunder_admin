@@ -8,23 +8,32 @@
       </div>
 
       <div class="form" @keyup.enter="registerUser()">
-        <md-field>
-          <label>Name</label>
+        <md-field :class="nameInvalid">
+          <label>Nome</label>
           <md-input v-model="register.name" autofocus></md-input>
+          <span class="md-error">Digite seu nome corretamente</span>
         </md-field>
-        <md-field>
+        <md-field :class="emailInvalid">
           <label>E-mail</label>
           <md-input v-model="register.email" autofocus></md-input>
+          <span class="md-error">Digite um e-mail válido para registro!</span>
+        </md-field>
+
+        <md-field md-has-password  :class="passwordInvalid">
+          <label>Senha</label>
+          <md-input v-model="register.password" type="password"></md-input>
+          <span class="md-error">As senhas digitadas não conferem!</span>
         </md-field>
 
         <md-field md-has-password>
-          <label>Password</label>
-          <md-input v-model="register.password" type="password"></md-input>
+          <label>Confirme sua senha</label>
+          <md-input v-model="register.password2" type="password"></md-input>
         </md-field>
-        <router-link to="/login">Already have an account?</router-link>
+
+        <router-link to="/login">Você já tem uma conta?</router-link>
       </div>
       <div class="">
-        <md-button class="md-raised md-primary" @click="registerUser()">Register</md-button>
+        <md-button  :disabled="invalidForm()" class="md-raised md-primary" @click="registerUser()">Registrar</md-button>
       </div>
 
 
@@ -54,7 +63,8 @@ export default {
       register: {
         name: null,
         email: null,
-        password: null
+        password: null,
+        password2: null
       }
     };
   },
@@ -67,9 +77,7 @@ export default {
        global.$post("/Auth/register", this.register)
         .then(response => {
             // logado armazenar informações na store
-            console.log('registrado', response)
-            this.userSet(response.data)
-            this.$router.push('/create')
+            location.href = '/login'
         })
         .catch(err => {
           let validErr = (err && err.response && err.response.data && err.response.data.error)
@@ -78,8 +86,30 @@ export default {
         .finally(() => {
           this.loading = false // ao terminar finalizar o loading
         })
+    },
+    invalidForm() {
+      return this.register.password !== this.register.password2 || (this.register.email == null || !(/\S+@\S+\.\S+/.test(this.register.email))) || (this.register.name == null || this.register.name.length < 3)
     }
-  }
+  },
+
+
+  computed: {
+      nameInvalid () {
+        return {
+          'md-invalid': this.register.name == null || this.register.name.length < 3
+        }
+      },
+      emailInvalid () {
+       return {
+          'md-invalid': this.register.email == null || !(/\S+@\S+\.\S+/.test(this.register.email))
+        }
+      },
+      passwordInvalid() {
+        return {
+          'md-invalid': this.register.password !== this.register.password2
+        }
+      }
+    }
 };
 </script>
 

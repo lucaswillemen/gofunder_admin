@@ -7,7 +7,7 @@ import './config/request'
 import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
-import 'vue-material/dist/theme/custom.css'
+//import 'vue-material/dist/theme/custom.css'
 
 
 
