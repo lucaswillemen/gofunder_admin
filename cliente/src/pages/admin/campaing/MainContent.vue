@@ -132,7 +132,7 @@ import {
   mapActions
 } from 'vuex'
 
-import VueCkeditor from '@/components/ckeditor/'
+import VueCkeditor from './components/ckeditor/'
 
 export default {
   components: {

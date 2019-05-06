@@ -68,7 +68,7 @@
 
         <div class="md-list-item-text">
           <span>Coffee When Wakeup</span>
-          
+
             <span> 12 Investors</span>
           <md-progress-bar md-mode="determinate" :md-value="15"></md-progress-bar>
         </div>
@@ -86,7 +86,7 @@
 
         <div class="md-list-item-text">
           <span>Coffee When Wakeup</span>
-          
+
             <span> 17 Investors</span>
           <md-progress-bar md-mode="determinate" :md-value="22"></md-progress-bar>
         </div>
@@ -132,14 +132,14 @@ export default {
     },
     checkLogin() {
       if (!this.isUserLogged) {
-        this.logout()
+        //this.logout()
       }
       global.$post("/Auth/check", {}, this.user.token)
         .then(res => {
           //this.userSet(res)
         })
         .catch(() => {
-          this.logout()
+          //this.logout()
         })
     }
   },
