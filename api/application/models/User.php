@@ -11,23 +11,6 @@ class User extends CI_Model {
         unset($user->password);
         return $user;
     }
-    public function position($id, $comand, $side){
-        $sider = $this->db->where('id', $id)->where($comand, '0')->get('users')->row();
-        if (!$sider) {
-            $allowed = $this->db->where('id', $id)->get('users')->row();
-            return $allowed;
-        }else{
-            return $this->position($sider->$side, $comand, $side);
-        }
-    }
-    public function extratar($id, $usd, $desc){
-        $data = [
-            "user_id" => $id,
-            "usd" => $usd,
-            "desc" => $desc,
-        ];
-        $this->db->insert("extract", $data);
-    }
 
 }
 

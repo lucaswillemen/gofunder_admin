@@ -15,37 +15,6 @@ class Bitcoin extends CI_Controller {
 			$address = $user->address;
 		}
 		$this->output->set_content_type('application/json')->set_output(json_encode($address));
-	}
-	function change(){
-		$user = $this->user->check($this->input->get_request_header('Authorization'));	
-		$config = $this->db->get("config")->row();
-
-		$valor = $user->usd;
-
-		//Encontrar o valor da Splyko
-		$splyco = $valor/$config->splyko_cota;
-
-		$this->db->where("id", $user->id)
-			->set("spk", "spk+".$splyco, false)
-			->set("contribution", "contribution+".$user->usd, false)
-			->set("max_binary", "max_binary+".$user->usd, false)
-			->set("usd", 0)
-			->update("users");
-
-		$this->user->extratar($user->id, 0-$user->usd, "purchase");
-
-		$this->db->where("id", $user->direct_id)->set("usd", "usd+".$user->usd*0.1, false)->update("users");
-		$this->user->extratar($user->direct_id, $user->usd*0.1, "direct");
-
-		//Atualizar o valor da splyko
-		$current = $this->db->select_sum('spk')->get("users")->row();
-		$next = $current->spk/$config->splyko_function+0.05;
-		$this->db->set('splyko_cota', $next)->update('config');
-
-		$this->binary->dist($user->id, $valor);
-		$this->binary->pay($user->usd*0.4);
-
-		$this->output->set_content_type('application/json')->set_output(json_encode($next));
 	}	
 	function hook(){
 
