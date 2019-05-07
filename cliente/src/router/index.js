@@ -13,12 +13,7 @@ import Financial from '@/pages/site/financial'
 
 
 
-import CreateCampaing from '@/pages/site/create-campaing'
-import MainCampaign from '@/pages/admin/campaing/MainCampaign'
-import MainContent from '@/pages/admin/campaing/MainContent'
-import MainListReward from '@/pages/admin/campaing/MainListReward'
-import MainReward from '@/pages/admin/campaing/MainReward'
-import MainPublish from '@/pages/admin/campaing/MainPublish'
+
 import Marketplace from '@/pages/site/marketplace'
 import PaymentContribution from '@/pages/admin/PaymentContribution'
 
@@ -79,36 +74,6 @@ export default new Router({
       path: '/project-info/:id',
       name: 'Financial',
       component: Financial
-    },
-    {
-      path: '/user/campaing/create',
-      name: 'CreateCampaing',
-      component: CreateCampaing
-    },
-    {
-      path: '/user/campaing/edit/:id',
-      name: 'MainCampaign',
-      component: MainCampaign
-    },
-    {
-      path: '/user/campaing/content/:id',
-      name: 'MainContent',
-      component: MainContent
-    },
-    {
-      path: '/user/campaing/reward/:id',
-      name: 'MainListReward',
-      component: MainListReward
-    },
-    {
-      path: '/user/campaing/publish/:id',
-      name: 'MainPublish',
-      component: MainPublish
-    },
-    {
-      path: '/user/campaing/reward/edit/:id/:perk_id',
-      name: 'MainReward',
-      component: MainReward
     },
     {
       path: '/payment-contribution/:id/:perk?',

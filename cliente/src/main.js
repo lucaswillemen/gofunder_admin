@@ -29,11 +29,6 @@ Vue.use(VueAWN, {
 import VueClipboard from 'vue-clipboard2'
 Vue.use(VueClipboard)
 
-/*
-import CKEditor from '@ckeditor/ckeditor5-vue';
-Vue.use(CKEditor);
-
-*/
 
 import VueCurrencyFilter from 'vue-currency-filter'
 Vue.use(VueCurrencyFilter)
