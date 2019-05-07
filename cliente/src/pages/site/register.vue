@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="registerDiv">
   <main-header></main-header>
   <div class="container wrap-login center">
     <b-row>
@@ -18,15 +18,7 @@
                   <font-awesome-icon :icon="['fas', 'user']" />
                 </span>
               </div>
-              <b-form-input v-model="form.name" type="text" placeholder="Digite seu primeiro nome" autocomplete="on"></b-form-input>
-            </div>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text">
-                  <font-awesome-icon :icon="['fas', 'user']" />
-                </span>
-              </div>
-              <b-form-input v-model="form.lastname" type="text" placeholder="Digite seu sobrenome" autocomplete="on"></b-form-input>
+              <b-form-input v-model="form.name" type="text" placeholder="Digite seu nome completo" autocomplete="on"></b-form-input>
             </div>
             <div class="input-group mb-3">
               <div class="input-group-prepend">
@@ -50,7 +42,7 @@
               </b-form-checkbox>
             </div>
             <div class="btn-noborder-blue">
-              <b-button type="submit" :disabled="!form.email || !form.name || !form.lastname || !form.password || !form.selected">Cadastrar-se</b-button>
+              <b-button type="submit" :disabled="!form.email || !form.name  || !form.password || !form.selected">Cadastrar-se</b-button>
             </div>
           </form>
           <div class="title mtop mbottom">
@@ -85,7 +77,6 @@ export default {
         email: '',
         password: '',
         name: '',
-        lastname: '',
         selected: false
       }
     }
@@ -94,7 +85,7 @@ export default {
     register: function() {
       global.$post("/Auth/register", this.form)
         .then(response => {
-          this.$awn.success(response.data.MSG)
+          this.$awn.success("REGISTERED")
           this.$router.push('login')
         })
         .catch(err => {

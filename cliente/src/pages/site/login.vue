@@ -94,7 +94,7 @@ export default {
     }
   },
   mounted() {
-    if(this.user.token !== null) {
+    if (this.user.token !== null) {
       this.$router.push('/user/edit')
     }
   }
@@ -105,101 +105,101 @@ export default {
 @import "Styles/colors.scss";
 
 .loginDiv {
-.wrap-login {
+    .wrap-login {
 
-    padding: 60px 0 40px;
+        padding: 60px 0 40px;
 
-    .login {
-        padding: 60px 50px 20px;
-        // height: 400px;
-        // width: 400px;
-        border: 2px solid $blue;
-        background-color: white;
-        border-radius: 5px;
-        position: relative;
-        text-align: center;
+        .login {
+            padding: 60px 50px 20px;
+            // height: 400px;
+            // width: 400px;
+            border: 2px solid $blue;
+            background-color: white;
+            border-radius: 5px;
+            position: relative;
+            text-align: center;
 
-        .circle {
-            position: absolute;
-            width: 90px;
-            height: 90px;
-            background-color: $blue;
-            border-radius: 50px;
-            border: 1px solid $blue;
-            left: 0;
-            right: 0;
-            top: -45px;
-            margin: auto;
-
-            svg {
+            .circle {
                 position: absolute;
+                width: 90px;
+                height: 90px;
+                background-color: $blue;
+                border-radius: 50px;
+                border: 1px solid $blue;
                 left: 0;
                 right: 0;
-                bottom: 0;
-                top: -5px;
+                top: -45px;
                 margin: auto;
-                font-size: 42px;
-                color: #cfcfcf;
+
+                svg {
+                    position: absolute;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    top: -5px;
+                    margin: auto;
+                    font-size: 42px;
+                    color: #cfcfcf;
+                }
+            }
+
+            button {
+                font-size: 15px;
+                height: 36px;
+                padding: 5px 80px;
+                border-width: 2px!important;
+                margin: 10px 0;
+                width: 100%;
+            }
+
+            .input-group-text {
+                height: 38px;
+            }
+            input {
+                margin-bottom: 10px;
+            }
+
+            input,
+            input::placeholder {
+                //  text-align: center;
+            }
+
+        }
+
+        .options {
+            overflow: auto;
+            .checkboxes {
+                float: left;
+            }
+            .subtitle {
+                float: right;
+                padding-top: 5px;
+                a {
+                    color: gray;
+                }
             }
         }
 
-        button {
-            font-size: 15px;
-            height: 36px;
-            padding: 5px 80px;
-            border-width: 2px!important;
-            margin: 10px 0;
-            width: 100%;
+        a:hover {
+            color: $orange;
         }
 
-        .input-group-text {
-            height: 38px;
-        }
-        input {
-            margin-bottom: 10px;
+        .orange {
+            color: $orange!important;
         }
 
-        input,
-        input::placeholder {
-            //  text-align: center;
+        .title {
+            font-size: 14px;
         }
 
     }
 
-    .options {
-        overflow: auto;
-        .checkboxes {
-            float: left;
+    @media only screen and (max-width: 768px) {
+
+        .login {
+            padding: 60px 2px 20px 2px!important !important;
         }
-        .subtitle {
-            float: right;
-            padding-top: 5px;
-            a {
-                color: gray;
-            }
-        }
+
     }
-
-    a:hover {
-        color: $orange;
-    }
-
-    .orange {
-        color: $orange!important;
-    }
-
-    .title {
-        font-size: 14px;
-    }
-
-}
-
-@media only screen and (max-width: 768px) {
-
-    .login {
-        padding: 60px 2px 20px 2px!important !important;
-    }
-
-}
 }
 </style>
