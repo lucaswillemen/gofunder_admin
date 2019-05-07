@@ -89,12 +89,12 @@
                 if (this.$v.login.$invalid) {
                     return false;
                 }
-                console.log("asd")
                 this.loading = true
                 global.$post("/Auth/login", this.login)
                     .then(response => {
                         this.userSet(response.data)
-                        this.$router.push("/create")
+                        //this.$router.push("/create") push não está funcional
+                        location.href = "/create"
                     })
                     .catch(err => {
                         this.loginError = true
