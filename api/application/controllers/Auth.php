@@ -19,7 +19,6 @@ class Auth extends CI_Controller
             $this->output->set_content_type('application/json')->set_status_header(400)->set_output(json_encode($response));
             exit();
         }
-
         $user = new stdClass;
         $user->name = $name;
         $user->email = $email;
@@ -29,7 +28,7 @@ class Auth extends CI_Controller
         $this->db->insert('user', $user);
         $user->id = $this->db->insert_id();
 
-        unset($user->id, $user->pass);
+        unset($user->pass);
         $this->output->set_content_type('application/json')->set_output(json_encode($user));
     }
 
@@ -49,8 +48,6 @@ class Auth extends CI_Controller
             return $this->output->set_content_type('application/json')->set_status_header(404)->set_output(json_encode($response));
             exit();
         }
-
-
         $user = $this->db->select('*')->where('email', $email)->get('user')->row();
 
         if (!$user) {
@@ -63,7 +60,7 @@ class Auth extends CI_Controller
             return $this->output->set_content_type('application/json')->set_status_header(400)->set_output(json_encode($response));
             exit();
         }
-        unset($user->password, $user->id);
+
         $this->output->set_content_type('application/json')->set_output(json_encode($user));
     }
 
@@ -71,16 +68,25 @@ class Auth extends CI_Controller
     {
         $data = $this->input->post(["email"]);
         $user = $this->db->where("email", $data["email"])->get("user")->row();
-        (!$user) &&  $this->output->set_content_type('application/json')->set_status_header(400)->set_output(json_encode(["MSG"=>"INVALID_EMAIL"]));
-        $this->db->where("email", $data["email"])->update("user", ["recover_token"=>strtoupper(bin2hex(random_bytes(6)));]);
+        if(!$user) {
+            $this->output->set_content_type('application/json')->set_status_header(400)->set_output(json_encode(["MSG"=>"INVALID_EMAIL"]));
+            exit();
+        }
+				$codeEmail = strtoupper(bin2hex(random_bytes(6)));
+				// enviar $codeEmail para $data["email"]
+        $this->db->where("email", $data["email"])->update("user", ["recover_token"=>$codeEmail]);
         $this->output->set_content_type('application/json')->set_output(json_encode(["MSG"=>"CHECK_EMAIL"]));
     }
 
     public function change_password_recover()
     {
         $data = $this->input->post(["newpass", "code", "email"]);
+
         $user = $this->db->where("email", $data["email"])->where("recover_token", $data["code"])->get("user")->row();
-        (!$user) &&$this->output->set_content_type('application/json')->set_status_header(400)->set_output(json_encode(["MSG"=>"INVALID_CODE"]));
+        if(!strlen($data["code"]) || !$user) {
+            $this->output->set_content_type('application/json')->set_status_header(400)->set_output(json_encode(["MSG"=>"INVALID_CODE"]));
+            exit();
+        }
         $this->db->where("email", $data["email"])->update("user", ["recover_token"=>"", "password"=>password_hash($data["newpass"], PASSWORD_BCRYPT, ['cost' => 7])]);
         $this->output->set_content_type('application/json')->set_output(json_encode(["MSG"=>"ALTERED"]));
     }
