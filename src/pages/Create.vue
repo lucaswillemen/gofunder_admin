@@ -149,10 +149,13 @@
             <div>
               <md-empty-state md-icon="add_a_photo" md-label="Card picture" md-description="Creating project, you'll be able to upload your design and collaborate with people.">
                 <input type="file" id="img-picker" @change="pickImg($event)">
-                <span v-if="base64File">
+                <div v-if="base64File" class="img-preview">
                   <img :src="base64File" />
-                </span>
-                <md-button class="md-primary md-raised" @click="uploadImage()">Send your card picture</md-button>
+                </div>
+                <div class="loading-overlay" v-if="loadingImg">
+                    <md-progress-spinner md-mode="indeterminate" :md-stroke="2"></md-progress-spinner>
+                </div>
+                <md-button class="md-primary md-raised" @click="uploadImage()" :disabled="loadingImg || !imageToUpload">Send your card picture</md-button>
               </md-empty-state>
             </div>
           </md-card>
@@ -188,11 +191,13 @@
                   </div>
                   <md-progress-bar md-mode="determinate" :md-value="0"></md-progress-bar>
                 </md-card-content>
-
+                <div class="loading-overlay" v-if="loadingCampaing">
+                    <md-progress-spinner md-mode="indeterminate" :md-stroke="2"></md-progress-spinner>
+                </div>
                 <md-card-actions>
-                  <button class="md-primary" @click="createCampaing()">
+                  <md-button :disabled="loadingCampaing" class="md-primary" @click="createCampaing()">
                     <md-icon>send</md-icon> Send to review
-                  </button>
+                  </md-button>
                 </md-card-actions>
               </md-card>
             </div>
@@ -222,6 +227,8 @@ export default {
   mixins: [validationMixin],
   data() {
     return {
+      loadingCampaing: false, 
+      loadingImg: false,
       coverUrl: null,
       base64File: null,
       tempURL: null,
@@ -299,6 +306,7 @@ export default {
   },
   methods: {
     uploadImage() {
+      this.loadingImg = true
       let data = {
         image: this.imageToUpload,
         title: this.informacoes.title
@@ -311,6 +319,10 @@ export default {
         .catch(err => {
           let validErr = (err && err.response && err.response.data && err.response.data.error)
           alert(validErr ? err.response.data.error : "INVALID_ERROR") // enviar alerta
+        })
+        .finally( () => {
+            this.loadingImg = false
+
         })
     },
 
@@ -372,6 +384,7 @@ export default {
         })
     },
     createCampaing() {
+      this.loadingCampaing = true
       let self = this
       if (this.$v.caracteristicas.$invalid) {
         this.$v.caracteristicas.$touch()
@@ -412,6 +425,10 @@ export default {
             let validErr = (err && err.response && err.response.data && err.response.data.error)
             // alert(validErr ? err.response.data.error : "INVALID_ERROR") // enviar alerta
           })
+          .finally( () => {
+             this.loadingCampaing = false
+
+          })
       }
     },
 
@@ -447,4 +464,25 @@ export default {
 #img-picker {
   //  display: none;
 }
+.img-preview {
+    padding: 1rem;
+    img {
+        border-radius: 2px;
+        max-width: 300px;
+        height: auto;
+    }
+}
+.loading-overlay {
+        z-index: 10;
+        top: 0;
+        left: 0;
+        right: 0;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.9);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 </style>
