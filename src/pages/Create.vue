@@ -12,8 +12,8 @@
                 </md-empty-state>
               </md-card>
             </div>
-            <div @click="objetivo.allow_sppedup = !objetivo.allow_sppedup" style="cursor:pointer;" class="md-layout-item  md-size-50  md-small-size-100">
-              <md-card class="md-layout md-alignment-center-center md-elevation-5 " :class="{'md-primary': objetivo.allow_sppedup}">
+            <div @click="objetivo.allow_speedup = !objetivo.allow_speedup" style="cursor:pointer;" class="md-layout-item  md-size-50  md-small-size-100">
+              <md-card class="md-layout md-alignment-center-center md-elevation-5 " :class="{'md-primary': objetivo.allow_speedup}">
                 <md-empty-state class="md-empty-state-icon-first" md-icon="fast_forward" md-label="Acelerar seu projeto" md-description="Mostre seu projeto para tutores e investidores para ganhar apoio qualificado para fazer sua ideia acontecer.">
                 </md-empty-state>
               </md-card>
@@ -149,7 +149,9 @@
             <div>
               <md-empty-state md-icon="add_a_photo" md-label="Card picture" md-description="Creating project, you'll be able to upload your design and collaborate with people.">
                 <input type="file" id="img-picker" @change="pickImg($event)">
-                <span v-if="base64File"><img :src="base64File"></img></span>
+                <span v-if="base64File">
+                  <img :src="base64File" />
+                </span>
                 <md-button class="md-primary md-raised" @click="uploadImage()">Send your card picture</md-button>
               </md-empty-state>
             </div>
@@ -162,11 +164,11 @@
               <md-card>
                 <md-card-area md-inset>
                   <md-card-media md-ratio="16:9">
-                    <img src="https://www.raspberrypi.org/wp-content/uploads/2014/09/IMG_4456.jpg">
+                    <img :src="base64File">
                   </md-card-media>
 
                   <md-card-header>
-                    <h2 class="md-title">Coffee When Wakeup</h2>
+                    <h2 class="md-title">{{informacoes.title}}</h2>
                     <div class="md-subhead">
                       <md-icon>category</md-icon>
                       <span> {{caracteristicas.opt_category}}</span>
@@ -174,7 +176,7 @@
                   </md-card-header>
 
                   <md-card-content>
-                    We identify the exact time that you wake up and we'll leave your coffee ready.
+                  {{informacoes.description}}
                   </md-card-content>
                 </md-card-area>
 
@@ -188,7 +190,7 @@
                 </md-card-content>
 
                 <md-card-actions>
-                  <button class="md-primary">
+                  <button class="md-primary" @click="createCampaing()">
                     <md-icon>send</md-icon> Send to review
                   </button>
                 </md-card-actions>
@@ -203,9 +205,10 @@
 </template>
 <script>
 import {
+  mapGetters,
+  mapActions,
   mapState
-}
-from 'vuex'
+} from 'vuex'
 import {
   validationMixin
 }
@@ -219,6 +222,7 @@ export default {
   mixins: [validationMixin],
   data() {
     return {
+      coverUrl: null,
       base64File: null,
       tempURL: null,
       fileTitle: null,
@@ -227,7 +231,7 @@ export default {
       thirdError: null,
       objetivo: {
         allow_funds: true,
-        allow_sppedup: false,
+        allow_speedup: false,
         allow_presale: false,
         allow_share: false
       },
@@ -291,17 +295,17 @@ export default {
     }
   },
   computed: {
-    ...mapState(['user']),
+    ...mapState(['user'])
   },
   methods: {
     uploadImage() {
-                alert("lol")
       let data = {
         image: this.imageToUpload,
         title: this.informacoes.title
       }
       global.$post("/campaing/cover", data, this.user.token)
         .then(response => {
+          this.coverUrl = response.data.cover_url
           this.moveStep('forth', 'fifth')
         })
         .catch(err => {
@@ -368,9 +372,7 @@ export default {
         })
     },
     createCampaing() {
-      // this.validateThird()
-      // this.validateSecond()
-
+      let self = this
       if (this.$v.caracteristicas.$invalid) {
         this.$v.caracteristicas.$touch()
         this.steps.second = false
@@ -386,18 +388,25 @@ export default {
         return false
       }
       if (!this.secondError && !this.thirdError && Object.values(this.objetivo).includes(true)) {
+        this.objetivo.allow_funds = this.objetivo.allow_funds * 1
+        this.objetivo.allow_speedup = this.objetivo.allow_speedup * 1
+        this.objetivo.allow_presale = this.objetivo.allow_presale * 1
+        this.objetivo.allow_share = this.objetivo.allow_share * 1
+        this.informacoes.isStarted = this.informacoes.isStarted * 1
+        this.informacoes.allow_other_country = this.informacoes.isCountryShared * 1
+
         let data = {
           ...this.objetivo,
           ...this.caracteristicas,
           ...this.informacoes,
           finishAt: this.informacoes.finishAt ? this.informacoes.finishAt.toISOString() : null,
-          startAt: this.informacoes.startAt ? this.informacoes.startAt.toISOString() : null
+          startAt: this.informacoes.startAt ? this.informacoes.startAt.toISOString() : null,
+          cover_url: this.coverUrl
         }
-        console.log('data:', data)
 
-        global.$get("/Campaing/create", data, this.user.token)
+        global.$post("/Campaing/create", data, this.user.token)
           .then(response => {
-            console.log('deu', response)
+            alert("Projeto enviado com sucesso!")
           })
           .catch(err => {
             let validErr = (err && err.response && err.response.data && err.response.data.error)

@@ -29,7 +29,10 @@ global.$post = function(section, form, token = false) {
     'Content-Type': 'multipart/form-data'
   }
 
-  if (token) headers.Authorization = token
+  if (token) {
+    headers.Authorization = token
+  }
+
   return axios({
     method: 'POST',
     url: apiUrl + section,

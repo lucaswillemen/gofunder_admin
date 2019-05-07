@@ -134,14 +134,14 @@ export default {
     },
     checkLogin() {
       if (!this.isUserLogged) {
-        //this.logout()
+        this.logout()
       }
       global.$post("/Auth/check", {}, this.user.token)
         .then(res => {
-          //this.userSet(res)
+          this.userSet(res)
         })
         .catch(() => {
-          //this.logout()
+          this.logout()
         })
     }
   },
