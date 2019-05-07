@@ -43,30 +43,6 @@ export default {
         this.isHome = false
       }
     }
-  },
-  created() {
-    this.$router.beforeResolve((to, from, next) => {
-      if (to.matched.some(record => record.meta.onlyPublic)) {
-        if (this.isUserLogged) {
-           return this.$router.push("/root")
-        }
-      }
-      if (to.matched.some(record => record.meta.onlyAuth)) {
-        if (!this.isUserLogged) {
-          return this.$router.push("/")
-        }
-      }
-      return next()
-    })
-    this.$router.beforeEach((to, from, next) => {
-      if (this.isUserLogged && this.$route.meta && this.$route.meta.onlyPublic === true) {
-        return this.$router.push("/root")
-      }
-      if (!this.isUserLogged && this.$route.meta && this.$route.meta.onlyAuth === true) {
-        return  this.$router.push("/")
-      }
-      return next()
-    })
   }
 }
 </script>
