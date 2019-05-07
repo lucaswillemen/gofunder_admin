@@ -10,12 +10,12 @@
                     <md-field :class="getValidationClass('email')">
                         <label>E-mail</label>
                         <md-input v-model="login.email" type="email" name="email" autofocus required></md-input>
-                        <span class="md-error">Invalid email address</span>
+                        <span class="md-error">E-mail digitado é inválido</span>
                     </md-field>
                     <md-field  :class="getValidationClass('password')">
                         <label>Senha</label>
                         <md-input v-model="login.password" type="password" required></md-input>
-                        <span class="md-error">Invalid password</span>
+                        <span class="md-error">Senha inválida</span>
                     </md-field>
                     <a href="/resetpassword">Eu perdi minha senha</a>
                 </div>
@@ -30,8 +30,8 @@
 
             <md-dialog-alert
               :md-active.sync="loginError"
-              md-content="Your login or password is invalid!"
-              md-confirm-text="Cool!" />
+              md-content="O login digitado é inválido"
+              md-confirm-text="Ok!" />
         </md-content>
 
     </div>
@@ -82,7 +82,7 @@
             }
         },
         methods: {
-            // ...mapActions('user', ['userSet']),
+            ...mapActions('user', ['userSet']),
             auth() {
 
                 this.$v.login.$touch()
@@ -97,7 +97,6 @@
                         this.$router.push("/create")
                     })
                     .catch(err => {
-                        // let validErr = (err && err.response && err.response.data && err.response.data.error)
                         this.loginError = true
                     })
                     .finally(() => {
@@ -118,7 +117,7 @@
 
         }
 
-            
+
     }
 </script>
 
@@ -127,7 +126,7 @@
         width: 100%;
         margin-left: 0px!important;
     }
-    
+
     .centered-container {
         display: flex;
         align-items: center;

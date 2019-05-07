@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 
 import Login from '@/pages/Login.vue';
+import ResetPassword from '@/pages/ResetPassword.vue';
 import Register from '@/pages/Register.vue';
 import Root from '@/pages/Root.vue';
 import Create from '@/pages/Create.vue';
@@ -25,8 +26,7 @@ export default new Router({
       y: 0
     };
   },
-  routes: [
-    {
+  routes: [{
       path: '/login',
       name: 'Login',
       component: Login,
@@ -43,14 +43,21 @@ export default new Router({
       }
     },
     {
+      path: '/resetpassword',
+      name: 'ResetPassword',
+      component: ResetPassword,
+      meta: {
+        onlyPublic: true
+      }
+    },
+    {
       path: '/',
       name: 'Root',
       component: Root,
       meta: {
         onlyAuth: true
       },
-      children: [
-        {
+      children: [{
           path: '/create',
           component: Create,
           meta: {
@@ -71,7 +78,7 @@ export default new Router({
             onlyAuth: true
           }
         }
-        ]
+      ]
     },
     {
       path: '*',
