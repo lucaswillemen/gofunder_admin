@@ -72,7 +72,7 @@ export default new Router({
           }
         },
         {
-          path: '/edit',
+          path: '/edit/:id',
           component: Edit,
           meta: {
             onlyAuth: true

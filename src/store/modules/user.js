@@ -4,6 +4,7 @@ import genericMutations from '@/store/modules/mutation'
 export default {
   namespaced: true,
   state: {
+    id: null,
     token: null,
     name: null,
     email: null

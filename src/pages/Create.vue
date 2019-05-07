@@ -194,6 +194,8 @@
                 <div class="loading-overlay" v-if="loadingCampaing">
                     <md-progress-spinner md-mode="indeterminate" :md-stroke="2"></md-progress-spinner>
                 </div>
+                <md-dialog-alert :md-active.sync="campaingCreated" md-content="Campanha criada com sucesso!" md-confirm-text="Continuar" />
+
                 <md-card-actions>
                   <md-button :disabled="loadingCampaing" class="md-primary" @click="createCampaing()">
                     <md-icon>send</md-icon> Send to review
@@ -227,6 +229,7 @@ export default {
   mixins: [validationMixin],
   data() {
     return {
+      campaingCreated: false,
       loadingCampaing: false, 
       loadingImg: false,
       coverUrl: null,
@@ -314,6 +317,7 @@ export default {
       global.$post("/campaing/cover", data, this.user.token)
         .then(response => {
           this.coverUrl = response.data.cover_url
+          this.steps.fourth = true
           this.moveStep('forth', 'fifth')
         })
         .catch(err => {
@@ -327,6 +331,7 @@ export default {
     },
 
     pickImg(evt) {
+      this.steps.fourth = false
       let reader = new FileReader()
       this.imageToUpload = evt.target.files[0]
       reader.onload = (e) => {
@@ -419,8 +424,8 @@ export default {
 
         global.$post("/Campaing/create", data, this.user.token)
           .then(response => {
-            alert("Projeto enviado com sucesso!")
-          })
+              this.campaingCreated = true
+            })
           .catch(err => {
             let validErr = (err && err.response && err.response.data && err.response.data.error)
             // alert(validErr ? err.response.data.error : "INVALID_ERROR") // enviar alerta
