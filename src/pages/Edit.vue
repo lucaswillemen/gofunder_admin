@@ -109,6 +109,45 @@
               </md-card-area>
             </md-card-media-cover>
           </md-card>
+          <md-card>
+            <md-card-media-cover md-solid>
+              <md-card-media md-ratio="1:1">
+                <img src="https://cb2.scene7.com/is/image/CB2/BlackClayMug8ozSHF16/">
+              </md-card-media>
+              <md-card-area>
+
+                <md-button class="">
+                  <md-icon>delete</md-icon> Remove
+                </md-button>
+              </md-card-area>
+            </md-card-media-cover>
+          </md-card>
+          <md-card>
+            <md-card-media-cover md-solid>
+              <md-card-media md-ratio="1:1">
+                <img src="https://cb2.scene7.com/is/image/CB2/BlackClayMug8ozSHF16/">
+              </md-card-media>
+              <md-card-area>
+
+                <md-button class="">
+                  <md-icon>delete</md-icon> Remove
+                </md-button>
+              </md-card-area>
+            </md-card-media-cover>
+          </md-card>
+          <md-card>
+            <md-card-media-cover md-solid>
+              <md-card-media md-ratio="1:1">
+                <img src="https://cb2.scene7.com/is/image/CB2/BlackClayMug8ozSHF16/">
+              </md-card-media>
+              <md-card-area>
+
+                <md-button class="">
+                  <md-icon>delete</md-icon> Remove
+                </md-button>
+              </md-card-area>
+            </md-card-media-cover>
+          </md-card>
         </div>
         <div class="md-layout-item md-small-size-100 md-medium-size-50 md-large-size-33 md-size-25">
           <br>

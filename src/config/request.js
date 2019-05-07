@@ -4,7 +4,7 @@ if (!global.$post) {
 }
 
 var axios = require('axios')
-var apiUrl = 'http://25.20.118.56/gofunder/api/'
+var apiUrl = 'http://25.20.118.56/gofunder/api'
 
 
 global.$get = function(section, form, token = false) {

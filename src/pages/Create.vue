@@ -1,446 +1,441 @@
 <template class="">
-    <md-content>
-        <div class="md-layout md-alignment-center-center">
-            <div class="md-layout-item md-size-60 md-small-size-100">
-                <md-steppers :md-active-step.sync="actualStep" md-linear md-alternative>
-                    <md-step id="first" md-label="Objetivo" :md-done.sync="steps.first">
-                        <div class="md-layout md-gutter md-alignment-center-center">
+<md-content>
+  <div class="md-layout md-alignment-center-center">
+    <div class="md-layout-item md-size-60 md-small-size-100">
+      <md-steppers :md-active-step.sync="actualStep" md-linear md-alternative>
+        <md-step id="first" md-label="Objetivo" :md-done.sync="steps.first">
+          <div class="md-layout md-gutter md-alignment-center-center">
 
-                            <div @click="objetivo.allow_funds = !objetivo.allow_funds" style="cursor:pointer;" class="md-layout-item  md-size-50  md-small-size-100">
-                                <md-card class="md-layout md-alignment-center-center md-elevation-5" :class="{'md-primary': objetivo.allow_funds}">
-                                    <md-empty-state class="md-empty-state-icon-first" md-icon="account_balance_wallet" md-label="Arrecadar fundos" md-description="Receba doacoes e envie recompensas para os apioadores da sua campanha em forma de gratidao pela ajuda.">
-                                    </md-empty-state>
-                                </md-card>
-                            </div>
-                            <div @click="objetivo.allow_sppedup = !objetivo.allow_sppedup" style="cursor:pointer;" class="md-layout-item  md-size-50  md-small-size-100">
-                                <md-card class="md-layout md-alignment-center-center md-elevation-5 " :class="{'md-primary': objetivo.allow_sppedup}">
-                                    <md-empty-state class="md-empty-state-icon-first" md-icon="fast_forward" md-label="Acelerar seu projeto" md-description="Mostre seu projeto para tutores e investidores para ganhar apoio qualificado para fazer sua ideia acontecer.">
-                                    </md-empty-state>
-                                </md-card>
-                            </div>
+            <div @click="objetivo.allow_funds = !objetivo.allow_funds" style="cursor:pointer;" class="md-layout-item  md-size-50  md-small-size-100">
+              <md-card class="md-layout md-alignment-center-center md-elevation-5" :class="{'md-primary': objetivo.allow_funds}">
+                <md-empty-state class="md-empty-state-icon-first" md-icon="account_balance_wallet" md-label="Arrecadar fundos" md-description="Receba doacoes e envie recompensas para os apioadores da sua campanha em forma de gratidao pela ajuda.">
+                </md-empty-state>
+              </md-card>
+            </div>
+            <div @click="objetivo.allow_sppedup = !objetivo.allow_sppedup" style="cursor:pointer;" class="md-layout-item  md-size-50  md-small-size-100">
+              <md-card class="md-layout md-alignment-center-center md-elevation-5 " :class="{'md-primary': objetivo.allow_sppedup}">
+                <md-empty-state class="md-empty-state-icon-first" md-icon="fast_forward" md-label="Acelerar seu projeto" md-description="Mostre seu projeto para tutores e investidores para ganhar apoio qualificado para fazer sua ideia acontecer.">
+                </md-empty-state>
+              </md-card>
+            </div>
 
-                            <div @click="objetivo.allow_presale = !objetivo.allow_presale" style="cursor:pointer;" class="md-layout-item  md-size-50  md-small-size-100">
-                                <md-card class="md-layout md-alignment-center-center md-elevation-5 " :class="{'md-primary': objetivo.allow_presale}">
-                                    <md-empty-state class="md-empty-state-icon-first" md-icon="shopping_basket" md-label="Venda antes de terminar" md-description="Faca uma prevenda do seu produto enquanto vc finaliza seu projeto e analise o comportamento e aprovacao do publico.">
-                                    </md-empty-state>
-                                </md-card>
-                            </div>
-                            <div @click="objetivo.allow_share = !objetivo.allow_share" style="cursor:pointer;" class="md-layout-item  md-size-50  md-small-size-100">
-                                <md-card class="md-layout md-alignment-center-center md-elevation-5 " :class="{'md-primary': objetivo.allow_share}">
-                                    <md-empty-state class="md-empty-state-icon-first" md-icon="share" md-label="Compartilhe sua ideia" md-description="Encontre acionistas que irao ajudar a financiar seu projeto e divida os lucros com quem te ajudou.">
-                                    </md-empty-state>
-                                </md-card>
-                            </div>
-                            <div class="md-layout md-alignment-center-center">
-                                <md-button class="md-fab md-primary" :disabled="!Object.values(objetivo).includes(true)" @click="moveStep('first', 'second')">
-                                    <md-icon>arrow_forward</md-icon>
-                                </md-button>
-                            </div>
-                        </div>
-                    </md-step>
-                    <md-step id="second" md-label="Caracteristicas" :md-done.sync="steps.second" :md-editable="true" :md-error="secondError">
+            <div @click="objetivo.allow_presale = !objetivo.allow_presale" style="cursor:pointer;" class="md-layout-item  md-size-50  md-small-size-100">
+              <md-card class="md-layout md-alignment-center-center md-elevation-5 " :class="{'md-primary': objetivo.allow_presale}">
+                <md-empty-state class="md-empty-state-icon-first" md-icon="shopping_basket" md-label="Venda antes de terminar"
+                  md-description="Faca uma prevenda do seu produto enquanto vc finaliza seu projeto e analise o comportamento e aprovacao do publico.">
+                </md-empty-state>
+              </md-card>
+            </div>
+            <div @click="objetivo.allow_share = !objetivo.allow_share" style="cursor:pointer;" class="md-layout-item  md-size-50  md-small-size-100">
+              <md-card class="md-layout md-alignment-center-center md-elevation-5 " :class="{'md-primary': objetivo.allow_share}">
+                <md-empty-state class="md-empty-state-icon-first" md-icon="share" md-label="Compartilhe sua ideia" md-description="Encontre acionistas que irao ajudar a financiar seu projeto e divida os lucros com quem te ajudou.">
+                </md-empty-state>
+              </md-card>
+            </div>
+            <div class="md-layout md-alignment-center-center">
+              <md-button class="md-fab md-primary" :disabled="!Object.values(objetivo).includes(true)" @click="moveStep('first', 'second')">
+                <md-icon>arrow_forward</md-icon>
+              </md-button>
+            </div>
+          </div>
+        </md-step>
+        <md-step id="second" md-label="Caracteristicas" :md-done.sync="steps.second" :md-editable="true" :md-error="secondError">
 
-                        <form novalidate @submit.prevent="validateSecond">
-                            <div class="md-layout md-gutter">
-                                <md-card class="md-layout-item md-size-100 md-small-size-100">
-                                    <md-card-header class="md-layout md-gutter md-alignment-center-center">
-                                        <div class="md-title">Vamos identificar o tipo do seu projeto</div>
-                                    </md-card-header>
-                                    <md-card-content>
-                                        <md-field :class="getValidationClassSecond('amount')">
-                                            <label>Qual valor vc espera arrecadar para concluir seu projeto?</label>
-                                            <span class="md-prefix">$</span>
-                                            <md-input v-model="caracteristicas.amount" name="amount"></md-input>
-                                            <span class="md-error">Informe o valor</span>
-                                        </md-field>
-                                        <md-field :class="getValidationClassSecond('opt_develop')">
-                                            <label for="developSelect">O seu projeto esta sendo desenvolvido por</label>
-                                            <md-select v-model="caracteristicas.opt_develop" name="opt_develop" id="developSelect">
-                                                <md-option :value="opt.id" v-for="(opt, index) in options.campaing_develop" :key="index">{{opt.name}}</md-option>
-                                            </md-select>
-                                            <span class="md-error">Selecione uma opcao</span>
-                                        </md-field>
-                                        <md-field :class="getValidationClassSecond('opt_type')">
-                                            <label for="typeSelect">Qual tipo de seu projeto</label>
-                                            <md-select v-model="caracteristicas.opt_type" name="opt_type" id="typeSelect">
-                                                <md-option :value="opt.id" v-for="(opt, index) in options.campaing_type" :key="index">{{opt.name}}</md-option>
-                                            </md-select>
-                                            <span class="md-error">Selecione uma opcao</span>
-                                        </md-field>
-                                        <md-field :class="getValidationClassSecond('opt_category')">
-                                            <label for="categorySelect">Escolha a categoria que melhor se adapta ao seu projeto</label>
-                                            <md-select v-model="caracteristicas.opt_category" name="opt_category" id="categorySelect">
-                                                <md-option :value="opt.id" v-for="(opt, index) in options.campaing_category" :key="index">{{opt.name}}</md-option>
-                                            </md-select>
-                                            <span class="md-error">Selecione uma opcao</span>
-                                        </md-field>
-                                        <md-field :class="getValidationClassSecond('opt_funds')">
-                                            <label for="mfundsSelectovie">Como voce gostaria de receber seus fundos</label>
-                                            <md-select v-model="caracteristicas.opt_funds" name="opt_funds" id="fundsSelect">
-                                                <md-option :value="opt.id" v-for="(opt, index) in options.campaing_funds" :key="index">{{opt.name}}</md-option>
-                                            </md-select>
-                                            <span class="md-error">Selecione uma opcao</span>
-                                        </md-field>
-                                    </md-card-content>
-                                </md-card>
-                            </div>
-                            <div class="md-layout md-alignment-center-center">
-                                <md-button type="submit" class="md-fab md-primary">
-                                    <md-icon>arrow_forward</md-icon>
-                                </md-button>
-                            </div>
-                        </form>
-                    </md-step>
+          <form novalidate @submit.prevent="validateSecond">
+            <div class="md-layout md-gutter">
+              <md-card class="md-layout-item md-size-100 md-small-size-100">
+                <md-card-header class="md-layout md-gutter md-alignment-center-center">
+                  <div class="md-title">Vamos identificar o tipo do seu projeto</div>
+                </md-card-header>
+                <md-card-content>
+                  <md-field :class="getValidationClassSecond('amount')">
+                    <label>Qual valor vc espera arrecadar para concluir seu projeto?</label>
+                    <span class="md-prefix">$</span>
+                    <md-input v-model="caracteristicas.amount" name="amount"></md-input>
+                    <span class="md-error">Informe o valor</span>
+                  </md-field>
+                  <md-field :class="getValidationClassSecond('opt_develop')">
+                    <label for="developSelect">O seu projeto esta sendo desenvolvido por</label>
+                    <md-select v-model="caracteristicas.opt_develop" name="opt_develop" id="developSelect">
+                      <md-option :value="opt.id" v-for="(opt, index) in options.campaing_develop" :key="index">{{opt.name}}</md-option>
+                    </md-select>
+                    <span class="md-error">Selecione uma opcao</span>
+                  </md-field>
+                  <md-field :class="getValidationClassSecond('opt_type')">
+                    <label for="typeSelect">Qual tipo de seu projeto</label>
+                    <md-select v-model="caracteristicas.opt_type" name="opt_type" id="typeSelect">
+                      <md-option :value="opt.id" v-for="(opt, index) in options.campaing_type" :key="index">{{opt.name}}</md-option>
+                    </md-select>
+                    <span class="md-error">Selecione uma opcao</span>
+                  </md-field>
+                  <md-field :class="getValidationClassSecond('opt_category')">
+                    <label for="categorySelect">Escolha a categoria que melhor se adapta ao seu projeto</label>
+                    <md-select v-model="caracteristicas.opt_category" name="opt_category" id="categorySelect">
+                      <md-option :value="opt.id" v-for="(opt, index) in options.campaing_category" :key="index">{{opt.name}}</md-option>
+                    </md-select>
+                    <span class="md-error">Selecione uma opcao</span>
+                  </md-field>
+                  <md-field :class="getValidationClassSecond('opt_funds')">
+                    <label for="mfundsSelectovie">Como voce gostaria de receber seus fundos</label>
+                    <md-select v-model="caracteristicas.opt_funds" name="opt_funds" id="fundsSelect">
+                      <md-option :value="opt.id" v-for="(opt, index) in options.campaing_funds" :key="index">{{opt.name}}</md-option>
+                    </md-select>
+                    <span class="md-error">Selecione uma opcao</span>
+                  </md-field>
+                </md-card-content>
+              </md-card>
+            </div>
+            <div class="md-layout md-alignment-center-center">
+              <md-button type="submit" class="md-fab md-primary">
+                <md-icon>arrow_forward</md-icon>
+              </md-button>
+            </div>
+          </form>
+        </md-step>
 
-                    <md-step id="third" md-label="Informacoes" :md-done.sync="steps.third" :md-editable="true" :md-error="thirdError">
-                        <form novalidate @submit.prevent="validateThird">
-                            <div class="md-layout md-gutter">
-                                <md-card class="md-layout-item md-size-100 md-small-size-100">
-                                    <md-card-header class="md-layout md-gutter md-alignment-center-center">
-                                        <div class="md-title">Vamos ver como esta o andamento</div>
-                                    </md-card-header>
-                                    <md-card-content>
-                                        <md-field :class="getValidationClassThird('title')">
-                                            <label>Qual o nome/titulo do seu projeto</label>
-                                            <md-input v-model="informacoes.title" name="title" required></md-input>
-                                            <span class="md-error">Informe o titulo</span>
-                                        </md-field>
-                                        <md-field :class="getValidationClassThird('description')">
-                                            <label>Faca um resumo basico do seu projeto</label>
-                                            <md-textarea v-model="informacoes.description" md-counter="80" required></md-textarea>
-                                        </md-field>
+        <md-step id="third" md-label="Informacoes" :md-done.sync="steps.third" :md-editable="true" :md-error="thirdError">
+          <form novalidate @submit.prevent="validateThird">
+            <div class="md-layout md-gutter">
+              <md-card class="md-layout-item md-size-100 md-small-size-100">
+                <md-card-header class="md-layout md-gutter md-alignment-center-center">
+                  <div class="md-title">Vamos ver como esta o andamento</div>
+                </md-card-header>
+                <md-card-content>
+                  <md-field :class="getValidationClassThird('title')">
+                    <label>Qual o nome/titulo do seu projeto</label>
+                    <md-input v-model="informacoes.title" name="title" required></md-input>
+                    <span class="md-error">Informe o titulo</span>
+                  </md-field>
+                  <md-field :class="getValidationClassThird('description')">
+                    <label>Faca um resumo basico do seu projeto</label>
+                    <md-textarea v-model="informacoes.description" md-counter="80" required></md-textarea>
+                  </md-field>
 
-                                        <!-- <md-autocomplete v-model="selectedCountry" :md-options="options.country" md-dense md-layout="box" :md-open-on-focus="false" @md-selected="selected()">
+                  <!-- <md-autocomplete v-model="selectedCountry" :md-options="options.country" md-dense md-layout="box" :md-open-on-focus="false" @md-selected="selected()">
                                 <label>Em qual pais o seu projeto esta sendo desenvolvido?</label>
                                 <template slot="md-autocomplete-item" slot-scope="{item, term }">
                                     <md-highlight-text :item="item.country_name" :md-term="term">{{ item.country_name }} ({{item.country_code}})</md-highlight-text>
                                 </template>
                             </md-autocomplete> -->
-                                        <md-field :class="getValidationClassThird('country_id')">
-                                            <md-select v-model="informacoes.country_id" placeholder="Em qual pais o seu projeto esta sendo desenvolvido?" required>
-                                                <md-option :value="opt.id" v-for="(opt, index) in options.country" :key="index">{{opt.country_name}}</md-option>
-                                            </md-select>
-                                        </md-field>
-                                        <md-checkbox v-model="informacoes.isStarted" class="md-primary">Seu projeto ja foi iniciado?</md-checkbox>
+                  <md-field :class="getValidationClassThird('country_id')">
+                    <md-select v-model="informacoes.country_id" placeholder="Em qual pais o seu projeto esta sendo desenvolvido?" required>
+                      <md-option :value="opt.id" v-for="(opt, index) in options.country" :key="index">{{opt.country_name}}</md-option>
+                    </md-select>
+                  </md-field>
+                  <md-checkbox v-model="informacoes.isStarted" class="md-primary">Seu projeto ja foi iniciado?</md-checkbox>
 
-                                        <md-datepicker v-if="informacoes.isStarted" v-model="informacoes.startAt" md-immediately>
-                                            <label>Quando pretende iniciar</label>
-                                        </md-datepicker>
+                  <md-datepicker v-if="informacoes.isStarted" v-model="informacoes.startAt" md-immediately>
+                    <label>Quando pretende iniciar</label>
+                  </md-datepicker>
 
-                                        <md-datepicker :class="getValidationClassThird('finishAt')" v-model="informacoes.finishAt" md-immediately>
-                                            <label>E quando pretende finalizar</label>
-                                        </md-datepicker>
+                  <md-datepicker :class="getValidationClassThird('finishAt')" v-model="informacoes.finishAt" md-immediately>
+                    <label>E quando pretende finalizar</label>
+                  </md-datepicker>
 
-                                        <md-checkbox v-model="informacoes.isCountryShared" class="md-primary">Voce gostaria que pessoas de outros paises vissem seu projeto?</md-checkbox>
-                                    </md-card-content>
-                                </md-card>
-                            </div>
-                            <div class="md-layout md-alignment-center-center">
-                                <md-button type="submit" class="md-fab md-primary">
-                                    <md-icon>arrow_forward</md-icon>
-                                </md-button>
-                            </div>
-                        </form>
-                    </md-step>
-
-                    <md-step id="fourth" md-label="Picture" :md-done.sync="steps.fourth">
-                        <md-card>
-                            <div>
-                                <md-empty-state md-icon="add_a_photo" md-label="Card picture" md-description="Creating project, you'll be able to upload your design and collaborate with people.">
-                                    <input type="file" id="img-picker" @change="pickImg()">
-                                    <md-button class="md-primary md-raised" @click="selectImage()">Send your card picture</md-button>
-                                </md-empty-state>
-                            </div>
-                        </md-card>
-                    </md-step>
-
-                    <md-step id="fifth" md-label="Review" :md-done.sync="steps.fifth">
-                        <div class="md-layout md-gutter  md-alignment-center-center">
-                            <div class="md-layout-item md-small-size-100 md-size-50">
-                                <md-card>
-                                    <md-card-area md-inset>
-                                        <md-card-media md-ratio="16:9">
-                                            <img src="https://www.raspberrypi.org/wp-content/uploads/2014/09/IMG_4456.jpg">
-                                        </md-card-media>
-
-                                        <md-card-header>
-                                            <h2 class="md-title">Coffee When Wakeup</h2>
-                                            <div class="md-subhead">
-                                                <md-icon>category</md-icon>
-                                                <span> {{caracteristicas.opt_category}}</span>
-                                            </div>
-                                        </md-card-header>
-
-                                        <md-card-content>
-                                            We identify the exact time that you wake up and we'll leave your coffee ready.
-                                        </md-card-content>
-                                    </md-card-area>
-
-                                    <md-card-content>
-                                        <div class="card-reservation">
-                                            <div class="md-button-group md-layout md-alignment-center-center">
-                                                <md-button class="md-layout-item">$ {{caracteristicas.amount}}</md-button>
-                                            </div>
-                                        </div>
-                                        <md-progress-bar md-mode="determinate" :md-value="0"></md-progress-bar>
-                                    </md-card-content>
-
-                                    <md-card-actions>
-                                        <md-button class="md-primary">
-                                            <md-icon>send</md-icon> Send to review</md-button>
-                                    </md-card-actions>
-                                </md-card>
-                            </div>
-                        </div>
-                    </md-step>
-                </md-steppers>
+                  <md-checkbox v-model="informacoes.isCountryShared" class="md-primary">Voce gostaria que pessoas de outros paises vissem seu projeto?</md-checkbox>
+                </md-card-content>
+              </md-card>
             </div>
-        </div>
-    </md-content>
+            <div class="md-layout md-alignment-center-center">
+              <md-button type="submit" class="md-fab md-primary">
+                <md-icon>arrow_forward</md-icon>
+              </md-button>
+            </div>
+          </form>
+        </md-step>
+
+        <md-step id="fourth" md-label="Picture" :md-done.sync="steps.fourth">
+          <md-card>
+            <div>
+              <md-empty-state md-icon="add_a_photo" md-label="Card picture" md-description="Creating project, you'll be able to upload your design and collaborate with people.">
+                <input type="file" id="img-picker" @change="pickImg($event)">
+                <span v-if="base64File"><img :src="base64File"></img></span>
+                <md-button class="md-primary md-raised" @click="uploadImage()">Send your card picture</md-button>
+              </md-empty-state>
+            </div>
+          </md-card>
+        </md-step>
+
+        <md-step id="fifth" md-label="Review" :md-done.sync="steps.fifth">
+          <div class="md-layout md-gutter  md-alignment-center-center">
+            <div class="md-layout-item md-small-size-100 md-size-50">
+              <md-card>
+                <md-card-area md-inset>
+                  <md-card-media md-ratio="16:9">
+                    <img src="https://www.raspberrypi.org/wp-content/uploads/2014/09/IMG_4456.jpg">
+                  </md-card-media>
+
+                  <md-card-header>
+                    <h2 class="md-title">Coffee When Wakeup</h2>
+                    <div class="md-subhead">
+                      <md-icon>category</md-icon>
+                      <span> {{caracteristicas.opt_category}}</span>
+                    </div>
+                  </md-card-header>
+
+                  <md-card-content>
+                    We identify the exact time that you wake up and we'll leave your coffee ready.
+                  </md-card-content>
+                </md-card-area>
+
+                <md-card-content>
+                  <div class="card-reservation">
+                    <div class="md-button-group md-layout md-alignment-center-center">
+                      <md-button class="md-layout-item">$ {{caracteristicas.amount}}</md-button>
+                    </div>
+                  </div>
+                  <md-progress-bar md-mode="determinate" :md-value="0"></md-progress-bar>
+                </md-card-content>
+
+                <md-card-actions>
+                  <button class="md-primary">
+                    <md-icon>send</md-icon> Send to review
+                  </button>
+                </md-card-actions>
+              </md-card>
+            </div>
+          </div>
+        </md-step>
+      </md-steppers>
+    </div>
+  </div>
+</md-content>
 </template>
 <script>
-    import {
-        mapState
+import {
+  mapState
+}
+from 'vuex'
+import {
+  validationMixin
+}
+from 'vuelidate'
+import {
+  required
+}
+from 'vuelidate/lib/validators'
+export default {
+  name: 'Create',
+  mixins: [validationMixin],
+  data() {
+    return {
+      base64File: null,
+      tempURL: null,
+      fileTitle: null,
+      imageToUpload: null,
+      secondError: null,
+      thirdError: null,
+      objetivo: {
+        allow_funds: true,
+        allow_sppedup: false,
+        allow_presale: false,
+        allow_share: false
+      },
+      caracteristicas: {
+        amount: "123",
+        opt_category: 1,
+        opt_develop: 1,
+        opt_funds: 7,
+        opt_type: 4,
+      },
+      informacoes: {
+        title: "Coffee When Wakeup",
+        description: "We identify the exact time that you wake up and we'll leave your coffee ready.",
+        isStarted: false,
+        startAt: null,
+        finishAt: null,
+        country_id: 1,
+        isCountryShared: false,
+      },
+      options: {},
+      steps: {
+        first: false,
+        second: false,
+        third: false,
+        fourth: false
+      },
+      actualStep: null
     }
-    from 'vuex'
-    import {
-        validationMixin
-    }
-    from 'vuelidate'
-    import {
+  },
+  validations: {
+    caracteristicas: {
+      amount: {
         required
+      },
+      opt_category: {
+        required
+      },
+      opt_develop: {
+        required
+      },
+      opt_funds: {
+        required
+      },
+      opt_type: {
+        required
+      }
+    },
+    informacoes: {
+      title: {
+        required
+      },
+      description: {
+        required
+      },
+      country_id: {
+        required
+      },
+      finishAt: {
+        required
+      }
     }
-    from 'vuelidate/lib/validators'
-    export default {
-        name: 'Create',
-        mixins: [validationMixin],
-        data() {
-            return {
-                tempURL: null,
-                fileTitle: null,
-                imageToUpload: null,
-                secondError: null,
-                thirdError: null,
-                objetivo: {
-                    allow_funds: true,
-                    allow_sppedup: false,
-                    allow_presale: false,
-                    allow_share: false
-                },
-                caracteristicas: {
-                    amount: "123",
-                    opt_category: 1,
-                    opt_develop: 1,
-                    opt_funds: 7,
-                    opt_type: 4,
-                },
-                informacoes: {
-                    title: "Coffee When Wakeup",
-                    description: "We identify the exact time that you wake up and we'll leave your coffee ready.",
-                    isStarted: false,
-                    startAt: null,
-                    finishAt: null,
-                    country_id: 1,
-                    isCountryShared: false,
-                },
-                options: {},
-                steps: {
-                    first: false,
-                    second: false,
-                    third: false,
-                    fourth: false
-                },
-                actualStep: null
-            }
-        },
-        validations: {
-            caracteristicas: {
-                amount: {
-                    required
-                },
-                opt_category: {
-                    required
-                },
-                opt_develop: {
-                    required
-                },
-                opt_funds: {
-                    required
-                },
-                opt_type: {
-                    required
-                }
-            },
-            informacoes: {
-                title: {
-                    required
-                },
-                description: {
-                    required
-                },
-                country_id: {
-                    required
-                },
-                finishAt: {
-                    required
-                }
-            }
-        },
-        watch: {
-          'imageToUpload': function () {
-            if (this.imageToUpload != undefined) {
-              this.tempURL = URL.createObjectURL(this.imageToUpload)
-              this.fileTitle = this.imageToUpload.name
-              this.uploadImage()
-            }
-          }
-        },
-        computed: {
-            ...mapState(['user']),
-        },
-        methods: {
-          uploadImage() {
-            let data = {
-              image: this.tempURL,
-              title: this.fileTitle
-            }
-             global.$post("/campaing/cover",data, this.user.token)
-                .then(response => {
-                    console.log('deu', response)
-                    this.moveStep('forth', 'fifth')
-                    
-                })
-                .catch(err => {
-                    let validErr = (err && err.response && err.response.data && err.response.data.error)
-                    alert(validErr ? err.response.data.error : "INVALID_ERROR") // enviar alerta
-                })
-          },
-          selectImage() {
-              let pictureInput = document.getElementById('img-picker')
-              pictureInput.click()
-          },
-          pickImg() {
-              this.imageToUpload = document.getElementById('img-picker').files[0]
-          },
-          getValidationClassSecond(fieldName) {
-                  const field = this.$v.caracteristicas[fieldName]
-                  if (field) {
-                      return {
-                          'md-invalid': field.$invalid && field.$dirty
-                      }
-                  }
-              },
-              validateSecond() {
-                  this.$v.caracteristicas.$touch()
-                  if (!this.$v.caracteristicas.$invalid) {
-                      this.secondError = null
-                      this.moveStep('second', 'third')
-                  } else {
-                      this.steps.second = false
-                      this.secondError = "Reveja as informacoes"
-                  }
-              },
-              getValidationClassThird(fieldName) {
-                  const field = this.$v.informacoes[fieldName]
-                  if (field) {
-                      return {
-                          'md-invalid': field.$invalid && field.$dirty
-                      }
-                  }
-              },
-              validateThird() {
-                  this.$v.informacoes.$touch()
-                  if (!this.$v.informacoes.$invalid) {
-                      this.thirdError = null
-                      this.moveStep('third', 'fourth')
-                  } else {
-                      this.steps.third = false
-                      this.thirdError = "Reveja as informacoes"
-                  }
+  },
+  computed: {
+    ...mapState(['user']),
+  },
+  methods: {
+    uploadImage() {
+                alert("lol")
+      let data = {
+        image: this.imageToUpload,
+        title: this.informacoes.title
+      }
+      global.$post("/campaing/cover", data, this.user.token)
+        .then(response => {
+          this.moveStep('forth', 'fifth')
+        })
+        .catch(err => {
+          let validErr = (err && err.response && err.response.data && err.response.data.error)
+          alert(validErr ? err.response.data.error : "INVALID_ERROR") // enviar alerta
+        })
+    },
 
-              },
-              getOptions() {
-                  global.$get("/Campaing/option", {}, this.user.token)
-                      .then(response => {
-                          console.log('deu', response)
-                          this.options = {
-                              ...response.data
-                          }
-                      })
-                      .catch(err => {
-                          let validErr = (err && err.response && err.response.data && err.response.data.error)
-                          alert(validErr ? err.response.data.error : "INVALID_ERROR") // enviar alerta
-                      })
-              },
-              createCampaing() {
-                  // this.validateThird()
-                  // this.validateSecond()
-
-                  if (this.$v.caracteristicas.$invalid) {
-                      this.$v.caracteristicas.$touch()
-                      this.steps.second = false
-                      this.moveStep('fourth', 'second')
-                      this.secondError = "Reveja as informacoes"
-                      return false
-                  }
-                  if (this.$v.informacoes.$invalid) {
-                      this.$v.informacoes.$touch()
-                      this.steps.third = false
-                      this.moveStep('fourth', 'third')
-                      this.thirdError = "Reveja as informacoes"
-                      return false
-                  }
-                  if (!this.secondError && !this.thirdError && Object.values(this.objetivo).includes(true)) {
-                      let data = {
-                          ...this.objetivo,
-                              ...this.caracteristicas,
-                              ...this.informacoes,
-                              finishAt: this.informacoes.finishAt ? this.informacoes.finishAt.toISOString() : null,
-                              startAt: this.informacoes.startAt ? this.informacoes.startAt.toISOString() : null
-                      }
-                      console.log('data:', data)
-
-                      global.$get("/Campaing/create", data, this.user.token)
-                          .then(response => {
-                              console.log('deu', response)
-                          })
-                          .catch(err => {
-                              let validErr = (err && err.response && err.response.data && err.response.data.error)
-                                  // alert(validErr ? err.response.data.error : "INVALID_ERROR") // enviar alerta
-                          })
-                  }
-              },
-
-              moveStep(actual, next) {
-                  this.steps[actual] = true
-                  if (next) {
-                      this.actualStep = next
-                  }
-              },
-
-        },
-        mounted() {
-            this.getOptions()
+    pickImg(evt) {
+      let reader = new FileReader()
+      this.imageToUpload = evt.target.files[0]
+      reader.onload = (e) => {
+        this.base64File = e.target.result;
+      }
+      reader.readAsDataURL(evt.target.files[0])
+    },
+    getValidationClassSecond(fieldName) {
+      const field = this.$v.caracteristicas[fieldName]
+      if (field) {
+        return {
+          'md-invalid': field.$invalid && field.$dirty
         }
-    }
+      }
+    },
+    validateSecond() {
+      this.$v.caracteristicas.$touch()
+      if (!this.$v.caracteristicas.$invalid) {
+        this.secondError = null
+        this.moveStep('second', 'third')
+      } else {
+        this.steps.second = false
+        this.secondError = "Reveja as informacoes"
+      }
+    },
+    getValidationClassThird(fieldName) {
+      const field = this.$v.informacoes[fieldName]
+      if (field) {
+        return {
+          'md-invalid': field.$invalid && field.$dirty
+        }
+      }
+    },
+    validateThird() {
+      this.$v.informacoes.$touch()
+      if (!this.$v.informacoes.$invalid) {
+        this.thirdError = null
+        this.moveStep('third', 'fourth')
+      } else {
+        this.steps.third = false
+        this.thirdError = "Reveja as informacoes"
+      }
+
+    },
+    getOptions() {
+      global.$get("/Campaing/option", {}, this.user.token)
+        .then(response => {
+          this.options = {
+            ...response.data
+          }
+        })
+        .catch(err => {
+          let validErr = (err && err.response && err.response.data && err.response.data.error)
+          alert(validErr ? err.response.data.error : "INVALID_ERROR") // enviar alerta
+        })
+    },
+    createCampaing() {
+      // this.validateThird()
+      // this.validateSecond()
+
+      if (this.$v.caracteristicas.$invalid) {
+        this.$v.caracteristicas.$touch()
+        this.steps.second = false
+        this.moveStep('fourth', 'second')
+        this.secondError = "Reveja as informacoes"
+        return false
+      }
+      if (this.$v.informacoes.$invalid) {
+        this.$v.informacoes.$touch()
+        this.steps.third = false
+        this.moveStep('fourth', 'third')
+        this.thirdError = "Reveja as informacoes"
+        return false
+      }
+      if (!this.secondError && !this.thirdError && Object.values(this.objetivo).includes(true)) {
+        let data = {
+          ...this.objetivo,
+          ...this.caracteristicas,
+          ...this.informacoes,
+          finishAt: this.informacoes.finishAt ? this.informacoes.finishAt.toISOString() : null,
+          startAt: this.informacoes.startAt ? this.informacoes.startAt.toISOString() : null
+        }
+        console.log('data:', data)
+
+        global.$get("/Campaing/create", data, this.user.token)
+          .then(response => {
+            console.log('deu', response)
+          })
+          .catch(err => {
+            let validErr = (err && err.response && err.response.data && err.response.data.error)
+            // alert(validErr ? err.response.data.error : "INVALID_ERROR") // enviar alerta
+          })
+      }
+    },
+
+    moveStep(actual, next) {
+      this.steps[actual] = true
+      if (next) {
+        this.actualStep = next
+      }
+    },
+
+  },
+  mounted() {
+    this.getOptions()
+  }
+}
 </script>
 
 <style lang="scss">
-    .md-card.md-theme-default {
-        margin: 30px
-    }
-    
-    .md-empty-state-icon-first > div > .md-empty-state-icon {
-        color: var(--md-theme-default-icon-on-background, rgba(0, 0, 0, 0.08))!important;
-        width: 160px;
-        position: relative;
-        top: 50px;
-        min-width: 160px;
-        height: 24px;
-        font-size: 160px!important;
-        margin: 0;
-    }
-    #img-picker {
-      display: none;
-    }
+.md-card.md-theme-default {
+    margin: 30px;
+}
+
+.md-empty-state-icon-first > div > .md-empty-state-icon {
+    color: var(--md-theme-default-icon-on-background, rgba(0, 0, 0, 0.08))!important;
+    width: 160px;
+    position: relative;
+    top: 50px;
+    min-width: 160px;
+    height: 24px;
+    font-size: 160px!important;
+    margin: 0;
+}
+#img-picker {
+  //  display: none;
+}
 </style>
