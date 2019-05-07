@@ -6,35 +6,36 @@
         <img src="../../public/go-funder-icon.png">
         <div class="md-title">Register</div>
       </div>
-
-      <div class="form" @keyup.enter="registerUser()">
-        <md-field :class="nameInvalid">
+        <form novalidate @submit.prevent="registerUser()">
+      <div class="form">
+          <md-field :class="getValidationClass('name')">
           <label>Nome</label>
-          <md-input v-model="register.name" autofocus></md-input>
+          <md-input v-model="register.name" name="name" autofocus required></md-input>
           <span class="md-error">Digite seu nome corretamente</span>
         </md-field>
-        <md-field :class="emailInvalid">
+          <md-field :class="getValidationClass('email')">
           <label>E-mail</label>
-          <md-input v-model="register.email" autofocus></md-input>
+          <md-input v-model="register.email" name="email" autofocus required></md-input>
           <span class="md-error">Digite um e-mail válido para registro!</span>
         </md-field>
 
-        <md-field md-has-password  :class="passwordInvalid">
+          <md-field :class="getValidationClass('password')">
           <label>Senha</label>
-          <md-input v-model="register.password" type="password"></md-input>
+          <md-input v-model="register.password" name="password" type="password" required></md-input>
           <span class="md-error">As senhas digitadas não conferem!</span>
         </md-field>
 
-        <md-field md-has-password>
+          <md-field :class="getValidationClass('password2')">
           <label>Confirme sua senha</label>
-          <md-input v-model="register.password2" type="password"></md-input>
+          <md-input v-model="register.password2" type="password" name="password2" required></md-input>
         </md-field>
 
         <router-link to="/login">Você já tem uma conta?</router-link>
       </div>
       <div class="">
-        <md-button  :disabled="invalidForm()" class="md-raised md-primary" @click="registerUser()">Registrar</md-button>
+        <md-button type="submit" class="md-raised md-primary md-auth">Registrar</md-button>
       </div>
+      </form>
 
 
       <div class="loading-overlay" v-if="loading">
@@ -54,6 +55,17 @@
 
 <script>
 import { mapActions } from 'vuex'
+    import {
+        validationMixin
+    }
+    from 'vuelidate'
+    import {
+        required,
+        email,
+        minLength,
+        maxLength
+    }
+    from 'vuelidate/lib/validators'
 export default {
   name: "Register",
   data() {
@@ -68,9 +80,32 @@ export default {
       }
     };
   },
+
+        validations: {
+            register: {
+                email: {
+                    required,
+                    email
+                },
+                password: {
+                    required
+                },
+                password2: {
+                    required
+                },
+                name: {
+                    required
+                }
+            }
+        },
   methods: {
     ...mapActions('user', ['userSet']),
     registerUser() {
+
+                this.$v.register.$touch()
+                if (this.$v.register.$invalid) {
+                    return false;
+                }
       this.loading = true;
       // your code to login user
       // this is only for example of loading
@@ -87,8 +122,15 @@ export default {
           this.loading = false // ao terminar finalizar o loading
         })
     },
-    invalidForm() {
-      return this.register.password !== this.register.password2 || (this.register.email == null || !(/\S+@\S+\.\S+/.test(this.register.email))) || (this.register.name == null || this.register.name.length < 3)
+
+    getValidationClass(fieldName) {
+        const field = this.$v.register[fieldName]
+
+        if (field) {
+            return {
+                'md-invalid': field.$invalid && field.$dirty
+            }
+        }
     }
   },
 
