@@ -22,12 +22,13 @@
         <md-field :class="getValidationClass('password')">
           <label>Senha</label>
           <md-input v-model="register.password" name="password" type="password" required></md-input>
-          <span class="md-error">As senhas digitadas não conferem!</span>
+          <span class="md-error">Informe uma senha!</span>
         </md-field>
 
         <md-field :class="getValidationClass('password2')">
           <label>Confirme sua senha</label>
           <md-input v-model="register.password2" type="password" name="password2" required></md-input>
+          <span class="md-error">As senhas digitadas não conferem!</span>
         </md-field>
 
         <router-link to="/login">Você já tem uma conta?</router-link>
@@ -90,7 +91,7 @@ export default {
         required
       },
       password2: {
-        required
+        sameAsPassword: sameAs('password')
       },
       name: {
         required
