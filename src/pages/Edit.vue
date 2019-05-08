@@ -400,9 +400,9 @@ export default {
         answer: this.faqEditAnswer,
         question: this.faqEditQuestion
       }
-      global.$post("/Campaign/deletefaq", data, this.user.token)
+      global.$post("/Campaign/editfaq", data, this.user.token)
       .then(res => {
-          this.loadGallery()
+          this.loadFaq()
       })
       .catch(err => {
         let validErr = (err && err.response && err.response.data && err.response.data.error)
