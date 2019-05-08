@@ -5,7 +5,7 @@
   </div>
   <md-tabs class="md-primary" md-alignment="fixed">
     
-    <md-tab id="tab-pages" md-label="HTML Overview" md-icon="pages">
+    <md-tab id="tab-pages" md-label="Resumo" md-icon="pages">
 
       <div class="md-layout md-grutter md-alignment-center-center">
         <div class="md-layout-item md-small-size-100  md-size-100">
@@ -129,7 +129,7 @@
           </p>
           <md-card v-else v-for="(picture, index) in pictures" :key="index" >
             <div class="close-icon-container" @click="deleteImage(picture.id)">
-              <md-icon>close</md-icon>
+              <md-icon>delete</md-icon>
             </div>
             <md-card-media-cover md-solid style="clear:both">
               <md-card-media md-ratio="1:1">
@@ -157,20 +157,16 @@
           <md-subheader>Faqs</md-subheader>
 
           <md-divider></md-divider>
-          <md-list-item>
+          <md-list-item v-for="(faq, index) in faqList" :key="index" class="bordered">
             <div class="md-list-item-text">
-              <span>Alguma pergunta bem perguntada por aqui </span>
-              <span>Alguma resposta com bom senso e logiga bem aqui em baixo pra ver o tamanho do espaco</span>
+              <span>{{faq.question}}</span>
+              <span>{{faq.answer}}</span>
+            </div>
+            <div class="md-list-item-text">
+              <md-icon>edit</md-icon>
+              <md-icon>delete</md-icon>
             </div>
           </md-list-item>
-          <md-divider></md-divider>
-          <md-list-item>
-            <div class="md-list-item-text">
-              <span>Alguma pergunta bem perguntada por aqui </span>
-              <span>Alguma resposta com bom senso e logiga bem aqui em baixo pra ver o tamanho do espaco</span>
-            </div>
-          </md-list-item>
-
         </md-list>
       </div>
       <div class="md-layout md-grutter md-alignment-center-center">
@@ -181,22 +177,37 @@
 
       <div>
         <md-dialog :md-active.sync="createFaq">
-          <md-dialog-title>Create new FAQ</md-dialog-title>
+          <md-dialog-title>Criar novo FAQ</md-dialog-title>
           <md-dialog-content>
             <md-field>
               <label>Escreva uma pergunta</label>
-              <md-input required></md-input>
-              <span class="md-error">Informe o titulo</span>
+              <md-input v-model="faqQuestion" required></md-input>
             </md-field>
             <md-field>
               <label>Escreva uma resposta</label>
-              <md-input required></md-input>
-              <span class="md-error">Informe o titulo</span>
+              <md-input v-model="faqAnswer" required></md-input>
             </md-field>
           </md-dialog-content>
           <md-dialog-actions>
-            <md-button class="md-acent md-raised" @click="createFaq = false">Close</md-button>
-            <md-button class="md-primary md-raised" @click="createFaq = false">Add</md-button>
+            <md-button class="md-acent md-raised" @click="resetFaq()">Close</md-button>
+            <md-button :disabled="!faqQuestion || !faqAnswer" class="md-primary md-raised" @click="addFaq()">Add</md-button>
+          </md-dialog-actions>
+        </md-dialog>
+        <md-dialog :md-active.sync="editFaq">
+          <md-dialog-title>Editar FAQ</md-dialog-title>
+          <md-dialog-content>
+            <md-field>
+              <label>Edite sua pergunta</label>
+              <md-input v-model="faqEditQuestion" required></md-input>
+            </md-field>
+            <md-field>
+              <label>Edite sua resposta</label>
+              <md-input v-model="faqEditAnswer" required></md-input>
+            </md-field>
+          </md-dialog-content>
+          <md-dialog-actions>
+            <md-button class="md-acent md-raised" @click="resetFaq()">Close</md-button>
+            <md-button :disabled="!faqEditQuestion || !faqEditAnswer" class="md-primary md-raised" @click="addFaq()">Add</md-button>
           </md-dialog-actions>
         </md-dialog>
       </div>
@@ -214,6 +225,12 @@ export default {
   },
   data() {
     return {
+      editFaq: false,
+      faqEditAnswer: null,
+      faqEditQuestion: null,
+      faqQuestion: null,
+      faqAnswer: null,
+      faqList: [],
       loading: false,
       pictureUrl: null,
       editorData: null,
@@ -232,11 +249,12 @@ export default {
     }
   },
   computed: {
-    ...mapState(['user'])
+    ...mapState(['user']),
   },
   methods: {
+    //GALLERY
     loadGallery() {
-      global.$get("/Campaing/getgalery?campaing_id="+this.$route.params.id, {}, this.user.token)
+      global.$get("/Campaign/getgalery?campaign_id="+this.$route.params.id, {}, this.user.token)
         .then(response => {
             this.pictures = response.data
         })
@@ -266,7 +284,7 @@ export default {
         image: this.imageToUpload,
         title: this.imgCaption
       }
-      global.$post("/Campaing/upload_gallery", data, this.user.token)
+      global.$post("/Campaign/upload_gallery", data, this.user.token)
         .then(response => {
             this.pictureUrl = response.data.gallery_url
             let data = {
@@ -274,7 +292,7 @@ export default {
               campaign_id: this.$route.params.id,
               legend: this.imgCaption
             }
-            global.$post("/Campaing/addgalery", data, this.user.token)
+            global.$post("/Campaign/addgalery", data, this.user.token)
             .then(res => {
                 this.loadGallery()
             })
@@ -297,7 +315,7 @@ export default {
       let data = {
         id: id
       }
-      global.$post("/Campaing/deletegalery", data, this.user.token)
+      global.$post("/Campaign/deletegalery", data, this.user.token)
       .then(res => {
           this.loadGallery()
       })
@@ -314,14 +332,93 @@ export default {
       this.imageToUpload = null
       this.base64File = null
       this.imgCaption = null
-    }
+    },
+    //FAQ
+    loadFaq() {
+      global.$get("/Campaign/getfaq?campaign_id="+this.$route.params.id, {}, this.user.token)
+      .then(res => {
+          this.faqList = res.data
+      })
+      .catch(err => {
+        let validErr = (err && err.response && err.response.data && err.response.data.error)
+        alert(validErr ? err.response.data.error : "INVALID_ERROR") // enviar alerta
+      })
+    },
+    addFaq() {
+      this.createFaq = false
+      this.loading = true
+      let data = {
+        campaign_id: this.$route.params.id,
+        question: this.faqQuestion,
+        answer: this.faqAnswer
+      }
+      global.$post("/Campaign/addfaq", data, this.user.token)
+      .then(res => {
+          this.loadFaq()
+      })
+      .catch(err => {
+        let validErr = (err && err.response && err.response.data && err.response.data.error)
+        alert(validErr ? err.response.data.error : "INVALID_ERROR") // enviar alerta
+      })
+      .finally(() => {
+        this.loading = false
+      })
+    },
+    resetFaq() {
+      this.createFaq = false
+      this.faqQuestion = null,
+      this.faqAnswer = null
+    },
+    deleteFaq(id) {
+      this.loading = true
+      let data = {
+        id: id
+      }
+      global.$post("/Campaign/deletefaq", data, this.user.token)
+      .then(res => {
+          this.loadGallery()
+      })
+      .catch(err => {
+        let validErr = (err && err.response && err.response.data && err.response.data.error)
+        alert(validErr ? err.response.data.error : "INVALID_ERROR") // enviar alerta
+      })
+      .finally(() => {
+        this.loading = false
+      })
+    },
+    editFaq(id) {
+      this.loading = true
+      let data = {
+        id: id,
+        answer: faqEditAnswer,
+        question: faqEditQuestion
+      }
+      global.$post("/Campaign/deletefaq", data, this.user.token)
+      .then(res => {
+          this.loadGallery()
+      })
+      .catch(err => {
+        let validErr = (err && err.response && err.response.data && err.response.data.error)
+        alert(validErr ? err.response.data.error : "INVALID_ERROR") // enviar alerta
+      })
+      .finally(() => {
+        this.loading = false
+      })
+    },
   },
+  
   mounted() {
     this.loadGallery()
+    this.loadFaq()
   }
 }
 </script>
 <style lang="scss" scoped>
+.bordered {
+  &:not(:last-child) {
+    border-bottom: 1px solid var(--md-theme-default-divider, rgba(0,0,0,0.12));
+  }
+}
 .md-dialog {
     width: 568px;
 }

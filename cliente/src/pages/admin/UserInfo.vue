@@ -39,7 +39,7 @@
                         <div class="boxes">
                           <div class="box">
                             <div class="top">
-                            <!--   <span>{{user.total_campaings}}</span>!-->
+                            <!--   <span>{{user.total_campaigns}}</span>!-->
                             </div>
                             <div class="bottom">
                               <span>Campanha (s)</span>
@@ -338,15 +338,15 @@ export default {
           background-color: $orange;
       }
 
-      .tabcampaing {
+      .tabcampaign {
 
           .main-title {
               margin-bottom: 30px;
           }
 
-          .campaings {
+          .campaigns {
 
-              .campaing {
+              .campaign {
 
                   .content {
                       overflow: auto;

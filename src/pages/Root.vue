@@ -6,7 +6,7 @@
           <md-button class="md-icon-button">
             <md-icon>menu</md-icon>
           </md-button>
-          <span class="md-title">Create campaing</span>
+          <span class="md-title">{{$route.name}}</span>
         </div>
           <div class="md-toolbar-section-end">
             <md-button class="md-icon-button">
@@ -85,8 +85,7 @@
         </md-avatar>
 
         <div class="md-list-item-text">
-          <span>Coffee When Wakeup</span>
-
+            <span>Coffee When Wakeup</span>
             <span> 17 Investors</span>
           <md-progress-bar md-mode="determinate" :md-value="22"></md-progress-bar>
         </div>
@@ -154,3 +153,4 @@ export default {
   }
 }
 </script>
+

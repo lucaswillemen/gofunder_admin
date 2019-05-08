@@ -52,13 +52,14 @@ export default new Router({
     },
     {
       path: '/',
-      name: 'Root',
+      name: 'Dashboard',
       component: Root,
       meta: {
         onlyAuth: true
       },
       children: [{
           path: '/create',
+          name: 'Criação de Campanha',
           component: Create,
           meta: {
             onlyAuth: true
@@ -66,6 +67,7 @@ export default new Router({
         },
         {
           path: '/campaigns',
+          name: 'Minhas Campanhas',
           component: Campaigns,
           meta: {
             onlyAuth: true
@@ -73,6 +75,7 @@ export default new Router({
         },
         {
           path: '/edit/:id',
+          name: 'Edição de Campanha',
           component: Edit,
           meta: {
             onlyAuth: true

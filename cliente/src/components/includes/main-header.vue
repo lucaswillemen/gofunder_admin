@@ -63,7 +63,7 @@
           </a>!-->
         </div>
         <div class="btn-noborder margins">
-          <a href="/#/user/campaing/create">
+          <a href="/#/user/campaign/create">
             <b-button>Começar uma campanha</b-button>
           </a>
         </div>

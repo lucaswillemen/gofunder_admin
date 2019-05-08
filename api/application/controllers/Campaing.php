@@ -1,5 +1,5 @@
 <?php
-class Campaing extends CI_Controller
+class campaign extends CI_Controller
 {
 
 	public function deletegalery()
@@ -44,7 +44,7 @@ class Campaing extends CI_Controller
 
 	public function getgalery()
 	{
-			$images = $this->db->where('campaign_id', $this->input->get("campaing_id"))->get('campaign_galery')->result_array();
+			$images = $this->db->where('campaign_id', $this->input->get("campaign_id"))->get('campaign_galery')->result_array();
 			$this->output->set_content_type('application/json')->set_output(json_encode($images));
 	}
 
@@ -64,10 +64,10 @@ class Campaing extends CI_Controller
     {
         $result = [
         "country" => $this->db->get("countries")->result(),
-        "campaing_type" => $this->db->where("type", "type")->get("campaing_opt")->result(),
-        "campaing_develop" => $this->db->where("type", "develop")->get("campaing_opt")->result(),
-        "campaing_funds" => $this->db->where("type", "funds")->get("campaing_opt")->result(),
-        "campaing_category" => $this->db->get("category")->result(),
+        "campaign_type" => $this->db->where("type", "type")->get("campaign_opt")->result(),
+        "campaign_develop" => $this->db->where("type", "develop")->get("campaign_opt")->result(),
+        "campaign_funds" => $this->db->where("type", "funds")->get("campaign_opt")->result(),
+        "campaign_category" => $this->db->get("category")->result(),
         ];
         $this->output->set_content_type('application/json')->set_output(json_encode($result));
     }

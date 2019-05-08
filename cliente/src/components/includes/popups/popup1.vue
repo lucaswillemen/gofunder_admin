@@ -58,7 +58,7 @@
 					<div class="boxes">
 						<div class="box">
 							<div class="top">
-								<span>{{total_campaings}}</span>
+								<span>{{total_campaigns}}</span>
 							</div>
 							<div class="bottom">
 								<span>Campanha</span>

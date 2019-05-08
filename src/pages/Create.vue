@@ -57,28 +57,28 @@
                   <md-field :class="getValidationClassSecond('opt_develop')">
                     <label for="developSelect">O seu projeto esta sendo desenvolvido por</label>
                     <md-select v-model="caracteristicas.opt_develop" name="opt_develop" id="developSelect">
-                      <md-option :value="opt.id" v-for="(opt, index) in options.campaing_develop" :key="index">{{opt.name}}</md-option>
+                      <md-option :value="opt.id" v-for="(opt, index) in options.campaign_develop" :key="index">{{opt.name}}</md-option>
                     </md-select>
                     <span class="md-error">Selecione uma opcao</span>
                   </md-field>
                   <md-field :class="getValidationClassSecond('opt_type')">
                     <label for="typeSelect">Qual tipo de seu projeto</label>
                     <md-select v-model="caracteristicas.opt_type" name="opt_type" id="typeSelect">
-                      <md-option :value="opt.id" v-for="(opt, index) in options.campaing_type" :key="index">{{opt.name}}</md-option>
+                      <md-option :value="opt.id" v-for="(opt, index) in options.campaign_type" :key="index">{{opt.name}}</md-option>
                     </md-select>
                     <span class="md-error">Selecione uma opcao</span>
                   </md-field>
                   <md-field :class="getValidationClassSecond('opt_category')">
                     <label for="categorySelect">Escolha a categoria que melhor se adapta ao seu projeto</label>
                     <md-select v-model="caracteristicas.opt_category" name="opt_category" id="categorySelect">
-                      <md-option :value="opt.id" v-for="(opt, index) in options.campaing_category" :key="index">{{opt.name}}</md-option>
+                      <md-option :value="opt.id" v-for="(opt, index) in options.campaign_category" :key="index">{{opt.name}}</md-option>
                     </md-select>
                     <span class="md-error">Selecione uma opcao</span>
                   </md-field>
                   <md-field :class="getValidationClassSecond('opt_funds')">
                     <label for="mfundsSelectovie">Como voce gostaria de receber seus fundos</label>
                     <md-select v-model="caracteristicas.opt_funds" name="opt_funds" id="fundsSelect">
-                      <md-option :value="opt.id" v-for="(opt, index) in options.campaing_funds" :key="index">{{opt.name}}</md-option>
+                      <md-option :value="opt.id" v-for="(opt, index) in options.campaign_funds" :key="index">{{opt.name}}</md-option>
                     </md-select>
                     <span class="md-error">Selecione uma opcao</span>
                   </md-field>
@@ -191,13 +191,13 @@
                   </div>
                   <md-progress-bar md-mode="determinate" :md-value="0"></md-progress-bar>
                 </md-card-content>
-                <div class="loading-overlay" v-if="loadingCampaing">
+                <div class="loading-overlay" v-if="loadingcampaign">
                     <md-progress-spinner md-mode="indeterminate" :md-stroke="2"></md-progress-spinner>
                 </div>
-                <md-dialog-alert :md-active.sync="campaingCreated" md-content="Campanha criada com sucesso!" md-confirm-text="Continuar" />
+                <md-dialog-alert :md-active.sync="campaignCreated" md-content="Campanha criada com sucesso!" md-confirm-text="Continuar" />
 
                 <md-card-actions>
-                  <md-button :disabled="loadingCampaing" class="md-primary" @click="createCampaing()">
+                  <md-button :disabled="loadingcampaign" class="md-primary" @click="createcampaign()">
                     <md-icon>send</md-icon> Send to review
                   </md-button>
                 </md-card-actions>
@@ -229,8 +229,8 @@ export default {
   mixins: [validationMixin],
   data() {
     return {
-      campaingCreated: false,
-      loadingCampaing: false, 
+      campaignCreated: false,
+      loadingcampaign: false, 
       loadingImg: false,
       coverUrl: null,
       base64File: null,
@@ -314,7 +314,7 @@ export default {
         image: this.imageToUpload,
         title: this.informacoes.title
       }
-      global.$post("/campaing/cover", data, this.user.token)
+      global.$post("/campaign/cover", data, this.user.token)
         .then(response => {
           this.coverUrl = response.data.cover_url
           this.steps.fourth = true
@@ -377,7 +377,7 @@ export default {
 
     },
     getOptions() {
-      global.$get("/Campaing/option", {}, this.user.token)
+      global.$get("/campaign/option", {}, this.user.token)
         .then(response => {
           this.options = {
             ...response.data
@@ -388,8 +388,8 @@ export default {
           alert(validErr ? err.response.data.error : "INVALID_ERROR") // enviar alerta
         })
     },
-    createCampaing() {
-      this.loadingCampaing = true
+    createcampaign() {
+      this.loadingcampaign = true
       let self = this
       if (this.$v.caracteristicas.$invalid) {
         this.$v.caracteristicas.$touch()
@@ -422,16 +422,16 @@ export default {
           cover_url: this.coverUrl
         }
 
-        global.$post("/Campaing/create", data, this.user.token)
+        global.$post("/campaign/create", data, this.user.token)
           .then(response => {
-              this.campaingCreated = true
+              this.campaignCreated = true
             })
           .catch(err => {
             let validErr = (err && err.response && err.response.data && err.response.data.error)
             // alert(validErr ? err.response.data.error : "INVALID_ERROR") // enviar alerta
           })
           .finally( () => {
-             this.loadingCampaing = false
+             this.loadingcampaign = false
 
           })
       }
