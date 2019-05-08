@@ -130,25 +130,6 @@ export default {
         }
       }
     }
-  },
-
-
-  computed: {
-    nameInvalid() {
-      return {
-        'md-invalid': this.register.name == null || this.register.name.length < 3
-      }
-    },
-    emailInvalid() {
-      return {
-        'md-invalid': this.register.email == null || !(/\S+@\S+\.\S+/.test(this.register.email))
-      }
-    },
-    passwordInvalid() {
-      return {
-        'md-invalid': this.register.password !== this.register.password2
-      }
-    }
   }
 };
 </script>
