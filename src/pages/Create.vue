@@ -108,7 +108,7 @@
                     <span class="md-error">Informe o valor</span>
 										</md-field>!-->
 										<div class="md-field md-theme-default md-has-value" :class="getValidationClassSecond('amount')">
-											<label for="md-input-y1unieu5t">Qual valor vc espera arrecadar para concluir seu projeto?</label>
+											<label for="md-input-y1unieu5t">Qual valor você espera arrecadar para concluir seu projeto?</label>
 											<span class="md-prefix"></span>										
                       <money v-model="caracteristicas.amount" class="md-input" v-bind="moneyConfig"></money> 
 											<span class="md-error">Informe o valor</span>
@@ -117,7 +117,7 @@
 											<!---->
 										</div>
 										<md-field :class="getValidationClassSecond('opt_develop')">
-											<label for="developSelect">O seu projeto esta sendo desenvolvido por</label>
+											<label for="developSelect">O seu projeto esta sendo desenvolvido por?</label>
 											<md-select v-model="caracteristicas.opt_develop" name="opt_develop" id="developSelect">
 												<md-option
 													:value="opt.id"
@@ -125,10 +125,10 @@
 													:key="index"
 												>{{opt.name}}</md-option>
 											</md-select>
-											<span class="md-error">Selecione uma opcao</span>
+											<span class="md-error">Selecione uma opção</span>
 										</md-field>
 										<md-field :class="getValidationClassSecond('opt_type')">
-											<label for="typeSelect">Qual tipo de seu projeto</label>
+											<label for="typeSelect">Qual tipo do seu projeto?</label>
 											<md-select v-model="caracteristicas.opt_type" name="opt_type" id="typeSelect">
 												<md-option
 													:value="opt.id"
@@ -136,10 +136,10 @@
 													:key="index"
 												>{{opt.name}}</md-option>
 											</md-select>
-											<span class="md-error">Selecione uma opcao</span>
+											<span class="md-error">Selecione uma opção</span>
 										</md-field>
 										<md-field :class="getValidationClassSecond('opt_category')">
-											<label for="categorySelect">Escolha a categoria que melhor se adapta ao seu projeto</label>
+											<label for="categorySelect">Escolha a categoria que melhor se adapta ao seu projeto?</label>
 											<md-select
 												v-model="caracteristicas.opt_category"
 												name="opt_category"
@@ -151,10 +151,10 @@
 													:key="index"
 												>{{opt.name}}</md-option>
 											</md-select>
-											<span class="md-error">Selecione uma opcao</span>
+											<span class="md-error">Selecione uma opção</span>
 										</md-field>
 										<md-field :class="getValidationClassSecond('opt_funds')">
-											<label for="mfundsSelectovie">Como voce gostaria de receber seus fundos</label>
+											<label for="mfundsSelectovie">Como você gostaria de receber seus fundos?</label>
 											<md-select v-model="caracteristicas.opt_funds" name="opt_funds" id="fundsSelect">
 												<md-option
 													:value="opt.id"
@@ -186,16 +186,16 @@
 							<div class="md-layout md-gutter">
 								<md-card class="md-layout-item md-size-100 md-small-size-100">
 									<md-card-header class="md-layout md-gutter md-alignment-center-center">
-										<div class="md-title">Vamos ver como esta o andamento</div>
+										<div class="md-title">Insira as informações da sua campanha</div>
 									</md-card-header>
 									<md-card-content>
 										<md-field :class="getValidationClassThird('title')">
-											<label>Qual o nome/titulo do seu projeto</label>
+											<label>Qual o nome/título do seu projeto?</label>
 											<md-input v-model="informacoes.title" name="title" required></md-input>
-											<span class="md-error">Informe o titulo</span>
+											<span class="md-error">Informe o título</span>
 										</md-field>
 										<md-field :class="getValidationClassThird('description')">
-											<label>Faca um resumo basico do seu projeto</label>
+											<label>Faça um resumo básico do seu projeto</label>
 											<md-textarea v-model="informacoes.description" md-counter="80" required></md-textarea>
 										</md-field>
 
@@ -208,7 +208,7 @@
 										<md-field :class="getValidationClassThird('country_id')">
 											<md-select
 												v-model="informacoes.country_id"
-												placeholder="Em qual pais o seu projeto esta sendo desenvolvido?"
+												placeholder="Em qual país o seu projeto esta sendo desenvolvido?"
 												required
 											>
 												<md-option
@@ -221,10 +221,10 @@
 										<md-checkbox
 											v-model="informacoes.isStarted"
 											class="md-primary"
-										>Seu projeto ja foi iniciado?</md-checkbox>
+										>Seu projeto já foi iniciado?</md-checkbox>
 
 										<md-datepicker v-if="informacoes.isStarted" v-model="informacoes.startAt" md-immediately>
-											<label>Quando pretende iniciar</label>
+											<label>Quando pretende iniciar?</label>
 										</md-datepicker>
 
 										<md-datepicker
@@ -238,7 +238,7 @@
 										<md-checkbox
 											v-model="informacoes.isCountryShared"
 											class="md-primary"
-										>Voce gostaria que pessoas de outros paises vissem seu projeto?</md-checkbox>
+										>Você gostaria que pessoas de outros países vissem seu projeto?</md-checkbox>
 									</md-card-content>
 								</md-card>
 							</div>
@@ -250,13 +250,13 @@
 						</form>
 					</md-step>
 
-					<md-step id="fourth" md-label="Picture" :md-done.sync="steps.fourth">
+					<md-step id="fourth" md-label="Imagem" :md-done.sync="steps.fourth">
 						<md-card>
 							<div>
 								<md-empty-state
 									md-icon="add_a_photo"
-									md-label="Card picture"
-									md-description="Creating project, you'll be able to upload your design and collaborate with people."
+									md-label="Adicione uma foto"
+									md-description="Adicione uma foto que represente bem sobre o que se trata sua campanha."
 								>
 									<input type="file" id="img-picker" @change="pickImg($event)">
 									<div v-if="base64File" class="img-preview">
@@ -269,13 +269,13 @@
 										class="md-primary md-raised"
 										@click="uploadImage()"
 										:disabled="loadingImg || !imageToUpload"
-									>Send your card picture</md-button>
+									>Enviar imagem</md-button>
 								</md-empty-state>
 							</div>
 						</md-card>
 					</md-step>
 
-					<md-step id="fifth" md-label="Review" :md-done.sync="steps.fifth">
+					<md-step id="fifth" md-label="Revisão" :md-done.sync="steps.fifth">
 						<div class="md-layout md-gutter md-alignment-center-center">
 							<div class="md-layout-item md-small-size-100 md-size-50">
 								<md-card>
@@ -314,7 +314,7 @@
 
 									<md-card-actions>
 										<md-button :disabled="loadingcampaign" class="md-primary" @click="createcampaign()">
-											<md-icon>send</md-icon>Send to review
+											<md-icon>send</md-icon>Enviar para análise
 										</md-button>
 									</md-card-actions>
 								</md-card>
@@ -470,7 +470,7 @@ export default {
 				this.moveStep("second", "third");
 			} else {
 				this.steps.second = false;
-				this.secondError = "Reveja as informacoes";
+				this.secondError = "Reveja as informações";
 			}
 		},
 		getValidationClassThird(fieldName) {
@@ -488,7 +488,7 @@ export default {
 				this.moveStep("third", "fourth");
 			} else {
 				this.steps.third = false;
-				this.thirdError = "Reveja as informacoes";
+				this.thirdError = "Reveja as informações";
 			}
 		},
 		getOptions() {
@@ -512,14 +512,14 @@ export default {
 				this.$v.caracteristicas.$touch();
 				this.steps.second = false;
 				this.moveStep("fourth", "second");
-				this.secondError = "Reveja as informacoes";
+				this.secondError = "Reveja as informações";
 				return false;
 			}
 			if (this.$v.informacoes.$invalid) {
 				this.$v.informacoes.$touch();
 				this.steps.third = false;
 				this.moveStep("fourth", "third");
-				this.thirdError = "Reveja as informacoes";
+				this.thirdError = "Reveja as informações";
 				return false;
 			}
 			if (
