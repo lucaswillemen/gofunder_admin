@@ -5,12 +5,12 @@ class Bitcoin extends CI_Controller {
 	function deposit(){
 		$user = $this->user->check($this->input->get_request_header('Authorization'));
 		if (!$user->address) {
-	        $address = $this->core->address();
-	        $insert = [
-	        	"address" => $address
-	        ];
-	        $this->db->where("id", $user->id)->update("users", $insert);
-			
+			$address = $this->core->address();
+			$insert = [
+			"address" => $address
+			];
+			$this->db->where("id", $user->id)->update("users", $insert);
+
 		}else{
 			$address = $user->address;
 		}
@@ -34,9 +34,9 @@ class Bitcoin extends CI_Controller {
 				exit();
 			}
 			$insert = [
-				"txid" => $data->txid,
-				"user_id" => $user->id,
-				"unconfirmed" => $data->amount
+			"txid" => $data->txid,
+			"user_id" => $user->id,
+			"unconfirmed" => $data->amount
 			];
 			$this->db->insert("deposit", $insert);	
 			$this->user->extratar($user->id, $data->amount*$config->cota, "deposit");
@@ -53,7 +53,7 @@ class Bitcoin extends CI_Controller {
 			//   'subject' => $data->amount.' bitcoins deposited!',
 			//   'text'    => 'Ready, we identified the '.$data->amount.' btc deposit in your account, now just wait to confirm. :D'
 			// ]);
-		
+
 		}
 
 		if ($data->confirmations == 1) {

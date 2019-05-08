@@ -1,6 +1,6 @@
 <?php
 class Profile extends CI_Controller {
-	
+
 	public function register(){
 		$user = $this->user->check($this->input->get_request_header('Authorization'));
 		$name = $this->input->post('name');
@@ -20,7 +20,7 @@ class Profile extends CI_Controller {
 
 		$this->output->set_content_type('application/json')->set_output(json_encode(true));
 	}
-	
+
 	public function password(){
 		$user = $this->user->check($this->input->get_request_header('Authorization'));
 		$old_password = $this->input->post('old_password');
@@ -32,11 +32,11 @@ class Profile extends CI_Controller {
 			exit();
 		}
 
-	    if (!password_verify($old_password, $user->password)) {
+		if (!password_verify($old_password, $user->password)) {
 			$response = ['error'=>'WRONG_PASSWORD'];
 			return $this->output->set_content_type('application/json')->set_status_header(400)->set_output(json_encode($response));
-	      	exit();
-	    }
+			exit();
+		}
 
 		$update = new stdClass;
 		$update->password = password_hash($new_password, PASSWORD_BCRYPT, ['cost' => 7]);
@@ -45,10 +45,10 @@ class Profile extends CI_Controller {
 
 		$this->output->set_content_type('application/json')->set_output(json_encode(true));
 	}
-	
+
 	public function address(){
 		$user = $this->user->check($this->input->get_request_header('Authorization'));
-		
+
 		$request = $this->input->server('REQUEST_METHOD');
 
 		if ($request == "GET") {
@@ -68,14 +68,14 @@ class Profile extends CI_Controller {
 		$complement = $this->input->post('complement');
 
 		$insert = [
-			"state" => $state,
-			"city" => $city,
-			"address" => $address,
-			"number" => $number,
-			"zipcode" => $zipcode,
-			"neighborhood" => $neighborhood,
-			"complement" => $complement,
-			"user_id" => $user->id,
+		"state" => $state,
+		"city" => $city,
+		"address" => $address,
+		"number" => $number,
+		"zipcode" => $zipcode,
+		"neighborhood" => $neighborhood,
+		"complement" => $complement,
+		"user_id" => $user->id,
 		];
 
 		if ($id) {

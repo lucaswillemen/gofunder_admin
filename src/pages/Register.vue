@@ -22,12 +22,13 @@
         <md-field :class="getValidationClass('password')">
           <label>Senha</label>
           <md-input v-model="register.password" name="password" type="password" required></md-input>
-          <span class="md-error">As senhas digitadas não conferem!</span>
+          <span class="md-error">Informe uma senha!</span>
         </md-field>
 
         <md-field :class="getValidationClass('password2')">
           <label>Confirme sua senha</label>
           <md-input v-model="register.password2" type="password" name="password2" required></md-input>
+          <span class="md-error">As senhas digitadas não conferem!</span>
         </md-field>
 
         <router-link to="/login">Você já tem uma conta?</router-link>
@@ -44,7 +45,7 @@
 
 
   </md-content>
-  <md-dialog-alert :md-active.sync="first" md-content="Wrogn password!" md-confirm-text="Close!" />
+  <md-dialog-alert :md-active.sync="emailUsed" md-content="O e-mail já está sendo usado!" md-confirm-text="Fechar" />
 
   <div class="background" />
 </div>
@@ -62,14 +63,15 @@ import {
   required,
   email,
   minLength,
-  maxLength
+  maxLength,
+  sameAs
 }
 from 'vuelidate/lib/validators'
 export default {
   name: "Register",
   data() {
     return {
-      first: false,
+      emailUsed: false,
       loading: false,
       register: {
         name: null,
@@ -90,7 +92,7 @@ export default {
         required
       },
       password2: {
-        required
+        sameAsPassword: sameAs('password')
       },
       name: {
         required
@@ -108,13 +110,11 @@ export default {
       this.loading = true
       global.$post("/Auth/register", this.register)
         .then(response => {
-          location.href = '/login'
+          location.href = '/create'
         })
         .catch(err => {
           let validErr = (err && err.response && err.response.data && err.response.data.error)
-          alert(validErr ? err.response.data.error : "INVALID_ERROR") // enviar alerta
-        })
-        .finally(() => {
+          this.emailUsed = true
           this.loading = false
         })
     },
@@ -126,25 +126,6 @@ export default {
         return {
           'md-invalid': field.$invalid && field.$dirty
         }
-      }
-    }
-  },
-
-
-  computed: {
-    nameInvalid() {
-      return {
-        'md-invalid': this.register.name == null || this.register.name.length < 3
-      }
-    },
-    emailInvalid() {
-      return {
-        'md-invalid': this.register.email == null || !(/\S+@\S+\.\S+/.test(this.register.email))
-      }
-    },
-    passwordInvalid() {
-      return {
-        'md-invalid': this.register.password !== this.register.password2
       }
     }
   }
