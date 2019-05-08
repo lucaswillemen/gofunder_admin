@@ -25,10 +25,12 @@
 				<md-divider></md-divider>
 				<md-subheader>Navigation</md-subheader>
 				<md-list>
-					<router-link to="/">
-						<md-list-item v-bind:class="{'nav-item': true, 'active': $router.currentRoute.path=='/'}">
-							<md-icon>dashboard</md-icon>
-							<span class="md-list-item-text">Dashboard</span>
+					<router-link to="/campaigns">
+						<md-list-item
+							v-bind:class="{'nav-item': true, 'active': $router.currentRoute.path=='/campaigns'}"
+						>
+							<md-icon>send</md-icon>
+							<span class="md-list-item-text">My campaigns</span>
 						</md-list-item>
 					</router-link>
 					<router-link to="/create">
@@ -39,14 +41,7 @@
 							<span class="md-list-item-text">Create new campaign</span>
 						</md-list-item>
 					</router-link>
-					<router-link to="/campaigns">
-						<md-list-item
-							v-bind:class="{'nav-item': true, 'active': $router.currentRoute.path=='/campaigns'}"
-						>
-							<md-icon>send</md-icon>
-							<span class="md-list-item-text">My campaigns</span>
-						</md-list-item>
-					</router-link>
+
 					<a href="#" @click="logout()">
 						<md-list-item class="nav-item">
 							<md-icon>close</md-icon>
