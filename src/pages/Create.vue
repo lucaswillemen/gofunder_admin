@@ -1,7 +1,7 @@
 <template class="">
 	<md-content>
 		<div class="md-layout md-alignment-center-center">
-			<div class="md-layout-item md-size-60 md-small-size-100">
+			<div class="md-layout-item md-size-100 md-xlarge-size-60">
 				<md-steppers :md-active-step.sync="actualStep" md-linear md-alternative>
 					<md-step id="first" md-label="Objetivo" :md-done.sync="steps.first">
 						<div class="md-layout md-gutter md-alignment-center-center">
@@ -258,7 +258,12 @@
 									md-label="Adicione uma foto"
 									md-description="Adicione uma foto que represente bem sobre o que se trata sua campanha."
 								>
-									<input type="file" id="img-picker" @change="pickImg($event)">
+										<div class="upload-btn-wrapper">
+											<input type="file" id="img-picker" @change="pickImg($event)" />
+									
+											<button class="md-primary md-upload-btn">Abrir imagem</button>
+										</div>
+
 									<div v-if="base64File" class="img-preview">
 										<img :src="base64File">
 									</div>
@@ -581,6 +586,33 @@ export default {
 </script>
 
 <style lang="scss">
+.upload-btn-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.md-upload-btn {
+  border: 2px solid gray;
+  color: gray;
+  background-color: white;
+  padding: 8px 20px;
+  border-radius: 0px;
+  font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    
+}
+
+.upload-btn-wrapper input[type=file] {
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+
+
 .md-card.md-theme-default {
 	margin: 30px;
 }

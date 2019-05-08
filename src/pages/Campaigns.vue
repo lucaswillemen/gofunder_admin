@@ -1,6 +1,6 @@
 <template class=" md-grutter">
   <div class="md-layout md-grutter">
-    <div v-for="(campaign, index) in campaigns" :key="index" class="md-layout-item md-small-size-100 md-medium-size-50 md-large-size-33 md-size-25"> 
+    <div v-for="(campaign, index) in campaigns" :key="index" class="md-layout-item md-size-100 md-medium-size-50 md-large-size-33 md-xlarge-size-25"> 
       <md-card>
         <md-card-area md-inset>
           <md-card-media md-ratio="16:9">

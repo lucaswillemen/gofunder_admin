@@ -121,17 +121,12 @@ class Campaign extends CI_Controller
 	public function getlist()
 	{
 		$user = $this->user->check($this->input->get_request_header('Authorization'));
-		$campaigns_rascunho = $this->db->where('user_id', $user->id)->where('status', 0)->get('campaign')->result_array();
-		foreach ($campaigns_rascunho as $k => $v) {
-			$campaigns_rascunho[$k]["number_of_investor"] = rand(0, 100); // arrumar aqui pra pegar numero de doadores
-			$campaigns_rascunho[$k]["arrecadation"] = rand(0, $v["amount"]); // arrumar aqui pra pegar doação
-		}
-		$campaigns = $this->db->where('user_id', $user->id)->where('status', 1)->get('campaign')->result_array();
+		$campaigns = $this->db->where('user_id', $user->id)->get('campaign')->result_array();
 		foreach ($campaigns as $k => $v) {
 			$campaigns[$k]["number_of_investor"] = rand(0, 100); // arrumar aqui pra pegar numero de doadores
 			$campaigns[$k]["arrecadation"] = rand(0, $v["amount"]); // arrumar aqui pra pegar doação
 		}
-		$this->output->set_content_type('application/json')->set_output(json_encode(["rascunho" => $campaigns_rascunho, "lancadas" => $campaigns]));
+		$this->output->set_content_type('application/json')->set_output(json_encode($campaigns));
 	}
 
 	public function option()
