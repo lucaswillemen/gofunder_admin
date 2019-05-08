@@ -10,7 +10,7 @@ import 'vue-material/dist/theme/default.css'
 import CKEditor from '@ckeditor/ckeditor5-vue'
 //import 'vue-material/dist/theme/custom.css'
 import "@/style.css"
-
+import AlertVue from "./components/AlertVue.vue"
 
 
 
@@ -18,6 +18,7 @@ Vue.config.productionTip = false
 Vue.use(VueMaterial)
 Vue.use(Vuelidate)
 Vue.use(CKEditor)
+Vue.use(AlertVue)
 
 new Vue({
   router,

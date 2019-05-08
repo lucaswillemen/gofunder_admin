@@ -44,7 +44,7 @@
 
 
   </md-content>
-  <md-dialog-alert :md-active.sync="first" md-content="Wrogn password!" md-confirm-text="Close!" />
+  <md-dialog-alert :md-active.sync="emailUsed" md-content="O e-mail já está sendo usado!" md-confirm-text="Fechar" />
 
   <div class="background" />
 </div>
@@ -69,7 +69,7 @@ export default {
   name: "Register",
   data() {
     return {
-      first: false,
+      emailUsed: false,
       loading: false,
       register: {
         name: null,
@@ -112,7 +112,7 @@ export default {
         })
         .catch(err => {
           let validErr = (err && err.response && err.response.data && err.response.data.error)
-          alert(validErr ? err.response.data.error : "INVALID_ERROR") // enviar alerta
+          this.emailUsed = true
         })
         .finally(() => {
           this.loading = false
