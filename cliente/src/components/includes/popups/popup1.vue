@@ -148,7 +148,7 @@
 				user_img: require('Img/admin/user.png'),
 				user_occupation: 'Ativista / Autor',
 				user_text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
-				total_campaings: 1,
+				total_campaigns: 1,
 				amout: '$ 950,003',
 				contributions: 3,
 				socials: [

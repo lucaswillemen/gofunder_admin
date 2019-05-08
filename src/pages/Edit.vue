@@ -162,10 +162,12 @@
               <span>{{faq.question}}</span>
               <span>{{faq.answer}}</span>
             </div>
-            <div class="md-list-item-text">
+            <md-button class="md-icon-button" @click="openEditFaqModal(faq)">
               <md-icon>edit</md-icon>
+            </md-button>
+            <md-button class="md-icon-button" @click="deleteFaq(faq.id)">
               <md-icon>delete</md-icon>
-            </div>
+            </md-button>
           </md-list-item>
         </md-list>
       </div>
@@ -193,7 +195,7 @@
             <md-button :disabled="!faqQuestion || !faqAnswer" class="md-primary md-raised" @click="addFaq()">Add</md-button>
           </md-dialog-actions>
         </md-dialog>
-        <md-dialog :md-active.sync="editFaq">
+        <md-dialog :md-active.sync="edittingFaq">
           <md-dialog-title>Editar FAQ</md-dialog-title>
           <md-dialog-content>
             <md-field>
@@ -207,7 +209,7 @@
           </md-dialog-content>
           <md-dialog-actions>
             <md-button class="md-acent md-raised" @click="resetFaq()">Close</md-button>
-            <md-button :disabled="!faqEditQuestion || !faqEditAnswer" class="md-primary md-raised" @click="addFaq()">Add</md-button>
+            <md-button :disabled="!faqEditQuestion || !faqEditAnswer" class="md-primary md-raised" @click="editFaq()">Edit</md-button>
           </md-dialog-actions>
         </md-dialog>
       </div>
@@ -225,7 +227,8 @@ export default {
   },
   data() {
     return {
-      editFaq: false,
+      faqOnEdit: null,
+      edittingFaq: false,
       faqEditAnswer: null,
       faqEditQuestion: null,
       faqQuestion: null,
@@ -265,9 +268,6 @@ export default {
     },
     clickOnFileInput() {
       document.getElementById('input-file').click()
-    },
-    addImageToGallery() {
-      
     },
     pickImg(evt) {
       let reader = new FileReader()
@@ -376,7 +376,7 @@ export default {
       }
       global.$post("/Campaign/deletefaq", data, this.user.token)
       .then(res => {
-          this.loadGallery()
+          this.loadFaq()
       })
       .catch(err => {
         let validErr = (err && err.response && err.response.data && err.response.data.error)
@@ -386,12 +386,19 @@ export default {
         this.loading = false
       })
     },
-    editFaq(id) {
+    openEditFaqModal(faq) {
+      this.edittingFaq = true
+      this.faqOnEdit = faq
+      this.faqEditAnswer = faq.answer
+      this.faqEditQuestion = faq.question
+    },
+    editFaq() {
       this.loading = true
+      this.edittingFaq = false
       let data = {
-        id: id,
-        answer: faqEditAnswer,
-        question: faqEditQuestion
+        id: this.faqOnEdit.id,
+        answer: this.faqEditAnswer,
+        question: this.faqEditQuestion
       }
       global.$post("/Campaign/deletefaq", data, this.user.token)
       .then(res => {

@@ -99,9 +99,6 @@
                     .catch(err => {
                         this.loginError = true
                     })
-                    .finally(() => {
-                        this.loading = false
-                    })
             },
             getValidationClass(fieldName) {
                 const field = this.$v.login[fieldName]
@@ -114,7 +111,7 @@
             }
         },
         mounted() {
-
+            this.loading = false
         }
 
 
