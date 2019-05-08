@@ -115,8 +115,6 @@ export default {
         .catch(err => {
           let validErr = (err && err.response && err.response.data && err.response.data.error)
           this.emailUsed = true
-        })
-        .finally(() => {
           this.loading = false
         })
     },
