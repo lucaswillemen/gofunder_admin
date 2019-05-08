@@ -63,7 +63,8 @@ import {
   required,
   email,
   minLength,
-  maxLength
+  maxLength,
+  sameAs
 }
 from 'vuelidate/lib/validators'
 export default {
