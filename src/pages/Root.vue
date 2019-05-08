@@ -145,11 +145,11 @@ export default {
     }
   },
   mounted() {
-    this.checkLogin()
-    this.intervalTimer = setInterval(this.checkLogin, 10000)
+    //this.checkLogin()
+    //this.intervalTimer = setInterval(this.checkLogin, 10000)
   },
   beforeDestroy() {
-    clearInterval(this.intervalTimer)
+    //clearInterval(this.intervalTimer)
   }
 }
 </script>
