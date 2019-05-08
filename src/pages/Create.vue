@@ -109,8 +109,7 @@
 										</md-field>!-->
 										<div class="md-field md-theme-default md-has-value" :class="getValidationClassSecond('amount')">
 											<label for="md-input-y1unieu5t">Qual valor vc espera arrecadar para concluir seu projeto?</label>
-											<span class="md-prefix"></span>
-										
+											<span class="md-prefix"></span>										
                       <money v-model="caracteristicas.amount" class="md-input" v-bind="moneyConfig"></money> 
 											<span class="md-error">Informe o valor</span>
 											<!---->
@@ -380,7 +379,7 @@ export default {
 			moneyConfig: {
 				decimal: ",",
 				thousands: ".",
-				prefix: "R$ ",
+				prefix: "$ ",
 				suffix: "",
 				precision: 2,
 				masked: false
