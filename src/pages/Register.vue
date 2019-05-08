@@ -110,7 +110,7 @@ export default {
       this.loading = true
       global.$post("/Auth/register", this.register)
         .then(response => {
-          location.href = '/login'
+          location.href = '/create'
         })
         .catch(err => {
           let validErr = (err && err.response && err.response.data && err.response.data.error)
