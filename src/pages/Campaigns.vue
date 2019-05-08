@@ -30,8 +30,8 @@
                 <h3 class="md-subheading">Progresso</h3>
                 <div class="card-reservation">
                   <div class="md-button-group md-layout md-alignment-center-center">
-                    <md-button class="md-layout-item">${{campaign.arrecadation}}</md-button>de
-                    <md-button class="md-layout-item">${{campaign.amount}}</md-button>
+                    <md-button class="md-layout-item">{{campaign.arrecadation | currency}}</md-button>de
+                    <md-button class="md-layout-item">{{campaign.amount | currency}}</md-button>
                   </div>
                 </div>
                 <md-progress-bar md-mode="determinate" :md-value="(campaign.arrecadation/campaign.amount)*100"></md-progress-bar>
@@ -72,8 +72,8 @@
                 <h3 class="md-subheading">Progresso</h3>
                 <div class="card-reservation">
                   <div class="md-button-group md-layout md-alignment-center-center">
-                    <md-button class="md-layout-item">${{campaign.arrecadation}}</md-button>de
-                    <md-button class="md-layout-item">${{campaign.amount}}</md-button>
+                    <md-button class="md-layout-item">{{campaign.arrecadation | currency}}</md-button>de
+                    <md-button class="md-layout-item">{{campaign.amount | currency}}</md-button>
                   </div>
                 </div>
                 <md-progress-bar md-mode="determinate" :md-value="(campaign.arrecadation/campaign.amount)*100"></md-progress-bar>
