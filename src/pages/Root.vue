@@ -51,48 +51,24 @@
 				</md-list>
 
 				<md-divider></md-divider>
-
-				<md-divider></md-divider>
-
-				<md-divider></md-divider>
-
-				<!--<md-divider></md-divider>
-				<md-list class="md-triple-line">
-					<router-link to="/edit">
+				<md-list v-for="(campaign, index) in campaigns" :key="index" class="md-triple-line bordered" >
+					<router-link :to="'/edit/'+campaign.id">
 						<md-list-item>
 							<md-avatar>
-								<img src="https://www.raspberrypi.org/wp-content/uploads/2014/09/IMG_4456.jpg" alt="People">
+           			<img :src="'http://25.20.118.56/gofunder/'+campaign.cover_url">
 							</md-avatar>
 
 							<div class="md-list-item-text">
-								<span>Coffee When Wakeup</span>
+								<span>{{campaign.title}}</span>
 
-								<span>12 Investors</span>
-								<md-progress-bar md-mode="determinate" :md-value="15"></md-progress-bar>
+								<span>{{campaign.number_of_investor}} investidores</span>
+          			<md-progress-bar md-mode="determinate" :md-value="(campaign.arrecadation/campaign.amount)*100"></md-progress-bar>
+
 							</div>
 						</md-list-item>
 					</router-link>
-
-					<md-divider></md-divider>
-					<router-link to="/edit">
-						<md-list-item>
-							<md-avatar>
-								<img
-									src="http://www.coffeeshopexpo.co.uk/showimages/rural_blogs/topimage/ruralblog_7469.jpg"
-									alt="People"
-								>
-							</md-avatar>
-
-							<div class="md-list-item-text">
-								<span>Coffee When Wakeup</span>
-								<span>17 Investors</span>
-								<md-progress-bar md-mode="determinate" :md-value="22"></md-progress-bar>
-							</div>
-						</md-list-item>
-					</router-link>
+					
 				</md-list>
-				<md-divider></md-divider>!-->
-
 			</md-app-drawer>
 			<md-app-content style="padding: 0px;">
 				
@@ -117,6 +93,7 @@ export default {
 	},
 	data() {
 		return {
+			campaigns: [],
 			intervalTimer: false
 		};
 	},
@@ -138,10 +115,21 @@ export default {
 				.catch(() => {
 					this.logout();
 				});
-		}
+		},
+		listCampaigns() {
+      global.$get("/campaign/getList?user_id="+this.user.id, {}, this.user.token)
+        .then(response => {
+            this.campaigns = response.data
+        })
+        .catch(err => {
+          let validErr = (err && err.response && err.response.data && err.response.data.error)
+          alert(validErr ? err.response.data.error : "INVALID_ERROR") // enviar alerta
+        })
+    }
 	},
 	mounted() {
 		this.checkLogin();
+		this.listCampaigns();
 		this.intervalTimer = setInterval(this.checkLogin, 10000);
 	},
 	beforeDestroy() {
@@ -149,4 +137,12 @@ export default {
 	}
 };
 </script>
+<style lang="scss" scoped>
+.bordered {
+	&:not(:last-child) {
+		border-bottom: 1px solid
+			var(--md-theme-default-divider, rgba(0, 0, 0, 0.12));
+	}
+}
+</style>
 
