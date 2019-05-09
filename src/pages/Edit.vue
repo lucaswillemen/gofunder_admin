@@ -24,7 +24,18 @@
 				</div>
 			</md-tab>
 			<md-tab id="tab-gift" md-label="perks" md-icon="card_giftcard">
-				<div class="md-layout md-grutter">
+
+				<span class="no-pic-message md-layout  md-alignment-center-center" v-if="perkList.length == 0">
+					<md-card class="mt-layout-item">
+						<md-empty-state
+					      md-icon="card_giftcard"
+					      md-label="Create your first perk"
+					      md-description="Perks are used as gratification for the people who supported your campaign.">
+					      <md-button class="md-primary md-raised"  @click="showDialog = true">Create</md-button>
+					    </md-empty-state>
+					</md-card>
+				</span>
+				<div class="md-layout md-grutter" v-else>
 					<div v-for="perk in perkList" class="md-layout-item md-small-size-100 md-medium-size-50 md-large-size-33 md-size-25">
 						<md-card>
 							<md-card-area md-inset>
@@ -48,6 +59,7 @@
 										<md-icon>star</md-icon>
 										<span class="md-list-item-text">Um pires</span>
 									</md-list-item>
+								<md-button class="md-raised md-primary">Add itens</md-button>
 								</md-list>
 							</md-card-content>
 							<md-card-actions>
@@ -69,12 +81,17 @@
 				<div>
 					<md-dialog :md-active.sync="showDialog">
 						<md-dialog-title>Create new perk</md-dialog-title>
+						<md-card v-if="base64FilePerk">
+					      	<md-card-media  md-ratio="16:9">
+					        	<img  :src="base64FilePerk">
+					      	</md-card-media>
+					  	</md-card>
+						</md-dialog-content>
 						<md-dialog-content>
 							<input type="file" style="display: none" id="input-file-perk" @change="pickImgPerk($event)">
 							<md-button v-if="!imageToUploadPerk" @click="clickOnFileInputPerk()" class="md-fab md-primary">
 								<md-icon>add_a_photo</md-icon>
 							</md-button>
-							<img v-if="base64FilePerk" class="rounded-circle max-img-size" :src="base64FilePerk">
 
 							<md-field>
 								<label>Qual o nome do seu perk?</label>
@@ -100,17 +117,18 @@
 				</div>
 			</md-tab>
 			<md-tab id="tab-collections" md-label="Gallery" md-icon="collections">
-				<div class="md-layout md-grutter">
-					<span
-						class="no-pic-message"
-						v-if="pictures.length == 0"
-					>Nenhuma imagem inserida, clique no botão ' + ' para adicionar</span>
-					<div
-						class="md-layout-item md-small-size-100 md-medium-size-50 md-large-size-33 md-size-25"
-						v-else
-						v-for="(picture, index) in pictures"
-						:key="index"
-					>
+				<span class="no-pic-message md-layout  md-alignment-center-center" v-if="pictures.length == 0">
+					<md-card class="mt-layout-item">
+						<md-empty-state
+					      md-icon="add_a_photo"
+					      md-label="Upload your first picture"
+					      md-description="Images will be shown in your campaign gallery.">
+					      <md-button class="md-primary md-raised"  @click="showAddImg = true">Chose image</md-button>
+					    </md-empty-state>
+					</md-card>
+				</span>
+				<div class="md-layout md-grutter" v-else>
+					<div class="md-layout-item md-small-size-100 md-medium-size-50 md-large-size-33 md-size-25" v-for="(picture, index) in pictures" :key="index">
 						<md-card>
 							<md-card-actions>
 								<md-button class="md-fab md-mini" @click="deleteImage(picture.id)">
@@ -131,7 +149,7 @@
 					</div>
 					<div class="md-layout-item md-small-size-100 md-medium-size-50 md-large-size-33 md-size-25">
 						<br>
-						<md-button :disabled="loading" class="md-fab md-primary" @click="showAddImg = true">
+						<md-button :disabled="loading" class="md-fab md-primary" @click="showAddImg = true" v-if="pictures.length != 0">
 							<md-icon>add</md-icon>
 						</md-button>
 					</div>
@@ -166,9 +184,24 @@
 				</div>
 			</md-tab>
 			<md-tab id="tab-question_answer" md-label="Faqs" md-icon="question_answer">
-				<div class="md-layout md-grutter md-alignment-center-center">
-					<md-list class="md-double-line md-size-100">
-						<md-subheader>Faqs</md-subheader>
+
+				<span class="no-pic-message md-layout  md-alignment-center-center" v-if="faqList.length == 0">
+					<md-card class="mt-layout-item">
+						<md-empty-state
+					      md-icon="question_answer"
+					      md-label="Frequently asked questions"
+					      md-description="Answer some basic questions for your investors.">
+					      <md-button class="md-primary md-raised"  @click="createFaq = true">Create</md-button>
+					    </md-empty-state>
+					</md-card>
+				</span>
+				<div class="md-layout md-grutter md-alignment-center-center" v-else>
+					<md-card  style="min-width: 50%">
+
+			      <md-card-header>
+			        <div class="md-title">Frequently asked questions</div>
+			      </md-card-header>
+					<md-list class="md-double-line md-size-100" style="min-width: 50%">
 
 						<md-divider></md-divider>
 						<md-list-item v-for="(faq, index) in faqList" :key="index" class="bordered">
@@ -184,8 +217,10 @@
 							</md-button>
 						</md-list-item>
 					</md-list>
+				</md-card>
 				</div>
-				<div class="md-layout md-grutter md-alignment-center-center">
+
+				<div class="md-layout md-grutter md-alignment-center-center"  v-if="faqList.length != 0">
 					<md-button class="md-fab md-primary" @click="createFaq = true">
 						<md-icon>add</md-icon>
 					</md-button>
@@ -236,7 +271,42 @@
 					</md-dialog>
 				</div>
 			</md-tab>
-			<md-tab id="tab-share" md-label="Social networks" md-icon="share"></md-tab>
+			<md-tab id="tab-share" md-label="Social networks" md-icon="share">
+				<div class="md-layout md-grutter md-alignment-center-center">
+					<md-card  style="min-width: 50%">
+
+			      <md-card-header>
+			        <div class="md-title">Social networks profiles</div>
+			      </md-card-header>
+        <md-card-content>
+					
+    <md-field>
+      <md-icon class="mdi mdi-instagram"></md-icon>
+      <label>Instagram profile</label>
+      <md-input v-model="initial"></md-input>
+    </md-field>
+    <md-field>
+      <md-icon class="mdi mdi-facebook"></md-icon>
+      <label>Facebook profile</label>
+      <md-input v-model="initial"></md-input>
+    </md-field>
+    <md-field>
+      <md-icon class="mdi mdi-youtube"></md-icon>
+      <label>Youtube channel</label>
+      <md-input v-model="initial"></md-input>
+    </md-field>
+</md-card-content>
+				</md-card>
+				</div>
+					<div class="md-layout md-grutter md-alignment-center-center">
+						<md-button class="md-fab md-primary">
+							<md-icon>close</md-icon>
+						</md-button>
+						<md-button class="md-fab md-primary" style="background:green">
+							<md-icon>save</md-icon>
+						</md-button>
+					</div>
+			</md-tab>
 		</md-tabs>
 	</div>
 </template>

@@ -1,7 +1,7 @@
 <template>
-	<div class="page-container">
-		<md-app style="min-height: 100vh;" md-mode="fixed">
-			<md-app-toolbar class="topbar" style="background:white">
+	<div class="page-conatainer">
+		<md-app md-mode="fixed">
+			<md-app-toolbar class="" style="background:white">
 				<div class="md-toolbar-section-start">
 					<md-button class="md-icon-button">
 						<md-icon>menu</md-icon>
@@ -16,13 +16,13 @@
 						<md-icon>settings</md-icon>
 					</md-button>
 				</div>
+
 			</md-app-toolbar>
 
-			<md-app-drawer md-permanent="full" class="md-elevation-0">
-				<md-toolbar class md-elevation="0" style="background:white">
+			<md-app-drawer md-permanent="full">
+				<md-toolbar style="background:white">
 					<img src="http://gofunder.io/static/img/logo.8941ded.png">
 				</md-toolbar>
-				<md-divider></md-divider>
 				<md-subheader>Navigation</md-subheader>
 				<md-list>
 					<router-link to="/campaigns">
@@ -94,7 +94,8 @@
 				<md-divider></md-divider>!-->
 
 			</md-app-drawer>
-			<md-app-content>
+			<md-app-content style="padding: 0px;">
+				
 				<router-view></router-view>
 			</md-app-content>
 		</md-app>

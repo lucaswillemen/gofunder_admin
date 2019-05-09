@@ -1,7 +1,7 @@
 <template class="">
-	<md-content>
+	<div>
 		<div class="md-layout md-alignment-center-center">
-			<div class="md-layout-item md-size-100 md-xlarge-size-60">
+			<div class="md-layout-item">
 				<md-steppers :md-active-step.sync="actualStep" md-linear md-alternative>
 					<md-step id="first" md-label="Objetivo" :md-done.sync="steps.first">
 						<div class="md-layout md-gutter md-alignment-center-center">
@@ -329,7 +329,7 @@
 				</md-steppers>
 			</div>
 		</div>
-	</md-content>
+	</div>
 </template>
 <script>
 import { mapGetters, mapActions, mapState } from "vuex";

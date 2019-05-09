@@ -8,6 +8,7 @@ import Root from '@/pages/Root.vue';
 import Create from '@/pages/Create.vue';
 import Campaigns from '@/pages/Campaigns.vue';
 import Edit from '@/pages/Edit.vue';
+import Test from '@/pages/Test.vue';
 
 
 Vue.use(Router);
@@ -27,6 +28,13 @@ export default new Router({
     };
   },
   routes: [{
+      path: '/test',
+      name: 'Test',
+      component: Test,
+      meta: {
+        onlyPublic: true
+      }
+    },{
       path: '/login',
       name: 'Login',
       component: Login,
