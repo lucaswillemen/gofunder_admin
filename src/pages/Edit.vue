@@ -31,12 +31,12 @@
 					      md-icon="card_giftcard"
 					      md-label="Create your first perk"
 					      md-description="Perks are used as gratification for the people who supported your campaign.">
-					      <md-button class="md-primary md-raised"  @click="showDialog = true">Create</md-button>
+					      <md-button class="md-primary md-raised"  @click="perkDialog = true">Create</md-button>
 					    </md-empty-state>
 					</md-card>
 				</span>
 				<div class="md-layout md-grutter" v-else>
-					<div v-for="perk in perkList" class="md-layout-item md-small-size-100 md-medium-size-50 md-large-size-33 md-size-25">
+					<div v-for="(perk, index) in perkList" :key="index" class="md-layout-item md-small-size-100 md-medium-size-50 md-large-size-33 md-size-25">
 						<md-card>
 							<md-card-area md-inset>
 								<md-card-media md-ratio="16:9">
@@ -73,44 +73,48 @@
           
 					<div class="md-layout-item md-small-size-100 md-medium-size-50 md-large-size-33 md-size-25">
 						<br>
-						<md-button class="md-fab md-primary" @click="showDialog = true">
+						<md-button class="md-fab md-primary" @click="perkDialog = true">
 							<md-icon>add</md-icon>
 						</md-button>
 					</div>
 				</div>
 				<div>
-					<md-dialog :md-active.sync="showDialog">
-						<md-dialog-title>Create new perk</md-dialog-title>
-						<md-card v-if="base64FilePerk">
-					      	<md-card-media  md-ratio="16:9">
-					        	<img  :src="base64FilePerk">
-					      	</md-card-media>
-					  	</md-card>
-						</md-dialog-content>
+					<md-dialog :md-active.sync="perkDialog">
+						<md-dialog-title>Criar novo Perk</md-dialog-title>
 						<md-dialog-content>
 							<input type="file" style="display: none" id="input-file-perk" @change="pickImgPerk($event)">
 							<md-button v-if="!imageToUploadPerk" @click="clickOnFileInputPerk()" class="md-fab md-primary">
 								<md-icon>add_a_photo</md-icon>
 							</md-button>
+							<div v-else class="dialog-picture">
+								<!-- <img src="https://picsum.photos/200/200" alt=""> -->
+								<img :src="base64FilePerk">
+								<md-button @click="clickOnFileInputPerk()" class="md-fab md-primary">
+									<md-icon>add_a_photo</md-icon>
+								</md-button>
+							</div>
+							
+							<div v-if="$v.imageToUploadPerk.$invalid && $v.imageToUploadPerk.$dirty" style="color: #ff1744;">Insira uma imagem para o perk</div>
 
-							<md-field>
+
+							<md-field :class="{'md-invalid': $v.perk.name.$invalid && $v.perk.name.$dirty}">
 								<label>Qual o nome do seu perk?</label>
 								<md-input v-model="perk.name" required></md-input>
 								<span class="md-error">Informe o titulo</span>
 							</md-field>
-							<md-field>
+							<md-field :class="{'md-invalid': $v.perk.price.$invalid && $v.perk.price.$dirty}">
 								<label>Qual o valor do seu perk?</label>
-								<md-input v-model="perk.price" required></md-input>
-								<span class="md-error">Informe o titulo</span>
+								<md-input v-model.number="perk.price" required></md-input>
+								<span class="md-error">Informe o valor</span>
 							</md-field>
-							<md-field>
+							<md-field :class="{'md-invalid': $v.perk.stock.$invalid && $v.perk.stock.$dirty}">
 								<label>Qual o estoque do seu perk?</label>
 								<md-input v-model="perk.stock" required></md-input>
 								<span class="md-error">Informe o estoque</span>
 							</md-field>
 						</md-dialog-content>
 						<md-dialog-actions>
-							<md-button class="md-acent md-raised" @click="showDialog = false">Close</md-button>
+							<md-button class="md-acent md-raised" @click="resetPerk()">Close</md-button>
 							<md-button class="md-primary md-raised" @click="uploadNewPerk()">Add</md-button>
 						</md-dialog-actions>
 					</md-dialog>
@@ -160,9 +164,9 @@
 							<md-button v-if="!imageToUpload" @click="clickOnFileInput()" class="md-fab md-primary">
 								<md-icon>add_a_photo</md-icon>
 							</md-button>
-							<div v-else class="profile-picture">
+							<div v-else class="dialog-picture">
 								<!-- <img src="https://picsum.photos/200/200" alt=""> -->
-								<img class="rounded-circle" :src="base64File">
+								<img :src="base64File">
 								<md-button @click="clickOnFileInput()" class="md-fab md-primary">
 									<md-icon>add_a_photo</md-icon>
 								</md-button>
@@ -230,40 +234,39 @@
 					<md-dialog :md-active.sync="createFaq">
 						<md-dialog-title>Criar novo FAQ</md-dialog-title>
 						<md-dialog-content>
-							<md-field>
+							<md-field :class="{'md-invalid': $v.faq.question.$invalid && $v.faq.question.$dirty}">
 								<label>Escreva uma pergunta</label>
-								<md-input v-model="faqQuestion" required></md-input>
+								<md-input v-model="faq.question" required></md-input>
+								<span class="md-error">Insira uma pergunta</span>
 							</md-field>
-							<md-field>
+							<md-field :class="{'md-invalid': $v.faq.answer.$invalid && $v.faq.answer.$dirty}">
 								<label>Escreva uma resposta</label>
-								<md-input v-model="faqAnswer" required></md-input>
+								<md-input v-model="faq.answer" required></md-input>
+								<span class="md-error">Insira uma resposta</span>
 							</md-field>
 						</md-dialog-content>
 						<md-dialog-actions>
 							<md-button class="md-acent md-raised" @click="resetFaq()">Close</md-button>
-							<md-button
-								:disabled="!faqQuestion || !faqAnswer"
-								class="md-primary md-raised"
-								@click="addFaq()"
-							>Add</md-button>
+							<md-button class="md-primary md-raised" @click="addFaq()" >Add</md-button>
 						</md-dialog-actions>
 					</md-dialog>
 					<md-dialog :md-active.sync="edittingFaq">
 						<md-dialog-title>Editar FAQ</md-dialog-title>
 						<md-dialog-content>
-							<md-field>
+							<md-field :class="{'md-invalid': $v.faqEdit.question.$invalid && $v.faqEdit.question.$dirty}">
 								<label>Edite sua pergunta</label>
-								<md-input v-model="faqEditQuestion" required></md-input>
+								<md-input v-model="faqEdit.question" required></md-input>
+								<span class="md-error">Insira uma pergunta</span>
 							</md-field>
-							<md-field>
+							<md-field :class="{'md-invalid': $v.faqEdit.answer.$invalid && $v.faqEdit.answer.$dirty}">
 								<label>Edite sua resposta</label>
-								<md-input v-model="faqEditAnswer" required></md-input>
+								<md-input v-model="faqEdit.answer" required></md-input>
+								<span class="md-error">Insira uma resposta</span>
 							</md-field>
 						</md-dialog-content>
 						<md-dialog-actions>
 							<md-button class="md-acent md-raised" @click="resetFaq()">Close</md-button>
 							<md-button
-								:disabled="!faqEditQuestion || !faqEditAnswer"
 								class="md-primary md-raised"
 								@click="editFaq()"
 							>Edit</md-button>
@@ -283,17 +286,17 @@
     <md-field>
       <md-icon class="mdi mdi-instagram"></md-icon>
       <label>Instagram profile</label>
-      <md-input v-model="initial"></md-input>
+      <md-input ></md-input>
     </md-field>
     <md-field>
       <md-icon class="mdi mdi-facebook"></md-icon>
       <label>Facebook profile</label>
-      <md-input v-model="initial"></md-input>
+      <md-input ></md-input>
     </md-field>
     <md-field>
       <md-icon class="mdi mdi-youtube"></md-icon>
       <label>Youtube channel</label>
-      <md-input v-model="initial"></md-input>
+      <md-input ></md-input>
     </md-field>
 </md-card-content>
 				</md-card>
@@ -313,26 +316,34 @@
 <script>
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { mapState } from "vuex";
+import { validationMixin } from "vuelidate";
+import { required } from "vuelidate/lib/validators";
 export default {
 	components: {},
 
 	data() {
 		return {
+			perkDialog: false,
 			perk: {
 				name: "",
 				stock: "",
-				price: 0.0
-      },
+				price: null,
+			},
+			perkStatus: null,
       perkList: [],
 			editor: ClassicEditor,
 			editorConfig: {},
 			faqOnEdit: null,
-			imageToUploadPerk: false,
+			imageToUploadPerk: null,
 			edittingFaq: false,
-			faqEditAnswer: null,
-			faqEditQuestion: null,
-			faqQuestion: null,
-			faqAnswer: null,
+			faqEdit: {
+				question: null,
+				answer: null,
+			},
+			faq: {
+				question: null,
+				answer: null,
+			},
 			faqList: [],
 			loading: false,
 			pictureUrl: null,
@@ -346,18 +357,48 @@ export default {
 				extraPlugins: ["youtube", "imageresize", "emoji"]
 			},
 			base64FilePerk: false,
-			showDialog: false,
 			createFaq: false,
 			allow: true,
 			pictures: []
-		};
+		}
+	},
+	validations: {
+			perk: {
+				name: {
+					required
+				},
+				stock:{
+					required	
+				},
+				price: {
+					required
+				}
+			},
+			faq: {
+				question: {
+					required
+				},
+				answer: {
+					required
+				}
+			},
+			faqEdit: {
+				question: {
+					required
+				},
+				answer: {
+					required
+				}
+			},
+			imageToUploadPerk: {
+				required
+			}
 	},
 	computed: {
 		...mapState(["user"])
 	},
 
 	methods: {
-    
 		loadPerk() {
 			global
 				.$get(
@@ -375,25 +416,42 @@ export default {
 				});
 		},
 		uploadNewPerk() {
-			this.perk.campaign_id = this.$route.params.id;
-			this.perk.image = this.imageToUploadPerk;
-			global
-				.$post("/Content/addperk", this.perk, this.user.token)
-				.then(response => {
-          this.loadPerk()
-          this.showDialog = false
-          this.perk = []
-          this.imageToUploadPerk = ''
-          this.base64FilePerk = ''
-				})
-				.catch(err => {
-					let validErr =
-						err && err.response && err.response.data && err.response.data.error;
-					alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
-				})
-				.finally(() => {
-					this.loading = false;
-				});
+			this.$v.perk.$touch();
+			this.$v.imageToUploadPerk.$touch();
+			if (!this.$v.perk.$invalid && !this.$v.imageToUploadPerk.$invalid) {
+				this.$v.imageToUploadPerk.$reset();
+				this.$v.perk.$reset();
+				this.perk.campaign_id = this.$route.params.id;
+				this.perk.image = this.imageToUploadPerk;
+				global
+					.$post("/Content/addperk", this.perk, this.user.token)
+					.then(response => {
+						this.loadPerk()
+						this.perkDialog = false
+						this.perk = []
+						this.imageToUploadPerk = ''
+						this.base64FilePerk = ''
+					})
+					.catch(err => {
+						let validErr =
+							err && err.response && err.response.data && err.response.data.error;
+						alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
+					})
+					.finally(() => {
+						this.loading = false;
+					});
+				} else {
+					this.perkStatus = 'error' 
+				}
+		},
+		resetPerk() {
+			this.perkDialog = false
+			this.imageToUploadPerk = null
+			this.perk.stock = null
+			this.perk.price = null
+			this.perk.name = null
+			this.$v.imageToUploadPerk.$reset();
+			this.$v.perk.$reset();
 		},
 		//GALLERY
 		loadGallery() {
@@ -516,30 +574,37 @@ export default {
 				});
 		},
 		addFaq() {
-			this.createFaq = false;
-			this.loading = true;
-			let data = {
-				campaign_id: this.$route.params.id,
-				question: this.faqQuestion,
-				answer: this.faqAnswer
-			};
-			global
-				.$post("/Content/addfaq", data, this.user.token)
-				.then(res => {
-					this.loadFaq();
-				})
-				.catch(err => {
-					let validErr =
-						err && err.response && err.response.data && err.response.data.error;
-					alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
-				})
-				.finally(() => {
-					this.loading = false;
-				});
+			this.$v.faq.$touch();
+			if (!this.$v.faq.$invalid) {
+				this.createFaq = false;
+				this.loading = true;
+				let data = {
+					campaign_id: this.$route.params.id,
+					question: this.faq.question,
+					answer: this.faq.answer
+				}
+				global
+					.$post("/Content/addfaq", data, this.user.token)
+					.then(res => {
+						this.resetFaq()
+						this.loadFaq();
+					})
+					.catch(err => {
+						let validErr =
+							err && err.response && err.response.data && err.response.data.error;
+						alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
+					})
+					.finally(() => {
+						this.loading = false;
+					});
+			}
 		},
 		resetFaq() {
+			this.edittingFaq = false
 			this.createFaq = false;
-			(this.faqQuestion = null), (this.faqAnswer = null);
+			this.$v.faq.$reset();
+			this.$v.faqEdit.$reset();
+			(this.faq.question = null), (this.faq.answer = null);
 		},
 		deleteFaq(id) {
 			this.loading = true;
@@ -563,21 +628,24 @@ export default {
 		openEditFaqModal(faq) {
 			this.edittingFaq = true;
 			this.faqOnEdit = faq;
-			this.faqEditAnswer = faq.answer;
-			this.faqEditQuestion = faq.question;
+			this.faqEdit.answer = faq.answer;
+			this.faqEdit.question = faq.question;
 		},
 		editFaq() {
+			this.$v.faqEdit.$touch();
+			if(!this.$v.faqEdit.$invalid) {
 			this.loading = true;
 			this.edittingFaq = false;
 			let data = {
 				id: this.faqOnEdit.id,
-				answer: this.faqEditAnswer,
-				question: this.faqEditQuestion
+				answer: this.faqEdit.answer,
+				question: this.faqEdit.question
 			};
 			global
 				.$post("/Content/editfaq", data, this.user.token)
 				.then(res => {
 					this.loadFaq();
+					this.resetFaq();
 				})
 				.catch(err => {
 					let validErr =
@@ -587,6 +655,7 @@ export default {
 				.finally(() => {
 					this.loading = false;
 				});
+			}
 		}
 	},
 
@@ -645,7 +714,7 @@ export default {
 .max-img-size {
   max-height: 170px;
 }
-.profile-picture {
+.dialog-picture {
 	position: relative;
 	img {
 		width: 300px;
