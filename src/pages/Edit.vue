@@ -125,9 +125,9 @@
 					<md-card class="mt-layout-item">
 						<md-empty-state
 					      md-icon="add_a_photo"
-					      md-label="Upload your first picture"
-					      md-description="Images will be shown in your campaign gallery.">
-					      <md-button class="md-primary md-raised"  @click="showAddImg = true">Chose image</md-button>
+					      md-label="Adicione sua primeira imagem!"
+					      md-description="As imagens serão mostradas na sua galeria de fotos da campanha">
+					      <md-button class="md-primary md-raised"  @click="showAddImg = true">Escolher Imagem</md-button>
 					    </md-empty-state>
 					</md-card>
 				</span>
@@ -157,6 +157,7 @@
 							<md-icon>add</md-icon>
 						</md-button>
 					</div>
+				</div>
 					<md-dialog :md-active.sync="showAddImg">
 						<md-dialog-title>Escolha uma imagem</md-dialog-title>
 						<md-dialog-content>
@@ -185,7 +186,6 @@
 							>Add</md-button>
 						</md-dialog-actions>
 					</md-dialog>
-				</div>
 			</md-tab>
 			<md-tab id="tab-question_answer" md-label="Faqs" md-icon="question_answer">
 
@@ -286,26 +286,23 @@
     <md-field>
       <md-icon class="mdi mdi-instagram"></md-icon>
       <label>Instagram profile</label>
-      <md-input ></md-input>
+      <md-input v-model="social.instagram"></md-input>
     </md-field>
     <md-field>
       <md-icon class="mdi mdi-facebook"></md-icon>
       <label>Facebook profile</label>
-      <md-input ></md-input>
+      <md-input v-model="social.facebook"></md-input>
     </md-field>
     <md-field>
       <md-icon class="mdi mdi-youtube"></md-icon>
       <label>Youtube channel</label>
-      <md-input ></md-input>
+      <md-input v-model="social.youtube"></md-input>
     </md-field>
 </md-card-content>
 				</md-card>
 				</div>
-					<div class="md-layout md-grutter md-alignment-center-center">
-						<md-button class="md-fab md-primary">
-							<md-icon>close</md-icon>
-						</md-button>
-						<md-button class="md-fab md-primary" style="background:green">
+					<div class="md-layout md-grutter md-alignment-center">
+						<md-button @click="saveSocial()" class="md-fab md-primary" style="background:green">
 							<md-icon>save</md-icon>
 						</md-button>
 					</div>
@@ -328,6 +325,11 @@ export default {
 				name: "",
 				stock: "",
 				price: null,
+			},
+			social: {
+				instagram: null,
+				facebook: null,
+				youtube: null,
 			},
 			perkStatus: null,
       perkList: [],
@@ -656,6 +658,26 @@ export default {
 					this.loading = false;
 				});
 			}
+		},
+		//social
+		saveSocial() {
+			let data = { 
+				facebook: null,
+				instagram: null,
+				youtube:null,
+				campaign_id: this.$route.params.id
+			}
+			global.$post("/Content/updatesocial", data, this.user.token)
+				.then(res => {
+					console.log(res)
+				})
+				.catch(err => {
+					let validErr =
+						err && err.response && err.response.data && err.response.data.error;
+					alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
+				})
+				.finally(() => {
+				});
 		}
 	},
 
