@@ -313,6 +313,8 @@ export default {
           this.loadPerk()
           this.showDialog = false
           this.perk = []
+          this.imageToUploadPerk = ''
+          this.base64FilePerk = ''
 				})
 				.catch(err => {
 					let validErr =
