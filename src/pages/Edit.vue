@@ -312,6 +312,7 @@ export default {
 				.then(response => {
           this.loadPerk()
           this.showDialog = false
+          this.perk = []
 				})
 				.catch(err => {
 					let validErr =
