@@ -89,16 +89,6 @@ export default new Router({
           meta: {
             onlyAuth: true
           },
-          children: [
-            {
-              path: '/perk/:id',
-              name: 'Edição de Perk',
-              component: EditPerk,
-              meta: {
-                onlyAuth: true
-              },
-            }
-          ]
         }
       ]
     },
