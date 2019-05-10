@@ -24,25 +24,24 @@
 				</div>
 			</md-tab>
 			<md-tab id="tab-gift" md-label="perks" md-icon="card_giftcard">
-
-				<span class="no-pic-message md-layout  md-alignment-center-center" v-if="perkList.length == 0">
+				<span class="no-pic-message md-layout md-alignment-center-center" v-if="perkList.length == 0">
 					<md-card class="mt-layout-item">
 						<md-empty-state
-					      md-icon="card_giftcard"
-					      md-label="Create your first perk"
-					      md-description="Perks are used as gratification for the people who supported your campaign.">
-					      <md-button class="md-primary md-raised"  @click="perkDialog = true">Create</md-button>
-					    </md-empty-state>
+							md-icon="card_giftcard"
+							md-label="Create your first perk"
+							md-description="Perks are used as gratification for the people who supported your campaign."
+						>
+							<md-button class="md-primary md-raised" @click="perkDialog = true">Criar</md-button>
+						</md-empty-state>
 					</md-card>
 				</span>
 				<div class="md-layout md-grutter" v-else>
-					<div v-for="(perk, index) in perkList" :key="index" class="md-layout-item md-small-size-100 md-medium-size-50 md-large-size-33 md-size-25">
+					<div
+						v-for="(perk, index) in perkList"
+						:key="index"
+						class="md-layout-item md-small-size-100 md-medium-size-50 md-large-size-33 md-size-25"
+					>
 						<md-card>
-							<md-card-actions class="delete-btn-absolute">
-								<md-button class="md-fab md-mini" @click="openPerkDeleteModal(perk)">
-									<md-icon>delete</md-icon>
-								</md-button>
-							</md-card-actions>
 							<md-card-area md-inset>
 								<md-card-media md-ratio="16:9">
 									<img :src="'http://25.20.118.56/gofunder/'+perk.cover_url">
@@ -56,45 +55,33 @@
 							</md-card-area>
 							<md-card-content>
 								<md-list>
-									<md-list-item>
-										<md-icon>star</md-icon>
-										<span class="md-list-item-text">0 itens adicionados</span>
-
-									</md-list-item>
-									
-								<md-button class="md-raised md-primary">Add itens</md-button>
+									{{perk.description}}
+									<md-button class="md-raised md-primary" @click="showModalEditPerk(perk)">Editar Recompensa</md-button>
 								</md-list>
 							</md-card-content>
 							<md-card-actions>
 								<md-checkbox v-model="allow" value="1">Mostrar disponivel</md-checkbox>
 							</md-card-actions>
 						</md-card>
-
-            
 					</div>
 
-          
 					<div class="md-layout-item md-small-size-100 md-medium-size-50 md-large-size-33 md-size-25">
 						<br>
-						<md-button class="md-fab md-primary" @click="perkDialog = true">
+						<md-button :disabled="loading" class="md-fab md-primary" @click="perkDialog = true">
 							<md-icon>add</md-icon>
 						</md-button>
 					</div>
 				</div>
-				<md-dialog-confirm
-					:md-active.sync="modalDeletePerk"
-					md-title="Tem certeza que deseja deletar o seu perk?"
-					md-content="Ao confirmar não haverá como restaurar o perk..."
-					md-confirm-text="Confirmar"
-					md-cancel-text="Fechar"
-					@md-cancel="modalDeletePerk = false"
-					@md-confirm="deletePerk()" />
 				<div>
 					<md-dialog :md-active.sync="perkDialog">
 						<md-dialog-title>Criar novo Perk</md-dialog-title>
 						<md-dialog-content>
 							<input type="file" style="display: none" id="input-file-perk" @change="pickImgPerk($event)">
-							<md-button v-if="!imageToUploadPerk" @click="clickOnFileInputPerk()" class="md-fab md-primary">
+							<md-button
+								v-if="!imageToUploadPerk"
+								@click="clickOnFileInputPerk()"
+								class="md-fab md-primary"
+							>
 								<md-icon>add_a_photo</md-icon>
 							</md-button>
 							<div v-else class="dialog-picture">
@@ -104,9 +91,11 @@
 									<md-icon>add_a_photo</md-icon>
 								</md-button>
 							</div>
-							
-							<div v-if="$v.imageToUploadPerk.$invalid && $v.imageToUploadPerk.$dirty" style="color: #ff1744;">Insira uma imagem para o perk</div>
 
+							<div
+								v-if="$v.imageToUploadPerk.$invalid && $v.imageToUploadPerk.$dirty"
+								style="color: #ff1744;"
+							>Insira uma imagem para o perk</div>
 
 							<md-field :class="{'md-invalid': $v.perk.name.$invalid && $v.perk.name.$dirty}">
 								<label>Qual o nome do seu perk?</label>
@@ -118,144 +107,252 @@
 								<md-input v-model.number="perk.price" required></md-input>
 								<span class="md-error">Informe o valor</span>
 							</md-field>
+
+							<md-field
+								:class="{'md-invalid': $v.perk.description.$invalid && $v.perk.description.$dirty}"
+							>
+								<label>Qual a descrição do seu perk?</label>
+								<md-input v-model="perk.description" required></md-input>
+								<span class="md-error">Informe o titulo</span>
+							</md-field>
 							<md-field :class="{'md-invalid': $v.perk.stock.$invalid && $v.perk.stock.$dirty}">
 								<label>Qual o estoque do seu perk?</label>
 								<md-input v-model="perk.stock" required></md-input>
 								<span class="md-error">Informe o estoque</span>
 							</md-field>
+
+							<md-field :class="{'md-invalid': $v.perk.discount.$invalid && $v.perk.discount.$dirty}">
+								<label>Qual o valor do desconto?</label>
+								<md-input v-model.number="perk.discount" required></md-input>
+								<span class="md-error">Informe o valor</span>
+							</md-field>
+
+							<md-switch v-model="perk.haveFrete">Seu produto será enviado pelos correios?</md-switch>
+
+							<div v-show="perk.haveFrete">
+								<md-field>
+									<label>Qual o valor do frete?</label>
+									<md-input v-model.number="perk.shipping_price" required></md-input>
+									<span class="md-error">Informe o valor</span>
+								</md-field>
 								<md-datepicker class="no-icon" md-immediately v-model="perk.shipping_date" required>
-									<label>Informe a data de entrega do seu perk</label>
+									<label>Informe a data estimada de entrega do seu produto</label>
 								</md-datepicker>
+								<div>
+									<br>
+									<b>Opções de envio:</b>
+									<br>
+									<md-radio
+										v-model="perk.shipping_worldwide"
+										value="only_country"
+									>Meu produto será enviado apenas para o país</md-radio>
+									<br>
+									<md-radio
+										v-model="perk.shipping_worldwide"
+										value="world_wide"
+									>Meu produto será enviado para qualquer lugar do mundo</md-radio>
+								</div>
+							</div>
 						</md-dialog-content>
 						<md-dialog-actions>
 							<md-button class="md-acent md-raised" @click="resetPerk()">Close</md-button>
-							<md-button class="md-primary md-raised" @click="uploadNewPerk()">Add</md-button>
+							<md-button class="md-primary md-raised" :disabled="loading" @click="uploadNewPerk()">Add</md-button>
+						</md-dialog-actions>
+					</md-dialog>
+				</div>
+
+				<div>
+					<md-dialog :md-active.sync="perkEditDialog">
+						<md-dialog-title>Editar Perk</md-dialog-title>
+						<md-dialog-content>
+							<md-field :class="{'md-invalid': $v.perkEdit.name.$invalid && $v.perkEdit.name.$dirty}">
+								<label>Qual o nome do seu perk?</label>
+								<md-input v-model="perkEdit.name" required></md-input>
+								<span class="md-error">Informe o titulo</span>
+							</md-field>
+							<md-field :class="{'md-invalid': $v.perkEdit.price.$invalid && $v.perkEdit.price.$dirty}">
+								<label>Qual o valor do seu perk?</label>
+								<md-input v-model.number="perkEdit.price" required></md-input>
+								<span class="md-error">Informe o valor</span>
+							</md-field>
+
+							<md-field
+								:class="{'md-invalid': $v.perkEdit.description.$invalid && $v.perkEdit.description.$dirty}"
+							>
+								<label>Qual a descrição do seu perk?</label>
+								<md-input v-model="perkEdit.description" required></md-input>
+								<span class="md-error">Informe o titulo</span>
+							</md-field>
+							<md-field :class="{'md-invalid': $v.perkEdit.stock.$invalid && $v.perkEdit.stock.$dirty}">
+								<label>Qual o estoque do seu perk?</label>
+								<md-input v-model="perkEdit.stock" required></md-input>
+								<span class="md-error">Informe o estoque</span>
+							</md-field>
+
+							<md-field
+								:class="{'md-invalid': $v.perkEdit.discount.$invalid && $v.perkEdit.discount.$dirty}"
+							>
+								<label>Qual o valor do desconto?</label>
+								<md-input v-model.number="perkEdit.discount" required></md-input>
+								<span class="md-error">Informe o valor</span>
+							</md-field>
+			
+							<input
+								type="checkbox"
+								id="id-name--1"
+								name="set-name"
+								class="switch-input"
+								@change="mudou"
+								:checked="perkEdit.haveFrete"
+							>					
+							<label for="id-name--1" class="switch-label">Seu produto será enviado pelos correios?</label>
+
+							<div v-show="perkEdit.haveFrete">
+								<md-field>
+									<label>Qual o valor do frete?</label>
+									<md-input v-model.number="perkEdit.shipping_price" required></md-input>
+									<span class="md-error">Informe o valor</span>
+								</md-field>
+								<md-datepicker class="no-icon" md-immediately v-model="perkEdit.shipping_date" required>
+									<label>Informe a data estimada de entrega do seu produto</label>
+								</md-datepicker>
+								<div>
+									<br>
+									<b>Opções de envio:</b>
+									<br>
+									<md-radio
+										v-model="perkEdit.shipping_worldwide"
+										value="only_country"
+									>Meu produto será enviado apenas para o país</md-radio>
+									<br>
+
+									<md-radio
+										v-model="perkEdit.shipping_worldwide"
+										value="world_wide"
+									>Meu produto será enviado para qualquer lugar do mundo</md-radio>
+								</div>
+							</div>
+						</md-dialog-content>
+						<md-dialog-actions>
+							<md-button class="md-acent md-raised" @click="resetEditPerk()">Close</md-button>
+							<md-button class="md-primary md-raised" :disabled="loading" @click="editPerk()">Save</md-button>
 						</md-dialog-actions>
 					</md-dialog>
 				</div>
 			</md-tab>
 			<md-tab id="tab-collections" md-label="Gallery" md-icon="collections">
-				<md-dialog-confirm
-					:md-active.sync="modalDeleteImage"
-					md-title="Tem certeza que deseja deletar esta foto da galeria?"
-					md-content="Ao confirmar não haverá como restaurá-la..."
-					md-confirm-text="Confirmar"
-					md-cancel-text="Fechar"
-					@md-cancel="modalDeleteImage = false"
-					@md-confirm="deleteImage()" />
-				<span class="no-pic-message md-layout  md-alignment-center-center" v-if="pictures.length == 0">
+				<span class="no-pic-message md-layout md-alignment-center-center" v-if="pictures.length == 0">
 					<md-card class="mt-layout-item">
 						<md-empty-state
-					      md-icon="add_a_photo"
-					      md-label="Adicione sua primeira imagem!"
-					      md-description="As imagens serão mostradas na sua galeria de fotos da campanha">
-					      <md-button class="md-primary md-raised"  @click="showAddImg = true">Escolher Imagem</md-button>
-					    </md-empty-state>
+							md-icon="add_a_photo"
+							md-label="Adicione sua primeira imagem!"
+							md-description="As imagens serão mostradas na sua galeria de fotos da campanha"
+						>
+							<md-button class="md-primary md-raised" @click="showAddImg = true">Escolher Imagem</md-button>
+						</md-empty-state>
 					</md-card>
 				</span>
 				<div class="md-layout md-grutter" v-else>
-					<div class="md-layout-item md-small-size-100 md-medium-size-50 md-large-size-33 md-size-25" v-for="(picture, index) in pictures" :key="index">
+					<div
+						class="md-layout-item md-small-size-100 md-medium-size-50 md-large-size-33 md-size-25"
+						v-for="(picture, index) in pictures"
+						:key="index"
+					>
 						<md-card>
-							<md-card-actions class="delete-btn-absolute">
-								<md-button class="md-fab md-mini" @click="openDeleteImageModal(picture)">
+							<md-card-actions>
+								<md-button class="md-fab md-mini" @click="deleteImage(picture.id)">
 									<md-icon>delete</md-icon>
 								</md-button>
 							</md-card-actions>
-								<md-card-area md-inset>
-								<md-card-media md-ratio="16:9">
+							<md-card-media-cover md-solid style="clear:both">
+								<md-card-media md-ratio="1:1">
 									<img :src="'http://25.20.118.56/gofunder/'+picture.picture_url">
 								</md-card-media>
-								<md-card-header>
-									<h2 class="md-title">Legenda: </h2>
-									<div class="md-subhead">
-										<span>{{picture.name}}</span>
+								<md-card-area>
+									<div class="image-description">
+										<p>{{picture.name}}</p>
 									</div>
-								</md-card-header>
 								</md-card-area>
+							</md-card-media-cover>
 						</md-card>
 					</div>
 					<div class="md-layout-item md-small-size-100 md-medium-size-50 md-large-size-33 md-size-25">
 						<br>
-						<md-button :disabled="loading" class="md-fab md-primary" @click="showAddImg = true" v-if="pictures.length != 0">
+						<md-button
+							:disabled="loading"
+							class="md-fab md-primary"
+							@click="showAddImg = true"
+							v-if="pictures.length != 0"
+						>
 							<md-icon>add</md-icon>
 						</md-button>
 					</div>
 				</div>
-					<md-dialog :md-active.sync="showAddImg">
-						<md-dialog-title>Escolha uma imagem</md-dialog-title>
-						<md-dialog-content>
-							<input type="file" style="display: none" id="input-file" @change="pickImg($event)">
-							<md-button v-if="!imageToUpload" @click="clickOnFileInput()" class="md-fab md-primary">
+				<md-dialog :md-active.sync="showAddImg">
+					<md-dialog-title>Escolha uma imagem</md-dialog-title>
+					<md-dialog-content>
+						<input type="file" style="display: none" id="input-file" @change="pickImg($event)">
+						<md-button v-if="!imageToUpload" @click="clickOnFileInput()" class="md-fab md-primary">
+							<md-icon>add_a_photo</md-icon>
+						</md-button>
+						<div v-else class="dialog-picture">
+							<img :src="base64File">
+							<md-button @click="clickOnFileInput()" class="md-fab md-primary">
 								<md-icon>add_a_photo</md-icon>
 							</md-button>
-							<div v-else class="dialog-picture">
-								<!-- <img src="https://picsum.photos/200/200" alt=""> -->
-								<img :src="base64File">
-								<md-button @click="clickOnFileInput()" class="md-fab md-primary">
-									<md-icon>add_a_photo</md-icon>
-								</md-button>
-							</div>
-							<md-field v-if="imageToUpload" style="margin-top: 1rem;">
-								<label>Insira a descrição da imagem</label>
-								<md-input v-model="imgCaption" required></md-input>
-							</md-field>
-						</md-dialog-content>
-						<md-dialog-actions>
-							<md-button class="md-acent md-raised" @click="resetImage()">Close</md-button>
-							<md-button
-								:disabled="!imageToUpload || !imgCaption"
-								class="md-primary md-raised"
-								@click="uploadNewImage()"
-							>Add</md-button>
-						</md-dialog-actions>
-					</md-dialog>
+						</div>
+						<md-field v-if="imageToUpload" style="margin-top: 1rem;">
+							<label>Insira a descrição da imagem</label>
+							<md-input v-model="imgCaption" required></md-input>
+						</md-field>
+					</md-dialog-content>
+					<md-dialog-actions>
+						<md-button class="md-acent md-raised" @click="closeAddImgModal()">Close</md-button>
+						<md-button
+							:disabled="!imageToUpload || !imgCaption"
+							class="md-primary md-raised"
+							@click="uploadNewImage()"
+						>Add</md-button>
+					</md-dialog-actions>
+				</md-dialog>
 			</md-tab>
 			<md-tab id="tab-question_answer" md-label="Faqs" md-icon="question_answer">
-				<md-dialog-confirm
-					:md-active.sync="modalDeleteFaq"
-					md-title="Tem certeza que deseja deletar este FAQ?"
-					md-content="Ao confirmar não haverá como restaurá-lo..."
-					md-confirm-text="Confirmar"
-					md-cancel-text="Fechar"
-					@md-cancel="modalDeleteFaq = false"
-					@md-confirm="deleteFaq()" />
-				<span class="no-pic-message md-layout  md-alignment-center-center" v-if="faqList.length == 0">
+				<span class="no-pic-message md-layout md-alignment-center-center" v-if="faqList.length == 0">
 					<md-card class="mt-layout-item">
 						<md-empty-state
-					      md-icon="question_answer"
-					      md-label="Frequently asked questions"
-					      md-description="Answer some basic questions for your investors.">
-					      <md-button class="md-primary md-raised"  @click="createFaq = true">Create</md-button>
-					    </md-empty-state>
+							md-icon="question_answer"
+							md-label="Frequently asked questions"
+							md-description="Answer some basic questions for your investors."
+						>
+							<md-button class="md-primary md-raised" @click="createFaq = true">Create</md-button>
+						</md-empty-state>
 					</md-card>
 				</span>
 				<div class="md-layout md-grutter md-alignment-center-center" v-else>
-					<md-card  style="min-width: 50%">
-
-			      <md-card-header>
-			        <div class="md-title">Frequently asked questions</div>
-			      </md-card-header>
-					<md-list class="md-double-line md-size-100" style="min-width: 50%">
-
-						<md-divider></md-divider>
-						<md-list-item v-for="(faq, index) in faqList" :key="index" class="bordered">
-							<div class="md-list-item-text">
-								<span>{{faq.question}}</span>
-								<span>{{faq.answer}}</span>
-							</div>
-							<md-button class="md-icon-button" @click="openEditFaqModal(faq)">
-								<md-icon>edit</md-icon>
-							</md-button>
-							<md-button class="md-icon-button" @click="openDeleteFaqModal(faq)">
-								<md-icon>delete</md-icon>
-							</md-button>
-						</md-list-item>
-					</md-list>
-				</md-card>
+					<md-card style="min-width: 50%">
+						<md-card-header>
+							<div class="md-title">Frequently asked questions</div>
+						</md-card-header>
+						<md-list class="md-double-line md-size-100" style="min-width: 50%">
+							<md-divider></md-divider>
+							<md-list-item v-for="(faq, index) in faqList" :key="index" class="bordered">
+								<div class="md-list-item-text">
+									<span>{{faq.question}}</span>
+									<span>{{faq.answer}}</span>
+								</div>
+								<md-button class="md-icon-button" @click="openEditFaqModal(faq)">
+									<md-icon>edit</md-icon>
+								</md-button>
+								<md-button class="md-icon-button" @click="deleteFaq(faq.id)">
+									<md-icon>delete</md-icon>
+								</md-button>
+							</md-list-item>
+						</md-list>
+					</md-card>
 				</div>
 
-				<div class="md-layout md-grutter md-alignment-center-center"  v-if="faqList.length != 0">
-					<md-button class="md-fab md-primary" @click="createFaq = true">
+				<div class="md-layout md-grutter md-alignment-center-center" v-if="faqList.length != 0">
+					<md-button :disabled="loading" class="md-fab md-primary" @click="createFaq = true">
 						<md-icon>add</md-icon>
 					</md-button>
 				</div>
@@ -277,13 +374,15 @@
 						</md-dialog-content>
 						<md-dialog-actions>
 							<md-button class="md-acent md-raised" @click="resetFaq()">Close</md-button>
-							<md-button class="md-primary md-raised" @click="addFaq()" >Add</md-button>
+							<md-button :disabled="loading" class="md-primary md-raised" @click="addFaq()">Add</md-button>
 						</md-dialog-actions>
 					</md-dialog>
 					<md-dialog :md-active.sync="edittingFaq">
 						<md-dialog-title>Editar FAQ</md-dialog-title>
 						<md-dialog-content>
-							<md-field :class="{'md-invalid': $v.faqEdit.question.$invalid && $v.faqEdit.question.$dirty}">
+							<md-field
+								:class="{'md-invalid': $v.faqEdit.question.$invalid && $v.faqEdit.question.$dirty}"
+							>
 								<label>Edite sua pergunta</label>
 								<md-input v-model="faqEdit.question" required></md-input>
 								<span class="md-error">Insira uma pergunta</span>
@@ -296,46 +395,41 @@
 						</md-dialog-content>
 						<md-dialog-actions>
 							<md-button class="md-acent md-raised" @click="resetFaq()">Close</md-button>
-							<md-button
-								class="md-primary md-raised"
-								@click="editFaq()"
-							>Edit</md-button>
+							<md-button class="md-primary md-raised" @click="editFaq()">Edit</md-button>
 						</md-dialog-actions>
 					</md-dialog>
 				</div>
 			</md-tab>
 			<md-tab id="tab-share" md-label="Social networks" md-icon="share">
 				<div class="md-layout md-grutter md-alignment-center-center">
-					<md-card  style="min-width: 50%">
-
-			      <md-card-header>
-			        <div class="md-title">Social networks profiles</div>
-			      </md-card-header>
-        <md-card-content>
-					
-    <md-field>
-      <md-icon class="mdi mdi-instagram"></md-icon>
-      <label>Instagram profile</label>
-      <md-input v-model="social.instagram"></md-input>
-    </md-field>
-    <md-field>
-      <md-icon class="mdi mdi-facebook"></md-icon>
-      <label>Facebook profile</label>
-      <md-input v-model="social.facebook"></md-input>
-    </md-field>
-    <md-field>
-      <md-icon class="mdi mdi-youtube"></md-icon>
-      <label>Youtube channel</label>
-      <md-input v-model="social.youtube"></md-input>
-    </md-field>
-</md-card-content>
-				</md-card>
+					<md-card style="min-width: 50%">
+						<md-card-header>
+							<div class="md-title">Social networks profiles</div>
+						</md-card-header>
+						<md-card-content>
+							<md-field>
+								<md-icon class="mdi mdi-instagram"></md-icon>
+								<label>Instagram profile</label>
+								<md-input v-model="social.instagram"></md-input>
+							</md-field>
+							<md-field>
+								<md-icon class="mdi mdi-facebook"></md-icon>
+								<label>Facebook profile</label>
+								<md-input v-model="social.facebook"></md-input>
+							</md-field>
+							<md-field>
+								<md-icon class="mdi mdi-youtube"></md-icon>
+								<label>Youtube channel</label>
+								<md-input v-model="social.youtube"></md-input>
+							</md-field>
+						</md-card-content>
+					</md-card>
 				</div>
-					<div class="md-layout md-grutter md-alignment-center">
-						<md-button @click="saveSocial()" class="md-fab md-primary" style="background:green">
-							<md-icon>save</md-icon>
-						</md-button>
-					</div>
+				<div class="md-layout md-grutter md-alignment-center">
+					<md-button @click="saveSocial()" class="md-fab md-primary" style="background:green">
+						<md-icon>save</md-icon>
+					</md-button>
+				</div>
 			</md-tab>
 		</md-tabs>
 	</div>
@@ -350,26 +444,34 @@ export default {
 
 	data() {
 		return {
-			perkToDelete: null,
-			imageToDelete: null,
-			faqToDelete: null,
-			modalDeleteImage: false,
-			modalDeletePerk: false,
-			modalDeleteFaq: false,
 			perkDialog: false,
+			perkEditDialog: false,
+			perkEdit: {
+				name: "",
+				stock: "",
+				price: null,
+				shipping_price: 0.0,
+				shipping_date: null,
+				description: "",
+				haveFrete: false,
+				shipping_worldwide: "world_wide"
+			},
 			perk: {
 				name: "",
 				stock: "",
 				price: null,
-				shipping_date: null
+				shipping_price: 0.0,
+				shipping_date: null,
+				description: "",
+				haveFrete: false,
+				shipping_worldwide: "world_wide"
 			},
 			social: {
 				instagram: null,
 				facebook: null,
-				youtube: null,
+				youtube: null
 			},
-			perkStatus: null,
-      perkList: [],
+			perkList: [],
 			editor: ClassicEditor,
 			editorConfig: {},
 			faqOnEdit: null,
@@ -377,11 +479,11 @@ export default {
 			edittingFaq: false,
 			faqEdit: {
 				question: null,
-				answer: null,
+				answer: null
 			},
 			faq: {
 				question: null,
-				answer: null,
+				answer: null
 			},
 			faqList: [],
 			loading: false,
@@ -399,48 +501,79 @@ export default {
 			createFaq: false,
 			allow: true,
 			pictures: []
-		}
+		};
 	},
 	validations: {
-			perk: {
-				name: {
-					required
-				},
-				stock:{
-					required	
-				},
-				price: {
-					required
-				},
-				shipping_date: {
-					required
-				}
+		perkEdit: {
+			name: {
+				required
 			},
-			faq: {
-				question: {
-					required
-				},
-				answer: {
-					required
-				}
+			stock: {
+				required
 			},
-			faqEdit: {
-				question: {
-					required
-				},
-				answer: {
-					required
-				}
+			price: {
+				required
 			},
-			imageToUploadPerk: {
+			discount: {
+				required
+			},
+			description: {
 				required
 			}
+		},
+		perk: {
+			name: {
+				required
+			},
+			stock: {
+				required
+			},
+			price: {
+				required
+			},
+			discount: {
+				required
+			},
+			description: {
+				required
+			}
+		},
+		faq: {
+			question: {
+				required
+			},
+			answer: {
+				required
+			}
+		},
+		faqEdit: {
+			question: {
+				required
+			},
+			answer: {
+				required
+			}
+		},
+		imageToUploadPerk: {
+			required
+		}
 	},
 	computed: {
 		...mapState(["user"])
 	},
 
 	methods: {
+		mudou() {
+			this.perkEdit.haveFrete = !this.perkEdit.haveFrete
+			if(!this.perkEdit.haveFrete) this.perkEdit.shipping_price = 0
+		},
+		showModalEditPerk(perk) {
+			this.perkEditDialog = true;
+			this.perkEdit = {...perk, haveFrete: false};
+			if(this.perkEdit.shipping_price > 0) {
+				this.perkEdit.haveFrete = true;
+			}
+		},
 		loadPerk() {
 			global
 				.$get(
@@ -465,56 +598,79 @@ export default {
 				this.$v.perk.$reset();
 				this.perk.campaign_id = this.$route.params.id;
 				this.perk.image = this.imageToUploadPerk;
-				let parsedDate =this.perk.shipping_date.toISOString().split('T')[0]
+				this.perk.shipping_date = this.perk.shipping_date
+					.toISOString()
+					.split("T")[0];
+
+				this.perkDialog = false;
+				this.loading = true;
+
 				global
-					.$post("/Content/addperk", {...this.perk, shipping_date: parsedDate}, this.user.token)
+					.$post("/Content/addperk", this.perk, this.user.token)
 					.then(response => {
-						this.loadPerk()
-						this.perkDialog = false
-						this.perk = []
-						this.imageToUploadPerk = ''
-						this.base64FilePerk = ''
+						this.loadPerk();
+						this.perk = [];
+						this.imageToUploadPerk = "";
+						this.base64FilePerk = "";
 					})
 					.catch(err => {
 						let validErr =
-							err && err.response && err.response.data && err.response.data.error;
+							err &&
+							err.response &&
+							err.response.data &&
+							err.response.data.error;
 						alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
 					})
 					.finally(() => {
 						this.loading = false;
 					});
-				} else {
-					this.perkStatus = 'error' 
-				}
+			}
+		},
+
+		editPerk() {
+			this.$v.perkEdit.$touch();
+			if (!this.$v.perkEdit.$invalid) {
+				this.$v.perkEdit.$reset();
+				this.perkEdit.campaign_id = this.$route.params.id;
+				this.perkEdit.shipping_date = this.perkEdit.shipping_date
+					.toISOString()
+					.split("T")[0];
+
+				this.perkEditDialog = false;
+				this.loading = true;
+
+				global
+					.$post("/Content/editperk", this.perkEdit, this.user.token)
+					.then(response => {
+						this.loadPerk();
+						this.perkEdit = {};
+					})
+					.catch(err => {
+						let validErr =
+							err &&
+							err.response &&
+							err.response.data &&
+							err.response.data.error;
+						alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
+					})
+					.finally(() => {
+						this.loading = false;
+					});
+			}
+		},
+		resetEditPerk() {
+			this.perkEditDialog = false;
+			this.perkEdit = {};
+			this.$v.perkEdit.$reset();
 		},
 		resetPerk() {
-			this.perkDialog = false
-			this.imageToUploadPerk = null
-			this.perk.stock = null
-			this.perk.price = null
-			this.perk.name = null
+			this.perkDialog = false;
+			this.imageToUploadPerk = null;
+			this.perk.stock = null;
+			this.perk.price = null;
+			this.perk.name = null;
 			this.$v.imageToUploadPerk.$reset();
 			this.$v.perk.$reset();
-		},
-		openPerkDeleteModal(perk) {
-			this.perkToDelete = perk
-			this.modalDeletePerk = true
-		},
-		deletePerk() {
-			let data = {
-				id: this.perkToDelete.id
-			}
-			global.$post("/Content/deleteperk", data, this.user.token)
-				.then(res => {
-					this.loadPerk();
-				})
-				.catch(err => {
-					let validErr =
-						err && err.response && err.response.data && err.response.data.error;
-					alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
-				})
-				.finally(() => {
-				});
 		},
 		//GALLERY
 		loadGallery() {
@@ -592,17 +748,12 @@ export default {
 				})
 				.finally(() => {
 					this.loading = false;
-					this.resetImage()
 				});
 		},
-		openDeleteImageModal(img) {
-			this.imageToDelete = img
-			this.modalDeleteImage = true
-		},
-		deleteImage() {
+		deleteImage(id) {
 			this.loading = true;
 			let data = {
-				id: this.imageToDelete.id
+				id: id
 			};
 			global
 				.$post("/Content/deletegalery", data, this.user.token)
@@ -618,7 +769,7 @@ export default {
 					this.loading = false;
 				});
 		},
-		resetImage() {
+		closeAddImgModal() {
 			this.showAddImg = false;
 			this.imageToUpload = null;
 			this.base64File = null;
@@ -650,16 +801,19 @@ export default {
 					campaign_id: this.$route.params.id,
 					question: this.faq.question,
 					answer: this.faq.answer
-				}
+				};
 				global
 					.$post("/Content/addfaq", data, this.user.token)
 					.then(res => {
-						this.resetFaq()
+						this.resetFaq();
 						this.loadFaq();
 					})
 					.catch(err => {
 						let validErr =
-							err && err.response && err.response.data && err.response.data.error;
+							err &&
+							err.response &&
+							err.response.data &&
+							err.response.data.error;
 						alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
 					})
 					.finally(() => {
@@ -668,16 +822,16 @@ export default {
 			}
 		},
 		resetFaq() {
-			this.edittingFaq = false
+			this.edittingFaq = false;
 			this.createFaq = false;
 			this.$v.faq.$reset();
 			this.$v.faqEdit.$reset();
 			(this.faq.question = null), (this.faq.answer = null);
 		},
-		deleteFaq() {
+		deleteFaq(id) {
 			this.loading = true;
 			let data = {
-				id: this.faqToDelete.id
+				id: id
 			};
 			global
 				.$post("/Content/deletefaq", data, this.user.token)
@@ -701,76 +855,59 @@ export default {
 		},
 		editFaq() {
 			this.$v.faqEdit.$touch();
-			if(!this.$v.faqEdit.$invalid) {
-			this.loading = true;
-			this.edittingFaq = false;
-			let data = {
-				id: this.faqOnEdit.id,
-				answer: this.faqEdit.answer,
-				question: this.faqEdit.question
-			};
-			global
-				.$post("/Content/editfaq", data, this.user.token)
-				.then(res => {
-					this.loadFaq();
-					this.resetFaq();
-				})
-				.catch(err => {
-					let validErr =
-						err && err.response && err.response.data && err.response.data.error;
-					alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
-				})
-				.finally(() => {
-					this.loading = false;
-				});
+			if (!this.$v.faqEdit.$invalid) {
+				this.loading = true;
+				this.edittingFaq = false;
+				let data = {
+					id: this.faqOnEdit.id,
+					answer: this.faqEdit.answer,
+					question: this.faqEdit.question
+				};
+				global
+					.$post("/Content/editfaq", data, this.user.token)
+					.then(res => {
+						this.loadFaq();
+						this.resetFaq();
+					})
+					.catch(err => {
+						let validErr =
+							err &&
+							err.response &&
+							err.response.data &&
+							err.response.data.error;
+						alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
+					})
+					.finally(() => {
+						this.loading = false;
+					});
 			}
-		},
-		openDeleteFaqModal(faq) {
-			this.faqToDelete = faq
-			this.modalDeleteFaq = true
 		},
 		//social
-		getSocial() {
-			global.$get("/Content/getsocial?campaign_id="+ this.$route.params.id, {} , this.user.token)
-				.then(res => {
-					console.log('getsocial',res)
-					this.social = {...res.data[0]}
-				})
-				.catch(err => {
-					let validErr =
-						err && err.response && err.response.data && err.response.data.error;
-					alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
-				})
-				.finally(() => {
-				});
-		},
 		saveSocial() {
-			let data = { 
-				facebook:  this.social.facebook,
-				instagram:  this.social.instagram,
-				youtube: this.social.youtube,
+			let data = {
+				facebook: null,
+				instagram: null,
+				youtube: null,
 				campaign_id: this.$route.params.id
-			}
-			global.$post("/Content/updatesocial", data, this.user.token)
+			};
+			global
+				.$post("/Content/updatesocial", data, this.user.token)
 				.then(res => {
-					console.log(res)
+					console.log(res);
 				})
 				.catch(err => {
 					let validErr =
 						err && err.response && err.response.data && err.response.data.error;
 					alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
 				})
-				.finally(() => {
-				});
+				.finally(() => {});
 		}
 	},
 
 	mounted() {
-		// alert(this.$moment("[native Date Tue May 21 2019 00:00:00 GMT-0300 (Horário Padrão de Brasília)]", "YYYY-MM-DD"))
-		this.getSocial()
-		this.loadGallery()
-    this.loadFaq()
-    this.loadPerk()
+		this.loadGallery();
+		this.loadFaq();
+		this.loadPerk();
 	}
 };
 </script>
@@ -781,13 +918,8 @@ export default {
 			var(--md-theme-default-divider, rgba(0, 0, 0, 0.12));
 	}
 }
-.md-datepicker {
-	i {
-		display: none;
-	}
-}
 .md-dialog {
-	width: 568px;
+	width: 70%;
 }
 .loading-overlay {
 	z-index: 10;
@@ -805,22 +937,18 @@ export default {
 .no-pic-message {
 	font-weight: bold;
 }
-// .close-icon-container {
-// 	padding: 10px;
-// 	position: absolute;
-// 	right: 0;
-// 	z-index: 100;
-// 	&:hover {
-// 		background: #ccc;
-// 		cursor: pointer;
-// 	}
-// 	i {
-// 		font-size: 2rem !important;
-// 	}
-// }
-.delete-btn-absolute {
+.close-icon-container {
+	padding: 10px;
 	position: absolute;
 	right: 0;
+	z-index: 100;
+	&:hover {
+		background: #ccc;
+		cursor: pointer;
+	}
+	i {
+		font-size: 2rem !important;
+	}
 }
 .image-description {
 	text-align: center;
@@ -829,7 +957,7 @@ export default {
 	}
 }
 .max-img-size {
-  max-height: 170px;
+	max-height: 170px;
 }
 .dialog-picture {
 	position: relative;
@@ -840,5 +968,69 @@ export default {
 	button {
 		position: relative;
 	}
+}
+
+.switch-input {
+	display: none;
+}
+.switch-label {
+	position: relative;
+	display: inline-block;
+	min-width: 112px;
+	cursor: pointer;
+	font-weight: 500;
+	text-align: left;
+	margin: 16px;
+	padding: 16px 0 16px 44px;
+}
+.switch-label:before,
+.switch-label:after {
+	content: "";
+	position: absolute;
+	margin: 0;
+	outline: 0;
+	top: 50%;
+	-ms-transform: translate(0, -50%);
+	-webkit-transform: translate(0, -50%);
+	transform: translate(0, -50%);
+	-webkit-transition: all 0.3s ease;
+	transition: all 0.3s ease;
+}
+.switch-label:before {
+	left: 1px;
+	width: 34px;
+	height: 14px;
+	background-color: #9e9e9e;
+	border-radius: 8px;
+}
+.switch-label:after {
+	left: 0;
+	width: 20px;
+	height: 20px;
+	background-color: #fafafa;
+	border-radius: 50%;
+	box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.14),
+		0 2px 2px 0 rgba(0, 0, 0, 0.098), 0 1px 5px 0 rgba(0, 0, 0, 0.084);
+}
+.switch-label .toggle--on {
+	display: none;
+}
+.switch-label .toggle--off {
+	display: inline-block;
+}
+.switch-input:checked + .switch-label:before {
+	background-color: #a5d6a7;
+}
+.switch-input:checked + .switch-label:after {
+	background-color: #4caf50;
+	-ms-transform: translate(80%, -50%);
+	-webkit-transform: translate(80%, -50%);
+	transform: translate(80%, -50%);
+}
+.switch-input:checked + .switch-label .toggle--on {
+	display: inline-block;
+}
+.switch-input:checked + .switch-label .toggle--off {
+	display: none;
 }
 </style>
