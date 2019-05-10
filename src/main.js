@@ -16,6 +16,7 @@ import money from 'v-money'
 Vue.config.productionTip = false
 Vue.use(VueMaterial)
 Vue.use( CKEditor );
+Vue.use(require('vue-moment'));
 Vue.use(Vuelidate)
 Vue.use(VueTheMask)
 Vue.use(money, {precision: 4})

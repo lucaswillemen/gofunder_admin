@@ -38,6 +38,11 @@
 				<div class="md-layout md-grutter" v-else>
 					<div v-for="(perk, index) in perkList" :key="index" class="md-layout-item md-small-size-100 md-medium-size-50 md-large-size-33 md-size-25">
 						<md-card>
+							<md-card-actions class="delete-btn-absolute">
+								<md-button class="md-fab md-mini" @click="openPerkDeleteModal(perk)">
+									<md-icon>delete</md-icon>
+								</md-button>
+							</md-card-actions>
 							<md-card-area md-inset>
 								<md-card-media md-ratio="16:9">
 									<img :src="'http://25.20.118.56/gofunder/'+perk.cover_url">
@@ -53,12 +58,10 @@
 								<md-list>
 									<md-list-item>
 										<md-icon>star</md-icon>
-										<span class="md-list-item-text">Um chicara</span>
+										<span class="md-list-item-text">0 itens adicionados</span>
+
 									</md-list-item>
-									<md-list-item>
-										<md-icon>star</md-icon>
-										<span class="md-list-item-text">Um pires</span>
-									</md-list-item>
+									
 								<md-button class="md-raised md-primary">Add itens</md-button>
 								</md-list>
 							</md-card-content>
@@ -78,6 +81,14 @@
 						</md-button>
 					</div>
 				</div>
+				<md-dialog-confirm
+					:md-active.sync="modalDeletePerk"
+					md-title="Tem certeza que deseja deletar o seu perk?"
+					md-content="Ao confirmar não haverá como restaurar o perk..."
+					md-confirm-text="Confirmar"
+					md-cancel-text="Fechar"
+					@md-cancel="modalDeletePerk = false"
+					@md-confirm="deletePerk()" />
 				<div>
 					<md-dialog :md-active.sync="perkDialog">
 						<md-dialog-title>Criar novo Perk</md-dialog-title>
@@ -112,6 +123,9 @@
 								<md-input v-model="perk.stock" required></md-input>
 								<span class="md-error">Informe o estoque</span>
 							</md-field>
+								<md-datepicker class="no-icon" md-immediately v-model="perk.shipping_date" required>
+									<label>Informe a data de entrega do seu perk</label>
+								</md-datepicker>
 						</md-dialog-content>
 						<md-dialog-actions>
 							<md-button class="md-acent md-raised" @click="resetPerk()">Close</md-button>
@@ -121,6 +135,14 @@
 				</div>
 			</md-tab>
 			<md-tab id="tab-collections" md-label="Gallery" md-icon="collections">
+				<md-dialog-confirm
+					:md-active.sync="modalDeleteImage"
+					md-title="Tem certeza que deseja deletar esta foto da galeria?"
+					md-content="Ao confirmar não haverá como restaurá-la..."
+					md-confirm-text="Confirmar"
+					md-cancel-text="Fechar"
+					@md-cancel="modalDeleteImage = false"
+					@md-confirm="deleteImage()" />
 				<span class="no-pic-message md-layout  md-alignment-center-center" v-if="pictures.length == 0">
 					<md-card class="mt-layout-item">
 						<md-empty-state
@@ -134,21 +156,22 @@
 				<div class="md-layout md-grutter" v-else>
 					<div class="md-layout-item md-small-size-100 md-medium-size-50 md-large-size-33 md-size-25" v-for="(picture, index) in pictures" :key="index">
 						<md-card>
-							<md-card-actions>
-								<md-button class="md-fab md-mini" @click="deleteImage(picture.id)">
+							<md-card-actions class="delete-btn-absolute">
+								<md-button class="md-fab md-mini" @click="openDeleteImageModal(picture)">
 									<md-icon>delete</md-icon>
 								</md-button>
 							</md-card-actions>
-							<md-card-media-cover md-solid style="clear:both">
-								<md-card-media md-ratio="1:1">
+								<md-card-area md-inset>
+								<md-card-media md-ratio="16:9">
 									<img :src="'http://25.20.118.56/gofunder/'+picture.picture_url">
 								</md-card-media>
-								<md-card-area>
-									<div class="image-description">
-										<p>{{picture.name}}</p>
+								<md-card-header>
+									<h2 class="md-title">Legenda: </h2>
+									<div class="md-subhead">
+										<span>{{picture.name}}</span>
 									</div>
+								</md-card-header>
 								</md-card-area>
-							</md-card-media-cover>
 						</md-card>
 					</div>
 					<div class="md-layout-item md-small-size-100 md-medium-size-50 md-large-size-33 md-size-25">
@@ -178,7 +201,7 @@
 							</md-field>
 						</md-dialog-content>
 						<md-dialog-actions>
-							<md-button class="md-acent md-raised" @click="closeAddImgModal()">Close</md-button>
+							<md-button class="md-acent md-raised" @click="resetImage()">Close</md-button>
 							<md-button
 								:disabled="!imageToUpload || !imgCaption"
 								class="md-primary md-raised"
@@ -188,7 +211,14 @@
 					</md-dialog>
 			</md-tab>
 			<md-tab id="tab-question_answer" md-label="Faqs" md-icon="question_answer">
-
+				<md-dialog-confirm
+					:md-active.sync="modalDeleteFaq"
+					md-title="Tem certeza que deseja deletar este FAQ?"
+					md-content="Ao confirmar não haverá como restaurá-lo..."
+					md-confirm-text="Confirmar"
+					md-cancel-text="Fechar"
+					@md-cancel="modalDeleteFaq = false"
+					@md-confirm="deleteFaq()" />
 				<span class="no-pic-message md-layout  md-alignment-center-center" v-if="faqList.length == 0">
 					<md-card class="mt-layout-item">
 						<md-empty-state
@@ -216,7 +246,7 @@
 							<md-button class="md-icon-button" @click="openEditFaqModal(faq)">
 								<md-icon>edit</md-icon>
 							</md-button>
-							<md-button class="md-icon-button" @click="deleteFaq(faq.id)">
+							<md-button class="md-icon-button" @click="openDeleteFaqModal(faq)">
 								<md-icon>delete</md-icon>
 							</md-button>
 						</md-list-item>
@@ -320,11 +350,18 @@ export default {
 
 	data() {
 		return {
+			perkToDelete: null,
+			imageToDelete: null,
+			faqToDelete: null,
+			modalDeleteImage: false,
+			modalDeletePerk: false,
+			modalDeleteFaq: false,
 			perkDialog: false,
 			perk: {
 				name: "",
 				stock: "",
 				price: null,
+				shipping_date: null
 			},
 			social: {
 				instagram: null,
@@ -373,6 +410,9 @@ export default {
 					required	
 				},
 				price: {
+					required
+				},
+				shipping_date: {
 					required
 				}
 			},
@@ -425,8 +465,9 @@ export default {
 				this.$v.perk.$reset();
 				this.perk.campaign_id = this.$route.params.id;
 				this.perk.image = this.imageToUploadPerk;
+				let parsedDate =this.perk.shipping_date.toISOString().split('T')[0]
 				global
-					.$post("/Content/addperk", this.perk, this.user.token)
+					.$post("/Content/addperk", {...this.perk, shipping_date: parsedDate}, this.user.token)
 					.then(response => {
 						this.loadPerk()
 						this.perkDialog = false
@@ -454,6 +495,26 @@ export default {
 			this.perk.name = null
 			this.$v.imageToUploadPerk.$reset();
 			this.$v.perk.$reset();
+		},
+		openPerkDeleteModal(perk) {
+			this.perkToDelete = perk
+			this.modalDeletePerk = true
+		},
+		deletePerk() {
+			let data = {
+				id: this.perkToDelete.id
+			}
+			global.$post("/Content/deleteperk", data, this.user.token)
+				.then(res => {
+					this.loadPerk();
+				})
+				.catch(err => {
+					let validErr =
+						err && err.response && err.response.data && err.response.data.error;
+					alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
+				})
+				.finally(() => {
+				});
 		},
 		//GALLERY
 		loadGallery() {
@@ -531,12 +592,17 @@ export default {
 				})
 				.finally(() => {
 					this.loading = false;
+					this.resetImage()
 				});
 		},
-		deleteImage(id) {
+		openDeleteImageModal(img) {
+			this.imageToDelete = img
+			this.modalDeleteImage = true
+		},
+		deleteImage() {
 			this.loading = true;
 			let data = {
-				id: id
+				id: this.imageToDelete.id
 			};
 			global
 				.$post("/Content/deletegalery", data, this.user.token)
@@ -552,7 +618,7 @@ export default {
 					this.loading = false;
 				});
 		},
-		closeAddImgModal() {
+		resetImage() {
 			this.showAddImg = false;
 			this.imageToUpload = null;
 			this.base64File = null;
@@ -608,10 +674,10 @@ export default {
 			this.$v.faqEdit.$reset();
 			(this.faq.question = null), (this.faq.answer = null);
 		},
-		deleteFaq(id) {
+		deleteFaq() {
 			this.loading = true;
 			let data = {
-				id: id
+				id: this.faqToDelete.id
 			};
 			global
 				.$post("/Content/deletefaq", data, this.user.token)
@@ -659,12 +725,30 @@ export default {
 				});
 			}
 		},
+		openDeleteFaqModal(faq) {
+			this.faqToDelete = faq
+			this.modalDeleteFaq = true
+		},
 		//social
+		getSocial() {
+			global.$get("/Content/getsocial?campaign_id="+ this.$route.params.id, {} , this.user.token)
+				.then(res => {
+					console.log('getsocial',res)
+					this.social = {...res.data[0]}
+				})
+				.catch(err => {
+					let validErr =
+						err && err.response && err.response.data && err.response.data.error;
+					alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
+				})
+				.finally(() => {
+				});
+		},
 		saveSocial() {
 			let data = { 
-				facebook: null,
-				instagram: null,
-				youtube:null,
+				facebook:  this.social.facebook,
+				instagram:  this.social.instagram,
+				youtube: this.social.youtube,
 				campaign_id: this.$route.params.id
 			}
 			global.$post("/Content/updatesocial", data, this.user.token)
@@ -682,6 +766,8 @@ export default {
 	},
 
 	mounted() {
+		// alert(this.$moment("[native Date Tue May 21 2019 00:00:00 GMT-0300 (Horário Padrão de Brasília)]", "YYYY-MM-DD"))
+		this.getSocial()
 		this.loadGallery()
     this.loadFaq()
     this.loadPerk()
@@ -693,6 +779,11 @@ export default {
 	&:not(:last-child) {
 		border-bottom: 1px solid
 			var(--md-theme-default-divider, rgba(0, 0, 0, 0.12));
+	}
+}
+.md-datepicker {
+	i {
+		display: none;
 	}
 }
 .md-dialog {
@@ -714,18 +805,22 @@ export default {
 .no-pic-message {
 	font-weight: bold;
 }
-.close-icon-container {
-	padding: 10px;
+// .close-icon-container {
+// 	padding: 10px;
+// 	position: absolute;
+// 	right: 0;
+// 	z-index: 100;
+// 	&:hover {
+// 		background: #ccc;
+// 		cursor: pointer;
+// 	}
+// 	i {
+// 		font-size: 2rem !important;
+// 	}
+// }
+.delete-btn-absolute {
 	position: absolute;
 	right: 0;
-	z-index: 100;
-	&:hover {
-		background: #ccc;
-		cursor: pointer;
-	}
-	i {
-		font-size: 2rem !important;
-	}
 }
 .image-description {
 	text-align: center;

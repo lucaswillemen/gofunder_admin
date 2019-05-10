@@ -8,6 +8,7 @@ import Root from '@/pages/Root.vue';
 import Create from '@/pages/Create.vue';
 import Campaigns from '@/pages/Campaigns.vue';
 import Edit from '@/pages/Edit.vue';
+
 import Test from '@/pages/Test.vue';
 
 
@@ -87,7 +88,17 @@ export default new Router({
           component: Edit,
           meta: {
             onlyAuth: true
-          }
+          },
+          children: [
+            {
+              path: '/perk/:id',
+              name: 'Edição de Perk',
+              component: EditPerk,
+              meta: {
+                onlyAuth: true
+              },
+            }
+          ]
         }
       ]
     },
