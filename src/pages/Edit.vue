@@ -91,66 +91,87 @@
 									<md-icon>add_a_photo</md-icon>
 								</md-button>
 							</div>
-
+							
 							<div
 								v-if="$v.imageToUploadPerk.$invalid && $v.imageToUploadPerk.$dirty"
 								style="color: #ff1744;"
 							>Insira uma imagem para o perk</div>
+							<div class="md-layout md-gutter">
+								<div class="md-layout-item md-small-size-100">
+									<md-field :class="{'md-invalid': $v.perk.name.$invalid && $v.perk.name.$dirty}">
+										<label>Qual o nome do seu perk?</label>
+										<md-input v-model="perk.name" required></md-input>
+										<span class="md-error">Informe o titulo</span>
+									</md-field>
+								</div>
+								<div class="md-layout-item md-small-size-100">
+									<md-field :class="{'md-invalid': $v.perk.price.$invalid && $v.perk.price.$dirty}">
+										<label>Qual o valor do seu perk?</label>
+										<md-input v-model.number="perk.price" required></md-input>
+										<span class="md-error">Informe o valor</span>
+									</md-field>
+								</div>
+							</div>
 
-							<md-field :class="{'md-invalid': $v.perk.name.$invalid && $v.perk.name.$dirty}">
-								<label>Qual o nome do seu perk?</label>
-								<md-input v-model="perk.name" required></md-input>
-								<span class="md-error">Informe o titulo</span>
-							</md-field>
-							<md-field :class="{'md-invalid': $v.perk.price.$invalid && $v.perk.price.$dirty}">
-								<label>Qual o valor do seu perk?</label>
-								<md-input v-model.number="perk.price" required></md-input>
-								<span class="md-error">Informe o valor</span>
-							</md-field>
-
-							<md-field
-								:class="{'md-invalid': $v.perk.description.$invalid && $v.perk.description.$dirty}"
-							>
-								<label>Qual a descrição do seu perk?</label>
-								<md-input v-model="perk.description" required></md-input>
-								<span class="md-error">Informe o titulo</span>
-							</md-field>
-							<md-field :class="{'md-invalid': $v.perk.stock.$invalid && $v.perk.stock.$dirty}">
-								<label>Qual o estoque do seu perk?</label>
-								<md-input v-model="perk.stock" required></md-input>
-								<span class="md-error">Informe o estoque</span>
+							<md-field :class="{'md-invalid': $v.perk.description.$invalid && $v.perk.description.$dirty}">
+								<label>Qual a descrição do seu perk? *</label>
+								<md-textarea v-model="perk.description" required md></md-textarea>
+								<span class="md-error">Informe a descrição!</span>
 							</md-field>
 
-							<md-field :class="{'md-invalid': $v.perk.discount.$invalid && $v.perk.discount.$dirty}">
-								<label>Qual o valor do desconto?</label>
-								<md-input v-model.number="perk.discount" required></md-input>
-								<span class="md-error">Informe o valor</span>
-							</md-field>
+							<div class="md-layout md-gutter">
+								<div class="md-layout-item md-small-size-100">
+									<md-field :class="{'md-invalid': $v.perk.stock.$invalid && $v.perk.stock.$dirty}">
+										<label>Qual o estoque do seu perk?</label>
+										<md-input v-model="perk.stock" required></md-input>
+										<span class="md-error">Informe o estoque</span>
+									</md-field>
+								</div>
+								<div class="md-layout-item md-small-size-100">
+									<md-field :class="{'md-invalid': $v.perk.discount.$invalid && $v.perk.discount.$dirty}">
+										<label>Qual o valor do desconto?</label>
+										<md-input v-model.number="perk.discount" required></md-input>
+										<span class="md-error">Informe o valor</span>
+									</md-field>
+								</div>
+							</div>
+							
+
+							
 
 							<md-switch v-model="perk.haveFrete">Seu produto será enviado pelos correios?</md-switch>
-
 							<div v-show="perk.haveFrete">
-								<md-field>
-									<label>Qual o valor do frete?</label>
-									<md-input v-model.number="perk.shipping_price" required></md-input>
-									<span class="md-error">Informe o valor</span>
-								</md-field>
-								<md-datepicker class="no-icon" md-immediately v-model="perk.shipping_date" required>
+								<div class="md-layout md-gutter">
+									<div class="md-layout-item md-small-size-100">
+										<md-field :class="{'md-invalid': $v.perk.shipping_price.$invalid}">
+											<label>Qual o valor do frete?</label>
+											<md-input v-model.number="perk.shipping_price" required></md-input>
+											<span class="md-error">Informe o valor</span>
+										</md-field>
+									</div>
+									<div class="md-layout-item md-small-size-100">
+											<md-datepicker class="no-icon" :class="{'md-invalid': $v.perk.shipping_date.$invalid}" md-immediately v-model="perk.shipping_date" required>
 									<label>Informe a data estimada de entrega do seu produto</label>
 								</md-datepicker>
+									</div>
+								</div>
+								
+							
 								<div>
-									<br>
-									<b>Opções de envio:</b>
-									<br>
-									<md-radio
-										v-model="perk.shipping_worldwide"
-										value="only_country"
-									>Meu produto será enviado apenas para o país</md-radio>
-									<br>
-									<md-radio
-										v-model="perk.shipping_worldwide"
-										value="world_wide"
-									>Meu produto será enviado para qualquer lugar do mundo</md-radio>
+									<div>
+										<b>Opções de envio:</b>
+									</div>
+									<div>
+
+										<md-radio
+											v-model="perk.shipping_worldwide"
+											value="only_country"
+										>Meu produto será enviado apenas para o país</md-radio>
+										<md-radio
+											v-model="perk.shipping_worldwide"
+											value="world_wide"
+										>Meu produto será enviado para qualquer lugar do mundo</md-radio>
+									</div>
 								</div>
 							</div>
 						</md-dialog-content>
@@ -165,57 +186,72 @@
 					<md-dialog :md-active.sync="perkEditDialog">
 						<md-dialog-title>Editar Perk</md-dialog-title>
 						<md-dialog-content>
-							<md-field :class="{'md-invalid': $v.perkEdit.name.$invalid && $v.perkEdit.name.$dirty}">
-								<label>Qual o nome do seu perk?</label>
-								<md-input v-model="perkEdit.name" required></md-input>
-								<span class="md-error">Informe o titulo</span>
-							</md-field>
-							<md-field :class="{'md-invalid': $v.perkEdit.price.$invalid && $v.perkEdit.price.$dirty}">
-								<label>Qual o valor do seu perk?</label>
-								<md-input v-model.number="perkEdit.price" required></md-input>
-								<span class="md-error">Informe o valor</span>
-							</md-field>
-
+							<div class="md-layout md-gutter">
+								<div class="md-layout-item md-small-size-100">
+									<md-field :class="{'md-invalid': $v.perkEdit.name.$invalid && $v.perkEdit.name.$dirty}">
+										<label>Qual o nome do seu perk?</label>
+										<md-input v-model="perkEdit.name" required></md-input>
+										<span class="md-error">Informe o titulo</span>
+									</md-field>
+								</div>
+								<div class="md-layout-item md-small-size-100">
+									<md-field :class="{'md-invalid': $v.perkEdit.price.$invalid && $v.perkEdit.price.$dirty}">
+										<label>Qual o valor do seu perk?</label>
+										<md-input v-model.number="perkEdit.price" required></md-input>
+										<span class="md-error">Informe o valor</span>
+									</md-field>
+								</div>
+							</div>
+							
 							<md-field
-								:class="{'md-invalid': $v.perkEdit.description.$invalid && $v.perkEdit.description.$dirty}"
-							>
+								:class="{'md-invalid': $v.perkEdit.description.$invalid && $v.perkEdit.description.$dirty}">
 								<label>Qual a descrição do seu perk?</label>
-								<md-input v-model="perkEdit.description" required></md-input>
+								<md-textarea v-model="perkEdit.description" required></md-textarea>
 								<span class="md-error">Informe o titulo</span>
 							</md-field>
-							<md-field :class="{'md-invalid': $v.perkEdit.stock.$invalid && $v.perkEdit.stock.$dirty}">
-								<label>Qual o estoque do seu perk?</label>
-								<md-input v-model="perkEdit.stock" required></md-input>
-								<span class="md-error">Informe o estoque</span>
-							</md-field>
-
-							<md-field
-								:class="{'md-invalid': $v.perkEdit.discount.$invalid && $v.perkEdit.discount.$dirty}"
-							>
-								<label>Qual o valor do desconto?</label>
-								<md-input v-model.number="perkEdit.discount" required></md-input>
-								<span class="md-error">Informe o valor</span>
-							</md-field>
-			
+							<div class="md-layout md-gutter">
+								<div class="md-layout-item md-small-size-100">
+									<md-field :class="{'md-invalid': $v.perkEdit.stock.$invalid && $v.perkEdit.stock.$dirty}">
+										<label>Qual o estoque do seu perk?</label>
+										<md-input v-model="perkEdit.stock" required></md-input>
+										<span class="md-error">Informe o estoque</span>
+									</md-field>
+								</div>
+								<div class="md-layout-item md-small-size-100">
+									<md-field
+										:class="{'md-invalid': $v.perkEdit.discount.$invalid && $v.perkEdit.discount.$dirty}">
+										<label>Qual o valor do desconto?</label>
+										<md-input v-model.number="perkEdit.discount" required></md-input>
+										<span class="md-error">Informe o desconto</span>
+									</md-field>
+								</div>
+							</div>
+							
 							<input
 								type="checkbox"
 								id="id-name--1"
 								name="set-name"
 								class="switch-input"
-								@change="mudou"
+								@change="mudou()"
 								:checked="perkEdit.haveFrete"
 							>					
 							<label for="id-name--1" class="switch-label">Seu produto será enviado pelos correios?</label>
 
 							<div v-show="perkEdit.haveFrete">
-								<md-field>
-									<label>Qual o valor do frete?</label>
-									<md-input v-model.number="perkEdit.shipping_price" required></md-input>
-									<span class="md-error">Informe o valor</span>
-								</md-field>
-								<md-datepicker class="no-icon" md-immediately v-model="perkEdit.shipping_date" required>
-									<label>Informe a data estimada de entrega do seu produto</label>
-								</md-datepicker>
+								<div class="md-layout md-gutter">
+									<div class="md-layout-item md-small-size-100">
+											<md-field :class="{'md-invalid': $v.perkEdit.shipping_price.$invalid}">
+												<label>Qual o valor do frete?</label>
+												<md-input v-model.number="perkEdit.shipping_price" required></md-input>
+												<span class="md-error">Informe o valor</span>
+											</md-field>
+									</div>
+									<div class="md-layout-item md-small-size-100">
+										<md-datepicker class="no-icon" :class="{'md-invalid': $v.perkEdit.shipping_date.$invalid}" md-immediately v-model="perkEdit.shipping_date" required>
+											<label>Informe a data estimada de entrega do seu produto</label>
+										</md-datepicker>
+									</div>
+								</div>
 								<div>
 									<br>
 									<b>Opções de envio:</b>
@@ -224,8 +260,6 @@
 										v-model="perkEdit.shipping_worldwide"
 										value="only_country"
 									>Meu produto será enviado apenas para o país</md-radio>
-									<br>
-
 									<md-radio
 										v-model="perkEdit.shipping_worldwide"
 										value="world_wide"
@@ -519,6 +553,22 @@ export default {
 			},
 			description: {
 				required
+			},
+			shipping_price: {
+				checkFrete: function() {
+					if(this.perkEdit.haveFrete && (!this.perkEdit.shipping_price || this.perkEdit.shipping_price <= 0)) {
+						return false
+					}
+					return true
+				},
+			},
+			shipping_date: {
+				checkDate: function() {
+					if(this.perkEdit.haveFrete && !this.perkEdit.shipping_date) {
+						return false
+					}
+					return true
+				}
 			}
 		},
 		perk: {
@@ -536,6 +586,22 @@ export default {
 			},
 			description: {
 				required
+			},
+			shipping_price: {
+				checkFrete: function() {
+					if(this.perk.haveFrete && (!this.perk.shipping_price || this.perk.shipping_price <=0)) {
+						return false
+					}
+					return true
+				}
+			},
+			shipping_date: {
+				checkDate: function() {
+					if(this.perk.haveFrete && !this.perk.shipping_date) {
+						return false
+					}
+					return true
+				}
 			}
 		},
 		faq: {
@@ -559,7 +625,7 @@ export default {
 		}
 	},
 	computed: {
-		...mapState(["user"])
+		...mapState(["user"]),
 	},
 
 	methods: {
@@ -567,9 +633,18 @@ export default {
 			this.perkEdit.haveFrete = !this.perkEdit.haveFrete
 			if(!this.perkEdit.haveFrete) this.perkEdit.shipping_price = 0
 		},
-		showModalEditPerk(perk) {
+		showModalEditPerk(perkToEdit) {
+			console.log(perkToEdit)
 			this.perkEditDialog = true;
-			this.perkEdit = {...perk, haveFrete: false};
+			if(perkToEdit.shipping_date == "0000-00-00" && perkToEdit.shipping_price == 0 ){
+				console.log('aq')
+				this.perkEdit = {...perkToEdit, haveFrete: false, shipping_date: null};
+			}
+			else {
+				this.perkEdit = {...perkToEdit, haveFrete: false};
+				console.log('aq2')
+
+			}
 			if(this.perkEdit.shipping_price > 0) {
 				this.perkEdit.haveFrete = true;
 			}
@@ -598,9 +673,14 @@ export default {
 				this.$v.perk.$reset();
 				this.perk.campaign_id = this.$route.params.id;
 				this.perk.image = this.imageToUploadPerk;
-				this.perk.shipping_date = this.perk.shipping_date
+				if(this.perk.haveFrete) {
+
+					this.perk.shipping_date = this.perk.shipping_date
 					.toISOString()
 					.split("T")[0];
+				}else {
+					this.perk.shipping_price = 0
+				}
 
 				this.perkDialog = false;
 				this.loading = true;
@@ -1019,10 +1099,10 @@ export default {
 	display: inline-block;
 }
 .switch-input:checked + .switch-label:before {
-	background-color: #a5d6a7;
+	background-color: rgba(255,82,82,0.38);
 }
 .switch-input:checked + .switch-label:after {
-	background-color: #4caf50;
+	background-color: #ff5252;
 	-ms-transform: translate(80%, -50%);
 	-webkit-transform: translate(80%, -50%);
 	transform: translate(80%, -50%);
