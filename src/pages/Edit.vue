@@ -5,16 +5,16 @@
 		</div>
 		<md-tabs class="md-primary" md-alignment="fixed">
 			<md-tab id="tab-pages" md-label="Resumo" md-icon="pages">
-				<Overview :loadingFlag="loading"></Overview>
+				<Overview></Overview>
 			</md-tab>
 			<md-tab id="tab-gift" md-label="perks" md-icon="card_giftcard">
-				<Perks :loadingFlag="loading"></Perks>
+				<Perks></Perks>
 			</md-tab>
 			<md-tab id="tab-collections" md-label="Gallery" md-icon="collections">
-				<Gallery :loadingFlag="loading"></Gallery>
+				<Gallery></Gallery>
 			</md-tab>
 			<md-tab id="tab-question_answer" md-label="Faqs" md-icon="question_answer">
-				<Faq :loadingFlag="loading" @loading="loading = true"></Faq>
+				<Faq></Faq>
 			</md-tab>
 			<md-tab id="tab-share" md-label="Social networks" md-icon="share">
 				<SocialNetwork></SocialNetwork>

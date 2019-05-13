@@ -30,7 +30,7 @@
 							v-bind:class="{'nav-item': true, 'active': $router.currentRoute.path=='/campaigns'}"
 						>
 							<md-icon>send</md-icon>
-							<span class="md-list-item-text">My campaigns</span>
+							<span class="md-list-item-text">Minhas campanhas</span>
 						</md-list-item>
 					</router-link>
 
@@ -56,7 +56,7 @@
 							v-bind:class="{'nav-item': true, 'active': $router.currentRoute.path=='/create'}"
 						>
 							<md-icon>add</md-icon>
-							<span class="md-list-item-text">Create new campaign</span>
+							<span class="md-list-item-text">Criar nova campanha</span>
 						</md-list-item>
 					</router-link>
 

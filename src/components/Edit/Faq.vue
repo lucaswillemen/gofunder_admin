@@ -35,7 +35,7 @@
     </div>
 
     <div class="md-layout md-grutter md-alignment-center-center" v-if="faqList.length != 0">
-      <md-button :disabled="loadingFlag" class="md-fab md-primary" @click="createFaq = true">
+      <md-button :disabled="parentCall && parentCall.loadingState()" class="md-fab md-primary" @click="createFaq = true">
         <md-icon>add</md-icon>
       </md-button>
     </div>
@@ -57,7 +57,7 @@
         </md-dialog-content>
         <md-dialog-actions>
           <md-button class="md-acent md-raised" @click="resetFaq()">Close</md-button>
-          <md-button :disabled="loadingFlag" class="md-primary md-raised" @click="addFaq()">Add</md-button>
+          <md-button :disabled="parentCall && parentCall.loadingState()" class="md-primary md-raised" @click="addFaq()">Add</md-button>
         </md-dialog-actions>
       </md-dialog>
       <md-dialog :md-active.sync="edittingFaq">
@@ -89,9 +89,9 @@
 import {mapState} from 'vuex'
 import { required } from "vuelidate/lib/validators";
 export default {
-  props: ['loadingFlag'],
   data() {
     return {
+			parentCall: null,
       faqOnEdit: null,
 			edittingFaq: false,
 			faqEdit: {
@@ -143,7 +143,7 @@ export default {
         this.$v.faq.$touch();
         if (!this.$v.faq.$invalid) {
           this.createFaq = false;
-          this.loadingFlag = true;
+    			this.parentCall.showLoading()
           let data = {
             campaign_id: this.$route.params.id,
             question: this.faq.question,
@@ -163,7 +163,7 @@ export default {
               alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
             })
             .finally(() => {
-              this.loadingFlag = false;
+              this.parentCall.hideLoading()
             });
         }
       },
@@ -175,7 +175,7 @@ export default {
         (this.faq.question = null), (this.faq.answer = null);
       },
       deleteFaq(id) {
-        this.loadingFlag = true;
+        this.parentCall.showLoading()
         let data = {
           id: id
         };
@@ -189,7 +189,7 @@ export default {
             alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
           })
           .finally(() => {
-            this.loadingFlag = false;
+            this.parentCall.hideLoading()
           });
       },
       openEditFaqModal(faq) {
@@ -201,7 +201,7 @@ export default {
       editFaq() {
         this.$v.faqEdit.$touch();
         if (!this.$v.faqEdit.$invalid) {
-          this.loadingFlag = true;
+    			this.parentCall.showLoading()
           this.edittingFaq = false;
           let data = {
             id: this.faqOnEdit.id,
@@ -222,13 +222,15 @@ export default {
               alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
             })
             .finally(() => {
-              this.loadingFlag = false;
+              this.parentCall.hideLoading()
             });
         }
       },
     },
     mounted() {
       this.loadFaq()
+		  this.parentCall = this.$parent.$parent.$parent.$parent
+
     }
   }
 }

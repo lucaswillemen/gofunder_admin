@@ -38,6 +38,7 @@ export default {
 	data() {
     return {
       social: {
+			  parentCall: null,
 				instagram: null,
 				facebook: null,
 				youtube: null
@@ -67,6 +68,10 @@ export default {
 				})
 				.finally(() => {});
 		}
+  },
+  mounted() {
+		this.parentCall = this.$parent.$parent.$parent.$parent
+
   }
 }
 </script>

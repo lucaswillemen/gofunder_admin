@@ -38,7 +38,7 @@
       <div class="md-layout-item md-small-size-100 md-medium-size-50 md-large-size-33 md-size-25">
         <br>
         <md-button
-          :disabled="loadingFlag"
+          :disabled="parentCall && parentCall.loadingState()"
           class="md-fab md-primary"
           @click="showAddImg = true"
           v-if="pictures.length != 0"
@@ -80,9 +80,9 @@
 <script>
 import { mapState } from 'vuex';
 export default {
-  props: ['loadingFlag'],
   data() {
     return {
+			parentCall: null,
 			pictureUrl: null,
 			imageToUpload: null,
 			base64File: null,
@@ -120,7 +120,7 @@ export default {
 		},
 		uploadNewImage() {
 			this.showAddImg = false;
-			this.loadingFlag = true;
+			this.parentCall.showLoading()
 			let data = {
 				image: this.imageToUpload,
 				title: this.imgCaption
@@ -152,11 +152,11 @@ export default {
 					alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
 				})
 				.finally(() => {
-					this.loadingFlag = false;
+          this.parentCall.hideLoading();
 				});
 		},
 		deleteImage(id) {
-			this.loadingFlag = true;
+			this.parentCall.showDialog()
 			let data = {
 				id: id
 			};
@@ -170,7 +170,7 @@ export default {
 					alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
 				})
 				.finally(() => {
-					this.loadingFlag = false;
+          this.parentCall.hideLoading();
 				});
 		},
 		closeAddImgModal() {
@@ -181,7 +181,9 @@ export default {
 		},
   },
   mounted() {
-		this.loadGallery();
+    this.loadGallery();
+		this.parentCall = this.$parent.$parent.$parent.$parent
+    
   }
 }
 </script>
