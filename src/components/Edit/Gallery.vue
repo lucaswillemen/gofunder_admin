@@ -38,7 +38,7 @@
       <div class="md-layout-item md-small-size-100 md-medium-size-50 md-large-size-33 md-size-25">
         <br>
         <md-button
-          :disabled="loading"
+          :disabled="loadingFlag"
           class="md-fab md-primary"
           @click="showAddImg = true"
           v-if="pictures.length != 0"
@@ -80,16 +80,14 @@
 <script>
 import { mapState } from 'vuex';
 export default {
+  props: ['loadingFlag'],
   data() {
     return {
-      imageToUploadPerk: null,
 			pictureUrl: null,
-			editorData: null,
 			imageToUpload: null,
 			base64File: null,
 			imgCaption: null,
       showAddImg: false,
-      base64FilePerk: false,
 			pictures: []
     }
   },
@@ -122,7 +120,7 @@ export default {
 		},
 		uploadNewImage() {
 			this.showAddImg = false;
-			this.loading = true;
+			this.loadingFlag = true;
 			let data = {
 				image: this.imageToUpload,
 				title: this.imgCaption
@@ -154,11 +152,11 @@ export default {
 					alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
 				})
 				.finally(() => {
-					this.loading = false;
+					this.loadingFlag = false;
 				});
 		},
 		deleteImage(id) {
-			this.loading = true;
+			this.loadingFlag = true;
 			let data = {
 				id: id
 			};
@@ -172,7 +170,7 @@ export default {
 					alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
 				})
 				.finally(() => {
-					this.loading = false;
+					this.loadingFlag = false;
 				});
 		},
 		closeAddImgModal() {

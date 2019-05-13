@@ -5,13 +5,13 @@
 		</div>
 		<md-tabs class="md-primary" md-alignment="fixed">
 			<md-tab id="tab-pages" md-label="Resumo" md-icon="pages">
-				<Overview></Overview>
+				<Overview :loadingFlag="loading"></Overview>
 			</md-tab>
 			<md-tab id="tab-gift" md-label="perks" md-icon="card_giftcard">
 				<Perks></Perks>
 			</md-tab>
 			<md-tab id="tab-collections" md-label="Gallery" md-icon="collections">
-				<Gallery></Gallery>
+				<Gallery :loadingFlag="loading"></Gallery>
 			</md-tab>
 			<md-tab id="tab-question_answer" md-label="Faqs" md-icon="question_answer">
 				<Faq :loadingFlag="loading" @loading="loading = true"></Faq>
@@ -43,6 +43,15 @@ export default {
 			loading: false
 		};
 	},
+	methods: {
+		showLoading() {
+			this.loading = true
+		},
+		hideLoading() {
+			this.loading = false
+
+		}
+	}
 };
 </script>
 <style lang="scss" scoped>

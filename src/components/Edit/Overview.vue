@@ -21,11 +21,12 @@
 <script>
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 export default {
+  props: ['loadingFlag'],
   data() {
     return {
+			editorData: null,
       editor: ClassicEditor,
 			editorConfig: {},
-			loading: false,
 			
 			config: {
 				height: 400,

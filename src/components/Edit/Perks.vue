@@ -43,7 +43,7 @@
 
       <div class="md-layout-item md-small-size-100 md-medium-size-50 md-large-size-33 md-size-25">
         <br>
-        <md-button :disabled="loading" class="md-fab md-primary" @click="perkDialog = true">
+        <md-button :disabled="loadingFlag" class="md-fab md-primary" @click="perkDialog = true">
           <md-icon>add</md-icon>
         </md-button>
       </div>
@@ -153,7 +153,7 @@
         </md-dialog-content>
         <md-dialog-actions>
           <md-button class="md-acent md-raised" @click="resetPerk()">Close</md-button>
-          <md-button class="md-primary md-raised" :disabled="loading" @click="uploadNewPerk()">Add</md-button>
+          <md-button class="md-primary md-raised" :disabled="loadingFlag" @click="uploadNewPerk()">Add</md-button>
         </md-dialog-actions>
       </md-dialog>
     </div>
@@ -245,7 +245,7 @@
         </md-dialog-content>
         <md-dialog-actions>
           <md-button class="md-acent md-raised" @click="resetEditPerk()">Close</md-button>
-          <md-button class="md-primary md-raised" :disabled="loading" @click="editPerk()">Save</md-button>
+          <md-button class="md-primary md-raised" :disabled="loadingFlag" @click="editPerk()">Save</md-button>
         </md-dialog-actions>
       </md-dialog>
     </div>
@@ -256,8 +256,10 @@
 import { mapState } from 'vuex';
 import { required } from "vuelidate/lib/validators";
 export default {
-  	data() {
+  data() {
 		return {
+      loadingFlag: false,
+      base64FilePerk: false,
 			perkDialog: false,
 			perkEditDialog: false,
 			perkEdit: {
@@ -271,7 +273,7 @@ export default {
 				shipping_worldwide: "world_wide"
 			},
 			allow: true,
-
+      imageToUploadPerk: null,
 			perk: {
 				name: "",
 				stock: "",
@@ -413,8 +415,9 @@ export default {
 					this.perk.shipping_price = 0
 				}
 
-				this.perkDialog = false;
-				this.loading = true;
+        this.perkDialog = false;
+				this.loadingFlag = true;
+        this.$parent.showLoading();
 
 				global
 					.$post("/Content/addperk", this.perk, this.user.token)
@@ -433,7 +436,9 @@ export default {
 						alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
 					})
 					.finally(() => {
-						this.loading = false;
+            this.loadingFlag = false;
+            this.$parent.hideLoading();
+                        
 					});
 			}
 		},
@@ -448,7 +453,8 @@ export default {
 					.split("T")[0];
 
 				this.perkEditDialog = false;
-				this.loading = true;
+        this.loadingFlag = true;
+        this.$parent.showLoading();
 
 				global
 					.$post("/Content/editperk", this.perkEdit, this.user.token)
@@ -465,7 +471,9 @@ export default {
 						alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
 					})
 					.finally(() => {
-						this.loading = false;
+            this.loadingFlag = false;
+            this.$parent.hideLoading();
+
 					});
 			}
 		},
@@ -494,6 +502,9 @@ export default {
 			};
 			reader.readAsDataURL(evt.target.files[0]);
 		},
+  },
+  mounted() {
+    this.loadPerk()
   }
 }
 </script>
