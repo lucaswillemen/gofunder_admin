@@ -35,23 +35,16 @@
                       </b-col>
                     </b-row>
                     <b-row>
+                      
                       <b-col lg="12">
+                        <!--
                         <div class="boxes">
                           <div class="box">
                             <div class="top">
-                            <!--   <span>{{user.total_campaigns}}</span>!-->
+                            <span>{{user.total_campaigns}}</span>
                             </div>
                             <div class="bottom">
                               <span>Campanha (s)</span>
-                            </div>
-                          </div>
-                          <div class="box">
-                            <div class="top">
-                              <span v-if="user && user.btc">{{user.btc.toFixed(8)}} BTC</span>
-                              <span v-if="!user || !user.btc">0.0000000 BTC</span>
-                            </div>
-                            <div class="bottom">
-                                <span>Saldo em Bitcoin</span>
                             </div>
                           </div>
 
@@ -67,6 +60,7 @@
 
                         </div>
                         <hr>
+                       !-->
                       </b-col>
                     </b-row>
                     <!--<b-row>

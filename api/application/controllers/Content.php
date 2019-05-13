@@ -2,8 +2,24 @@
 class Content extends CI_Controller
 {
 
-
-
+	public function getsocial()
+	{		
+		$campaign_id = $this->input->get("campaign_id");
+		$social = $this->db->select("facebook,instagram, youtube")->where('id', $campaign_id)->get("campaign")->result_array();
+		$this->output->set_content_type('application/json')->set_output(json_encode($social));
+	}
+	public function updatesocial()
+	{
+		$user = $this->user->check($this->input->get_request_header('Authorization'));
+		$campaign_id = $this->input->post("campaign_id");
+		$social = [
+			"facebook" => $this->input->post("facebook"),
+			"instagram" => $this->input->post("instagram"),
+			"youtube" => $this->input->post("youtube")
+		];
+		$this->db->where('id', $campaign_id)->update("campaign", $social);
+		$this->output->set_content_type('application/json')->set_output(json_encode($social));
+	}
 	public function getfaq()
 	{
 		$user = $this->user->check($this->input->get_request_header('Authorization'));
@@ -61,6 +77,29 @@ class Content extends CI_Controller
 
 		$this->output->set_content_type('application/json')->set_output(json_encode(["MSG" => "EDITED"]));
 	}
+
+	
+	public function deleteperk()
+	{
+		$user = $this->user->check($this->input->get_request_header('Authorization'));
+		$perk = $this->db->where("id", $this->input->post("id"))->get("campaign_perk")->row();
+
+		if (!$perk) {
+			$response = ['error' => 'INVALID_PERK'];
+			$this->output->set_content_type('application/json')->set_status_header(400)->set_output(json_encode($response));
+			exit();
+		}
+
+		if (!$this->db->where("id", $perk->campaign_id)->where("user_id", $user->id)->get("campaign")->num_rows()) {
+			$response = ['error' => 'NOT_YOUR_CAMPAIGN'];
+			$this->output->set_content_type('application/json')->set_status_header(400)->set_output(json_encode($response));
+			exit();
+		}
+
+		$this->db->where("id", $perk->id)->delete('campaign_perk');
+		$this->output->set_content_type('application/json')->set_output(json_encode(["MSG" => "REMOVED"]));
+	}
+
 
 
 	public function deletefaq()
@@ -139,12 +178,38 @@ class Content extends CI_Controller
 	}
 
 
+
 	public function getperk()
 	{
 		$user = $this->user->check($this->input->get_request_header('Authorization'));
 		$campaign_id = $this->input->get("campaign_id");
 		$perk = $this->db->where('campaign_id', $campaign_id)->get('campaign_perk')->result();
 		$this->output->set_content_type('application/json')->set_output(json_encode($perk));
+	}
+
+	public function editperk()
+	{
+		$user = $this->user->check($this->input->get_request_header('Authorization'));
+		$campaign_id = $this->input->post("campaign_id");
+		$perk_id = $this->input->post("id");
+
+		if (!$this->db->where("id", $campaign_id)->where("user_id", $user->id)->get("campaign")->row()) {
+			$response = ['error' => 'NOT_YOUR_CAMPAIGN'];
+			$this->output->set_content_type('application/json')->set_status_header(400)->set_output(json_encode($response));
+			exit();
+		}
+
+		$this->db->where("id", $perk_id)->update('campaign_perk', [
+			"name"  => $this->input->post("name"),
+			"price" => $this->input->post("price"),
+			"stock" => $this->input->post("stock"),			
+			"description" => $this->input->post("description"),
+			"shipping_worldwide" => $this->input->post("shipping_worldwide"),
+			"shipping_date" => $this->input->post("shipping_date"),
+			"shipping_price" => $this->input->post("shipping_price"),
+			"discount" => $this->input->post("discount")
+		]);
+		$this->output->set_content_type('application/json')->set_output(json_encode(["MSG" => "EDITED"]));
 	}
 
 	public function addperk()
@@ -170,7 +235,12 @@ class Content extends CI_Controller
 			"campaign_id"  => $campaign_id,
 			"name"  => $this->input->post("name"),
 			"price" => $this->input->post("price"),
-			"stock" => $this->input->post("stock"),
+			"stock" => $this->input->post("stock"),			
+			"description" => $this->input->post("description"),
+			"shipping_worldwide" => $this->input->post("shipping_worldwide"),
+			"shipping_date" => $this->input->post("shipping_date"),
+			"shipping_price" => $this->input->post("shipping_price"),
+			"discount" => $this->input->post("discount"),
 			"cover_url" => "api/uploads/perk/" . $this->upload->data('file_name')
 		]);
 		$this->output->set_content_type('application/json')->set_output(json_encode(["MSG" => "ADDED"]));

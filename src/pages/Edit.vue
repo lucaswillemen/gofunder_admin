@@ -8,7 +8,7 @@
 				<Overview :loadingFlag="loading"></Overview>
 			</md-tab>
 			<md-tab id="tab-gift" md-label="perks" md-icon="card_giftcard">
-				<Perks></Perks>
+				<Perks :loadingFlag="loading"></Perks>
 			</md-tab>
 			<md-tab id="tab-collections" md-label="Gallery" md-icon="collections">
 				<Gallery :loadingFlag="loading"></Gallery>
@@ -49,7 +49,9 @@ export default {
 		},
 		hideLoading() {
 			this.loading = false
-
+		},
+		loadingState() {
+			return this.loading
 		}
 	}
 };

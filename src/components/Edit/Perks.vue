@@ -43,7 +43,7 @@
 
       <div class="md-layout-item md-small-size-100 md-medium-size-50 md-large-size-33 md-size-25">
         <br>
-        <md-button :disabled="loadingFlag" class="md-fab md-primary" @click="perkDialog = true">
+        <md-button :disabled="parentCall && parentCall.loadingState()" class="md-fab md-primary" @click="perkDialog = true">
           <md-icon>add</md-icon>
         </md-button>
       </div>
@@ -153,7 +153,7 @@
         </md-dialog-content>
         <md-dialog-actions>
           <md-button class="md-acent md-raised" @click="resetPerk()">Close</md-button>
-          <md-button class="md-primary md-raised" :disabled="loadingFlag" @click="uploadNewPerk()">Add</md-button>
+          <md-button class="md-primary md-raised" :disabled="parentCall && parentCall.loadingState()" @click="uploadNewPerk()">Add</md-button>
         </md-dialog-actions>
       </md-dialog>
     </div>
@@ -245,7 +245,7 @@
         </md-dialog-content>
         <md-dialog-actions>
           <md-button class="md-acent md-raised" @click="resetEditPerk()">Close</md-button>
-          <md-button class="md-primary md-raised" :disabled="loadingFlag" @click="editPerk()">Save</md-button>
+          <md-button class="md-primary md-raised" :disabled="parentCall && parentCall.loadingState()" @click="editPerk()">Save</md-button>
         </md-dialog-actions>
       </md-dialog>
     </div>
@@ -257,8 +257,8 @@ import { mapState } from 'vuex';
 import { required } from "vuelidate/lib/validators";
 export default {
   data() {
-		return {
-      loadingFlag: false,
+		return {			
+			parentCall: null,
       base64FilePerk: false,
 			perkDialog: false,
 			perkEditDialog: false,
@@ -367,16 +367,12 @@ export default {
 			if(!this.perkEdit.haveFrete) this.perkEdit.shipping_price = 0
 		},
 		showModalEditPerk(perkToEdit) {
-			console.log(perkToEdit)
 			this.perkEditDialog = true;
 			if(perkToEdit.shipping_date == "0000-00-00" && perkToEdit.shipping_price == 0 ){
-				console.log('aq')
 				this.perkEdit = {...perkToEdit, haveFrete: false, shipping_date: null};
 			}
 			else {
 				this.perkEdit = {...perkToEdit, haveFrete: false};
-				console.log('aq2')
-
 			}
 			if(this.perkEdit.shipping_price > 0) {
 				this.perkEdit.haveFrete = true;
@@ -396,7 +392,7 @@ export default {
 					let validErr =
 						err && err.response && err.response.data && err.response.data.error;
 					alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
-				});
+				})
 		},
 		uploadNewPerk() {
 			this.$v.perk.$touch();
@@ -407,7 +403,6 @@ export default {
 				this.perk.campaign_id = this.$route.params.id;
 				this.perk.image = this.imageToUploadPerk;
 				if(this.perk.haveFrete) {
-
 					this.perk.shipping_date = this.perk.shipping_date
 					.toISOString()
 					.split("T")[0];
@@ -416,8 +411,8 @@ export default {
 				}
 
         this.perkDialog = false;
-				this.loadingFlag = true;
-        this.$parent.showLoading();
+
+        this.parentCall.showLoading();
 
 				global
 					.$post("/Content/addperk", this.perk, this.user.token)
@@ -436,15 +431,15 @@ export default {
 						alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
 					})
 					.finally(() => {
-            this.loadingFlag = false;
-            this.$parent.hideLoading();
-                        
+            this.parentCall.hideLoading()                        
 					});
 			}
 		},
 
 		editPerk() {
+				
 			this.$v.perkEdit.$touch();
+
 			if (!this.$v.perkEdit.$invalid) {
 				this.$v.perkEdit.$reset();
 				this.perkEdit.campaign_id = this.$route.params.id;
@@ -453,8 +448,7 @@ export default {
 					.split("T")[0];
 
 				this.perkEditDialog = false;
-        this.loadingFlag = true;
-        this.$parent.showLoading();
+				this.parentCall.showLoading()
 
 				global
 					.$post("/Content/editperk", this.perkEdit, this.user.token)
@@ -471,8 +465,7 @@ export default {
 						alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
 					})
 					.finally(() => {
-            this.loadingFlag = false;
-            this.$parent.hideLoading();
+            this.parentCall.hideLoading();
 
 					});
 			}
@@ -504,7 +497,8 @@ export default {
 		},
   },
   mounted() {
-    this.loadPerk()
+		this.loadPerk()
+		this.parentCall = this.$parent.$parent.$parent.$parent
   }
 }
 </script>

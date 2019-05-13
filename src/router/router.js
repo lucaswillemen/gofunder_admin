@@ -12,7 +12,6 @@ import Withdraw from '@/pages/Withdraw.vue';
 import Extract from '@/pages/Extract.vue';
 import Test from '@/pages/Test.vue';
 
-
 Vue.use(Router);
 
 // function load (local, component) {
@@ -107,6 +106,14 @@ export default new Router({
             onlyAuth: true
           }
         },
+        {
+          path: '/withdraw',
+          name: 'Withdraw',
+          component: Withdraw,
+          meta: {
+            onlyPublic: true
+          }
+        }
       ]
     },
     {
