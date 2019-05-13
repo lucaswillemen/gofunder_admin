@@ -8,7 +8,8 @@ import Root from '@/pages/Root.vue';
 import Create from '@/pages/Create.vue';
 import Campaigns from '@/pages/Campaigns.vue';
 import Edit from '@/pages/Edit.vue';
-
+import Withdraw from '@/pages/Withdraw.vue';
+import Extract from '@/pages/Extract.vue';
 import Test from '@/pages/Test.vue';
 
 
@@ -89,7 +90,23 @@ export default new Router({
           meta: {
             onlyAuth: true
           },
-        }
+        },
+        {
+          path: '/withdraw',
+          name: 'Saques',
+          component: Withdraw,
+          meta: {
+            onlyAuth: true
+          }
+        },
+        {
+          path: '/extract',
+          name: 'Extratos',
+          component: Extract,
+          meta: {
+            onlyAuth: true
+          }
+        },
       ]
     },
     {

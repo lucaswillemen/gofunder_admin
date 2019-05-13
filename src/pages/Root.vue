@@ -33,6 +33,24 @@
 							<span class="md-list-item-text">My campaigns</span>
 						</md-list-item>
 					</router-link>
+
+					<router-link to="/withdraw">
+						<md-list-item
+							v-bind:class="{'nav-item': true, 'active': $router.currentRoute.path=='/withdraw'}"
+						>
+							<md-icon>add</md-icon>
+							<span class="md-list-item-text">Saque</span>
+						</md-list-item
+						>
+					</router-link>
+					<router-link to="/extract">
+						<md-list-item
+							v-bind:class="{'nav-item': true, 'active': $router.currentRoute.path=='/extract'}"
+						>
+							<md-icon>add</md-icon>
+							<span class="md-list-item-text">Extratos</span>
+						</md-list-item>
+					</router-link>
 					<router-link to="/create">
 						<md-list-item
 							v-bind:class="{'nav-item': true, 'active': $router.currentRoute.path=='/create'}"
