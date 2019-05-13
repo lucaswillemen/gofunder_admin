@@ -25,7 +25,7 @@
           </md-card-actions>
           <md-card-media-cover md-solid style="clear:both">
             <md-card-media md-ratio="1:1">
-              <img :src="'http://25.20.118.56/gofunder/'+picture.picture_url">
+              <img :src="$url + picture.picture_url">
             </md-card-media>
             <md-card-area>
               <div class="image-description">

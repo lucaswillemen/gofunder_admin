@@ -20,7 +20,7 @@
         <md-card>
           <md-card-area md-inset>
             <md-card-media md-ratio="16:9">
-              <img :src="'http://25.20.118.56/gofunder/'+perk.cover_url">
+              <img :src="$url + perk.cover_url">
             </md-card-media>
             <md-card-header>
               <h2 class="md-title">{{perk.name}}</h2>

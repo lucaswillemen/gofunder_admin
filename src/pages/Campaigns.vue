@@ -4,7 +4,7 @@
       <md-card>
         <md-card-area md-inset>
           <md-card-media md-ratio="16:9">
-            <img :src="'http://25.20.118.56/gofunder/'+campaign.cover_url">
+            <img :src="$url +campaign.cover_url">
           </md-card-media>
 
           <md-card-header>

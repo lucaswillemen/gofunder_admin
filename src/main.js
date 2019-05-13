@@ -13,6 +13,8 @@ import VueCurrencyFilter from 'vue-currency-filter'
 import VueTheMask from 'vue-the-mask'
 import money from 'v-money'
 
+Vue.prototype.$url = 'http://25.20.68.69/'
+
 Vue.config.productionTip = false
 Vue.use(VueMaterial)
 Vue.use( CKEditor );

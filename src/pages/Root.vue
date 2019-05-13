@@ -29,7 +29,7 @@
 						<md-list-item
 							v-bind:class="{'nav-item': true, 'active': $router.currentRoute.path=='/campaigns'}"
 						>
-							<md-icon>send</md-icon>
+							<md-icon>view_quilt</md-icon>
 							<span class="md-list-item-text">Minhas campanhas</span>
 						</md-list-item>
 					</router-link>
@@ -39,7 +39,7 @@
 							v-bind:class="{'nav-item': true, 'active': $router.currentRoute.path=='/withdraw'}"
 						>
 							<md-icon>payment</md-icon>
-							<span class="md-list-item-text">Saques</span>
+							<span class="md-list-item-text">Saque</span>
 						</md-list-item
 						>
 					</router-link>
@@ -55,7 +55,7 @@
 						<md-list-item
 							v-bind:class="{'nav-item': true, 'active': $router.currentRoute.path=='/create'}"
 						>
-							<md-icon>add</md-icon>
+							<md-icon>create_new_folder</md-icon>
 							<span class="md-list-item-text">Criar nova campanha</span>
 						</md-list-item>
 					</router-link>
@@ -73,7 +73,7 @@
 					<router-link :to="'/edit/'+campaign.id">
 						<md-list-item>
 							<md-avatar>
-           			<img :src="'http://25.20.118.56/gofunder/'+campaign.cover_url">
+           			<img :src="$url + campaign.cover_url">
 							</md-avatar>
 
 							<div class="md-list-item-text">

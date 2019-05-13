@@ -98,6 +98,8 @@
                     })
                     .catch(err => {
                         this.loginError = true
+                        this.loading = false
+
                     })
             },
             getValidationClass(fieldName) {
