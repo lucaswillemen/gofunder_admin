@@ -64,6 +64,7 @@
               </md-field>
             </div>
             <div class="md-layout-item md-size-50" >
+              <!-- Adicionar as taxas * valor para dar o valor final do saque-->
               Valor total: $ 10
             </div>
           </div>
