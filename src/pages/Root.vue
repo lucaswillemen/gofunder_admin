@@ -38,8 +38,8 @@
 						<md-list-item
 							v-bind:class="{'nav-item': true, 'active': $router.currentRoute.path=='/withdraw'}"
 						>
-							<md-icon>add</md-icon>
-							<span class="md-list-item-text">Saque</span>
+							<md-icon>payment</md-icon>
+							<span class="md-list-item-text">Saques</span>
 						</md-list-item
 						>
 					</router-link>
@@ -47,7 +47,7 @@
 						<md-list-item
 							v-bind:class="{'nav-item': true, 'active': $router.currentRoute.path=='/extract'}"
 						>
-							<md-icon>add</md-icon>
+							<md-icon>receipt</md-icon>
 							<span class="md-list-item-text">Extratos</span>
 						</md-list-item>
 					</router-link>
