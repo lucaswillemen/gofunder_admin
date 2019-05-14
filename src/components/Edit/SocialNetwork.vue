@@ -23,7 +23,7 @@
           </md-field>
         </md-card-content>
         <md-card-actions>
-          <md-button @click="saveSocial()" class="md-primary">
+          <md-button class="md-primary md-raised" @click="saveSocial()" >
             Salvar
           </md-button>
         </md-card-actions>

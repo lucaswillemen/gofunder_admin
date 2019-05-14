@@ -17,16 +17,11 @@
 
 					<label for="campaignHtml">Conteúdo informativo da campanha: *</label>
 					<ckeditor :editor="editor" v-model="campaign.overview" :config="editorConfig"></ckeditor>
-
-					<div class="md-layout md-grutter md-alignment-center-center">
-						<md-button class="md-fab md-primary">
-							<md-icon>close</md-icon>
-						</md-button>
-						<md-button class="md-fab md-primary" style="background:green">
-							<md-icon>save</md-icon>
-						</md-button>
-					</div>
 				</md-card-content>
+
+				<md-card-actions>
+					<md-button class="md-primary md-raised" @click>Salvar modificações</md-button>
+				</md-card-actions>
 			</md-card>
 		</div>
 	</div>
@@ -121,10 +116,4 @@ class interceptUploadAdapter {
 </script>
 
 <style>
-.ck-editor__editable_inline {
-    min-height: 430px !important;
-}
-.maxHeight {
-  height:800px;
-}
 </style>

@@ -3,33 +3,33 @@
 		<div class="loading-overlay" v-if="loading">
 			<md-progress-spinner md-mode="indeterminate" :md-stroke="2"></md-progress-spinner>
 		</div>
-		<md-tabs class="md-primary" md-alignment="fixed">
-			<md-tab id="tab-pages" md-label="Resumo" md-icon="pages">
+		<md-steppers :md-active-step.sync="actualStep"  md-alternative>
+			<md-step id="first" md-label="Resumo" :md-done.sync="steps.first" >
 				<Overview></Overview>
-			</md-tab>
-			<md-tab id="tab-gift" md-label="perks" md-icon="card_giftcard">
+			</md-step>
+			<md-step id="second" md-label="Perks" :md-done.sync="steps.second" >
 				<Perks></Perks>
-			</md-tab>
-			<md-tab id="tab-collections" md-label="Gallery" md-icon="collections">
+			</md-step>
+			<md-step id="third" md-label="Galeria" :md-done.sync="steps.third" >
 				<Gallery></Gallery>
-			</md-tab>
-			<md-tab id="tab-question_answer" md-label="Faqs" md-icon="question_answer">
+			</md-step>
+			<md-step id="fourth" md-label="Faqs" :md-done.sync="steps.fourth" >
 				<Faq></Faq>
-			</md-tab>
-			<md-tab id="tab-share" md-label="Social networks" md-icon="share">
+			</md-step>
+			<md-step id="five" md-label="Redes Sociais" :md-done.sync="steps.five" >
 				<SocialNetwork></SocialNetwork>
-			</md-tab>
-		</md-tabs>
+			</md-step>
+		</md-steppers>
 	</div>
 </template>
 <script>
-import Overview from '@/components/Edit/Overview'
-import Perks from '@/components/Edit/Perks'
-import Gallery from '@/components/Edit/Gallery'
-import Faq from '@/components/Edit/Faq'
-import SocialNetwork from '@/components/Edit/SocialNetwork'
+import Overview from "@/components/Edit/Overview";
+import Perks from "@/components/Edit/Perks";
+import Gallery from "@/components/Edit/Gallery";
+import Faq from "@/components/Edit/Faq";
+import SocialNetwork from "@/components/Edit/SocialNetwork";
 export default {
-	name: 'Edit',
+	name: "Edit",
 	components: {
 		Overview,
 		Perks,
@@ -40,24 +40,31 @@ export default {
 
 	data() {
 		return {
+			steps: {
+				first: false,
+				second: false,
+				third: false,
+				fourth: false,
+				five: false
+			},
+			actualStep: false,
 			loading: false
 		};
 	},
 	methods: {
 		showLoading() {
-			this.loading = true
+			this.loading = true;
 		},
 		hideLoading() {
-			this.loading = false
+			this.loading = false;
 		},
 		loadingState() {
-			return this.loading
+			return this.loading;
 		}
 	}
 };
 </script>
 <style lang="scss" scoped>
-
 .loading-overlay {
 	z-index: 10;
 	top: 0;
