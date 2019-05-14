@@ -3,32 +3,33 @@
     <div class="md-layout md-grutter md-alignment-center-center">
       <md-card style="min-width: 50%">
         <md-card-header>
-          <div class="md-title">Social networks profiles</div>
+          <div class="md-title">Perfil de redes sociais</div>
         </md-card-header>
         <md-card-content>
           <md-field>
             <md-icon class="mdi mdi-instagram"></md-icon>
-            <label>Instagram profile</label>
+            <label>Perfil do Instagram</label>
             <md-input v-model="social.instagram"></md-input>
           </md-field>
           <md-field>
             <md-icon class="mdi mdi-facebook"></md-icon>
-            <label>Facebook profile</label>
+            <label>Perfil do Facebook</label>
             <md-input v-model="social.facebook"></md-input>
           </md-field>
           <md-field>
             <md-icon class="mdi mdi-youtube"></md-icon>
-            <label>Youtube channel</label>
+            <label>Canal do Youtube</label>
             <md-input v-model="social.youtube"></md-input>
           </md-field>
         </md-card-content>
+        <md-card-actions>
+          <md-button @click="saveSocial()" class="md-primary">
+            Salvar
+          </md-button>
+        </md-card-actions>
       </md-card>
     </div>
-    <div class="md-layout md-grutter md-alignment-center">
-      <md-button @click="saveSocial()" class="md-fab md-primary" style="background:green">
-        <md-icon>save</md-icon>
-      </md-button>
-    </div>
+  
   </main>
 </template>
 

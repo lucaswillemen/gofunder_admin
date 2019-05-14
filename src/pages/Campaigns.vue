@@ -1,5 +1,8 @@
 <template class=" md-grutter">
   <div class="md-layout md-grutter">
+    <div class="loading-overlay" v-if="loading">
+			<md-progress-spinner md-mode="indeterminate" :md-stroke="2"></md-progress-spinner>
+		</div>
     <div v-for="(campaign, index) in campaigns" :key="index" class="md-layout-item md-size-100 md-medium-size-50 md-large-size-33 md-xlarge-size-25"> 
       <md-card>
         <md-card-area md-inset>
@@ -33,8 +36,8 @@
         </md-card-content>
 
         <md-card-actions>
-          <md-button class="md-primary"><md-icon>list</md-icon> Detalhes</md-button>
-           <router-link :to="'/edit/'+campaign.id"><md-button class="md-primary" ><md-icon>edit</md-icon> Editar</md-button></router-link>
+          <router-link :to="'/edit/'+campaign.id"><md-button class="md-primary" ><md-icon>edit</md-icon> Editar</md-button></router-link>
+          <md-button class="md-primary"><md-icon>send</md-icon>Publicar</md-button>
         </md-card-actions>
     </md-card> 
   </div>
@@ -45,6 +48,7 @@ import {mapState} from 'vuex'
 export default {
   data() {
     return {
+      loading: false,
       campaigns: [],
 
     }
@@ -54,6 +58,7 @@ export default {
   },
   methods: {
     listCampaigns() {
+      this.loading = true
       global.$get("/campaign/getList?user_id="+this.user.id, {}, this.user.token)
         .then(response => {
             this.campaigns = response.data
@@ -61,6 +66,11 @@ export default {
         .catch(err => {
           let validErr = (err && err.response && err.response.data && err.response.data.error)
           alert(validErr ? err.response.data.error : "INVALID_ERROR") // enviar alerta
+          this.loading = false
+
+        })
+        .finally (() => {
+          this.loading = false
         })
     }
   },
@@ -69,4 +79,19 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+.loading-overlay {
+	z-index: 10;
+	top: 0;
+	left: 0;
+	right: 0;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background: rgba(255, 255, 255, 0.9);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+</style>
 
