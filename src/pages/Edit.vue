@@ -47,19 +47,19 @@ export default {
 				fourth: false,
 				five: false
 			},
-			actualStep: false,
+			actualStep: 'first',
 			loading: false
 		};
 	},
 	methods: {
 		showLoading() {
-			this.loading = true;
+			this.loading = true
 		},
 		hideLoading() {
-			this.loading = false;
+			this.loading = false
 		},
 		loadingState() {
-			return this.loading;
+			return this.loading
 		}
 	}
 };

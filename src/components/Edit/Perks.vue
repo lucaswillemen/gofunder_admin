@@ -502,7 +502,7 @@ export default {
   },
   mounted() {
 		this.loadPerk()
-		this.parentCall = this.$parent.$parent.$parent.$parent
+		this.parentCall = this.$parent.$parent.$parent
   }
 }
 </script>

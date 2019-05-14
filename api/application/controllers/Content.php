@@ -173,7 +173,7 @@ class Content extends CI_Controller
 		$config['file_name']            = $uri . "-gallery";
 		$this->load->library('upload', $config);
 		$this->upload->do_upload('image');
-		$result = ["gallery_url" => "api/uploads/gallery/" . $this->upload->data('file_name')];
+		$result = ["gallery_url" => "uploads/gallery/" . $this->upload->data('file_name')];
 		$this->output->set_content_type('application/json')->set_output(json_encode($result));
 	}
 
@@ -241,7 +241,7 @@ class Content extends CI_Controller
 			"shipping_date" => $this->input->post("shipping_date"),
 			"shipping_price" => $this->input->post("shipping_price"),
 			"discount" => $this->input->post("discount"),
-			"cover_url" => "api/uploads/perk/" . $this->upload->data('file_name')
+			"cover_url" => "uploads/perk/" . $this->upload->data('file_name')
 		]);
 		$this->output->set_content_type('application/json')->set_output(json_encode(["MSG" => "ADDED"]));
 	}

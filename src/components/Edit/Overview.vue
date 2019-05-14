@@ -62,7 +62,9 @@ export default {
 			}
 		};
 	},
-	mounted() {}
+	mounted() {
+		
+	}
 };
 
 class interceptUploadAdapter {

@@ -71,8 +71,7 @@ export default {
 		}
   },
   mounted() {
-		this.parentCall = this.$parent.$parent.$parent.$parent
-
+		this.parentCall = this.$parent.$parent.$parent
   }
 }
 </script>

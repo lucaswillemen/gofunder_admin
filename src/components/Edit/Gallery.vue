@@ -1,92 +1,98 @@
 <template>
-  <main>
-    <span class="md-layout-item md-small-size-100 md-size-100" v-if="pictures.length == 0">
-      <md-card class="mt-layout-item">
-        <md-empty-state
-          md-icon="add_a_photo"
-          md-label="Faça sua galeria!"
-          md-description="As imagens serão mostradas na sua galeria de fotos da campanha!">
-          <md-button class="md-primary md-raised" @click="showAddImg = true">Escolher imagens</md-button>
-        </md-empty-state>
-      </md-card>
-    </span>
-    <div class="md-layout md-grutter" v-else>
-      <div
-        class="md-layout-item md-small-size-100 md-medium-size-50 md-large-size-33 md-size-25"
-        v-for="(picture, index) in pictures"
-        :key="index"
-      >
-        <md-card>
-          <md-card-actions>
-            <md-button class="md-fab md-mini" @click="openDeleteConfirmation(picture.id)">
-              <md-icon>delete</md-icon>
-            </md-button>
-          </md-card-actions>
-            <md-card-media md-ratio="1:1">
-              <img v-if="picture.picture_url" :src="$url + picture.picture_url" onerror="this.src='https://via.placeholder.com/150'">
-            </md-card-media>
-            <md-card-content>
-              <div class="image-description">
-                <p>{{picture.name}}</p>
-              </div>
-            </md-card-content>
-        </md-card>
-      </div>
-      <div class="md-layout-item md-small-size-100 md-medium-size-50 md-large-size-33 md-size-25">
-        <br>
-        <md-button
-          :disabled="parentCall && parentCall.loadingState()"
-          class="md-fab md-primary"
-          @click="showAddImg = true"
-          v-if="pictures.length != 0"
-        >
-          <md-icon>add</md-icon>
-        </md-button>
-      </div>
-    </div>
-    <md-dialog :md-active.sync="showAddImg">
-      <md-dialog-title>Escolha uma imagem</md-dialog-title>
-      <md-dialog-content>
-        <input type="file" style="display: none" id="input-file" @change="pickImg($event)">
-        <md-button v-if="!imageToUpload" @click="clickOnFileInput()" class="md-fab md-primary">
-          <md-icon>add_a_photo</md-icon>
-        </md-button>
-        <div v-else class="dialog-picture">
-          <img :src="base64File">
-          <md-button @click="clickOnFileInput()" class="md-fab md-primary">
-            <md-icon>add_a_photo</md-icon>
-          </md-button>
-        </div>
-        <md-field v-if="imageToUpload" style="margin-top: 1rem;">
-          <label>Insira a descrição da imagem</label>
-          <md-input v-model="imgCaption" required maxlength="100"></md-input>
-        </md-field>
-      </md-dialog-content>
-      <md-dialog-actions>
-        <md-button class="md-acent md-raised" @click="resetImgData()">Fechar</md-button>
-        <md-button
-          :disabled="!imageToUpload || !imgCaption"
-          class="md-primary md-raised"
-          @click="uploadNewImage()"
-        >Add</md-button>
-      </md-dialog-actions>
-    </md-dialog>
+	<main>
+		<span class="md-layout-item md-small-size-100 md-size-100" v-if="pictures.length == 0">
+			<md-card class="mt-layout-item">
+				<md-empty-state
+					md-icon="add_a_photo"
+					md-label="Faça sua galeria!"
+					md-description="As imagens serão mostradas na sua galeria de fotos da campanha!"
+				>
+					<md-button class="md-primary md-raised" @click="showAddImg = true">Escolher imagens</md-button>
+				</md-empty-state>
+			</md-card>
+		</span>
+		<div class="md-layout md-grutter" v-else>
+			<div
+				class="md-layout-item md-small-size-100 md-medium-size-50 md-large-size-33 md-size-25"
+				v-for="(picture, index) in pictures"
+				:key="index"
+			>
+				<md-card>
+					<md-card-actions>
+						<md-button class="md-fab md-mini" @click="openDeleteConfirmation(picture.id)">
+							<md-icon>delete</md-icon>
+						</md-button>
+					</md-card-actions>
+					<md-card-media md-ratio="1:1">
+						<img
+							v-if="picture.picture_url"
+							:src="$url + picture.picture_url"
+							onerror="this.src='https://via.placeholder.com/150'"
+						>
+					</md-card-media>
+					<md-card-content>
+						<div class="image-description ">
+							<p>{{picture.name}}</p>
+						</div>
+					</md-card-content>
+				</md-card>
+			</div>
+			<div class="md-layout-item md-small-size-100 md-medium-size-50 md-large-size-33 md-size-25">
+				<br>
+				<md-button
+					:disabled="parentCall && parentCall.loadingState()"
+					class="md-fab md-primary"
+					@click="showAddImg = true"
+					v-if="pictures.length != 0"
+				>
+					<md-icon>add</md-icon>
+				</md-button>
+			</div>
+		</div>
+		<md-dialog :md-active.sync="showAddImg">
+			<md-dialog-title>Escolha uma imagem</md-dialog-title>
+			<md-dialog-content>
+				<input type="file" style="display: none" id="input-file" @change="pickImg($event)">
+				<md-button v-if="!imageToUpload" @click="clickOnFileInput()" class="md-fab md-primary">
+					<md-icon>add_a_photo</md-icon>
+				</md-button>
+				<div v-else class="dialog-picture">
+					<img :src="base64File">
+					<md-button @click="clickOnFileInput()" class="md-fab md-primary">
+						<md-icon>add_a_photo</md-icon>
+					</md-button>
+				</div>
+				<md-field v-if="imageToUpload" style="margin-top: 1rem;">
+					<label>Insira a descrição da imagem</label>
+					<md-input v-model="imgCaption" required maxlength="100"></md-input>
+				</md-field>
+			</md-dialog-content>
+			<md-dialog-actions>
+				<md-button class="md-acent md-raised" @click="resetImgData()">Fechar</md-button>
+				<md-button
+					:disabled="!imageToUpload || !imgCaption"
+					class="md-primary md-raised"
+					@click="uploadNewImage()"
+				>Add</md-button>
+			</md-dialog-actions>
+		</md-dialog>
 		<md-dialog-confirm
-      :md-active.sync="showDeleteConfirmation"
-      md-title="Tem certeza que deseja deletar esta imagem da galeria?"
-      md-content="Ao clicar em 'OK', não será possível recuperar a imagem deletada da galeria."
-      md-confirm-text="Ok"
-      md-cancel-text="Fechar"
+			:md-active.sync="showDeleteConfirmation"
+			md-title="Tem certeza que deseja deletar esta imagem da galeria?"
+			md-content="Ao clicar em 'OK', não será possível recuperar a imagem deletada da galeria."
+			md-confirm-text="Ok"
+			md-cancel-text="Fechar"
 			@md-cancel="showDeleteConfirmation = false"
-      @md-confirm="deleteImage()" />
-  </main>
+			@md-confirm="deleteImage()"
+		/>
+	</main>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState } from "vuex";
 export default {
-  data() {
-    return {
+	data() {
+		return {
 			picIdToDelete: null,
 			showDeleteConfirmation: false,
 			parentCall: null,
@@ -94,30 +100,35 @@ export default {
 			imageToUpload: null,
 			base64File: null,
 			imgCaption: null,
-      showAddImg: false,
+			showAddImg: false,
 			pictures: []
-    }
-  },
-  computed: {
-    ...mapState(['user'])
-  },
-  methods: {
-    loadGallery() {
-			global.$get("/Content/getgalery?campaign_id=" + this.$route.params.id, {}, this.user.token)
+		};
+	},
+	computed: {
+		...mapState(["user"])
+	},
+	methods: {
+		loadGallery() {
+			global
+				.$get(
+					"/Content/getgalery?campaign_id=" + this.$route.params.id,
+					{},
+					this.user.token
+				)
 				.then(response => {
-					this.resetImgData()
+					this.resetImgData();
 					this.pictures = response.data;
 				})
 				.catch(err => {
-					let validErr = err && err.response && err.response.data && err.response.data.error;
+					let validErr =
+						err && err.response && err.response.data && err.response.data.error;
 					alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
 				});
-
 		},
 		clickOnFileInput() {
 			document.getElementById("input-file").click();
 		},
-		
+
 		pickImg(evt) {
 			let reader = new FileReader();
 			this.imageToUpload = evt.target.files[0];
@@ -128,12 +139,13 @@ export default {
 		},
 		uploadNewImage() {
 			this.showAddImg = false;
-			this.parentCall.showLoading()
+			this.parentCall.showLoading();
 			let data = {
 				image: this.imageToUpload,
 				title: this.imgCaption
 			};
-			global.$post("/Content/upload_gallery", data, this.user.token)
+			global
+				.$post("/Content/upload_gallery", data, this.user.token)
 				.then(response => {
 					this.pictureUrl = response.data.gallery_url;
 					let data = {
@@ -141,7 +153,8 @@ export default {
 						campaign_id: this.$route.params.id,
 						legend: this.imgCaption
 					};
-					global.$post("/Content/addgalery", data, this.user.token)
+					global
+						.$post("/Content/addgalery", data, this.user.token)
 						.then(res => {
 							this.loadGallery();
 						})
@@ -160,19 +173,20 @@ export default {
 					alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
 				})
 				.finally(() => {
-          this.parentCall.hideLoading();
+					this.parentCall.hideLoading();
 				});
 		},
 		openDeleteConfirmation(id) {
-			this.picIdToDelete = id
-			this.showDeleteConfirmation = true
+			this.picIdToDelete = id;
+			this.showDeleteConfirmation = true;
 		},
 		deleteImage() {
-			this.parentCall.showLoading()
+			this.parentCall.showLoading();
 			let data = {
 				id: this.picIdToDelete
 			};
-			global.$post("/Content/deletegalery", data, this.user.token)
+			global
+				.$post("/Content/deletegalery", data, this.user.token)
 				.then(res => {
 					this.loadGallery();
 				})
@@ -182,7 +196,7 @@ export default {
 					alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
 				})
 				.finally(() => {
-          this.parentCall.hideLoading();
+					this.parentCall.hideLoading();
 				});
 		},
 		resetImgData() {
@@ -190,29 +204,25 @@ export default {
 			this.imageToUpload = null;
 			this.base64File = null;
 			this.imgCaption = null;
-			this.picIdToDelete = null
-
-		},
-  },
-  mounted() {
-    this.loadGallery();
-		this.parentCall = this.$parent.$parent.$parent.$parent
-    
-  }
-}
+			this.picIdToDelete = null;
+		}
+	},
+	mounted() {
+		this.loadGallery();
+		this.parentCall = this.$parent.$parent.$parent;
+	}
+};
 </script>
+
 
 <style lang="scss" scoped>
 .no-pic-message {
 	font-weight: bold;
 }
+
 .image-description {
 	text-align: center;
 	font-weight: bold;
-
-	// p {
-	// 	color: white;
-	// }
 }
 .dialog-picture {
 	position: relative;
@@ -231,10 +241,17 @@ export default {
 	height: 503px;
 }
 
+.md-dialog {
+	width: 40%;
+}
+.md-card.md-theme-default {
+	height: 503px;
+}
+
 .md-empty-state-container > i {
-	font-size:70px!important;
+	font-size: 70px !important;
 }
 .md-empty-state-icon {
-	height:70px!important;
+	height: 70px !important;
 }
 </style>

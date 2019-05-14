@@ -65,7 +65,7 @@
 						:disabled="parentCall && parentCall.loadingState()"
 						class="md-primary md-raised"
 						@click="addFaq()"
-					>Add</md-button>
+					>Adicionar</md-button>
 				</md-dialog-actions>
 			</md-dialog>
 			<md-dialog :md-active.sync="edittingFaq">
@@ -94,7 +94,7 @@
 				md-confirm-text="Ok"
 				md-cancel-text="Fechar"
 				@md-cancel="showDeleteConfirmation = false"
-				@md-confirm="deleteImage()" />
+				@md-confirm="deleteFaq()" />
 		</div>
 	</main>
 </template>
@@ -105,7 +105,7 @@ import { required } from "vuelidate/lib/validators";
 export default {
 	data() {
 		return {
-			faqIdToDelete: null,
+			faqIdToDelete: 0,
 			showDeleteConfirmation: false,
 			parentCall: null,
 			faqOnEdit: null,
@@ -177,6 +177,7 @@ export default {
 						this.loadFaq();
 					})
 					.catch(err => {
+						console.log(err)
 						let validErr =
 							err &&
 							err.response &&
@@ -194,8 +195,9 @@ export default {
 			this.createFaq = false;
 			this.$v.faq.$reset();
 			this.$v.faqEdit.$reset();
-			this.faqIdToDelete = null
-			(this.faq.question = null), (this.faq.answer = null);
+			this.faqIdToDelete = 0
+			this.faq.question = null
+			this.faq.answer = null
 		},
 		openDeleteConfirmation(id) {
 			this.faqIdToDelete = id
@@ -258,7 +260,7 @@ export default {
 	},
 	mounted() {
 		this.loadFaq();
-		this.parentCall = this.$parent.$parent.$parent.$parent;
+		this.parentCall = this.$parent.$parent.$parent
 	}
 };
 </script>
