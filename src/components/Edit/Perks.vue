@@ -151,7 +151,7 @@
           </div>
         </md-dialog-content>
         <md-dialog-actions>
-          <md-button class="md-acent md-raised" @click="resetPerk()">Close</md-button>
+          <md-button class="md-acent md-raised" @click="resetPerk()">Fechar</md-button>
           <md-button class="md-primary md-raised" :disabled="parentCall && parentCall.loadingState()" @click="uploadNewPerk()">Add</md-button>
         </md-dialog-actions>
       </md-dialog>
@@ -243,8 +243,8 @@
           </div>
         </md-dialog-content>
         <md-dialog-actions>
-          <md-button class="md-acent md-raised" @click="resetEditPerk()">Close</md-button>
-          <md-button class="md-primary md-raised" :disabled="parentCall && parentCall.loadingState()" @click="editPerk()">Save</md-button>
+          <md-button class="md-acent md-raised" @click="resetEditPerk()">Fechar</md-button>
+          <md-button class="md-primary md-raised" :disabled="parentCall && parentCall.loadingState()" @click="editPerk()">Salvar</md-button>
         </md-dialog-actions>
       </md-dialog>
     </div>

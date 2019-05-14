@@ -60,7 +60,7 @@
 					</md-field>
 				</md-dialog-content>
 				<md-dialog-actions>
-					<md-button class="md-acent md-raised" @click="resetFaq()">Close</md-button>
+					<md-button class="md-acent md-raised" @click="resetFaq()">Fechar</md-button>
 					<md-button
 						:disabled="parentCall && parentCall.loadingState()"
 						class="md-primary md-raised"
@@ -83,8 +83,8 @@
 					</md-field>
 				</md-dialog-content>
 				<md-dialog-actions>
-					<md-button class="md-acent md-raised" @click="resetFaq()">Close</md-button>
-					<md-button class="md-primary md-raised" @click="editFaq()">Edit</md-button>
+					<md-button class="md-acent md-raised" @click="resetFaq()">Fechar</md-button>
+					<md-button class="md-primary md-raised" @click="editFaq()">Editar</md-button>
 				</md-dialog-actions>
 			</md-dialog>
 		</div>

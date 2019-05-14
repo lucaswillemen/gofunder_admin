@@ -18,7 +18,7 @@
       >
         <md-card>
           <md-card-actions>
-            <md-button class="md-fab md-mini" @click="deleteImage(picture.id)">
+            <md-button class="md-fab md-mini" @click="openDeleteConfirmation(picture.id)">
               <md-icon>delete</md-icon>
             </md-button>
           </md-card-actions>
@@ -63,7 +63,7 @@
         </md-field>
       </md-dialog-content>
       <md-dialog-actions>
-        <md-button class="md-acent md-raised" @click="closeAddImgModal()">Close</md-button>
+        <md-button class="md-acent md-raised" @click="resetImgData()">Fechar</md-button>
         <md-button
           :disabled="!imageToUpload || !imgCaption"
           class="md-primary md-raised"
@@ -71,6 +71,14 @@
         >Add</md-button>
       </md-dialog-actions>
     </md-dialog>
+		<md-dialog-confirm
+      :md-active.sync="showDeleteConfirmation"
+      md-title="Tem certeza que deseja deletar esta imagem da galeria?"
+      md-content="Ao clicar em 'OK', não será possível recuperar a imagem deletada da galeria."
+      md-confirm-text="Ok"
+      md-cancel-text="Fechar"
+			@md-cancel="showDeleteConfirmation = false"
+      @md-confirm="deleteImage()" />
   </main>
 </template>
 
@@ -79,6 +87,8 @@ import { mapState } from 'vuex';
 export default {
   data() {
     return {
+			picIdToDelete: null,
+			showDeleteConfirmation: false,
 			parentCall: null,
 			pictureUrl: null,
 			imageToUpload: null,
@@ -153,10 +163,14 @@ export default {
           this.parentCall.hideLoading();
 				});
 		},
-		deleteImage(id) {
+		openDeleteConfirmation(id) {
+			this.picIdToDelete = id
+			this.showDeleteConfirmation = true
+		},
+		deleteImage() {
 			this.parentCall.showLoading()
 			let data = {
-				id: id
+				id: this.picIdToDelete
 			};
 			global.$post("/Content/deletegalery", data, this.user.token)
 				.then(res => {
@@ -171,7 +185,7 @@ export default {
           this.parentCall.hideLoading();
 				});
 		},
-		closeAddImgModal() {
+		resetImgData() {
 			this.showAddImg = false;
 			this.imageToUpload = null;
 			this.base64File = null;
