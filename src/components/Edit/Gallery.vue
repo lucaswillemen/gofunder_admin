@@ -25,7 +25,7 @@
           </md-card-actions>
           <md-card-media-cover md-solid style="clear:both">
             <md-card-media md-ratio="1:1">
-              <img :src="$url + picture.picture_url">
+              <img v-if="picture.picture_url" :src="$url + picture.picture_url" onerror="this.src='https://via.placeholder.com/150'">
             </md-card-media>
             <md-card-area>
               <div class="image-description">
