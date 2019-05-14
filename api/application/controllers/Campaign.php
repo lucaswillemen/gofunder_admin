@@ -68,4 +68,42 @@ class Campaign extends CI_Controller
 	}
 
 
+	public function getoverview()
+	{
+		$user = $this->user->check($this->input->get_request_header('Authorization'));
+		$campaign = $this->db->where("id", $this->input->get("campaign_id"))->where("user_id", $user->id)->get("campaign")->row_array();
+		if (!$campaign) {
+			return $this->output->set_content_type('application/json')->set_status_header(400)->set_output(json_encode(['error' => 'NOT_YOUR_CAMPAIGN']));
+		}
+		$campaign_content = $this->db
+		->select('youtube_page,facebook_page,instagram_page,html')
+		->where("campaign_id", $this->input->get("campaign_id"))
+		->get("campaign_content")
+		->row_array();
+
+		$this->output->set_content_type('application/json')->set_output(json_encode(array_merge($campaign, $campaign_content)));
+	}
+
+
+
+	public function saveoverview()
+	{
+		$user = $this->user->check($this->input->get_request_header('Authorization'));
+		$campaign = $this->db->where("id", $this->input->get("campaign_id"))->where("user_id", $user->id)->get("campaign")->row();
+		if (!$campaign) {
+			return $this->output->set_content_type('application/json')->set_status_header(400)->set_output(json_encode(['error' => 'NOT_YOUR_CAMPAIGN']));
+		}
+		$this->db->where("id", $this->input->get("campaign_id"))->update("campaign", $this->input->post(["title", "description"]));
+		
+		$dataContent = $this->input->post(["html","instagram_page","facebook_page","youtube_page"]);
+
+		if(!$this->db->where("campaign_id", $this->input->get("campaign_id"))->get("campaign_content")->num_rows()) {
+			$this->db->insert("campaign_content",array_merge($dataContent,["campaign_id"=>$this->input->get("campaign_id")]));
+		}
+		else {
+			$this->db->where("campaign_id", $this->input->get("campaign_id"))->update("campaign_content",$dataContent);
+		}
+		
+		$this->output->set_content_type('application/json')->set_output(json_encode($campaign));
+	}
 }

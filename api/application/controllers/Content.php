@@ -125,21 +125,7 @@ class Content extends CI_Controller
 
 
 
-	public function addgalery()
-	{
-		$user = $this->user->check($this->input->get_request_header('Authorization'));
-		if (!$this->db->where("id", $this->input->post("campaign_id"))->where("user_id", $user->id)->get("campaign")->num_rows()) {
-			$response = ['error' => 'NOT_YOUR_CAMPAIGN'];
-			$this->output->set_content_type('application/json')->set_status_header(400)->set_output(json_encode($response));
-			exit();
-		}
-		$this->db->insert('campaign_galery', [
-			"campaign_id"  => $this->input->post("campaign_id"),
-			"picture_url"  => $this->input->post("picture_url"),
-			"name" => $this->input->post("legend")
-		]);
-		$this->output->set_content_type('application/json')->set_output(json_encode(["MSG" => "ADDED"]));
-	}
+
 
 	public function deletegalery()
 	{
@@ -166,15 +152,25 @@ class Content extends CI_Controller
 	public function upload_gallery()
 	{
 		$user = $this->user->check($this->input->get_request_header('Authorization'));
-		$uri = str_replace(" ", "-", preg_replace(array("/(á|à|ã|â|ä)/", "/(Á|À|Ã|Â|Ä)/", "/(é|è|ê|ë)/", "/(É|È|Ê|Ë)/", "/(í|ì|î|ï)/", "/(Í|Ì|Î|Ï)/", "/(ó|ò|õ|ô|ö)/", "/(Ó|Ò|Õ|Ô|Ö)/", "/(ú|ù|û|ü)/", "/(Ú|Ù|Û|Ü)/", "/(ñ)/", "/(Ñ)/"), explode(" ", "a A e E i I o O u U n N"), $this->input->post("title"))) . uniqid();
-		$this->input->post("title");
+		if (!$this->db->where("id", $this->input->post("campaign_id"))->where("user_id", $user->id)->get("campaign")->num_rows()) {
+			$response = ['error' => 'NOT_YOUR_CAMPAIGN'];
+			$this->output->set_content_type('application/json')->set_status_header(400)->set_output(json_encode($response));
+			exit();
+		}
 		$config['upload_path']          = './uploads/gallery/';
-		$config['allowed_types']        = 'jpg|png';
-		$config['file_name']            = $uri . "-gallery";
+		$config['allowed_types']        = 'jpg|png|bmp|jpeg';
+		$config['encrypt_name']  = true;
 		$this->load->library('upload', $config);
 		$this->upload->do_upload('image');
-		$result = ["gallery_url" => "uploads/gallery/" . $this->upload->data('file_name')];
-		$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		
+		$fileName ="/uploads/gallery/" . $this->upload->data('file_name');
+
+		$this->db->insert('campaign_galery', [
+			"campaign_id"  => $this->input->post("campaign_id"),
+			"picture_url"  =>$fileName
+		]);
+
+		$this->output->set_content_type('application/json')->set_output(json_encode($fileName));
 	}
 
 

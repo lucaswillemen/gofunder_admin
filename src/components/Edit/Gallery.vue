@@ -1,81 +1,35 @@
 <template>
 	<main>
-		<span class="md-layout-item md-small-size-100 md-size-100" v-if="pictures.length == 0">
+		<div class="md-layout-item md-small-size-100 md-size-100">
 			<md-card class="mt-layout-item">
 				<md-empty-state
 					md-icon="add_a_photo"
 					md-label="Faça sua galeria!"
 					md-description="As imagens serão mostradas na sua galeria de fotos da campanha!"
 				>
-					<md-button class="md-primary md-raised" @click="showAddImg = true">Escolher imagens</md-button>
-				</md-empty-state>
-			</md-card>
-		</span>
-		<div class="md-layout md-grutter" v-else>
-			<div
-				class="md-layout-item md-small-size-100 md-medium-size-50 md-large-size-33 md-size-25"
-				v-for="(picture, index) in pictures"
-				:key="index"
-			>
-				<md-card>
-					<md-card-actions>
-						<md-button class="md-fab md-mini" @click="openDeleteConfirmation(picture.id)">
-							<md-icon>delete</md-icon>
-						</md-button>
-					</md-card-actions>
-					<md-card-media md-ratio="1:1">
-						<img
-							v-if="picture.picture_url"
-							:src="$url + picture.picture_url"
-							onerror="this.src='https://via.placeholder.com/150'"
-						>
-					</md-card-media>
-					<md-card-content>
-						<div class="image-description ">
-							<p>{{picture.name}}</p>
-						</div>
-					</md-card-content>
-				</md-card>
-			</div>
-			<div class="md-layout-item md-small-size-100 md-medium-size-50 md-large-size-33 md-size-25">
-				<br>
-				<md-button
-					:disabled="parentCall && parentCall.loadingState()"
-					class="md-fab md-primary"
-					@click="showAddImg = true"
-					v-if="pictures.length != 0"
-				>
-					<md-icon>add</md-icon>
-				</md-button>
-			</div>
-		</div>
-		<md-dialog :md-active.sync="showAddImg">
-			<md-dialog-title>Escolha uma imagem</md-dialog-title>
-			<md-dialog-content>
-				<input type="file" style="display: none" id="input-file" @change="pickImg($event)">
-				<md-button v-if="!imageToUpload" @click="clickOnFileInput()" class="md-fab md-primary">
-					<md-icon>add_a_photo</md-icon>
-				</md-button>
-				<div v-else class="dialog-picture">
-					<img :src="base64File">
-					<md-button @click="clickOnFileInput()" class="md-fab md-primary">
+					<input type="file" style="display: none" id="input-file" @change="pickImg($event)">
+					<md-button v-if="!imageToUpload" @click="clickOnFileInput()" class="md-fab md-primary">
 						<md-icon>add_a_photo</md-icon>
 					</md-button>
-				</div>
-				<md-field v-if="imageToUpload" style="margin-top: 1rem;">
-					<label>Insira a descrição da imagem</label>
-					<md-input v-model="imgCaption" required maxlength="100"></md-input>
-				</md-field>
-			</md-dialog-content>
-			<md-dialog-actions>
-				<md-button class="md-acent md-raised" @click="resetImgData()">Fechar</md-button>
-				<md-button
-					:disabled="!imageToUpload || !imgCaption"
-					class="md-primary md-raised"
-					@click="uploadNewImage()"
-				>Add</md-button>
-			</md-dialog-actions>
-		</md-dialog>
+				</md-empty-state>
+
+				<md-card-content>
+					<div class="flexBox">
+						<div
+							class="flexGallery"
+							v-for="(picture, index) in pictures"
+							:key="index"
+							:style="{backgroundImage: 'url(\''+$url + picture.picture_url+'\')' }"
+						>
+							<button class="miniclick" @click="openDeleteConfirmation(picture.id)">
+								<md-icon>delete</md-icon>
+							</button>
+						</div>
+					</div>
+				</md-card-content>
+			</md-card>
+		</div>
+
 		<md-dialog-confirm
 			:md-active.sync="showDeleteConfirmation"
 			md-title="Tem certeza que deseja deletar esta imagem da galeria?"
@@ -96,11 +50,8 @@ export default {
 			picIdToDelete: null,
 			showDeleteConfirmation: false,
 			parentCall: null,
-			pictureUrl: null,
 			imageToUpload: null,
 			base64File: null,
-			imgCaption: null,
-			showAddImg: false,
 			pictures: []
 		};
 	},
@@ -128,7 +79,6 @@ export default {
 		clickOnFileInput() {
 			document.getElementById("input-file").click();
 		},
-
 		pickImg(evt) {
 			let reader = new FileReader();
 			this.imageToUpload = evt.target.files[0];
@@ -136,36 +86,21 @@ export default {
 				this.base64File = e.target.result;
 			};
 			reader.readAsDataURL(evt.target.files[0]);
+			this.uploadNewImage();
 		},
 		uploadNewImage() {
-			this.showAddImg = false;
 			this.parentCall.showLoading();
-			let data = {
-				image: this.imageToUpload,
-				title: this.imgCaption
-			};
 			global
-				.$post("/Content/upload_gallery", data, this.user.token)
+				.$post(
+					"/Content/upload_gallery",
+					{
+						image: this.imageToUpload,				
+						campaign_id: this.$route.params.id
+					},
+					this.user.token
+				)
 				.then(response => {
-					this.pictureUrl = response.data.gallery_url;
-					let data = {
-						picture_url: this.pictureUrl,
-						campaign_id: this.$route.params.id,
-						legend: this.imgCaption
-					};
-					global
-						.$post("/Content/addgalery", data, this.user.token)
-						.then(res => {
-							this.loadGallery();
-						})
-						.catch(err => {
-							let validErr =
-								err &&
-								err.response &&
-								err.response.data &&
-								err.response.data.error;
-							alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
-						});
+					this.loadGallery()
 				})
 				.catch(err => {
 					let validErr =
@@ -200,10 +135,8 @@ export default {
 				});
 		},
 		resetImgData() {
-			this.showAddImg = false;
 			this.imageToUpload = null;
 			this.base64File = null;
-			this.imgCaption = null;
 			this.picIdToDelete = null;
 		}
 	},
@@ -216,35 +149,35 @@ export default {
 
 
 <style lang="scss" scoped>
-.no-pic-message {
-	font-weight: bold;
-}
-
-.image-description {
-	text-align: center;
-	font-weight: bold;
-}
-.dialog-picture {
-	position: relative;
-	img {
-		width: 300px;
-		height: auto;
-	}
-	button {
-		position: relative;
-	}
-}
-.md-dialog {
-	width: 40%;
-}
-.md-card.md-theme-default {
-	height: 503px;
-}
-
 .md-empty-state-container > i {
 	font-size: 70px !important;
 }
 .md-empty-state-icon {
 	height: 70px !important;
+}
+.miniclick {
+	font-size: 9px;
+	right: 0px;
+	margin-top: 2px;
+	background: none;
+	border: none;
+	cursor: pointer;
+	i {
+		color: red !important;
+		opacity: 0.60;
+	}
+}
+.flexBox {
+	display:flex;
+	width: 90%;
+	margin: auto;
+	flex-wrap: wrap;
+}
+.flexGallery {
+	flex-basis: 9%;
+  	margin: 5px;
+	height: 120px !important;
+	background-size: 100% 100% !important;
+
 }
 </style>
