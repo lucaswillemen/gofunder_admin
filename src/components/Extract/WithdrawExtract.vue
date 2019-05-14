@@ -7,14 +7,14 @@
         </div>
 
         <md-field md-clearable class="md-toolbar-section-end">
-          <md-input placeholder="Search by name..." v-model="search" @input="searchOnTable" />
+          <md-input placeholder="Procurar por nome .." v-model="search" @input="searchOnTable" />
         </md-field>
       </md-table-toolbar>
 
       <md-table-empty-state
-        md-label="No users found"
-        :md-description="`No user found for this '${search}' query. Try a different search term or create a new user.`">
-        <md-button class="md-primary md-raised" @click="newUser">Create New User</md-button>
+        md-label="Nenhum usuário encontrado"
+        :md-description="`Nenhum retorno para '${search}'. Tente uma busca diferente.`">
+        <md-button class="md-primary md-raised" @click="newUser">Buscar</md-button>
       </md-table-empty-state>
 
       <md-table-row slot="md-table-row" slot-scope="{ item }">
