@@ -1,6 +1,7 @@
 <template class=" md-grutter">
   <div class="md-layout md-grutter">
     <div v-for="(campaign, index) in campaigns" :key="index" class="md-layout-item md-size-100 md-medium-size-50 md-large-size-33 md-xlarge-size-25"> 
+      Aqui na área abaixo
       <md-card>
         <md-card-area md-inset>
           <md-card-media md-ratio="16:9">
@@ -34,7 +35,7 @@
 
         <md-card-actions>
           <md-button class="md-primary"><md-icon>list</md-icon> Detalhes</md-button>
-           <router-link :to="'/edit/'+campaign.id"><md-button class="md-primary" ><md-icon>edit</md-icon> Editar</md-button></router-link>
+          <!-- <router-link :to="'/edit/'+campaign.id"><md-button class="md-primary" ><md-icon>edit</md-icon> Editar</md-button></router-link>!-->
         </md-card-actions>
     </md-card> 
   </div>
