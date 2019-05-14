@@ -241,13 +241,6 @@ export default {
 	height: 503px;
 }
 
-.md-dialog {
-	width: 40%;
-}
-.md-card.md-theme-default {
-	height: 503px;
-}
-
 .md-empty-state-container > i {
 	font-size: 70px !important;
 }
