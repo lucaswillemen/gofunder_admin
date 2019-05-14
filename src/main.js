@@ -1,6 +1,5 @@
 import App from './App.vue'
 import Vue from 'vue'
-import CKEditor from '@ckeditor/ckeditor5-vue';
 import Vuelidate from 'vuelidate'
 import store from './store'
 import router from './router/router.js'
@@ -17,11 +16,6 @@ Vue.prototype.$url = 'http://25.20.68.69/'
 
 Vue.config.productionTip = false
 Vue.use(VueMaterial)
-
-console.log(CKEditor)
-
-
-Vue.use(CKEditor);
 
 
 Vue.use(require('vue-moment'));

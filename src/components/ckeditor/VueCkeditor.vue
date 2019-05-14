@@ -1,174 +1,97 @@
 <template>
-  <div class="ckeditor">
-    <textarea
-      :name="name"
-      :id="id"
-      :value="value"
-      :types="types"
-      :config="config"
-      :disabled="readOnlyMode">
-    </textarea>
-  </div>
+	<div>
+		<div id="toolbar-container"></div>
+		<div id="editor" ref="editorHTMLref"></div>
+	</div>
 </template>
 
 <script>
-let inc = new Date().getTime();
-
-
-
 export default {
-  name: 'VueCkeditor',
-  props: {
-    name: {
-      type: String,
-      default: () => `editor-${++inc}`
-    },
-    value: {
-      type: String
-    },
-    id: {
-      type: String,
-      default: () => `editor-${inc}`
-    },
-    types: {
-      type: String,
-      default: () => `classic`
-    },
-    config: {
-      type: Object,
-      default: () => {}
-    },
-    instanceReadyCallback: {
-      type: Function
-    },
-    readOnlyMode: {
-      type: Boolean,
-      default: () => false
-    }
-  },
-  data() {
-    return {
-      instanceValue: ''
-    };
-  },
-  computed: {
-    instance() {
-      return CKEDITOR.instances[this.id];
-    }
-  },
-  watch: {
-    value(val) {
-      try {
-        if (this.instance) {
-          this.update(val);
-        }
-      } catch (e) {}
-    },
-    readOnlyMode(val) {
-      this.instance.setReadOnly(val);
-    }
-  },
-  mounted() {
-    this.create();
-
-  },
-  beforeDestroy() {
-    this.destroy();
-  },
-  methods: {
-    create() {
-      if (typeof CKEDITOR === 'undefined') {
-        console.log('CKEDITOR is missing (http://ckeditor.com/)');
-      } else {
-        if (this.types === 'inline') {
-          CKEDITOR.inline(this.id, this.config);
-        } else {
-          CKEDITOR.replace(this.id, this.config);
-        }
-      
-
-        this.instance.setData(this.value);
-
-        this.instance.on('instanceReady', () => {
-          this.instance.setData(this.value);
-        });
-
-        // Ckeditor change event
-        this.instance.on('change', this.onChange);
-
-        // Ckeditor mode html or source
-        this.instance.on('mode', this.onMode);
-
-        // Ckeditor blur event
-        this.instance.on('blur', evt => {
-          this.$emit('blur', evt);
-        });
-
-        // Ckeditor focus event
-        this.instance.on('focus', evt => {
-          this.$emit('focus', evt);
-        });
-
-        // Ckeditor contentDom event
-        this.instance.on('contentDom', evt => {
-          this.$emit('contentDom', evt);
-        });
-
-        // Ckeditor dialog definition event
-        CKEDITOR.on('dialogDefinition', evt => {
-          this.$emit('dialogDefinition', evt);
-        });
-
-        // Ckeditor file upload request event
-        this.instance.on('fileUploadRequest', evt => {
-          this.$emit('fileUploadRequest', evt);
-        });
-
-        // Ckditor file upload response event
-        this.instance.on('fileUploadResponse', evt => {
-          setTimeout(() => {
-            this.onChange();
-          }, 0);
-          this.$emit('fileUploadResponse', evt);
-        });
-
-        // Listen for instanceReady event
-        if (typeof this.instanceReadyCallback !== 'undefined') {
-          this.instance.on('instanceReady', this.instanceReadyCallback);
-        }
-       
-      }
-    },
-    update(val) {
-      if (this.instanceValue !== val) {
-        this.instance.setData(val, { internal: false });
-      }
-    },
-    destroy() {
-      try {
-        let editor = window['CKEDITOR'];
-        if (editor.instances) {
-          for (let instance in editor.instances) {
-            instance.destroy();
-          }
-        }
-      } catch (e) {}
-    },
-    onMode() {
-      if (this.instance.mode === 'source') {
-        let editable = this.instance.editable();
-        editable.attachListener(editable, 'input', () => {
-          this.onChange();
-        });
-      }
-    },
-    onChange() {
-      let html = this.instance.getData();
-      if (html !== this.value) {
-        this.$emit('input', html);
-        this.instanceValue = html;
-      }
-    }
-  }
+	name: "VueCkeditor",
+	props: ["htmlCampaign"],
+	data() {},
+	methods: {
+		getValue() {
+			let el = document.querySelector("#editor");
+			return el ? el.innerHTML : null;
+		},
+		loadCKEditor() {
+			DecoupledEditor.create(document.querySelector("#editor"), {
+				extraPlugins: [
+					editor => {
+						editor.plugins.get(
+							"FileRepository"
+						).createUploadAdapter = loader => {
+							return new interceptUploadAdapter(loader);
+						};
+					}
+				]
+			}).then(editor => {
+				editor.model.document.on("change", () => {
+					this.$emit("changeHtmlValue", editor.getData());
+				});
+				editor.setData(this.htmlCampaign);
+				const toolbarContainer = document.querySelector("#toolbar-container");
+				toolbarContainer.appendChild(editor.ui.view.toolbar.element);
+			});
+		}
+	},
+	watch: {
+		htmlCampaign: function(newvalue, oldvalue) {
+			if (oldvalue == null) {
+				console.log("carregou o ckeditor", oldvalue);
+				this.loadCKEditor();
+			}
+		}
+	},
+	mounted() {}
 };
+
+class interceptUploadAdapter {
+	constructor(loader) {
+		this.loader = loader;
+		this.endpoint = "http://25.20.68.69/";
+	}
+	upload() {
+		return this.loader.file.then(
+			file =>
+				new Promise((resolve, reject) => {
+					const xhr = (this.xhr = new XMLHttpRequest());
+					xhr.open("POST", this.endpoint + "index.php?/Image/send", true);
+					xhr.responseType = "json";
+
+					const data = new FormData();
+					data.append("upload", file);
+					xhr.send(data);
+
+					xhr.addEventListener("error", () => alert("genericErrorText"));
+					xhr.addEventListener("abort", () => alert());
+					xhr.addEventListener("load", () => {
+						const response = xhr.response;
+						if (!response || response.error) {
+							// alert pra quando não conseguir enviar mensagem
+							return false;
+						}
+						resolve({
+							default: this.endpoint + response.url
+						});
+					});
+					xhr.addEventListener("progress", evt => {
+						this.progress(evt);
+					});
+				})
+		);
+	}
+	abort() {
+		if (this.xhr) {
+			this.xhr.abort();
+		}
+	}
+	progress(evt) {
+		if (evt.lengthComputable) {
+			this.loader.uploadTotal = evt.total;
+			this.loader.uploaded = evt.loaded;
+		}
+	}
+}
 </script>

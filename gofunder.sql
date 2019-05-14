@@ -1,11 +1,11 @@
--- phpMyAdmin SQL Dump
--- version 4.8.3
+﻿-- phpMyAdmin SQL Dump
+-- version 4.8.4
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1:3306
--- Generation Time: May 13, 2019 at 01:36 PM
--- Server version: 5.7.23
--- PHP Version: 7.2.10
+-- Host: 127.0.0.1
+-- Generation Time: May 14, 2019 at 06:00 PM
+-- Server version: 10.1.37-MariaDB
+-- PHP Version: 7.3.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -24,9 +24,7 @@ SET time_zone = "+00:00";
 
 -- --------------------------------------------------------
 
---
--- Table structure for table `campaign`
---
+-- --------------------------------------------------------
 
 DROP TABLE IF EXISTS `campaign`;
 CREATE TABLE IF NOT EXISTS `campaign` (
@@ -74,20 +72,16 @@ INSERT INTO `campaign` (`id`, `title`, `country_id`, `amount`, `description`, `u
 (6, 'Coffee When Wakeup', 1, '123.00', 'We identify the exact time that you wake up and we\'ll leave your coffee ready.', 28, 1, 0, 0, 0, 0, 'Coffee-When-Wakeup', '0000-00-00 00:00:00', '2019-05-13 06:00:00', 1, 4, 1, 7, 1, 'api/uploads/Coffee-When-Wakeup-cover10.jpg', 'insta2', 'face2', 'yt2'),
 (7, 'Teste de campanha', 1, '123.00', 'We identify the exact time that you wake up and we\'ll leave your coffee ready.', 28, 1, 0, 0, 0, 0, 'Teste-de-campanha', '0000-00-00 00:00:00', '2019-05-22 06:00:00', 1, 4, 1, 7, 0, 'api/uploads/Teste-de-campanha-cover.jpg', '', '', '');
 
--- --------------------------------------------------------
-
 --
 -- Table structure for table `campaign_coment`
 --
 
-DROP TABLE IF EXISTS `campaign_coment`;
-CREATE TABLE IF NOT EXISTS `campaign_coment` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `campaign_coment` (
+  `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `campaign_id` int(11) NOT NULL,
   `coment` text NOT NULL,
-  `createdAt` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
+  `createdAt` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -96,21 +90,21 @@ CREATE TABLE IF NOT EXISTS `campaign_coment` (
 -- Table structure for table `campaign_content`
 --
 
-DROP TABLE IF EXISTS `campaign_content`;
-CREATE TABLE IF NOT EXISTS `campaign_content` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `campaign_content` (
+  `id` int(11) NOT NULL,
   `campaign_id` int(11) NOT NULL,
   `html` text NOT NULL,
-  `cover_url` varchar(255) NOT NULL,
-  `profile_url` varchar(255) NOT NULL,
-  `youtube_video_url` varchar(155) NOT NULL,
   `facebook_page` varchar(155) NOT NULL,
   `instagram_page` varchar(155) NOT NULL,
-  `direct_video_url` varchar(256) NOT NULL,
-  `youtube_page` varchar(155) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `campaign_id` (`campaign_id`)
+  `youtube_page` varchar(155) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `campaign_content`
+--
+
+INSERT INTO `campaign_content` (`id`, `campaign_id`, `html`, `facebook_page`, `instagram_page`, `youtube_page`) VALUES
+(5, 4, '<p>sgasgasgsasafasfsafas</p><figure class=\"image\"><img src=\"http://25.20.68.69/uploads/etc/f17778ff9de7e4fbd9e8b9994e3ad61b.jpg\"></figure>', 'teste2', 'teste1', 'teste3');
 
 -- --------------------------------------------------------
 
@@ -118,15 +112,12 @@ CREATE TABLE IF NOT EXISTS `campaign_content` (
 -- Table structure for table `campaign_faq`
 --
 
-DROP TABLE IF EXISTS `campaign_faq`;
-CREATE TABLE IF NOT EXISTS `campaign_faq` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `campaign_faq` (
+  `id` int(11) NOT NULL,
   `campaign_id` int(11) NOT NULL,
   `question` varchar(255) NOT NULL,
-  `answer` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `campaign_id` (`campaign_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
+  `answer` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `campaign_faq`
@@ -141,12 +132,10 @@ INSERT INTO `campaign_faq` (`id`, `campaign_id`, `question`, `answer`) VALUES
 -- Table structure for table `campaign_follower`
 --
 
-DROP TABLE IF EXISTS `campaign_follower`;
-CREATE TABLE IF NOT EXISTS `campaign_follower` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `campaign_follower` (
+  `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `campaign_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
+  `campaign_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -155,21 +144,20 @@ CREATE TABLE IF NOT EXISTS `campaign_follower` (
 -- Table structure for table `campaign_galery`
 --
 
-DROP TABLE IF EXISTS `campaign_galery`;
-CREATE TABLE IF NOT EXISTS `campaign_galery` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `campaign_galery` (
+  `id` int(11) NOT NULL,
   `campaign_id` int(11) NOT NULL,
-  `picture_url` varchar(128) NOT NULL,
-  `name` varchar(128) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
+  `picture_url` varchar(128) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `campaign_galery`
 --
 
-INSERT INTO `campaign_galery` (`id`, `campaign_id`, `picture_url`, `name`) VALUES
-(23, 3, 'api/uploads/gallery/teste5cd96c3061416-gallery.png', 'teste');
+INSERT INTO `campaign_galery` (`id`, `campaign_id`, `picture_url`) VALUES
+(77, 3, '/uploads/gallery/7bbad257bd3b5894936257e7026917b2.jpg'),
+(78, 3, '/uploads/gallery/d69821150583249dcd9fa0ec3c977453.jpg'),
+(79, 3, '/uploads/gallery/88836d3dffb46c3a80e1c6528a8e1687.jpg');
 
 -- --------------------------------------------------------
 
@@ -177,16 +165,13 @@ INSERT INTO `campaign_galery` (`id`, `campaign_id`, `picture_url`, `name`) VALUE
 -- Table structure for table `campaign_item`
 --
 
-DROP TABLE IF EXISTS `campaign_item`;
-CREATE TABLE IF NOT EXISTS `campaign_item` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `campaign_item` (
+  `id` int(11) NOT NULL,
   `campaign_id` int(11) NOT NULL,
   `name` varchar(150) NOT NULL,
   `stock` int(11) NOT NULL,
   `variation` enum('color','size','model') NOT NULL,
-  `variation_value` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `campaign_perk` (`campaign_id`)
+  `variation_value` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -195,13 +180,11 @@ CREATE TABLE IF NOT EXISTS `campaign_item` (
 -- Table structure for table `campaign_opt`
 --
 
-DROP TABLE IF EXISTS `campaign_opt`;
-CREATE TABLE IF NOT EXISTS `campaign_opt` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `campaign_opt` (
+  `id` int(11) NOT NULL,
   `name` varchar(80) NOT NULL,
-  `type` enum('develop','type','category','funds') NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+  `type` enum('develop','type','category','funds') NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `campaign_opt`
@@ -214,9 +197,8 @@ INSERT INTO `campaign_opt` (`id`, `name`, `type`) VALUES
 (4, 'software', 'type'),
 (5, 'product', 'type'),
 (6, 'service', 'type'),
-(7, 'local_money', 'funds'),
-(8, 'american_dolar', 'funds'),
-(9, 'criptocurrency', 'funds');
+(7, 'american_dolar', 'funds'),
+(8, 'criptocurrency', 'funds');
 
 -- --------------------------------------------------------
 
@@ -224,9 +206,8 @@ INSERT INTO `campaign_opt` (`id`, `name`, `type`) VALUES
 -- Table structure for table `campaign_perk`
 --
 
-DROP TABLE IF EXISTS `campaign_perk`;
-CREATE TABLE IF NOT EXISTS `campaign_perk` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `campaign_perk` (
+  `id` int(11) NOT NULL,
   `campaign_id` int(11) NOT NULL,
   `name` varchar(150) NOT NULL,
   `description` varchar(255) NOT NULL,
@@ -237,9 +218,8 @@ CREATE TABLE IF NOT EXISTS `campaign_perk` (
   `shipping_price` int(11) NOT NULL,
   `stock` int(11) NOT NULL,
   `shipping_date` date DEFAULT NULL,
-  `status` tinyint(1) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
+  `status` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `campaign_perk`
@@ -249,9 +229,8 @@ INSERT INTO `campaign_perk` (`id`, `campaign_id`, `name`, `description`, `cover_
 (25, 3, 'bruno nao é mais lindo', 'Brunolindo2', 'api/uploads/perk/5cd58f08aa4f4-perk.png', '150.00', 'world_wide', 99, 0, 150, '2019-05-19', 0),
 (26, 3, 'Bruno feio 1', 'Bruno feio', 'api/uploads/perk/5cd58f3fab202-perk.jpg', '150.00', 'only_country', 80, 150, 150, '2019-05-24', 0),
 (27, 3, 'edge do bruno', '661wte6yw498yh5jw165ba15w', 'api/uploads/perk/5cd5903e435fa-perk.jpg', '54476.00', 'only_country', 1674, 40, 100, '2019-05-14', 0),
-(28, 6, 'yasd', 'adasd', 'api/uploads/perk/5cd5f27c54916-perk.jpg', '123.00', 'only_country', 23, 10, 123, '2019-05-13', 0),
 (30, 6, 'tese', 'asdadsasdasdasd', 'api/uploads/perk/5cd612fab2041-perk.jpg', '12.00', 'only_country', 231, 123, 123, '2019-05-22', 0),
-(31, 6, '32', 't23', 'api/uploads/perk/5cd7113817c6f-perk.jpg', '123.00', 'world_wide', 10, 0, 10, '0000-00-00', 0);
+(32, 7, 'dover', 'test', 'api/uploads/perk/5cdaab450dbe9-perk.jpg', '12.00', 'world_wide', 32, 10, 12, '2019-05-22', 0);
 
 -- --------------------------------------------------------
 
@@ -259,13 +238,11 @@ INSERT INTO `campaign_perk` (`id`, `campaign_id`, `name`, `description`, `cover_
 -- Table structure for table `category`
 --
 
-DROP TABLE IF EXISTS `category`;
-CREATE TABLE IF NOT EXISTS `category` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `category` (
+  `id` int(11) NOT NULL,
   `name` varchar(150) NOT NULL,
-  `route` varchar(150) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+  `route` varchar(150) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `category`
@@ -282,13 +259,11 @@ INSERT INTO `category` (`id`, `name`, `route`) VALUES
 -- Table structure for table `countries`
 --
 
-DROP TABLE IF EXISTS `countries`;
-CREATE TABLE IF NOT EXISTS `countries` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `countries` (
+  `id` int(11) NOT NULL,
   `country_code` varchar(2) NOT NULL DEFAULT '',
-  `country_name` varchar(100) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=247 DEFAULT CHARSET=utf8;
+  `country_name` varchar(100) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `countries`
@@ -548,9 +523,8 @@ INSERT INTO `countries` (`id`, `country_code`, `country_name`) VALUES
 -- Table structure for table `user`
 --
 
-DROP TABLE IF EXISTS `user`;
-CREATE TABLE IF NOT EXISTS `user` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `user` (
+  `id` int(10) UNSIGNED NOT NULL,
   `name` varchar(64) NOT NULL,
   `email` varchar(128) NOT NULL,
   `usd` decimal(18,2) NOT NULL DEFAULT '0.00',
@@ -558,10 +532,8 @@ CREATE TABLE IF NOT EXISTS `user` (
   `token` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `recover_token` varchar(32) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  UNIQUE KEY `token` (`token`),
-  KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=latin1;
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `user`
@@ -585,9 +557,8 @@ INSERT INTO `user` (`id`, `name`, `email`, `usd`, `btc`, `token`, `password`, `r
 -- Table structure for table `user_address`
 --
 
-DROP TABLE IF EXISTS `user_address`;
-CREATE TABLE IF NOT EXISTS `user_address` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `user_address` (
+  `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `state` varchar(80) NOT NULL,
   `city` varchar(80) NOT NULL,
@@ -595,24 +566,192 @@ CREATE TABLE IF NOT EXISTS `user_address` (
   `number` varchar(20) NOT NULL,
   `zipcode` int(11) NOT NULL,
   `neighborhood` varchar(150) NOT NULL,
-  `complement` varchar(80) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`)
+  `complement` varchar(80) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_withdrawal`
+--
+
+CREATE TABLE `user_withdrawal` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `amount` decimal(18,2) NOT NULL,
+  `bank_info` text NOT NULL,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `status` enum('WAITING','APPROVED','CANCELLED') NOT NULL DEFAULT 'WAITING'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Constraints for dumped tables
+-- Indexes for dumped tables
 --
 
 --
--- Constraints for table `campaign`
+-- Indexes for table `campaign_coment`
 --
-ALTER TABLE `campaign`
-  ADD CONSTRAINT `campaign_ibfk_1` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`),
-  ADD CONSTRAINT `campaign_ibfk_2` FOREIGN KEY (`opt_category`) REFERENCES `category` (`id`),
-  ADD CONSTRAINT `campaign_ibfk_3` FOREIGN KEY (`opt_develop`) REFERENCES `campaign_opt` (`id`),
-  ADD CONSTRAINT `campaign_ibfk_4` FOREIGN KEY (`opt_funds`) REFERENCES `campaign_opt` (`id`),
-  ADD CONSTRAINT `campaign_ibfk_5` FOREIGN KEY (`opt_type`) REFERENCES `campaign_opt` (`id`);
+ALTER TABLE `campaign_coment`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `campaign_content`
+--
+ALTER TABLE `campaign_content`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `campaign_id` (`campaign_id`);
+
+--
+-- Indexes for table `campaign_faq`
+--
+ALTER TABLE `campaign_faq`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `campaign_id` (`campaign_id`);
+
+--
+-- Indexes for table `campaign_follower`
+--
+ALTER TABLE `campaign_follower`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `campaign_galery`
+--
+ALTER TABLE `campaign_galery`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `campaign_item`
+--
+ALTER TABLE `campaign_item`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `campaign_perk` (`campaign_id`);
+
+--
+-- Indexes for table `campaign_opt`
+--
+ALTER TABLE `campaign_opt`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `campaign_perk`
+--
+ALTER TABLE `campaign_perk`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `category`
+--
+ALTER TABLE `category`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `countries`
+--
+ALTER TABLE `countries`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `user`
+--
+ALTER TABLE `user`
+  ADD UNIQUE KEY `token` (`token`),
+  ADD KEY `id` (`id`);
+
+--
+-- Indexes for table `user_address`
+--
+ALTER TABLE `user_address`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `user_withdrawal`
+--
+ALTER TABLE `user_withdrawal`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `campaign_coment`
+--
+ALTER TABLE `campaign_coment`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `campaign_content`
+--
+ALTER TABLE `campaign_content`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `campaign_faq`
+--
+ALTER TABLE `campaign_faq`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+
+--
+-- AUTO_INCREMENT for table `campaign_follower`
+--
+ALTER TABLE `campaign_follower`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `campaign_galery`
+--
+ALTER TABLE `campaign_galery`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
+
+--
+-- AUTO_INCREMENT for table `campaign_item`
+--
+ALTER TABLE `campaign_item`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `campaign_opt`
+--
+ALTER TABLE `campaign_opt`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `campaign_perk`
+--
+ALTER TABLE `campaign_perk`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+
+--
+-- AUTO_INCREMENT for table `category`
+--
+ALTER TABLE `category`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `countries`
+--
+ALTER TABLE `countries`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=247;
+
+--
+-- AUTO_INCREMENT for table `user`
+--
+ALTER TABLE `user`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+
+--
+-- AUTO_INCREMENT for table `user_address`
+--
+ALTER TABLE `user_address`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `user_withdrawal`
+--
+ALTER TABLE `user_withdrawal`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

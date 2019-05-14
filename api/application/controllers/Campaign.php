@@ -81,7 +81,12 @@ class Campaign extends CI_Controller
 		->get("campaign_content")
 		->row_array();
 
-		$this->output->set_content_type('application/json')->set_output(json_encode(array_merge($campaign, $campaign_content)));
+		if($campaign_content) {
+			$campaign = array_merge($campaign, $campaign_content);
+		}
+		
+
+		$this->output->set_content_type('application/json')->set_output(json_encode($campaign));
 	}
 
 

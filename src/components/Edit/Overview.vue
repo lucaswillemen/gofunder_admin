@@ -5,7 +5,6 @@
 			md-content="Os dados iniciais da sua campanhas foram salvos!"
 			md-confirm-text="Ok"
 		/>
-
 		<div class="md-layout-item md-small-size-100 md-size-100">
 			<md-card>
 				<md-empty-state
@@ -43,15 +42,11 @@
 						<label>Canal do Youtube</label>
 						<md-input v-model="campaign.youtube_page"></md-input>
 					</md-field>
-
 					<br>
 					<br>
-
-					<label for="campaignHtml" style="opacity:0.9;">Conteúdo informativo da campanha: *</label>
-	
-					<ckeditor :editor="editor" v-model="campaign.html" :config="editorConfig"></ckeditor>
+					<label for="campaignHtml" style="opacity:0.9;">Conteúdo informativo da campanha: *</label>					
+					<VueCkeditor @changeHtmlValue="changeHtml" :htmlCampaign="campaign.html"></VueCkeditor>
 				</md-card-content>
-
 				<md-card-actions>
 					<md-button class="md-primary md-raised" @click="saveCampaign()">Salvar modificações</md-button>
 				</md-card-actions>
@@ -61,11 +56,14 @@
 </template>
 
 <script>
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { required, numeric } from "vuelidate/lib/validators";
 import { mapState } from "vuex";
+import VueCkeditor from "../ckeditor/VueCkeditor.vue";
 
 export default {
+	components: {
+		VueCkeditor
+	},
 	computed: {
 		...mapState(["user"])
 	},
@@ -73,6 +71,9 @@ export default {
 		title: { required }
 	},
 	methods: {
+		changeHtml(html) {
+			this.campaign.html = html			
+		},
 		loadCampaign() {
 			global
 				.$get(
@@ -114,77 +115,18 @@ export default {
 			campaign: {
 				title: "",
 				description: "",
-				html: "",
+				html: null,
 				youtube_page: "",
 				instagram_page: "",
 				facebook_page: ""
-			},
-			editor: ClassicEditor,
-			editorConfig: {
-				extraPlugins: [
-					editor => {
-						editor.plugins.get(
-							"FileRepository"
-						).createUploadAdapter = loader => {
-							return new interceptUploadAdapter(loader);
-						};
-					}
-				]
-			}
+			}			
 		};
 	},
 	mounted() {
-		this.loadCampaign();
+		this.loadCampaign()
 	}
 };
 
-class interceptUploadAdapter {
-	constructor(loader) {
-		this.loader = loader;
-		this.endpoint = "http://25.20.68.69/";
-	}
-	upload() {
-		return this.loader.file.then(
-			file =>
-				new Promise((resolve, reject) => {
-					const xhr = (this.xhr = new XMLHttpRequest());
-					xhr.open("POST", this.endpoint + "index.php?/Image/send", true);
-					xhr.responseType = "json";
-
-					const data = new FormData();
-					data.append("upload", file);
-					xhr.send(data);
-
-					xhr.addEventListener("error", () => alert("genericErrorText"));
-					xhr.addEventListener("abort", () => alert());
-					xhr.addEventListener("load", () => {
-						const response = xhr.response;
-						if (!response || response.error) {
-							// alert pra quando não conseguir enviar mensagem
-							return false;
-						}
-						resolve({
-							default: this.endpoint + response.url
-						})
-					})
-					xhr.addEventListener("progress", evt => {
-						this.progress(evt);
-					})
-				})
-		);
-	}
-	abort() {
-		if (this.xhr) {
-			this.xhr.abort();
-		}
-	}
-	progress(evt) {
-		if (evt.lengthComputable) {
-			this.loader.uploadTotal = evt.total;
-			this.loader.uploaded = evt.loaded;
-		}
-	}
-}
 </script>
 
 <style>
