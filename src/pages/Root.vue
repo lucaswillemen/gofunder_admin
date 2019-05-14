@@ -69,6 +69,7 @@
 				</md-list>
 
 				<md-divider></md-divider>
+				RASCUNHOS
 				<md-list v-for="(campaign, index) in campaigns" :key="index" class="md-triple-line bordered" >
 					<router-link :to="'/edit/'+campaign.id">
 						<md-list-item>
