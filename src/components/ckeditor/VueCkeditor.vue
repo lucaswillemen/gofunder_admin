@@ -9,7 +9,6 @@
 export default {
 	name: "VueCkeditor",
 	props: ["htmlCampaign"],
-	data() {},
 	methods: {
 		getValue() {
 			let el = document.querySelector("#editor");

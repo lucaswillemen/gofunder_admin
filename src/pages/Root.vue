@@ -60,7 +60,7 @@
 
 					<a href="#" @click="logout()">
 						<md-list-item class="nav-item">
-							<md-icon>close</md-icon>
+							<md-icon>exit_to_app</md-icon>
 							<span class="md-list-item-text">Logout</span>
 						</md-list-item>
 					</a>

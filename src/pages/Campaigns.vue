@@ -99,6 +99,49 @@
           </div>
         </div>
       </md-tab>
+      <md-tab id="tab-analise" md-label="Em Análise" md-icon="create">
+        <div class="md-layout md-grutter">
+          <div v-for="(campaign, index) in rascunhos" :key="index" class="md-layout-item md-size-100 md-medium-size-50 md-large-size-33 md-xlarge-size-25">
+            <md-card>
+              <md-card-actions>
+                <md-button class="md-fab md-mini" @click="openDeleteConfirmation(campaign.id)">
+                  <md-icon>delete</md-icon>
+                </md-button>
+              </md-card-actions>
+              <md-card-area md-inset>
+                <md-card-media md-ratio="16:9">
+                  <img
+                    :src="$url +campaign.cover_url"
+                    onerror="this.src='https://via.placeholder.com/150'"
+                  >
+                </md-card-media>
+
+
+                <md-card-header>
+                  <h2 class="md-title">{{campaign.title}}</h2>
+                </md-card-header>
+
+                <md-card-content>{{campaign.description}}</md-card-content>
+              </md-card-area>
+
+
+              <md-card-actions>
+                <router-link :to="'/edit/'+campaign.id">
+                  <md-button class="md-primary" style="color: rgba(0,0,0,0.87) !important">
+                    <md-icon>edit</md-icon>Editar
+                  </md-button>
+                </router-link>
+                <md-button class="custom-color-2">
+                  <md-icon>find_in_page</md-icon>Prévia
+                </md-button>
+                <md-button class="custom-color">
+                  <md-icon>send</md-icon>Publicar
+                </md-button>
+              </md-card-actions>
+            </md-card>
+          </div>
+        </div>
+      </md-tab>
     </md-tabs>
     <md-dialog-confirm
 			:md-active.sync="showDeleteConfirmation"
