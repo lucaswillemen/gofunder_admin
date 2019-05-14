@@ -20,7 +20,7 @@
         <md-card>
           <md-card-area md-inset>
             <md-card-media md-ratio="16:9">
-              <img :src="$url + perk.cover_url">
+              <img :src="$url + perk.cover_url" onerror="this.src='https://via.placeholder.com/150'">
             </md-card-media>
             <md-card-header>
               <h2 class="md-title">{{perk.name}}</h2>
