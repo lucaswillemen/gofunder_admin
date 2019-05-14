@@ -1,12 +1,12 @@
 <template>
   <main>
-    <span class="no-pic-message md-layout md-alignment-center-center" v-if="perkList.length == 0">
+    <span class="md-layout-item md-small-size-100 md-size-100" v-if="perkList.length == 0">
       <md-card class="mt-layout-item">
         <md-empty-state
           md-icon="card_giftcard"
-          md-label="Crie seu primeiro perk"
+          md-label="Crie Perk"
           md-description="Os perks servem como recompensa para as pessoas que doaram para sua campanha.">
-          <md-button class="md-primary md-raised" @click="perkDialog = true">Criar</md-button>
+          <md-button class="md-primary md-raised" @click="perkDialog = true">Criar uma recompensa</md-button>
         </md-empty-state>
       </md-card>
     </span>
@@ -574,6 +574,12 @@ export default {
 }
 .switch-input:checked + .switch-label .toggle--off {
 	display: none;
+}
+.md-empty-state-container > i {
+	font-size:70px!important;
+}
+.md-empty-state-icon {
+	height:70px!important;
 }
 </style>
 

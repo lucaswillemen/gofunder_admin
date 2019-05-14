@@ -1,17 +1,17 @@
 <template>
 	<main>
-		<span class="no-pic-message md-layout md-alignment-center-center" v-if="faqList.length == 0">
+		<span class="md-layout-item md-small-size-100 md-size-100" v-if="faqList.length == 0">
 			<md-card class="mt-layout-item">
 				<md-empty-state
 					md-icon="question_answer"
 					md-label="Perguntas e respostas frequentes"
 					md-description="Responda algumas possíveis dúvidas que seus investidores possam apresentar."
 				>
-					<md-button class="md-primary md-raised" @click="createFaq = true">Create</md-button>
+					<md-button class="md-primary md-raised" @click="createFaq = true">Criar FAQ</md-button>
 				</md-empty-state>
 			</md-card>
 		</span>
-		<div class="md-layout md-grutter md-alignment-center-center" v-else>
+		<div class="md-layout-item md-small-size-100 md-size-100" v-else>	
 			<md-card style="min-width: 50%">
 				<md-card-header>
 					<div class="md-title">Perguntas e respostas frequentes</div>
@@ -34,7 +34,7 @@
 			</md-card>
 		</div>
 
-		<div class="md-layout md-grutter md-alignment-center-center" v-if="faqList.length != 0">
+		<div class="md-layout-item md-small-size-100 md-size-100" v-if="faqList.length != 0">
 			<md-button
 				:disabled="parentCall && parentCall.loadingState()"
 				class="md-fab md-primary"
@@ -44,7 +44,7 @@
 			</md-button>
 		</div>
 
-		<div>
+		<div class="md-layout-item md-small-size-100 md-size-100">
 			<md-dialog :md-active.sync="createFaq">
 				<md-dialog-title>Criar novo FAQ</md-dialog-title>
 				<md-dialog-content>
@@ -260,5 +260,11 @@ export default {
 }
 .md-dialog {
 	width: 40%;
+}
+.md-empty-state-container > i {
+	font-size:70px!important;
+}
+.md-empty-state-icon {
+	height:70px!important;
 }
 </style>

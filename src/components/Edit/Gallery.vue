@@ -1,12 +1,12 @@
 <template>
   <main>
-    <span class="no-pic-message md-layout md-alignment-center-center" v-if="pictures.length == 0">
+    <span class="md-layout-item md-small-size-100 md-size-100" v-if="pictures.length == 0">
       <md-card class="mt-layout-item">
         <md-empty-state
           md-icon="add_a_photo"
-          md-label="Adicione sua primeira imagem!"
-          md-description="As imagens serão mostradas na sua galeria de fotos da campanha">
-          <md-button class="md-primary md-raised" @click="showAddImg = true">Escolher Imagem</md-button>
+          md-label="Faça sua galeria!"
+          md-description="As imagens serão mostradas na sua galeria de fotos da campanha!">
+          <md-button class="md-primary md-raised" @click="showAddImg = true">Escolher imagens</md-button>
         </md-empty-state>
       </md-card>
     </span>
@@ -229,5 +229,10 @@ export default {
 	height: 503px;
 }
 
+.md-empty-state-container > i {
+	font-size:70px!important;
+}
+.md-empty-state-icon {
+	height:70px!important;
+}
 </style>
-

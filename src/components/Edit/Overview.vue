@@ -2,6 +2,11 @@
 	<div class="md-layout md-grutter md-alignment-center-center maxHeight">
 		<div class="md-layout-item md-small-size-100 md-size-100">
 			<md-card>
+				<md-empty-state
+          md-icon="card_giftcard"
+          md-label="Informações Básicas"
+          md-description="Nessa guia você irá alterar configurações básicas para sua campanha! Avance para os próximos itens para editar mais informações">
+        </md-empty-state>
 				<md-card-content>
 					<md-field :class="{'md-invalid': $v.title.$invalid && $v.title.$dirty}">
 						<label for="campaignTitle">Titulo da campanha: *</label>
@@ -116,4 +121,10 @@ class interceptUploadAdapter {
 </script>
 
 <style>
+.md-empty-state-container > i {
+	font-size:70px!important;
+}
+.md-empty-state-icon {
+	height:70px!important;
+}
 </style>

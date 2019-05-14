@@ -1,7 +1,7 @@
 <template>
   <main>
-    <div class="md-layout md-grutter md-alignment-center-center">
-      <md-card style="min-width: 50%">
+  	<div class="md-layout-item md-small-size-100 md-size-100">
+      <md-card>
         <md-card-header>
           <div class="md-title">Perfil de redes sociais</div>
         </md-card-header>
@@ -78,5 +78,10 @@ export default {
 </script>
 
 <style>
-
+.md-empty-state-container > i {
+	font-size:70px!important;
+}
+.md-empty-state-icon {
+	height:70px!important;
+}
 </style>
