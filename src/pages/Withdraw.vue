@@ -103,7 +103,7 @@
 
 					<md-card-content>
 						Preencha seu endereço para retirada nos campos abaixo
-						<br>Transações em Bitcoin levam até 1 hora para ser confirmados pela rede
+						<br>Transações em Bitcoin levam até 1 hora para ser confirmadas pela rede
 						<br>
 						<br>
 						<div class="md-layout md-gutter">

@@ -4,9 +4,8 @@
       <md-card class="mt-layout-item">
         <md-empty-state
           md-icon="card_giftcard"
-          md-label="Create your first perk"
-          md-description="Perks are used as gratification for the people who supported your campaign."
-        >
+          md-label="Crie seu primeiro perk"
+          md-description="Os perks servem como recompensa para as pessoas que doaram para sua campanha.">
           <md-button class="md-primary md-raised" @click="perkDialog = true">Criar</md-button>
         </md-empty-state>
       </md-card>
@@ -364,7 +363,12 @@ export default {
   methods: {
     mudou() {
 			this.perkEdit.haveFrete = !this.perkEdit.haveFrete
-			if(!this.perkEdit.haveFrete) this.perkEdit.shipping_price = 0
+			if(!this.perkEdit.haveFrete){
+				this.perkEdit.shipping_price = 0
+				this.perkEdit.shipping_date = null
+
+			}
+				
 		},
 		showModalEditPerk(perkToEdit) {
 			this.perkEditDialog = true;

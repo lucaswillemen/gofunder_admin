@@ -17,7 +17,13 @@ Vue.prototype.$url = 'http://25.20.68.69/'
 
 Vue.config.productionTip = false
 Vue.use(VueMaterial)
-Vue.use( CKEditor );
+
+console.log(CKEditor)
+
+
+Vue.use(CKEditor);
+
+
 Vue.use(require('vue-moment'));
 Vue.use(Vuelidate)
 Vue.use(VueTheMask)

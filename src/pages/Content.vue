@@ -8,7 +8,7 @@
                             <md-empty-state class="md-empty-state-icon-first"
                               md-icon="account_balance_wallet"
                               md-label="Arrecadar fundos"
-                              md-description="Receba doacoes e envie recompensas para os apioadores da sua campanha em forma de gratidao pela ajuda.">
+                              md-description="Receba doacoes e envie recompensas para os apoiadores da sua campanha em forma de gratidao pela ajuda.">
                             </md-empty-state>
 
                     </md-card>

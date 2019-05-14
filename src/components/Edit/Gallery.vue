@@ -5,8 +5,7 @@
         <md-empty-state
           md-icon="add_a_photo"
           md-label="Adicione sua primeira imagem!"
-          md-description="As imagens serão mostradas na sua galeria de fotos da campanha"
-        >
+          md-description="As imagens serão mostradas na sua galeria de fotos da campanha">
           <md-button class="md-primary md-raised" @click="showAddImg = true">Escolher Imagem</md-button>
         </md-empty-state>
       </md-card>
@@ -23,16 +22,14 @@
               <md-icon>delete</md-icon>
             </md-button>
           </md-card-actions>
-          <md-card-media-cover md-solid style="clear:both">
             <md-card-media md-ratio="1:1">
               <img v-if="picture.picture_url" :src="$url + picture.picture_url" onerror="this.src='https://via.placeholder.com/150'">
             </md-card-media>
-            <md-card-area>
+            <md-card-content>
               <div class="image-description">
                 <p>{{picture.name}}</p>
               </div>
-            </md-card-area>
-          </md-card-media-cover>
+            </md-card-content>
         </md-card>
       </div>
       <div class="md-layout-item md-small-size-100 md-medium-size-50 md-large-size-33 md-size-25">
@@ -62,7 +59,7 @@
         </div>
         <md-field v-if="imageToUpload" style="margin-top: 1rem;">
           <label>Insira a descrição da imagem</label>
-          <md-input v-model="imgCaption" required></md-input>
+          <md-input v-model="imgCaption" required maxlength="100"></md-input>
         </md-field>
       </md-dialog-content>
       <md-dialog-actions>
@@ -105,6 +102,7 @@ export default {
 						err && err.response && err.response.data && err.response.data.error;
 					alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
 				});
+
 		},
 		clickOnFileInput() {
 			document.getElementById("input-file").click();
@@ -156,7 +154,7 @@ export default {
 				});
 		},
 		deleteImage(id) {
-			this.parentCall.showDialog()
+			this.parentCall.showLoading()
 			let data = {
 				id: id
 			};
@@ -194,9 +192,11 @@ export default {
 }
 .image-description {
 	text-align: center;
-	p {
-		color: white;
-	}
+	font-weight: bold;
+
+	// p {
+	// 	color: white;
+	// }
 }
 .dialog-picture {
 	position: relative;
@@ -207,6 +207,12 @@ export default {
 	button {
 		position: relative;
 	}
+}
+.md-dialog {
+	width: 40%;
+}
+.md-card.md-theme-default {
+	height: 503px;
 }
 
 </style>

@@ -14,6 +14,8 @@
 <script>
 let inc = new Date().getTime();
 
+
+
 export default {
   name: 'VueCkeditor',
   props: {
@@ -68,6 +70,7 @@ export default {
   },
   mounted() {
     this.create();
+
   },
   beforeDestroy() {
     this.destroy();
@@ -82,6 +85,7 @@ export default {
         } else {
           CKEDITOR.replace(this.id, this.config);
         }
+      
 
         this.instance.setData(this.value);
 
@@ -132,6 +136,7 @@ export default {
         if (typeof this.instanceReadyCallback !== 'undefined') {
           this.instance.on('instanceReady', this.instanceReadyCallback);
         }
+       
       }
     },
     update(val) {
