@@ -5,9 +5,11 @@
   background: none
 }
 .md-app:not(.md-overlap).md-theme-default{
-    background-image: linear-gradient(to bottom right, rgba(10, 36, 84, 0.3), rgba(233, 78, 15, 0.2));
+    background-image: linear-gradient(to bottom right, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.4));
 }
-
+.md-list-item-content>.md-icon:first-child {
+  margin-right: 15px!important;
+}
 .md-drawer {
     width: 260px;
     max-width: calc(100vw - 125px);
@@ -16,13 +18,12 @@
     margin-top: 12px;
 }
 .nav-item.active {
-  color: white!important;
-    border-left: #e84e0e;
+    border-left: #BA4A00;
     border-left-style: solid;
-    background: #e84e0e24;
-    margin-right: 15px;
-    border-top-right-radius: 50px;
-    border-bottom-right-radius: 50px;
+    background: #DC7633  !important;
+    margin-right: 0px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
 }
 .md-app .md-content.md-theme-default {
     border-left-color: rgba(0,0,0,0);

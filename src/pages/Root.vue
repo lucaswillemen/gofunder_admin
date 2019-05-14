@@ -1,12 +1,12 @@
 <template>
 	<div class="page-conatainer">
 		<md-app md-mode="fixed">
-			<md-app-toolbar class style="background:white">
+			<md-app-toolbar class="backgroundSidebar">
 				<div class="md-toolbar-section-start">
 					<md-button class="md-icon-button">
 						<md-icon>menu</md-icon>
 					</md-button>
-					<span class="md-title">{{$route.name}}</span>
+					<span class="md-title" style="color:white;">{{$route.name}}</span>
 				</div>
 				<div class="md-toolbar-section-end">
 					<md-button class="md-icon-button">
@@ -18,18 +18,22 @@
 				</div>
 			</md-app-toolbar>
 
-			<md-app-drawer md-permanent="full">
-				<md-toolbar style="background:white">
-					<img src="http://gofunder.io/static/img/logo.8941ded.png">
-				</md-toolbar>
-				<md-subheader>Navigation</md-subheader>
-				<md-list>
+			<md-app-drawer md-permanent="full" class="backgroundSidebar">
+				<div>
+				<!--	<img
+						src="http://gofunder.io/static/img/logo.8941ded.png"
+						style="max-width:200px;margin-top:17px;margin-left:17px;"
+					>!-->
+			
+				</div>
+
+				<md-list  class="textoMenu backgroundSidebar">
 					<router-link to="/campaigns">
 						<md-list-item
 							v-bind:class="{'nav-item': true, 'active': $router.currentRoute.path=='/campaigns'}"
 						>
 							<md-icon>view_quilt</md-icon>
-							<span class="md-list-item-text">Minhas campanhas</span>
+							<span class="md-list-item-text">MINHAS CAMPANHAS</span>
 						</md-list-item>
 					</router-link>
 					<router-link to="/create">
@@ -37,7 +41,7 @@
 							v-bind:class="{'nav-item': true, 'active': $router.currentRoute.path=='/create'}"
 						>
 							<md-icon>note_add</md-icon>
-							<span class="md-list-item-text">Criar nova campanha</span>
+							<span class="md-list-item-text">CRIAR CAMPANHA</span>
 						</md-list-item>
 					</router-link>
 					<router-link to="/withdraw">
@@ -45,7 +49,7 @@
 							v-bind:class="{'nav-item': true, 'active': $router.currentRoute.path=='/withdraw'}"
 						>
 							<md-icon>payment</md-icon>
-							<span class="md-list-item-text">Saque</span>
+							<span class="md-list-item-text">SAQUES</span>
 						</md-list-item>
 					</router-link>
 					<router-link to="/extract">
@@ -53,20 +57,19 @@
 							v-bind:class="{'nav-item': true, 'active': $router.currentRoute.path=='/extract'}"
 						>
 							<md-icon>receipt</md-icon>
-							<span class="md-list-item-text">Extratos</span>
+							<span class="md-list-item-text">EXTRATOS</span>
 						</md-list-item>
 					</router-link>
-				
 
 					<a href="#" @click="logout()">
 						<md-list-item class="nav-item">
 							<md-icon>exit_to_app</md-icon>
-							<span class="md-list-item-text">Logout</span>
+							<span class="md-list-item-text">LOGOUT</span>
 						</md-list-item>
 					</a>
 				</md-list>
 
-				<md-divider></md-divider>
+				<!--<md-divider></md-divider>
 				<div class="draft-title">CAMPANHAS RASCUNHOS</div>
 				<md-list v-for="(campaign, index) in campaigns" :key="index" class="md-triple-line bordered">
 					<router-link :to="'/edit/'+campaign.id">
@@ -87,7 +90,7 @@
 							</div>
 						</md-list-item>
 					</router-link>
-				</md-list>
+				</md-list>!-->
 			</md-app-drawer>
 			<md-app-content style="padding: 0px;">
 				<router-view></router-view>
@@ -173,18 +176,35 @@ export default {
 	font-weight: bold;
 }
 .box {
-  display: flex;
-  align-items: stretch;
+	display: flex;
+	align-items: stretch;
 	.text {
-		width: 500px!important;
-    text-overflow: ellipsis;
+		width: 500px !important;
+		text-overflow: ellipsis;
 	}
 }
 .insideBox {
 	i {
-		margin-top:-5px;
-		font-size:20px!important; 
+		margin-top: -5px;
+		font-size: 20px !important;
 	}
-}     
+}
+.textoMenu {
+	margin-top: 10px;
+	span {
+		font-family: "Source Sans Pro", sans-serif;
+		text-transform: uppercase !important;
+		font-size: 14px !important;
+		color: white;
+	}
+	i {
+		color: #FEF9E7  !important;
+	}
+}
+.backgroundSidebar 
+{
+	background-color:#1C2833!important;
+}
+
 </style>
 
