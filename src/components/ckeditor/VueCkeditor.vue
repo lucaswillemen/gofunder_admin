@@ -94,3 +94,8 @@ class interceptUploadAdapter {
 	}
 }
 </script>
+<style lang="scss" scoped>
+#editor {
+	border: 1px solid #bfbfbf ;
+}
+</style>

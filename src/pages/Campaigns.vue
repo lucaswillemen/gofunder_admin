@@ -60,7 +60,7 @@
         <div class="md-layout md-grutter">
           <div v-for="(campaign, index) in rascunhos" :key="index" class="md-layout-item md-size-100 md-medium-size-50 md-large-size-33 md-xlarge-size-25">
             <md-card>
-              <md-card-actions>
+              <md-card-actions class="overlap-btn">
                 <md-button class="md-fab md-mini" @click="openDeleteConfirmation(campaign.id)">
                   <md-icon>delete</md-icon>
                 </md-button>
@@ -99,15 +99,10 @@
           </div>
         </div>
       </md-tab>
-      <md-tab id="tab-analise" md-label="Em Análise" md-icon="create">
+      <md-tab id="tab-analise" md-label="Em Análise" md-icon="timeline">
         <div class="md-layout md-grutter">
-          <div v-for="(campaign, index) in rascunhos" :key="index" class="md-layout-item md-size-100 md-medium-size-50 md-large-size-33 md-xlarge-size-25">
+          <div v-for="(campaign, index) in analysis" :key="index" class="md-layout-item md-size-100 md-medium-size-50 md-large-size-33 md-xlarge-size-25">
             <md-card>
-              <md-card-actions>
-                <md-button class="md-fab md-mini" @click="openDeleteConfirmation(campaign.id)">
-                  <md-icon>delete</md-icon>
-                </md-button>
-              </md-card-actions>
               <md-card-area md-inset>
                 <md-card-media md-ratio="16:9">
                   <img
@@ -123,21 +118,6 @@
 
                 <md-card-content>{{campaign.description}}</md-card-content>
               </md-card-area>
-
-
-              <md-card-actions>
-                <router-link :to="'/edit/'+campaign.id">
-                  <md-button class="md-primary" style="color: rgba(0,0,0,0.87) !important">
-                    <md-icon>edit</md-icon>Editar
-                  </md-button>
-                </router-link>
-                <md-button class="custom-color-2">
-                  <md-icon>find_in_page</md-icon>Prévia
-                </md-button>
-                <md-button class="custom-color">
-                  <md-icon>send</md-icon>Publicar
-                </md-button>
-              </md-card-actions>
             </md-card>
           </div>
         </div>
@@ -165,6 +145,7 @@ export default {
       loading: false,
       lancadas: [],
       rascunhos: [],
+      analysis: [],
     };
   },
   computed: {
@@ -176,11 +157,15 @@ export default {
       global
         .$get("/campaign/getList?user_id=" + this.user.id, {}, this.user.token)
         .then(response => {
+          console.log(response.data)
           response.data.forEach(element => {
-            if(element.status == 1)
+            if(element.status == 'approved')
               this.lancadas.push(element)
-            else
+            if(element.status == 'draft')
               this.rascunhos.push(element)
+            if(element.status.includes('pending')) {
+              this.analysis.push(element)
+            }
           });
         })
         .catch(err => {
@@ -207,6 +192,10 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.overlap-btn {
+	position: absolute;
+	right: 0;
+}
 .loading-overlay {
   z-index: 10;
   top: 0;

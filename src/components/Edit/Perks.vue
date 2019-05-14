@@ -17,7 +17,7 @@
         class="md-layout-item md-small-size-100 md-medium-size-50 md-large-size-33 md-size-25"
       >
         <md-card>
-					<md-card-actions style="position: absolute; right: 0;">
+					<md-card-actions class="overlap-btn">
 						<md-button class="md-fab md-mini" @click="openDeleteConfirmation(perk.id)">
 							<md-icon>delete</md-icon>
 						</md-button>
@@ -543,6 +543,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.overlap-btn {
+	position: absolute;
+	right: 0;
+}
 .delete-dialog {
 	.md-dialog {
 		width: 30%;

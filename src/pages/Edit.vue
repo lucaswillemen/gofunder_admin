@@ -16,8 +16,8 @@
 			<md-step id="fourth" md-label="Faqs" :md-done.sync="steps.fourth" >
 				<Faq></Faq>
 			</md-step>
-			<md-step id="five" md-label="Redes Sociais" :md-done.sync="steps.five" >
-				<SocialNetwork></SocialNetwork>
+			<md-step id="five" md-label="Enviar para análise" :md-done.sync="steps.five" >
+				<Analysis></Analysis>
 			</md-step>
 		</md-steppers>
 	</div>
@@ -27,7 +27,7 @@ import Overview from "@/components/Edit/Overview";
 import Perks from "@/components/Edit/Perks";
 import Gallery from "@/components/Edit/Gallery";
 import Faq from "@/components/Edit/Faq";
-import SocialNetwork from "@/components/Edit/SocialNetwork";
+import Analysis from "@/components/Edit/Analysis";
 export default {
 	name: "Edit",
 	components: {
@@ -35,7 +35,7 @@ export default {
 		Perks,
 		Gallery,
 		Faq,
-		SocialNetwork
+		Analysis
 	},
 
 	data() {
