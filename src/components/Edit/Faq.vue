@@ -4,8 +4,8 @@
 			<md-card class="mt-layout-item">
 				<md-empty-state
 					md-icon="question_answer"
-					md-label="Frequently asked questions"
-					md-description="Answer some basic questions for your investors."
+					md-label="Perguntas e respostas frequentes"
+					md-description="Responda algumas possíveis dúvidas que seus investidores possam apresentar."
 				>
 					<md-button class="md-primary md-raised" @click="createFaq = true">Create</md-button>
 				</md-empty-state>
@@ -14,7 +14,7 @@
 		<div class="md-layout md-grutter md-alignment-center-center" v-else>
 			<md-card style="min-width: 50%">
 				<md-card-header>
-					<div class="md-title">Frequently asked questions</div>
+					<div class="md-title">Perguntas e respostas frequentes</div>
 				</md-card-header>
 				<md-list class="md-double-line md-size-100" style="min-width: 50%">
 					<md-divider></md-divider>
@@ -257,5 +257,8 @@ export default {
 		border-bottom: 1px solid
 			var(--md-theme-default-divider, rgba(0, 0, 0, 0.12));
 	}
+}
+.md-dialog {
+	width: 40%;
 }
 </style>

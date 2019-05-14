@@ -33,7 +33,14 @@
 							<span class="md-list-item-text">Minhas campanhas</span>
 						</md-list-item>
 					</router-link>
-
+					<router-link to="/create">
+						<md-list-item
+							v-bind:class="{'nav-item': true, 'active': $router.currentRoute.path=='/create'}"
+						>
+							<md-icon>note_add</md-icon>
+							<span class="md-list-item-text">Criar nova campanha</span>
+						</md-list-item>
+					</router-link>
 					<router-link to="/withdraw">
 						<md-list-item
 							v-bind:class="{'nav-item': true, 'active': $router.currentRoute.path=='/withdraw'}"
@@ -51,14 +58,7 @@
 							<span class="md-list-item-text">Extratos</span>
 						</md-list-item>
 					</router-link>
-					<router-link to="/create">
-						<md-list-item
-							v-bind:class="{'nav-item': true, 'active': $router.currentRoute.path=='/create'}"
-						>
-							<md-icon>create_new_folder</md-icon>
-							<span class="md-list-item-text">Criar nova campanha</span>
-						</md-list-item>
-					</router-link>
+				
 
 					<a href="#" @click="logout()">
 						<md-list-item class="nav-item">
