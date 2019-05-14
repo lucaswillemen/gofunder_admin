@@ -2,32 +2,37 @@
 	<div class="page-conatainer">
 		<md-app md-mode="fixed">
 			<md-app-toolbar class="backgroundSidebar">
-				<div class="md-toolbar-section-start">
-					<md-button class="md-icon-button">
-						<md-icon>menu</md-icon>
+				<div class="md-toolbar-section-start">					
+					<md-button class="md-icon-button"@click="toggleMenu" v-if="!menuVisible">
+						<md-icon  style="color:white!important;" >menu</md-icon>
 					</md-button>
 					<span class="md-title" style="color:white;">{{$route.name}}</span>
 				</div>
 				<div class="md-toolbar-section-end">
 					<md-button class="md-icon-button">
-						<md-icon>notifications</md-icon>
+						<md-icon style="color:white!important;">notifications</md-icon>
 					</md-button>
 					<md-button class="md-icon-button">
-						<md-icon>settings</md-icon>
+						<md-icon style="color:white!important;">settings</md-icon>
+					</md-button>
+					<md-button class="md-icon-button" @click="logout()">
+						<md-icon style="color:white!important;">exit_to_app</md-icon>
 					</md-button>
 				</div>
 			</md-app-toolbar>
 
-			<md-app-drawer md-permanent="full" class="backgroundSidebar">
-				<div>
-				<!--	<img
-						src="http://gofunder.io/static/img/logo.8941ded.png"
-						style="max-width:200px;margin-top:17px;margin-left:17px;"
-					>!-->
-			
-				</div>
+			<md-app-drawer :md-active.sync="menuVisible" md-persistent="mini" class="backgroundSidebar">
+		
+<md-toolbar class="md-transparent" md-elevation="0">
+          <span  style="color:white!important;" ></span>
 
-				<md-list  class="textoMenu backgroundSidebar">
+          <div class="md-toolbar-section-end">
+            <md-button class="md-icon-button md-dense" @click="toggleMenu">
+              <md-icon  style="color:white!important;" >keyboard_arrow_left</md-icon>
+            </md-button>
+          </div>
+        </md-toolbar>
+				<md-list class="textoMenu backgroundSidebar">
 					<router-link to="/campaigns">
 						<md-list-item
 							v-bind:class="{'nav-item': true, 'active': $router.currentRoute.path=='/campaigns'}"
@@ -61,12 +66,6 @@
 						</md-list-item>
 					</router-link>
 
-					<a href="#" @click="logout()">
-						<md-list-item class="nav-item">
-							<md-icon>exit_to_app</md-icon>
-							<span class="md-list-item-text">LOGOUT</span>
-						</md-list-item>
-					</a>
 				</md-list>
 
 				<!--<md-divider></md-divider>
@@ -115,7 +114,8 @@ export default {
 	data() {
 		return {
 			campaigns: [],
-			intervalTimer: false
+			intervalTimer: false,
+			menuVisible: true
 		};
 	},
 	methods: {
@@ -148,6 +148,9 @@ export default {
 						err && err.response && err.response.data && err.response.data.error;
 					alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
 				});
+		},
+		toggleMenu() {
+			this.menuVisible = !this.menuVisible;
 		}
 	},
 	mounted() {
@@ -198,13 +201,11 @@ export default {
 		color: white;
 	}
 	i {
-		color: #FEF9E7  !important;
+		color: #fef9e7 !important;
 	}
 }
-.backgroundSidebar 
-{
-	background-color:#1C2833!important;
+.backgroundSidebar {
+	background-color: #0f052b !important;
 }
-
 </style>
 

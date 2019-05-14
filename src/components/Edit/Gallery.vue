@@ -176,7 +176,7 @@ export default {
 .flexGallery {
 	flex-basis: 9%;
   	margin: 5px;
-	height: 120px !important;
+	height: 90px !important;
 	background-size: 100% 100% !important;
 
 }

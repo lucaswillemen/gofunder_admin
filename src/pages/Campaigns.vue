@@ -183,7 +183,8 @@ export default {
       this.showDeleteConfirmation = true
     },
     deleteCampaign() {
-      alert('deletado, id:' + this.campaignIdToDelete)
+      //deletar campanha codigo
+      alert("Deletar campanha ainda não implementado")
     }
   },
   mounted() {

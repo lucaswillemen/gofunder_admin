@@ -85,7 +85,7 @@
 								:disabled="usdWithdraw.value <= 0"
 								type="submit"
 								@click.prevent="withdraw()"
-								class="md-raised md-accent"
+								class="md-raised md-roxo"
 							>Fazer pedido de retirada</md-button>
 						</md-card-actions>
 					</md-card>
@@ -133,7 +133,7 @@
 							:disabled="btcWithdraw.value <= 0"
 							type="submit"
 							@click.prevent="withdrawBTC()"
-							class="md-raised md-accent"
+							class="md-raised md-roxo"
 						>Fazer pedido de retirada</md-button>
 					</md-card-actions>
 				</md-card>

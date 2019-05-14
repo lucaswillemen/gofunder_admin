@@ -18,9 +18,9 @@
     margin-top: 12px;
 }
 .nav-item.active {
-    border-left: #BA4A00;
+    border-left: #ffffff;
     border-left-style: solid;
-    background: #DC7633  !important;
+    background: #684dbb  !important;
     margin-right: 0px;
     border-top-right-radius: 3px;
     border-bottom-right-radius: 3px;

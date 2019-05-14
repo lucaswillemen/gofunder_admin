@@ -258,7 +258,7 @@
 							<div class="upload-btn-wrapper">
 								<input type="file" id="img-picker" @change="pickImg($event)" />
 						
-								<button class="md-primary md-upload-btn">Abrir imagem</button>
+								<md-button class="md-raised md-roxo">Abrir imagem</md-button>
 							</div>
 
 						<div v-if="base64File" class="img-preview">
@@ -597,14 +597,7 @@ export default {
 }
 
 .md-upload-btn {
-  border: 2px solid gray;
-  color: gray;
-  background-color: white;
-  padding: 8px 20px;
-  border-radius: 0px;
-  font-size: 14px;
-    font-weight: 500;
-    text-transform: uppercase;
+  
     
 }
 
@@ -612,7 +605,8 @@ export default {
   font-size: 100px;
   position: absolute;
   left: 0;
-  top: 0;
+	top: 0;
+	z-index:99999999;
   opacity: 0;
 }
 
