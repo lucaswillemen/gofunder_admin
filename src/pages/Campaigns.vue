@@ -16,6 +16,7 @@
                   >
                 </md-card-media>
 
+
                 <md-card-header>
                   <h2 class="md-title">{{campaign.title}}</h2>
                   <div class="md-subhead">
@@ -67,6 +68,7 @@
                   >
                 </md-card-media>
 
+
                 <md-card-header>
                   <h2 class="md-title">{{campaign.title}}</h2>
                   <div class="md-subhead">
@@ -108,6 +110,7 @@
       </md-tab>
     </md-tabs>
   </main>
+
 </template>
 <script>
 import { mapState } from "vuex";
