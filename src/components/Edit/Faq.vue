@@ -7,7 +7,7 @@
 					md-label="Perguntas e respostas frequentes"
 					md-description="Responda algumas possíveis dúvidas que seus investidores possam apresentar."
 				>
-					<md-button class="md-primary md-raised" @click="createFaq = true">Create</md-button>
+					<md-button class="md-primary md-raised" @click="createFaq = true">Criar FAQ</md-button>
 				</md-empty-state>
 			</md-card>
 		</span>
@@ -26,7 +26,7 @@
 						<md-button class="md-icon-button" @click="openEditFaqModal(faq)">
 							<md-icon>edit</md-icon>
 						</md-button>
-						<md-button class="md-icon-button" @click="deleteFaq(faq.id)">
+						<md-button class="md-icon-button" @click="openDeleteConfirmation(faq.id)">
 							<md-icon>delete</md-icon>
 						</md-button>
 					</md-list-item>
@@ -87,6 +87,14 @@
 					<md-button class="md-primary md-raised" @click="editFaq()">Editar</md-button>
 				</md-dialog-actions>
 			</md-dialog>
+			<md-dialog-confirm
+				:md-active.sync="showDeleteConfirmation"
+				md-title="Tem certeza que deseja deletar este FAQ?"
+				md-content="Ao clicar em 'OK', não será possível recuperar o FAQ deletado..."
+				md-confirm-text="Ok"
+				md-cancel-text="Fechar"
+				@md-cancel="showDeleteConfirmation = false"
+				@md-confirm="deleteImage()" />
 		</div>
 	</main>
 </template>
@@ -97,6 +105,8 @@ import { required } from "vuelidate/lib/validators";
 export default {
 	data() {
 		return {
+			faqIdToDelete: null,
+			showDeleteConfirmation: false,
 			parentCall: null,
 			faqOnEdit: null,
 			edittingFaq: false,
@@ -184,12 +194,17 @@ export default {
 			this.createFaq = false;
 			this.$v.faq.$reset();
 			this.$v.faqEdit.$reset();
+			this.faqIdToDelete = null
 			(this.faq.question = null), (this.faq.answer = null);
 		},
-		deleteFaq(id) {
+		openDeleteConfirmation(id) {
+			this.faqIdToDelete = id
+			this.showDeleteConfirmation = true
+		},
+		deleteFaq() {
 			this.parentCall.showLoading();
 			let data = {
-				id: id
+				id: this.faqIdToDelete
 			};
 			global
 				.$post("/Content/deletefaq", data, this.user.token)

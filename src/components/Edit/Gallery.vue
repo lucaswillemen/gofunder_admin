@@ -105,11 +105,11 @@ export default {
     loadGallery() {
 			global.$get("/Content/getgalery?campaign_id=" + this.$route.params.id, {}, this.user.token)
 				.then(response => {
+					this.resetImgData()
 					this.pictures = response.data;
 				})
 				.catch(err => {
-					let validErr =
-						err && err.response && err.response.data && err.response.data.error;
+					let validErr = err && err.response && err.response.data && err.response.data.error;
 					alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
 				});
 
@@ -190,6 +190,8 @@ export default {
 			this.imageToUpload = null;
 			this.base64File = null;
 			this.imgCaption = null;
+			this.picIdToDelete = null
+
 		},
   },
   mounted() {
