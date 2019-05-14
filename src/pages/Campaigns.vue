@@ -41,7 +41,7 @@
                   :md-value="(campaign.arrecadation/campaign.amount)*100"
                 ></md-progress-bar>
               </md-card-content>
-
+<!-- 
               <md-card-actions v-if="campaign.status == 0">
                 <router-link :to="'/edit/'+campaign.id">
                   <md-button class="md-primary">
@@ -51,7 +51,7 @@
                 <md-button class="md-primary">
                   <md-icon>send</md-icon>Publicar
                 </md-button>
-              </md-card-actions>
+              </md-card-actions> -->
             </md-card>
           </div>
         </div>
@@ -60,6 +60,11 @@
         <div class="md-layout md-grutter">
           <div v-for="(campaign, index) in rascunhos" :key="index" class="md-layout-item md-size-100 md-medium-size-50 md-large-size-33 md-xlarge-size-25">
             <md-card>
+              <md-card-actions>
+                <md-button class="md-fab md-mini" @click="openDeleteConfirmation(campaign.id)">
+                  <md-icon>delete</md-icon>
+                </md-button>
+              </md-card-actions>
               <md-card-area md-inset>
                 <md-card-media md-ratio="16:9">
                   <img
@@ -71,23 +76,22 @@
 
                 <md-card-header>
                   <h2 class="md-title">{{campaign.title}}</h2>
-                  <div class="md-subhead">
-                    <md-icon>group</md-icon>
-                    <span>{{campaign.number_of_investor}} investidores</span>
-                  </div>
                 </md-card-header>
 
                 <md-card-content>{{campaign.description}}</md-card-content>
               </md-card-area>
 
 
-              <md-card-actions v-if="campaign.status == 0">
+              <md-card-actions>
                 <router-link :to="'/edit/'+campaign.id">
-                  <md-button class="md-primary">
+                  <md-button class="md-primary" style="color: rgba(0,0,0,0.87) !important">
                     <md-icon>edit</md-icon>Editar
                   </md-button>
                 </router-link>
-                <md-button class="md-primary">
+                <md-button class="custom-color-2">
+                  <md-icon>find_in_page</md-icon>Prévia
+                </md-button>
+                <md-button class="custom-color">
                   <md-icon>send</md-icon>Publicar
                 </md-button>
               </md-card-actions>
@@ -96,6 +100,15 @@
         </div>
       </md-tab>
     </md-tabs>
+    <md-dialog-confirm
+			:md-active.sync="showDeleteConfirmation"
+			md-title="Tem certeza que deseja deletar esta camapanha?"
+			md-content="Ao clicar em 'OK', não será possível recuperar nenhum dos dados já cadastrados nessa campanha."
+			md-confirm-text="Ok"
+			md-cancel-text="Fechar"
+			@md-cancel="showDeleteConfirmation = false"
+			@md-confirm="deleteCampaign()"
+		/>
   </main>
 
 </template>
@@ -104,6 +117,8 @@ import { mapState } from "vuex";
 export default {
   data() {
     return {
+      campaignIdToDelete: null,
+      showDeleteConfirmation: false,
       loading: false,
       lancadas: [],
       rascunhos: [],
@@ -134,6 +149,13 @@ export default {
         .finally(() => {
           this.loading = false;
         });
+    },
+    openDeleteConfirmation(id) {
+      this.campaignIdToDelete = id
+      this.showDeleteConfirmation = true
+    },
+    deleteCampaign() {
+      alert('deletado, id:' + this.campaignIdToDelete)
     }
   },
   mounted() {
@@ -154,6 +176,21 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.md-card-actions.md-alignment-right {
+  i {
+    font-size: 23px !important;
+  }
+}
+.custom-color {
+  .md-icon.md-icon-font.md-theme-default{
+    color: #31a235;
+  }
+}
+.custom-color-2 {
+  .md-icon.md-icon-font.md-theme-default{
+    color: #244584;
+  }
 }
 </style>
 

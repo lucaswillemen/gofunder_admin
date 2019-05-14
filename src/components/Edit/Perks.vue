@@ -17,14 +17,20 @@
         class="md-layout-item md-small-size-100 md-medium-size-50 md-large-size-33 md-size-25"
       >
         <md-card>
+					<md-card-actions style="position: absolute; right: 0;">
+						<md-button class="md-fab md-mini" @click="openDeleteConfirmation(perk.id)">
+							<md-icon>delete</md-icon>
+						</md-button>
+					</md-card-actions>
           <md-card-area md-inset>
             <md-card-media md-ratio="16:9">
-              <img :src="$url + perk.cover_url" onerror="this.src='https://via.placeholder.com/150'">
+              <img :src="$url + perk.cover_url" onerror="this.src='https://via.placeholder.com/250'">
             </md-card-media>
             <md-card-header>
               <h2 class="md-title">{{perk.name}}</h2>
               <div class="md-subhead">
-                <span>{{perk.price | currency}}</span>
+								Valor mínimo para ganhar recompensa: 
+                <div>{{perk.price | currency}}</div>
               </div>
             </md-card-header>
           </md-card-area>
@@ -34,9 +40,9 @@
               <md-button class="md-raised md-primary" @click="showModalEditPerk(perk)">Editar Recompensa</md-button>
             </md-list>
           </md-card-content>
-          <md-card-actions>
+          <!-- <md-card-actions>
             <md-checkbox v-model="allow" value="1">Mostrar disponivel</md-checkbox>
-          </md-card-actions>
+          </md-card-actions> -->
         </md-card>
       </div>
 
@@ -248,6 +254,16 @@
         </md-dialog-actions>
       </md-dialog>
     </div>
+		<md-dialog-confirm
+			class="delete-dialog"
+			:md-active.sync="showDeleteConfirmation"
+			md-title="Tem certeza que deseja deletar este perk?"
+			md-content="Ao clicar em 'OK', não será possível recuperá-lo."
+			md-confirm-text="Ok"
+			md-cancel-text="Fechar"
+			@md-cancel="showDeleteConfirmation = false"
+			@md-confirm="deletePerk()"
+		/>
   </main>
 </template>
 
@@ -257,6 +273,8 @@ import { required } from "vuelidate/lib/validators";
 export default {
   data() {
 		return {			
+			showDeleteConfirmation: false,
+			perkIdToDelete: null,
 			parentCall: null,
       base64FilePerk: false,
 			perkDialog: false,
@@ -440,10 +458,8 @@ export default {
 			}
 		},
 
-		editPerk() {
-				
+		editPerk() {	
 			this.$v.perkEdit.$touch();
-
 			if (!this.$v.perkEdit.$invalid) {
 				this.$v.perkEdit.$reset();
 				this.perkEdit.campaign_id = this.$route.params.id;
@@ -473,6 +489,25 @@ export default {
 
 					});
 			}
+		},
+		openDeleteConfirmation(id) {
+			this.perkIdToDelete = id
+			this.showDeleteConfirmation = true
+		},
+		deletePerk() {
+			this.parentCall.showLoading();
+			global.$post("/Content/deleteperk", {id: this.perkIdToDelete}, this.user.token)
+				.then(res => {
+					this.loadPerk();
+				})
+				.catch(err => {
+					let validErr =
+						err && err.response && err.response.data && err.response.data.error;
+					alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
+				})
+				.finally(() => {
+					this.parentCall.hideLoading();
+				});
 		},
 		resetEditPerk() {
 			this.perkEditDialog = false;
@@ -508,7 +543,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.delete-dialog {
+	.md-dialog {
+		width: 30%;
+	}
+}
 .md-dialog {
 	width: 70%;
 }
