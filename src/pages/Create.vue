@@ -220,11 +220,11 @@
 								class="md-primary"
 							>Seu projeto já foi iniciado?</md-checkbox>
 
-							<md-datepicker v-if="informacoes.isStarted" v-model="informacoes.startAt" md-immediately>
+							<md-datepicker class="hide-clear" v-if="informacoes.isStarted" v-model="informacoes.startAt" md-immediately>
 								<label>Quando pretende iniciar?</label>
 							</md-datepicker>
 
-							<md-datepicker
+							<md-datepicker class="hide-clear"
 								:class="getValidationClassThird('finishAt')"
 								v-model="informacoes.finishAt"
 								md-immediately
@@ -414,7 +414,17 @@ export default {
 				required
 			},
 			finishAt: {
-				required
+				required,
+				validDate: function() {
+					if(this.informacoes.startAt) {
+						if(this.informacoes.startAt.getTime() >= this.informacoes.finishAt.getTime()) {
+							return false
+						}else {
+							return true							
+						}
+					}
+					return true
+				}
 			}
 		}
 	},
@@ -647,5 +657,10 @@ export default {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+}
+.hide-clear {
+	.md-button.md-icon-button.md-dense.md-input-action.md-clear.md-theme-default {
+		display: none;
+	}
 }
 </style>
