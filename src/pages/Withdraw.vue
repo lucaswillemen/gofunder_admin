@@ -15,66 +15,63 @@
 							<br>
 							<div class="md-layout md-gutter">
 								<div class="md-layout-item md-small-size-100">
-									<md-field :class="{'md-invalid': $v.country.$invalid && $v.country.$dirty}">
+									<md-field :class="{'md-invalid': $v.usdWithdraw.country.$invalid && $v.usdWithdraw.country.$dirty}">
 										<label for="bankAcc">Pais: *</label>
 										<md-input id="bankAcc" v-model="usdWithdraw.country"></md-input>
-										<span class="md-error" v-if="!$v.country.required">Digite o país de destino</span>
+										<span class="md-error" v-if="!$v.usdWithdraw.country.required">Digite o país de destino</span>
 									</md-field>
 								</div>
 								<div class="md-layout-item md-small-size-100">
-									<md-field :class="{'md-invalid': $v.bank.$invalid && $v.bank.$dirty}">
+									<md-field :class="{'md-invalid': $v.usdWithdraw.bank.$invalid && $v.usdWithdraw.bank.$dirty}">
 										<label for="bankAcc">Banco: *</label>
 										<md-input id="bankAcc" v-model="usdWithdraw.bank"></md-input>
-										<span class="md-error" v-if="!$v.bank.required">O nome do banco beneficiário é obrigatório</span>
-										<span class="md-error" v-if="!$v.bank.numeric">Insira apenas números!</span>
+										<span class="md-error" v-if="!$v.usdWithdraw.bank.required">O nome do banco beneficiário é obrigatório</span>
+										<span class="md-error" v-if="!$v.usdWithdraw.bank.numeric && $v.usdWithdraw.bank.$dirty">Insira apenas números!</span>
 									</md-field>
 								</div>
 								<div class="md-layout-item md-small-size-100">
-									<md-field :class="{'md-invalid': $v.swift.$invalid && $v.swift.$dirty}">
+									<md-field :class="{'md-invalid': $v.usdWithdraw.swift.$invalid && $v.usdWithdraw.swift.$dirty}">
 										<label for="bankAcc">SWIFT: *</label>
 										<md-input id="bankAcc" v-model="usdWithdraw.swift"></md-input>
-										<span class="md-error" v-if="!$v.swift.required">O código SWITF é obrigatória</span>
+										<span class="md-error" v-if="!$v.usdWithdraw.swift.required">O código SWITF é obrigatória</span>
 									</md-field>
 								</div>
 							</div>
 
 							<div class="md-layout md-gutter">
 								<div class="md-layout-item md-small-size-100">
-									<md-field :class="{'md-invalid': $v.bankAccount.$invalid && $v.bankAccount.$dirty}">
+									<md-field :class="{'md-invalid': $v.usdWithdraw.account.$invalid && $v.usdWithdraw.account.$dirty}">
 										<label for="bankAcc">Conta Bancária ou IBAN: *</label>
 										<md-input id="bankAcc" v-model.number="usdWithdraw.account"></md-input>
 										<span
 											class="md-error"
-											v-if="!$v.bankAccount.required"
+											v-if="!$v.usdWithdraw.account.required"
 										>A conta bancária ou IBAN é obrigatória</span>
-										<span class="md-error" v-if="!$v.bankAccount.numeric">Insira apenas números!</span>
+										<span class="md-error" v-if="!$v.usdWithdraw.account.numeric">Insira apenas números!</span>
 									</md-field>
 								</div>
 								<div class="md-layout-item md-small-size-100">
-									<md-field :class="{'md-invalid': $v.cpf.$invalid && $v.cpf.$dirty}">
+									<md-field :class="{'md-invalid': $v.usdWithdraw.doc.$invalid && $v.usdWithdraw.doc.$dirty}">
 										<label for="bankAcc">Documento Beneficiário: *</label>
 										<md-input id="bankAcc" v-model="usdWithdraw.doc"></md-input>
-										<span
-											class="md-error"
-											v-if="!$v.cpf.required"
-										>O número de documento do titular (CPF, RG ou Carteira Motorista) é obrigatória</span>
+										<span class="md-error" v-if="!$v.usdWithdraw.doc.required">O doc é obrigatório</span>
 									</md-field>
 								</div>
 							</div>
 
 							<div class="md-layout md-gutter">
 								<div class="md-layout-item md-size-50">
-									<md-field :class="{'md-invalid': $v.value.$invalid && $v.value.$dirty}">
+									<md-field :class="{'md-invalid': $v.usdWithdraw.value.$invalid && $v.usdWithdraw.value.$dirty}">
 										<label for="value"></label>
 										<money id="value" v-model="usdWithdraw.value" class="md-input" v-bind="moneyConfig"></money>
-										<span class="md-error" v-if="!$v.value.required">O valor é obrigatório</span>
+										<span class="md-error" v-if="!$v.usdWithdraw.value.required">O valor é obrigatório</span>
 									</md-field>
 								</div>
 								<div class="md-layout-item md-small-size-100">
-									<md-field :class="{'md-invalid': $v.name.$invalid && $v.name.$dirty}">
+									<md-field :class="{'md-invalid': $v.usdWithdraw.name.$invalid && $v.usdWithdraw.name.$dirty}">
 										<label for="bankAcc">Nome Beneficiário: *</label>
 										<md-input id="bankAcc" v-model="usdWithdraw.name"></md-input>
-										<span class="md-error" v-if="!$v.name.required">o nome é obrigatória</span>
+										<span class="md-error" v-if="!$v.usdWithdraw.name.required">o nome é obrigatório</span>
 									</md-field>
 								</div>
 							</div>
@@ -84,7 +81,7 @@
 							<md-button
 								:disabled="usdWithdraw.value <= 0"
 								type="submit"
-								@click.prevent="withdraw()"
+								@click.prevent="insertUsdWithdrawData()"
 								class="md-raised md-roxo"
 							>Fazer pedido de retirada</md-button>
 						</md-card-actions>
@@ -108,20 +105,20 @@
 						<br>
 						<div class="md-layout md-gutter">
 							<div class="md-layout-item md-small-size-100">
-								<md-field :class="{'md-invalid': $v.addr.$invalid && $v.addr.$dirty}">
+								<md-field :class="{'md-invalid': $v.btcWithdraw.addr.$invalid && $v.btcWithdraw.addr.$dirty}">
 									<label for="bankAcc">Endereço Bitcoin: *</label>
 									<md-input id="bankAcc" v-model="btcWithdraw.addr"></md-input>
-									<span class="md-error" v-if="!$v.addr.required">O endereço em BTC é obrigatório</span>
+									<span class="md-error" v-if="!$v.btcWithdraw.addr.required">O endereço em BTC é obrigatório</span>
 								</md-field>
 							</div>
 						</div>
 
 						<div class="md-layout md-gutter">
 							<div class="md-layout-item md-size-50">
-								<md-field :class="{'md-invalid': $v.value.$invalid && $v.value.$dirty}">
+								<md-field :class="{'md-invalid': $v.btcWithdraw.value.$invalid && $v.btcWithdraw.value.$dirty}">
 									<label for="value"></label>
 									<money id="value" v-model="btcWithdraw.value" class="md-input" v-bind="btcConfig"></money>
-									<span class="md-error" v-if="!$v.value.required">O valor é obrigatório</span>
+									<span class="md-error" v-if="!$v.btcWithdraw.value.required">O valor é obrigatório</span>
 								</md-field>
 							</div>
 						</div>
@@ -147,6 +144,7 @@ import { required, numeric } from "vuelidate/lib/validators";
 export default {
 	data() {
 		return {
+			loading: false,
 			btcWithdraw: {
 				value: "",
 				addr: null
@@ -179,43 +177,66 @@ export default {
 		};
 	},
 	validations: {
-		addr: {
-			required
+		usdWithdraw: {
+			swift: {
+				required,
+			},
+			bank: {
+				required,
+				numeric
+			},
+			name: {
+				required,
+			},
+			doc: {
+				required,
+			},
+			country: {
+				required,
+			},
+			account: {
+				required,
+				numeric
+			},
+			value: {
+				required,
+			}
 		},
-		country: {
-			required
+		btcWithdraw: {
+			value: {
+				required,
+			},
+			addr: {
+				required
+			}
 		},
-		bank: {
-			required,
-			numeric
-		},
-		swift: {
-			required
-		},
-		cpf: {
-			required
-		},
-		name: {
-			required
-		},
-		bankAccount: {
-			required,
-			numeric
-		},
-		value: {
-			required
-		}
 	},
 	computed: {
 		...mapState(["user"])
 	},
 	methods: {
-		withdraw() {
-			this.$v.$touch();
-		},
 		withdrawBTC() {
 			this.$v.$touch();
-		}
+		},
+		insertUsdWithdrawData() {
+			this.$v.usdWithdraw.$touch();
+			if (!this.$v.usdWithdraw.$invalid) {
+				this.loading = true
+				global.$post("/Withdraw/withdraw",{ amount: this.usdWithdraw.value, withdrawJson: JSON.stringify(this.usdWithdraw)}, this.user.token)
+				.then(response => {
+					console.lo('foi')
+				})
+				.catch(err => {
+					let validErr =
+						err && err.response && err.response.data && err.response.data.error;
+					alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
+				})
+				.finally(() => {
+					this.loading = false
+				});
+			}
+
+		},
 	},
 	mounted() {}
 };

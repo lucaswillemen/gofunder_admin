@@ -7,6 +7,9 @@
        <md-tab id="tab-doacoes" md-label="Extratos de Doações" md-icon="card_giftcard">
         <DonationExtract></DonationExtract>
       </md-tab>
+      <md-tab id="tab-affiliate" md-label="Extratos de Afiliados" md-icon="card_membership">
+        <AffiliateExtract></AffiliateExtract>
+      </md-tab>
       
     </md-tabs>
     
@@ -16,12 +19,14 @@
 <script>
 import WithdrawExtract from "@/components/Extract/WithdrawExtract"
 import DonationExtract from "@/components/Extract/DonationExtract"
+import AffiliateExtract from "@/components/Extract/AffiliateExtract"
 
 export default {
   name: 'Extract',
   components: {
     WithdrawExtract,
-    DonationExtract
+    DonationExtract,
+    AffiliateExtract
   }
 }
 </script>
