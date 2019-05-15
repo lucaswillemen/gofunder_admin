@@ -28,6 +28,9 @@ data() {
   return {
     agree: false
   }
+},
+mounted() {
+  this.$alert({title: 'textt'})
 }
 }
 </script>
