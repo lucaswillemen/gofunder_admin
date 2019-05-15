@@ -1,6 +1,7 @@
 <template>
   <div id="app" style="min-height: 100vh;">
     <router-view msg="Welcome to Your Vue.js App"/>
+    <Alert></Alert>
   </div>
 </template>
 
@@ -11,11 +12,11 @@ import {
   mapGetters,
   mapActions
 } from 'vuex'
-
+import Alert from '@/components/Alert'
 export default {
   name: 'app',
   components: {
-
+    Alert
   },
   computed: {
     ...mapGetters({

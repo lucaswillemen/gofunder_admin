@@ -1,8 +1,8 @@
 <template>
   <main>
-    <component>
+    <div>
       {{list.title}}
-    </component>
+    </div>
   </main>
 </template>
 
@@ -23,7 +23,6 @@ export default {
   },
   mounted() {
       console.log('mmm')
-
     events.$on('add', this.addItem);
   }
 }

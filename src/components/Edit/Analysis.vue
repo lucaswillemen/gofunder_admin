@@ -30,7 +30,7 @@ data() {
   }
 },
 mounted() {
-  this.$alert({title: 'textt'})
+  this.$alert({title: 'textt', content: 'sdjaoasdj'})
 }
 }
 </script>
