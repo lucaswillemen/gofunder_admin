@@ -2,6 +2,7 @@ const globalAlert = {
   install(Vue) {
     Vue.prototype.$alert = function(opt) {
       alert(opt)
+    
     }
   }
 }
