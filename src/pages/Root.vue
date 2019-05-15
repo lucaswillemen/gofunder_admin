@@ -3,7 +3,7 @@
 		<md-app md-mode="fixed">
 			<md-app-toolbar class="backgroundSidebar">
 				<div class="md-toolbar-section-start">					
-					<md-button class="md-icon-button"@click="toggleMenu" v-if="!menuVisible">
+					<md-button class="md-icon-button" @click="toggleMenu" v-if="!menuVisible">
 						<md-icon  style="color:white!important;" >menu</md-icon>
 					</md-button>
 					<span class="md-title" style="color:white;">{{$route.name}}</span>
@@ -65,7 +65,6 @@
 							<span class="md-list-item-text">EXTRATOS</span>
 						</md-list-item>
 					</router-link>
-
 				</md-list>
 
 				<!--<md-divider></md-divider>

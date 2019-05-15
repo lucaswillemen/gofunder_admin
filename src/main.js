@@ -6,18 +6,19 @@ import router from './router/router.js'
 import './config/request'
 import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.min.css'
+import globalAlert from '@/plugins/GlobalAlert'
 import "@/default.css"
 import "@/style.css"
 import VueCurrencyFilter from 'vue-currency-filter'
 import VueTheMask from 'vue-the-mask'
 import money from 'v-money'
 
+
 Vue.prototype.$url = 'http://25.20.68.69/'
 
 Vue.config.productionTip = false
 Vue.use(VueMaterial)
-
-
+Vue.use(globalAlert)
 Vue.use(require('vue-moment'));
 Vue.use(Vuelidate)
 Vue.use(VueTheMask)
