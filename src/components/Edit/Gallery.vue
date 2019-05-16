@@ -21,9 +21,9 @@
 							:key="index"
 							:style="{backgroundImage: 'url(\''+$url + picture.picture_url+'\')' }"
 						>
-							<button class="miniclick" @click="openDeleteConfirmation(picture.id)">
+							<md-button class="md-fab md-mini-mini" @click="openDeleteConfirmation(picture.id)">
 								<md-icon>delete</md-icon>
-							</button>
+							</md-button>
 						</div>
 					</div>
 				</md-card-content>
@@ -155,17 +155,11 @@ export default {
 .md-empty-state-icon {
 	height: 70px !important;
 }
-.miniclick {
-	font-size: 9px;
+.md-mini-mini {
+
 	right: 0px;
-	margin-top: 2px;
-	background: none;
-	border: none;
-	cursor: pointer;
-	i {
-		color: red !important;
-		opacity: 0.60;
-	}
+	height:30px;
+	width:30px;
 }
 .flexBox {
 	display:flex;
