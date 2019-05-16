@@ -16,7 +16,7 @@ import VueTheMask from 'vue-the-mask'
 import money from 'v-money'
 
 
-Vue.prototype.$url = 'https://api.gofunder.io'
+Vue.prototype.$url = 'https://api.gofunder.io/'
 
 Vue.config.productionTip = false
 Vue.use(VueMaterial)

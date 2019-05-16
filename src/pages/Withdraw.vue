@@ -42,7 +42,7 @@
 								<div class="md-layout-item md-small-size-100">
 									<md-field :class="{'md-invalid': $v.usdWithdraw.account.$invalid && $v.usdWithdraw.account.$dirty}">
 										<label for="bankAcc">Conta Bancária ou IBAN: *</label>
-										<md-input id="bankAcc" v-model.number="usdWithdraw.account"></md-input>
+										<md-input id="bankAcc" v-model="usdWithdraw.account"></md-input>
 										<span
 											class="md-error"
 											v-if="!$v.usdWithdraw.account.required"
@@ -81,7 +81,7 @@
 							<md-button
 								:disabled="usdWithdraw.value <= 0"
 								type="submit"
-								@click.prevent="insertUsdWithdrawData()"
+								@click.prevent="withdrawUsd()"
 								class="md-raised md-roxo"
 							>Fazer pedido de retirada</md-button>
 						</md-card-actions>
@@ -139,9 +139,10 @@
 	</md-tabs>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 import { required, numeric } from "vuelidate/lib/validators";
 export default {
+	name: 'Withdraw',
 	data() {
 		return {
 			loading: false,
@@ -212,19 +213,22 @@ export default {
 		},
 	},
 	computed: {
-		...mapState(["user"])
+		...mapState(["user"]),
 	},
 	methods: {
+    ...mapActions('user', ['userSet']),
 		withdrawBTC() {
-			this.$v.$touch();
+			this.$v.btcWithdraw.$touch();
 		},
-		insertUsdWithdrawData() {
+		withdrawUsd() {
 			this.$v.usdWithdraw.$touch();
 			if (!this.$v.usdWithdraw.$invalid) {
 				this.loading = true
-				global.$post("/Withdraw/withdraw",{ amount: this.usdWithdraw.value, withdrawJson: JSON.stringify(this.usdWithdraw)}, this.user.token)
+				global.$post("/Withdraw/insertwithdraw",{ amount: this.usdWithdraw.value, withdrawJson: JSON.stringify(this.usdWithdraw)}, this.user.token)
 				.then(response => {
-					console.lo('foi')
+					console.log('deu',response)
+					this.userSet({usd: response.data.user_amount})
+					this.resetForm()
 				})
 				.catch(err => {
 					let validErr =
@@ -235,8 +239,15 @@ export default {
 					this.loading = false
 				});
 			}
-
 		},
+		resetForm() {
+			for (const key in this.usdWithdraw) {
+				this.usdWithdraw[key] = ""
+			}
+			for (const key in this.btcWithdraw) {
+				this.btcWithdraw[key] = ""
+			}
+		}
 	},
 	mounted() {}
 };
