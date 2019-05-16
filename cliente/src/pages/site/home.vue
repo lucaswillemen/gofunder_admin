@@ -421,9 +421,9 @@ export default {
     loadSlides() {
       this.slidesData = []
 
-      this.$awn.asyncBlock(global.$post("/Campaign/random_list", {}))
+      this.$awn.asyncBlock(global.$post("/Campaign/cover_campaigns", {}))
         .then(response => {
-          this.slidesData = response.data.MSG
+          this.slidesData = response.data
           this.selectSlide = this.slidesData[0]
           this.selectSlide.percentage = Math.round(100/this.selectSlide.cash*this.selectSlide.cash_received)
           if(this.selectSlide.percentage > 100) this.selectSlide.percentage = 100
