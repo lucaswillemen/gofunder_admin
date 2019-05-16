@@ -10,7 +10,7 @@
       <b-navbar-nav class="ml-auto">
         <b-nav-item-dropdown right v-if="user.token !== null" class="big">
           <template slot="button-content">
-            <img class="img" v-bind:src='user && user.img ? this.$apiEndpoint+"/uploads/profile/"+user.img : "/static/anonymous-icon.svg"'></img>
+            <img class="img" v-bind:src='user && user.img ? this.$apiEndpoint+"/uploads/profile/"+user.img : "/static/anonymous-icon.svg"'/>
             <label class="orange"><b>Olá</b> </label><label>{{user.name}}</label>
           </template>
           <div class="seta"></div>
@@ -68,7 +68,6 @@
           </a>
         </div>
       </b-col>
-    </b-row>
     </b-row>
   </b-container>
   <hr>

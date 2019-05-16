@@ -30,14 +30,14 @@
                           </div>
                         </div>
                         <div class="info">
-                        <!--  <span>{{user.description}}</span>!-->
+                         <span>{{user.description}}</span>!
                         </div>
                       </b-col>
                     </b-row>
                     <b-row>
                       
                       <b-col lg="12">
-                        <!--
+                        
                         <div class="boxes">
                           <div class="box">
                             <div class="top">
@@ -60,10 +60,10 @@
 
                         </div>
                         <hr>
-                       !-->
+                       !
                       </b-col>
                     </b-row>
-                    <!--<b-row>
+                    <b-row>
                       <b-col lg="12 bottom">
                         <div class="main-title">
                           <span>Informação <span class="orange">Verificada</span></span>
@@ -95,7 +95,7 @@
                           </div>
                         </div>
                       </b-col>
-                    </b-row>!-->
+                    </b-row>!
                   </b-col>
                 </b-row>
               </div>

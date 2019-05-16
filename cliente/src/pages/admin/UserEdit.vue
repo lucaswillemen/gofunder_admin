@@ -30,6 +30,7 @@
                         <span class="subtitle center-left w-20">Nome</span>
                         <b-form-input type="text" v-model="form1.name" class="w-75"></b-form-input>
                       </div>
+                      
                       <!--<div class="sbs mbottom">
                         <span class="subtitle center-left w-20">País</span>
                         <b-form-input type="text" v-model="form1.country" class="w-75"></b-form-input>
@@ -309,7 +310,10 @@
                     <div class="main-title">
                       <span>Lista de Endereços</span>
                     </div>
-                    <div class="partners">
+                    <div v-if="addressesList.length == 0">
+                      <p>Nenhum endereço cadastrado!</p>
+                    </div>
+                    <div v-else class="partners">
                       <b-container>
                         <b-row v-for="(addr, index) in addressesList" :key="index">
                           <b-col class="d-flex align-items-center justify-content-between p-2" style="border: 1px solid black; border-radius: 0.25rem;">
@@ -325,7 +329,7 @@
                               </div>
                             </section>
                             <section>
-                              <b-button style="width: 40px; padding: 0.375rem 0.625rem;"><i class="fa fa-trash"></i></b-button>
+                              <b-button class="remove-address-btn" @click="remAddres(addr.id)"><i class="fa fa-trash"></i></b-button>
                             </section>
                           </b-col>
                         </b-row>
@@ -335,84 +339,7 @@
                 </b-row>
               </div>
             </b-tab>
-            <b-tab title="Financeiro" class="tabs tabfin">
-              <div id="tab5" class="tab-wrap">
-                <b-row>
-                  <b-col lg="6">
-                    <b-row>
-                      <b-col lg="12">
-                        <b-form>
-                          <div class="cc">
-                            <div class="main-title">
-                              <span>Cartão de Crédito</span>
-                            </div>
-                            <AddCreditCard />
-                          </div>
-                        </b-form>
-                      </b-col>
-                    </b-row>
 
-                    <b-row>
-                      <b-col lg="12">
-                        <div class="main-title">
-                          <span>Paypal</span>
-                        </div>
-                        <div class="accounts">
-                          <div class="account">
-                            <div class="email">
-                              <span>Conta: {{!user.paypal_email ? "Nenhuma conta paypal configurada" : user.paypal_email}}</span>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="btn-border mt-2">
-                          <b-button>Alterar Conta Paypal</b-button>
-                        </div>
-                      </b-col>
-                    </b-row>
-                  <!--  <b-row>
-                      <b-col lg="12">
-                        <div class="main-title">
-                          <span>Crypto Wallets</span>
-                        </div>
-                        <div class="wallets">
-                          <span class="icon">
-                            <font-awesome-icon :icon="['fab', 'bitcoin']" />
-                          </span>
-                          <span>{{user.btc_address}}</span>
-                        </div>
-                      </b-col>
-                    </b-row>!-->
-                  </b-col>
-                  <b-col lg="6" class="right-col">
-                    <div class="main-title">
-                      <span>Meus cartões</span>
-                    </div>
-                    <div class="partners">
-                      <b-row>
-                        <b-col lg="12">
-                          <div class="ccs">
-                            <div class="ccrow" v-for="cc in ccs">
-                              <div class="icon">
-                                <font-awesome-icon :icon="['far', 'credit-card']" />
-                              </div>
-                              <div class="info">
-                                <span class="number">{{cc.brand}}: {{cc.last4}} </span>
-                                <span class="date">Exp: {{cc.exp_month}}/{{cc.exp_year}}</span>
-                                <span class="number">(Preferencial <input type="checkbox" :disabled="ccs_predef == cc.id" style="height: 12px!important;" :value="cc.id" :checked="ccs_predef == cc.id" v-on:input="changeCard($event.target.value)" />)
-                                  <a style="cursor:pointer; color:blue;" v-on:click="deleteCard(cc.id)">(Excluir Cartão)</a>
-                                </span>
-
-                              </div>
-
-                            </div>
-                          </div>
-                        </b-col>
-                      </b-row>
-                    </div>
-                  </b-col>
-                </b-row>
-              </div>
-            </b-tab>
           </b-tabs>
         </div>
       </b-col>
@@ -441,9 +368,10 @@ export default {
     if (this.user.token === null) {
       this.$router.push('/login')
     }
-    for (var i in this.user) {
-      this.form1[i] = this.user[i]
-    }
+    this.getAddresses()
+    // for (var i in this.user) {
+    //   this.form1[i] = this.user[i]
+    // }
     if (this.user && this.user.subscription_option && this.user.subscription_option.length > 0) {
       this.selectedEmails = this.user.subscription_option.split(",")
     }
@@ -454,17 +382,14 @@ export default {
   },
   data() {
     return {
+      ccs: [],
       form1: {
         name: null,
-        postcode: null,
         tinydescription: null,
+        profile_picture: null,
         description: null
       },
-      addressesList: [
-        {state: "RS", city: "Caxias", address:"Vitorio", number: 36, zipcode: 9509500, neighborhood: "Montes Claros", complement: "Casa"},
-        {state: "RS", city: "Caxias", address:"Vitorio", number: 36, zipcode: 9509500, neighborhood: "Montes Claros", complement: "Casa"},
-                {state: "RS", city: "Caxias", address:"Vitorio", number: 36, zipcode: 9509500, neighborhood: "Montes Claros", complement: "Casa"},
-      ],
+      addressesList: [],
       formEmail: {
         email: null,
         password: null
@@ -551,6 +476,7 @@ export default {
         .then(response => {
           this.$awn.success("E-mail alterado com sucesso")
           this.$awn.success("Confirme seu e-mail na caixa de entrada")
+          console.log('email', response)
           this.userSet(response.data.MSG)
           this.formEmail.email = null
           this.formEmail.password = null
@@ -578,6 +504,7 @@ export default {
       global.$post("/Profile/address", this.addressForm, this.user.token)
         .then(response => {
           this.$awn.success("Endereço adicionado com sucesso")
+          this.getAddresses()
         })
         .catch(err => {
           let validErr = (err && err.response && err.response.data && err.response.data.MSG)
@@ -585,9 +512,10 @@ export default {
         })
     },
     remAddres: function(id) {
-      global.$post("/Profile/address", {id: id}, this.user.token)
+      global.$post("/Profile/deladdress", {id: id}, this.user.token)
         .then(response => {
           this.$awn.success("Endereço removido")
+          this.getAddresses()
         })
         .catch(err => {
           let validErr = (err && err.response && err.response.data && err.response.data.MSG)
@@ -595,13 +523,31 @@ export default {
         })
     },
     getAddresses: function() {
-      global.$post("/Profile/address_list", {}, this.user.token)
+      global.$get("/Profile/address", {}, this.user.token)
         .then(response => {
+          console.log('ad', response)
           this.addressesList = response.data
         })
         .catch(err => {
 
         })
+    },
+    changePassword: function() {
+      global.$post("/Auth/edit_password", this.formPass, this.user.token)
+        .then(response => {
+          this.userSet(response.data.MSG)
+          this.$awn.success("Senha alterada!")         
+          this.formPass.newpassword1 = null
+          this.formPass.password = null
+          this.formPass.newpassword2 = null
+
+        })
+        .catch(err => {
+
+        })
+    },
+    listAllCards: function() {
+
     },
 
     select: function(id, parent) {
@@ -753,8 +699,11 @@ export default {
               }
           }
 
-          .partners {
+          .partners { 
 
+              .remove-address-btn { 
+                width: 40px; padding: 0.375rem 0.625rem;
+              }
               .partner {
 
                   display: flex;

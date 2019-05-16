@@ -34,7 +34,7 @@
             </b-col>
           </b-row>
           <div class="buttons">
-            <div class="btn-noborder">
+            <div :class="{'btn-noborder': isComplete()}">
               <b-button @click="addCreditCard" :disabled="!isComplete()">Adicionar Cartão</b-button>
             </div>
           </div>
