@@ -14,10 +14,10 @@
           </div>
           <div class="buttons">
             <div class="btn-noborder mright">
-              <a :href="'/#/project-info/'+slideData.id"><b-button>Quero Contribuir!</b-button></a>
+              <router-link :href="'/#/project-info/'+slideData.id+ '/'+ slideData.title"><b-button>Quero Contribuir!</b-button></router-link>
             </div>
             <div class="btn-noborder-blue mleft">
-              <a :href="'/#/project-info/'+slideData.id"><b-button>Saiba mais</b-button></a>
+              <router-link :href="'/#/project-info/'+slideData.id+ '/'+ slideData.title"><b-button>Saiba mais</b-button></router-link>
             </div>
           </div>
         </div>

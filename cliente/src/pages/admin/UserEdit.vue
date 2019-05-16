@@ -310,9 +310,26 @@
                       <span>Lista de Endereços</span>
                     </div>
                     <div class="partners">
-                      <b-row v-for="addr in addressesList">
-                        {{addr.address}}
-                      </b-row>
+                      <b-container>
+                        <b-row v-for="(addr, index) in addressesList" :key="index">
+                          <b-col class="d-flex align-items-center justify-content-between p-2" style="border: 1px solid black; border-radius: 0.25rem;">
+                            <section>
+                              <div>
+                                Rua: {{addr.address}}, {{addr.number}} ({{addr.complement}}) - {{addr.city}} {{addr.state}}
+                              </div>
+                              <div>
+                                Bairro: {{addr.neighborhood}}
+                              </div>
+                              <div>
+                                CEP: {{addr.zipcode}}
+                              </div>
+                            </section>
+                            <section>
+                              <b-button style="width: 40px; padding: 0.375rem 0.625rem;"><i class="fa fa-trash"></i></b-button>
+                            </section>
+                          </b-col>
+                        </b-row>
+                      </b-container>
                     </div>
                   </b-col>
                 </b-row>
