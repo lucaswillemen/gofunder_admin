@@ -4,7 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 
-Vue.prototype.$apiEndpoint = 'http://25.20.118.56/gofunder/api/'
+Vue.prototype.$apiEndpoint = 'http://api.gofunder.io/'
 
 // BOOTSTRAP
 import BootstrapVue from 'bootstrap-vue'
