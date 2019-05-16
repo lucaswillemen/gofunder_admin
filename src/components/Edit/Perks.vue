@@ -49,7 +49,7 @@
       <div class="md-layout-item md-small-size-100 md-medium-size-50 md-large-size-33 md-size-25">
         <br>
         <md-button :disabled="parentCall && parentCall.loadingState()" class="md-fab md-primary" @click="perkDialog = true">
-          <md-icon>add</md-icon>
+          <md-icon>Adicionar</md-icon>
         </md-button>
       </div>
     </div>
@@ -157,8 +157,8 @@
           </div>
         </md-dialog-content>
         <md-dialog-actions>
-          <md-button class="md-acent md-raised" @click="resetPerk()">Fechar</md-button>
-          <md-button class="md-primary md-raised" :disabled="parentCall && parentCall.loadingState()" @click="uploadNewPerk()">Add</md-button>
+          <md-button class="md-gray md-raised" @click="resetPerk()">Fechar</md-button>
+          <md-button class="md-primary md-raised" :disabled="parentCall && parentCall.loadingState()" @click="uploadNewPerk()">Adicionar</md-button>
         </md-dialog-actions>
       </md-dialog>
     </div>
