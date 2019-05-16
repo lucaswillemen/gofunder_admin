@@ -6,8 +6,6 @@ import router from './router/router.js'
 import './config/request'
 import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.min.css'
-import globalAlert from '@/plugins/GlobalAlert'
-import Alert from '@/components/Alert'
 
 import "@/default.css"
 import "@/style.css"
@@ -20,8 +18,6 @@ Vue.prototype.$url = 'https://api.gofunder.io/'
 
 Vue.config.productionTip = false
 Vue.use(VueMaterial)
-Vue.use(Alert)
-Vue.use(globalAlert)
 Vue.use(require('vue-moment'));
 Vue.use(Vuelidate)
 Vue.use(VueTheMask)

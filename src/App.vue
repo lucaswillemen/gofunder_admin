@@ -11,12 +11,8 @@ import {
   mapGetters,
   mapActions
 } from 'vuex'
-import Alert from '@/components/Alert'
 export default {
   name: 'app',
-  components: {
-    Alert
-  },
   computed: {
     ...mapGetters({
       isUserLogged: 'user/isUserLogged',
