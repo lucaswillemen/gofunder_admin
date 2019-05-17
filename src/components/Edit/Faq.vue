@@ -40,7 +40,7 @@
 				class="md-fab md-primary"
 				@click="createFaq = true"
 			>
-				<md-icon>add</md-icon>
+				<md-icon>Adicionar</md-icon>
 			</md-button>
 		</div>
 
@@ -60,7 +60,7 @@
 					</md-field>
 				</md-dialog-content>
 				<md-dialog-actions>
-					<md-button class="md-acent md-raised" @click="resetFaq()">Fechar</md-button>
+					<md-button class="md-gray" @click="resetFaq()">Fechar</md-button>
 					<md-button
 						:disabled="parentCall && parentCall.loadingState()"
 						class="md-primary md-raised"

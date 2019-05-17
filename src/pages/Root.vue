@@ -24,10 +24,11 @@
 			<md-app-drawer :md-active.sync="menuVisible" md-persistent="mini" class="backgroundSidebar">
 		
 <md-toolbar class="md-transparent" md-elevation="0">
-          <span  style="color:white!important;" ></span>
+          
 
           <div class="md-toolbar-section-end">
-            <md-button class="md-icon-button md-dense" @click="toggleMenu">
+			  <img style="max-width:200px;" src="https://gofunder.io/static/img/logo.8941ded.png"></img>
+            <md-button class="md-icon-button md-dense md-raised" @click="toggleMenu">
               <md-icon  style="color:white!important;" >keyboard_arrow_left</md-icon>
             </md-button>
           </div>
@@ -114,7 +115,7 @@ export default {
 		return {
 			campaigns: [],
 			intervalTimer: false,
-			menuVisible: true
+			menuVisible: false
 		};
 	},
 	methods: {
@@ -204,7 +205,7 @@ export default {
 	}
 }
 .backgroundSidebar {
-	background-color: #0f052b !important;
+	background-color:#080033 !important;
 }
 </style>
 
