@@ -1,6 +1,6 @@
 <template>
 <div class="projects">
-  <b-card  @click="openTab(project.id)" style="cursor:pointer;" v-for="project in projects" :key="1" :title="project.title" :img-src="$apiEndpoint + project.image_overlay" :img-alt="Image" img-top tag="article" class="mb-4">
+  <b-card  @click="openTab(project.id, project.title)" style="cursor:pointer;" v-for="(project, index) in projects" :key="index" :title="project.title" img-src="https://via.placeholder.com/150" :img-alt="Image" img-top tag="article" class="mb-4">
     <div class="bottom-img">
       <span class="center-obj-v">{{project.category_name}}</span>
       <font-awesome-icon :icon="['far', 'heart']"></font-awesome-icon>
@@ -34,8 +34,8 @@
 export default {
   props: ['projects'],
   methods: {
-    openTab(id) {
-      window.location.replace("/#/project-info/" + id)
+    openTab(id, title) {
+      window.location.replace("/#/project-info/" + id+ "/"+title)
       return window.location.reload(true)
     },
     getClassTopLine(type) {

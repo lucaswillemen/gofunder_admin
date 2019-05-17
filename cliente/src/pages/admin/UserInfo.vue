@@ -6,7 +6,7 @@
     <b-row class="mtop mb-30">
       <b-col lg="12">
         <div class="main-title">
-          <span> Sobre <span class="orange">{{user.name}}</span></span>
+          <span> Perfil de <span class="orange">{{user.name}}</span></span>
         </div>
       </b-col>
     </b-row>
@@ -17,17 +17,20 @@
             <b-tab title="Perfil" class="tabs tabprofile" :active="$route.params.tab === 'perfil'">
               <div id="tab1" class="tab-wrap">
                 <b-row>
-                  <b-col lg="3">
+                  <b-col lg="4" xl="3">
                     <div class="img" v-bind:style="{ backgroundImage: 'url(' + (user && user.img ? this.$apiEndpoint+'/uploads/profile/'+user.img : '/static/anonymous-icon.svg')  + ')' }">
                     </div>
                   </b-col>
-                  <b-col lg="9">
+                  <b-col lg="8" xl="9">
                     <b-row>
                       <b-col lg="12">
                         <div class="title">
-                          <div class="main-title">
+                          <div class="main-title mb-3">
                             <span class="adjust_title">Sobre <span class="orange">mim</span></span>
                           </div>
+                        </div>
+                        <div class="info">
+                         <span>{{user.tinydescription}}</span>!
                         </div>
                         <div class="info">
                          <span>{{user.description}}</span>!
@@ -41,7 +44,7 @@
                         <div class="boxes">
                           <div class="box">
                             <div class="top">
-                            <span>{{user.total_campaigns}}</span>
+                            <span>{{user.total_campaigns || 10}}</span>
                             </div>
                             <div class="bottom">
                               <span>Campanha (s)</span>
@@ -50,74 +53,126 @@
 
                           <div class="box">
                             <div class="top">
-                              <span>{{user.usd | currency}}</span>
+                              <span>27</span>
 
                             </div>
                             <div class="bottom">
-                              <span>Saldo em Dólares</span>
+                              <span>Doações recebidas</span>
+                            </div>
+                          </div>
+                          <div class="box">
+                            <div class="top">
+                              <span>12</span>
+
+                            </div>
+                            <div class="bottom">
+                              <span>Doações efetuadas</span>
                             </div>
                           </div>
 
                         </div>
                         <hr>
-                       !
                       </b-col>
                     </b-row>
                     <b-row>
                       <b-col lg="12 bottom">
-                        <div class="main-title">
-                          <span>Informação <span class="orange">Verificada</span></span>
+                        <div class="main-title mb-3">
+                          <span>Informações <span class="orange">Adicionais</span></span>
                         </div>
-                        <div class="list">
-                          <div v-bind:class="user.facebook_confirmed ? 'checked' : 'not_checked'">
-                            <font-awesome-icon v-if="!user.facebook_confirmed" :icon="['fas', 'exclamation-circle']" />
-                            <font-awesome-icon v-if="user.facebook_confirmed" :icon="['far', 'check-circle']" />
-                            <span class="item">
-                              Facebook
-                            </span>
-                          </div>
+                        <div class="info w-100 mb-0 d-flex flex-md-row flex-column">
+                          <section class="email-contact mr-md-3 mb-3 mb-md-0">
+                            <header class="mb-md-0 mb-2">Entre em contato comigo pelo meu email:</header>
+                            <div class="p-md-2 d-flex align-items-center">
+                              <i class="fa fa-at link-icon-email"></i> <span>{{user.email}}</span>
+                            </div>
+                          </section>
+                          <section>
+                            <header class="mb-md-0 mb-2">Ou então, descubra mais sobre mim verificando os links abaixo:</header>
+                            <div class="list p-md-2">        
+                                <i class="fab fa-facebook link-icon" :style="true? 'color: #496cb5': ''"></i>
+                                <i class="fab fa-twitter link-icon" :style="true? 'color: #4ab3f4': ''"></i>
+                                <i class="fab fa-youtube link-icon" :style="true? 'color: #ff0000': ''"></i>
+                                <i class="fa fa-globe link-icon" :style="true? 'color: #1a2953': ''"></i>
+                              <!-- <div v-bind:class="user.facebook_confirmed ? 'checked' : 'not_checked'">
+                                <font-awesome-icon v-if="!user.facebook_confirmed" :icon="['fas', 'exclamation-circle']" />
+                                <font-awesome-icon v-if="user.facebook_confirmed" :icon="['far', 'check-circle']" />
+                                <span class="item">
+                                  Facebook
+                                </span>
+                              </div>
 
-                          <div v-bind:class="user.linkedin_confirmed ? 'checked' : 'not_checked'">
-                            <font-awesome-icon v-if="!user.linkedin_confirmed" :icon="['fas', 'exclamation-circle']" />
-                            <font-awesome-icon v-if="user.linkedin_confirmed" :icon="['far', 'check-circle']" />
-                            <span class="item">
-                              Linkedin
-                            </span>
-                          </div>
+                              <div v-bind:class="user.linkedin_confirmed ? 'checked' : 'not_checked'">
+                                <font-awesome-icon v-if="!user.linkedin_confirmed" :icon="['fas', 'exclamation-circle']" />
+                                <font-awesome-icon v-if="user.linkedin_confirmed" :icon="['far', 'check-circle']" />
+                                <span class="item">
+                                  Linkedin
+                                </span>
+                              </div>
 
 
-                          <div v-bind:class="user.email_confirmed ? 'checked' : 'not_checked'">
-                            <font-awesome-icon v-if="!user.email_confirmed" :icon="['fas', 'exclamation-circle']" />
-                            <font-awesome-icon v-if="user.email_confirmed" :icon="['far', 'check-circle']" />
-                            <span class="item">
-                              E-mail Proprietário
-                            </span>
-                          </div>
+                              <div v-bind:class="user.email_confirmed ? 'checked' : 'not_checked'">
+                                <font-awesome-icon v-if="!user.email_confirmed" :icon="['fas', 'exclamation-circle']" />
+                                <font-awesome-icon v-if="user.email_confirmed" :icon="['far', 'check-circle']" />
+                                <span class="item">
+                                  E-mail Proprietário
+                                </span>
+                              </div> -->
+                               
+                            </div>
+                          </section>
                         </div>
+                        
                       </b-col>
-                    </b-row>!
+                    </b-row>
                   </b-col>
                 </b-row>
               </div>
             </b-tab>
-            <b-tab title="Rascunhos Campanhas" class="tabs tabcontr" :active="$route.params.tab === 'rascunho'">
+            <b-tab title="Campanhas do Usuário" class="tabs tabref" :active="$route.params.tab === 'finalizada'">
               <div id="tab2" class="tab-wrap">
-
-              </div>
-            </b-tab>
-            <b-tab title="Campanhas em Aberto" class="tabs tabcontr" :active="$route.params.tab === 'campanha'">
-              <div id="tab3" class="tab-wrap">
-
-              </div>
-            </b-tab>
-            <b-tab title="Campanhas Finalizada" class="tabs tabref" :active="$route.params.tab === 'finalizada'">
-              <div id="tab4" class="tab-wrap">
-
-              </div>
-            </b-tab>
-            <b-tab title="Extratos Financeiros" class="tabs tabcontr" :active="$route.params.tab === 'extratos'">
-              <div id="tab5" class="tab-wrap">
-
+                
+                <b-card-group deck>
+                   <b-card title="Capacete inflável" img-src="https://picsum.photos/300/250/?image=41" img-alt="Image" class="campaign-card" img-top body-class="body-position" >
+                    <b-card-text class="card-description">
+                    O capacete inflavel que protege você contra quedas, aumentando a taxa de sobrevivência em acidentes em até 60%
+                    </b-card-text>
+                    <div class="campaign-type d-flex align-items-center justify-content-center">
+                      Funding
+                    </div>
+                    <div class="card-progress mt-4">
+                      <progress-bar :max="100" :current="67"></progress-bar>
+                      <div class="d-flex justify-content-between">
+                        <div class="goal">Meta: $ 900.00 </div>
+                        <div class="raise">Arrecadou: $ 400.00 </div>
+                      </div>
+                    </div>
+                    <div slot="footer">
+                      <div class="text-center footer-text">
+                        Lançamento em breve!
+                      </div>
+                    </div>
+                  </b-card>
+                  <b-card title="Capacete inflável" img-src="https://picsum.photos/300/250/?image=41" img-alt="Image" class="campaign-card" img-top body-class="body-position" >
+                    <b-card-text class="card-description">
+                    O capacete inflavel que protege você contra quedas, aumentando a taxa de sobrevivência em acidentes em até 60%
+                    </b-card-text>
+                    <div class="campaign-type d-flex align-items-center justify-content-center">
+                      Funding
+                    </div>
+                    <div class="card-progress mt-4">
+                      <progress-bar :max="100" :current="67"></progress-bar>
+                      <div class="d-flex justify-content-between">
+                        <div class="goal">Meta: $ 900.00 </div>
+                        <div class="raise">Arrecadou: $ 400.00 </div>
+                      </div>
+                    </div>
+                    <div slot="footer">
+                      <div class="text-center footer-text">
+                        Lançamento em breve!
+                      </div>
+                    </div>
+                  </b-card>
+                </b-card-group>
               </div>
             </b-tab>
           </b-tabs>
@@ -147,11 +202,30 @@ export default {
       campanhas: [],
       rascunhos: [],
       finalizadas: [],
-      extratos: []
+      extratos: [],
+      projects:[]
     }
   },
   methods: {
-
+    getRandomItems() {
+      this.projects.push(
+        {
+          id: '1',
+          title: 'projet test',
+          image_overlay: 't',
+          category_name: 'test',
+          tipo: 'Funding',
+          lancamento: '12',
+          description: 'dfssdf',
+          cash_received: 123,
+          cash: 80,
+          percent: '40%'
+        }
+      )
+    }
+  },
+  mounted() {
+    this.getRandomItems()
   }
 }
 </script>
@@ -162,6 +236,48 @@ export default {
 .userInfo {
   .admin-container {
       .tabbed-frame {
+        .tab-wrap {
+          padding: 20px;
+        }
+        .campaign-card {
+          // border-bottom: none;
+          .body-position {
+            position: relative;
+          }
+          .campaign-type {
+            position: absolute;
+            background-color: $orange;
+            color: white;
+            height: 30px;
+            width: 100%;
+            left: 0;
+            top: -30px;
+          }
+          .card-description {
+            color: gray;
+            font-size: 14px;
+
+          }
+          
+          .footer-text {
+            color: $orange;
+            font-weight: 600;
+          }
+          .card-progress {
+            .raise {
+              color: $orange;
+            }
+            .goal {
+              color: $blue;
+            }
+            .raise,.goal {
+                font-size: 12px;
+                font-weight: 600;
+                margin-bottom: 2px;
+              }
+          }
+        }
+        
           // posicao da seta de cada tab
           #tab1:after,
           #tab1:before {
@@ -510,8 +626,17 @@ export default {
 
               }
           }
-
+          .link-icon-email {
+              font-size: 23px;
+              margin-right: .5rem;
+            }
           .list {
+            .link-icon {
+              font-size: 23px;
+              width: 26px;
+              margin-right: 1rem;
+              cursor: pointer ;
+            }
               display: flex;
 
               .not_checked {
@@ -575,10 +700,13 @@ export default {
           .tabprofile {
 
               .boxes {
-                  display: block;
-
+                  display: flex;
+                  justify-content: center;
                   .box {
-                      margin-bottom: 20px;
+                    
+                  }
+                  .box:not(:last-child) {
+                    margin-right: 2.5rem;
                   }
               }
 
@@ -591,10 +719,29 @@ export default {
       }
 
   }
+  @media only screen and (max-width: 475px) {
+    .tabprofile {
+      .boxes {
+          display: block !important;
+          .box {
+            
+            margin-right: 0 !important;
+          }
+          .box:not(:last-child) {
+            margin-bottom: 2rem;
+          }
+      }
 
+      .list {
+          display: block;
+      }
+
+    }
+  }
   .adjust_title {
       margin-left: -10px;
   }
 }
+
 
 </style>

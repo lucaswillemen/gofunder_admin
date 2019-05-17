@@ -99,7 +99,7 @@
                   </b-col>
                 </b-row>
                 <hr>
-                <!--
+                
                 <b-row>
                   <b-col lg="12">
                     <div class="main-title">
@@ -108,35 +108,39 @@
                   </b-col>
                 </b-row>
                 <b-row>
-                  <b-col lg="4">
+                  <b-col lg="12">
                     <b-form>
-                      <div class="sbs mbottom">
-                        <span class="subtitle center-left w-20">Facebook</span>
+                      <div class="sbs mbottom align-items-center">
+                        <i class="fab fa-facebook link-icon" style="color: #496cb5"></i>
+                        <!-- <span class="subtitle center-left w-20">Facebook</span> -->
                         <b-form-input type="text" v-model="form1.facebook" class="w-75"></b-form-input>
                       </div>
-                      <div class="sbs mbottom">
-                        <span class="subtitle center-left w-20">Twitter</span>
+                      <div class="sbs mbottom align-items-center">
+                        <i class="fab fa-twitter link-icon" style="color: #4ab3f4"></i>
+                        <!-- <span class="subtitle center-left w-20">Twitter</span> -->
                         <b-form-input type="text" v-model="form1.twitter" class="w-75"></b-form-input>
                       </div>
                     </b-form>
                   </b-col>
-                  <b-col lg="4">
+                  <b-col lg="12">
                     <b-form>
                       <div id="append-links">
                         <input type="hidden" id="counter-link" value="2">
-                        <div class="sbs mbottom">
-                          <span class="subtitle center-left w-20">Youtube</span>
+                        <div class="sbs mbottom align-items-center">
+                          <!-- <span class="subtitle center-left w-20">Youtube</span> -->
+                          <i class="fab fa-youtube link-icon" style="color: #ff0000"></i>
                           <b-form-input type="text" v-model="form1.youtube" class="w-75"></b-form-input>
                         </div>
-                        <div class="sbs mbottom">
-                          <span class="subtitle center-left w-20">Website</span>
+                        <div class="sbs mbottom align-items-center">
+                          <i class="fa fa-globe link-icon" style="color: #1a2953"></i>
+                          <!-- <span class="subtitle center-left w-20">Website</span> -->
                           <b-form-input type="text" v-model="form1.website" class="w-75"></b-form-input>
                         </div>
                       </div>
                     </b-form>
                   </b-col>
 
-                </b-row>!-->
+                </b-row>
                 <b-row>
                   <b-col lg="12">
                     <div class="center">
@@ -231,7 +235,7 @@
             </b-tab>
 
             <b-tab title="Endereços" class="tabs tabfin">
-              <div id="tab5" class="tab-wrap">
+              <div id="tab3" class="tab-wrap">
                 <b-row>
                   <b-col lg="6">
                     <b-row>
@@ -339,6 +343,45 @@
                 </b-row>
               </div>
             </b-tab>
+            <b-tab title="Recompensas" class="tabs tabfin">
+              <div id="tab4" class="tab-wrap">
+                <b-row>
+                  <b-col lg="6">
+                    <b-row>
+                      <b-col lg="12">
+                        <b-form>
+                          <div class="main-title">
+                            Recompensas
+                          </div>
+                        </b-form>
+                      </b-col>
+                    </b-row>
+
+
+                  </b-col>
+                </b-row>
+              </div>
+            </b-tab>
+            <b-tab title="Minhas doações" class="tabs tabfin">
+              <div id="tab5" class="tab-wrap">
+                <b-row>
+                  <b-col lg="6">
+                    <b-row>
+                      <b-col lg="12">
+                        <b-form>
+                          <div class="main-title">
+                            Minhas Doações
+                          </div>
+                        </b-form>
+                      </b-col>
+                    </b-row>
+
+
+                  </b-col>
+                </b-row>
+              </div>
+            </b-tab>
+
 
           </b-tabs>
         </div>
@@ -581,15 +624,15 @@ export default {
           }
           #tab3:after,
           #tab3:before {
-              left: 250px;
+              left: 265px;
           }
           #tab4:after,
           #tab4:before {
-              left: 350px;
+              left: 390px;
           }
           #tab5:after,
           #tab5:before {
-              left: 465px;
+              left: 525px;
           }
       }
       .tabfin {
@@ -819,6 +862,10 @@ export default {
                       }
                   }
               }
+          }
+          .link-icon {
+            font-size: 23px;
+            width: 26px;
           }
       }
 

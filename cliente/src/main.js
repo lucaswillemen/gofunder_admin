@@ -88,6 +88,7 @@ import {
   faFacebook,
   faFacebookF,
   faTwitter,
+  faYoutube,
   faLinkedin,
   faInstagram,
   faPinterest,
@@ -113,7 +114,7 @@ library.add(
   faCreditCard, faWallet, faCheckCircle, faHeadphones,
   faMountain, faTicketAlt, faWarehouse, faTree,
   faLightbulb, faWrench, faIndustry, faTruck, faLinkedin, faBitcoin,
-  faCamera, faCopy, faExchangeAlt, faUser, faLock, faEnvelope, faExclamationCircle
+  faCamera, faCopy, faExchangeAlt, faUser, faLock, faEnvelope, faExclamationCircle, faYoutube
 );
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
