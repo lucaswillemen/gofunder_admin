@@ -6,25 +6,27 @@
       <div class="container">
         <b-row class="first-row">
           <b-col cols="12" lg="6">
-            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" v-if="campaign.image_galery[0]!==''">
+            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" v-if="campaign.gallery.length > 0">
               <div class="carousel-inner">
-                <div class="carousel-item" :class="{ 'active': i == 0}" v-if="campaign.image_galery" v-for="(slide, i) in campaign.image_galery" :key="slide">
-                  <img class="d-block" :src="$apiEndpoint + slide">
+                <!-- v-if="campaign.gallery" na div abaixo -->
+                <div class="carousel-item" :class="{ 'active': index == 0}"  v-for="(slide, index) in campaign.gallery" :key="index">
+                  <img class="d-block" :src="$apiEndpoint + slide.picture_url">
                 </div>
               </div>
-              <div v-show="campaign.image_galery && campaign.image_galery.length>1" class="thumb-control carousel-indicators">
-                <div class="thumb" :class="{ 'active': i == 0 }" v-if="campaign.image_galery" v-for="(slide, i) in campaign.image_galery" :key="slide" v-bind:data-slide-to="i" data-target="#carouselExampleIndicators">
-                  <img :src="$apiEndpoint + slide" :class="{ 'first': i == 0 }">
+              <div v-show="campaign.gallery && campaign.gallery.length > 1" class="thumb-control carousel-indicators">
+                <!--  v-if="campaign.gallery" na div abaixo -->
+                <div class="thumb" :class="{ 'active': index == 0 }" v-for="(slide, index) in campaign.gallery" :key="index" v-bind:data-slide-to="index" data-target="#carouselExampleIndicators">
+                  <img :src="$apiEndpoint + slide.picture_url" :class="{ 'first': index == 0 }">
                 </div>
               </div>
-              <a v-show="campaign.image_galery && campaign.image_galery.length>1" href="#carouselExampleIndicators" role="button" data-slide="prev" class="ctrl-left">
+              <a v-show="campaign.gallery && campaign.gallery.length > 1" href="#carouselExampleIndicators" role="button" data-slide="prev" class="ctrl-left">
                 <div class="bg-control">
                   <button class="control" data-glide-dir="<">
                     <font-awesome-icon icon="chevron-left" />
                   </button>
                 </div>
               </a>
-              <a v-show="campaign.image_galery && campaign.image_galery.length>1" href="#carouselExampleIndicators" role="button" data-slide="next" class="ctrl-right">
+              <a v-show="campaign.gallery && campaign.gallery.length > 1" href="#carouselExampleIndicators" role="button" data-slide="next" class="ctrl-right">
                 <div class="bg-control">
                   <button class="control" data-glide-dir=">">
                     <font-awesome-icon icon="chevron-right" />
@@ -32,12 +34,14 @@
                 </div>
               </a>
             </div>
+            <div v-else class="text-center" style="font-weight: 600; font-size: 1.5rem;">
+              Esta campanha não possui imagens cadastradas na sua galeria de imagens!
+            </div>
 
           </b-col>
           <b-col cols="12" lg="6">
             <b-breadcrumb :items="breadcrumbItems" />
             <div class="seta"></div>
-            </b-breadcrumb>
             <div class="info">
               <div class="title_top">
                 <span>{{campaign.title}}</span>
@@ -48,26 +52,26 @@
               <div class="owner">
                 <span class="title">Proprietário do Projeto</span>
                 <div class="img">
-                  <img style="border-radius: 100px;height:75px;width:75px;margin-top:5px" :src="(campaign && campaign.user_img ? $apiEndpoint+'/uploads/profile/'+campaign.user_img : '/static/anonymous-icon.svg')  ">
+                  <img style="border-radius: 100px;height:75px;width:75px;margin-top:5px" :src="(campaign && campaign.owner_image ? $apiEndpoint+'/uploads/profile/'+campaign.owner_image : '/static/anonymous-icon.svg')  ">
                 </div>
                 <div class="info">
                   <span class="name">{{campaign.owner_name}}</span>
-                  <span class="location" v-if="campaign.country&&campaign.city">{{campaign.country}}, {{campaign.city}}</span>
+                  <span class="location" v-if="campaign.owner_country&&campaign.owner_city">{{campaign.owner_country}}, {{campaign.owner_city}}</span>
                   <span class="qt">{{campaign.owner_campaigns}} campanha criada(s)</span>
                 </div>
               </div>
               <div class="bar">
-                <span class="total_cash">Total Arrecadado {{campaign.cash_received  | currency}}  ({{campaign.donaters}} doadores)</span>
-                <progress-bar :current="campaign.percent_current"></progress-bar>
-                <span class="meta">Meta de arrecadação <span class="valor">{{campaign.cash  | currency}} </span></span>
-                <span class="due-date">Termina em {{campaign.due_dat_time}} dias</span>
+                <span class="total_cash">Total Arrecadado {{campaign.amount_received  | currency}}  ({{campaign.donators}} doadores)</span>
+                <progress-bar :current="currentPercentage"></progress-bar>
+                <span class="meta">Meta de arrecadação <span class="valor">{{campaign.amount  | currency}} </span></span>
+                <span class="due-date">Termina em {{campaign.remain_days}} dias</span>
               </div>
               <div class="bottom">
                 <div class="btn-noborder-blue button">
                   <b-button :href="'/#/payment-contribution/'+campaign.id">Apoiar</b-button>
                 </div>
                 <div class="social">
-                  <ul class="social-list">
+                  <!-- <ul class="social-list">
                     <li class="active">
                       <font-awesome-icon :icon="['far', 'heart']" />
                     </li>
@@ -82,64 +86,68 @@
                     <li>
                       <font-awesome-icon :icon="['fas', 'code']" />
                     </li>
-                  </ul>
+                  </ul> -->
                 </div>
               </div>
             </div>
           </b-col>
         </b-row>
         <hr>
-        </hr>
         <b-row class="second-row">
           <b-col cols="12" lg="8">
-            <b-row>
+            <!-- <b-row>
               <div class="visao-geral">
                 <div class="title">
                   <span>VISÃO GERAL</span>
                 </div>
                 <b-row>
                   <b-col lg="4" cols="12">
-                    <img v-if="campaign.image_overlay" class="img-gadjet" :src="$apiEndpoint + campaign.image_overlay">
+                    <img v-if="campaign.cover_url" class="img-gadjet" :src="$apiEndpoint + campaign.cover_url">
                   </b-col>
                   <b-col lg="8" cols="12">
-                    {{campaign.campaign_overview}}
+                    {{campaign.description}}
                   </b-col>
                 </b-row>
               </div>
-            </b-row>
+            </b-row> -->
             <b-col cols="12" lg="12">
               <div class="tabs">
                 <b-tabs>
                   <b-tab title="Projeto" active>
-                    <div class="projeto">
+                    <div class="projeto" v-if="campaign.content.length > 0 && campaign.content[0].html">
                       <!--<div class="title">
                         <span>{{campaign.title}}</span>
                       </div>
                       <div class="subtitle">
                         <span>{{campaign.description}}</span>
                       </div>!-->
-                      <div v-html="campaign.campaign_history">
+                      <div v-html="campaign.content[0].html">
+                      </div>
+                      <div>
+                        <i class="fab fa-facebook link-icon" :style="campaign.content[0].facebook_page? 'color: #496cb5': 'color: #707070; cursor: auto;'"></i>
+                        <i class="fab fa-instagram link-icon" :style="campaign.content[0].instagram_page? 'color: #d6249f': 'color: #707070; cursor: auto;'"></i>
+                        <i class="fab fa-youtube link-icon" :style="campaign.content[0].youtube_page? 'color: #ff0000': 'color: #707070; cursor: auto;'"></i>
                       </div>
                     </div>
                   </b-tab>
                   <b-tab title="FAQ">
-                    <div class="faqNews">
-                      <span> Perguntas <span class="blue">Frequentes</span></span>
-                    </div>
-                    <div class="mt-3 mb-5" v-if="campaign.campaign_faq && campaign.campaign_faq.length > 0" v-for="faq in (campaign.campaign_faq)">
-                      <b>P: </b>{{faq.question}} <br>
-                      <b>R: </b>{{faq.answer}} <br>
-                    </div>
-                  </b-tab>
-                  <b-tab title="Atualizações">
-                    Nenhuma atualização até o momento
-                  </b-tab>
-                  <b-tab title="Apoiadores">
-                    Nenhum doador até agora
+                    <section v-if="campaign.faq.length > 0">
+                      <div class="faqNews">
+                        <span> Perguntas <span class="blue">Frequentes</span></span>
+                      </div>
+                      <!-- v-if="campaign.campaign_faq && campaign.campaign_faq.length > 0" na div abaixo -->
+                      <div class="mt-3 mb-5"  v-for="(faq, index) in campaign.faq" :key="index">
+                        <b>P: </b>{{faq.question}} <br>
+                        <b>R: </b>{{faq.answer}} <br>
+                      </div>
+                    </section>
+                    <section v-else class="text-center" style="font-weight: 600; font-size: 1.5rem;">
+                      Nenhuma pergunta frequente cadastrada para esta campanha
+                    </section>
                   </b-tab>
                 </b-tabs>
               </div>
-              <div class="mt-5 tags" v-show="campaign.tags_split && campaign.tags_split.length > 1 &&  campaign.tags_split[0].length">
+              <!-- <div class="mt-5 tags" v-show="campaign.tags_split && campaign.tags_split.length > 1 &&  campaign.tags_split[0].length">
                 <div class="title">
                   <span> Tags <span class="blue">Relacionadas</span></span>
                 </div>
@@ -148,33 +156,40 @@
                     <b-button>{{tag}}</b-button>
                   </div>
                 </div>
-              </div>
+              </div> -->
             </b-col>
           </b-col>
-          <b-col cols="12" lg="4" v-if="campaign.perks.length>0">
+          <b-col cols="12" lg="4" v-if="campaign.perk.length > 0">
             <div class="recompensa">
               <div class="title">
                 <span>ESCOLHA A RECOMPENSA</span>
               </div>
               <!-- {{campaign.perks}} !-->
               <div class="recompensas">
-                <b-card v-for="rec in (campaign.perks)" v-bind:key="rec.id" :img-src="$apiEndpoint  + rec.perk_image" img-alt="Card image" style="cursor:pointer;" @click="openDonation(rec.id)"  img-top>
+                <b-card v-for="(rec, index) in campaign.perk" v-bind:key="index" :img-src="$apiEndpoint  + rec.cover_url" img-alt="Card image" style="cursor:pointer;" @click="openDonation(rec.id)"  img-top>
                   <div class="info">
-                    <!--<span class="category">DESTAQUE</span>!-->
-                    <span class="value">Doação Mínima {{rec.perk_min_donation | currency}}</span>
-                    <span class="title">{{rec.perk_title}}</span>
-                    <span v-if="rec.perk_description" class="text" v-html="rec.perk_description">
-                      {{rec.perk_description}}
+                    <span class="value" :class="{'has-discount': rec.discount > 0 && rec.discount}">Preço: <span class="price">{{rec.price | currency}}</span></span>
+                    <span v-if="rec.discount > 0 && rec.discount" class="value discount">Preço: <span class="price">{{(rec.price - rec.discount) | currency}}</span></span>
+                    <div class="title mt-2">{{rec.name}}</div>
+                    <span v-if="rec.description" class="text" v-html="rec.description">
+                      {{rec.description}}
                     </span>
-                    <div v-if="rec.perk_item_info && rec.perk_item_info.length" class="itens">
+                    <!-- <div v-if="rec.perk_item_info && rec.perk_item_info.length" class="itens">
                       <span class="title">Itens Incluídos</span>
                       <ul>
                         <li v-for="item in (rec.perk_item_info)" :key="item.title">{{item.title}}</li>
                       </ul>
-                    </div>
-                    <div class="delivery">
-                      <span class="title">Entrega</span>
-                      <span class="due-date">Estimado em {{rec.perk_delivery_date}}</span>
+                    </div> -->
+                    <div class="delivery" >
+                      <div v-if="rec.shipping_price > 0">
+                        <span class="title" v-if="rec.shipping_worldwide == 'world_wide' ">Entrega em todo o mundo</span>
+                        <span class="title" v-if="rec.shipping_worldwide == 'only_country' ">Entrega apenas em {{campaign.country_info.country_name}}</span>
+                        <div class="due-date">Frete: {{rec.shipping_price | currency}}</div>                        
+                        <span class="due-date">Estimado em {{rec.shipping_date}}</span>
+                      </div>
+                      <div v-else>
+                        <span class="no-shipping">Não possui entrega!</span>
+                      </div>
                       <!--<div class="mt-4">
                         <table style="width:100%; font-size:12px!important;">
                           <th>Pais</th>
@@ -187,26 +202,29 @@
                       </div>!-->
                     </div>
                     <div class="totals">
-                      <span>{{rec.users_payed}} de {{rec.perk_stock}} revindicados</span>
+                      {{rec.stock}} de {{rec.stock}}<span> revindicados</span>
                     </div>
                   </div>
                 </b-card>
               </div>
             </div>
           </b-col>
+          <b-col v-else class="text-center" style="font-weight: 600; font-size: 1.5rem;">
+            Esta campanha não possui nenhuma recompensa cadastrada!
+          </b-col>
         </b-row>
-        <b-row>
+        <!-- <b-row>
           <b-col cols="12" lg="">
             <div class="more">
               <div class="title">
                 <span> Você pode <span class="blue">gostar!</span></span>
-              </div>
-              <div class="project-group">
+              </div> -->
+              <!-- <div class="project-group">
                 <project-card :projects="projects"></project-card>
-              </div>
-            </div>
+              </div> -->
+            <!-- </div>
           </b-col>
-        </b-row>
+        </b-row> -->
       </div>
     </div>
   </div>
@@ -226,42 +244,46 @@ import {
 
 export default {
   computed: {
-    ...mapState(['user'])
+    ...mapState(['user']),
+    currentPercentage() {
+      let percentage = ((100 / this.campaign.amount) * this.campaign.amount)
+      return  percentage > 100 ? 100 : percentage
+
+    }
   },
   methods: {
     openDonation(perkId) {
-      window.open('/#/payment-contribution/'+this.campaign.id+'/'+perkId)
+      // window.open('/#/payment-contribution/'+this.campaign.id+'/'+perkId)
     },
-    getItem() {
-
-      global.$post("/Campaign/get_public", {
-          id: this.$route.params.id
-        }, this.user.token)
+    loadCampaign() {
+      global.$post("/Campaign/campaigninfo", {campaign_id: this.$route.params.id}, this.user.token || null)
         .then(response => {
-          this.campaign = response.data.MSG
-          try {
-            this.campaign.campaign_faq = JSON.parse(this.campaign.campaign_faq);
-          } catch (exp) {
-            this.campaign.campaign_faq = []
-          }
-          for (var i in this.campaign.perks) {
-            try {
-              this.campaign.perks[i].perk_shipping_info = JSON.parse(this.campaign.perks[i].perk_shipping_info);
-            } catch (exp) {
-              this.campaign.perks[i].perk_shipping_info = []
-            }
-            try {
-              this.campaign.perks[i].perk_item_info = JSON.parse(this.campaign.perks[i].perk_item_info);
-            } catch (exp) {
-              this.campaign.perks[i].perk_item_info = []
-            }
-          }
+          console.log(response.data)
+          this.campaign = response.data
+          // this.campaign = response.data.MSG
+          // try {
+          //   this.campaign.campaign_faq = JSON.parse(this.campaign.campaign_faq);
+          // } catch (exp) {
+          //   this.campaign.campaign_faq = []
+          // }
+          // for (var i in this.campaign.perks) {
+          //   try {
+          //     this.campaign.perks[i].perk_shipping_info = JSON.parse(this.campaign.perks[i].perk_shipping_info);
+          //   } catch (exp) {
+          //     this.campaign.perks[i].perk_shipping_info = []
+          //   }
+          //   try {
+          //     this.campaign.perks[i].perk_item_info = JSON.parse(this.campaign.perks[i].perk_item_info);
+          //   } catch (exp) {
+          //     this.campaign.perks[i].perk_item_info = []
+          //   }
+          // }
           this.breadcrumbItems = [{
-              text: this.campaign.campaign_type,
-              href: '#'
+              text: 'Funding',
+              href: this.campaign.category_info.route
             },
             {
-              text: this.campaign.campaign_category,
+              text: this.campaign.category_info.name,
               active: true
             }
           ]
@@ -270,26 +292,26 @@ export default {
           this.$awn.alert("Campanha invalida!")
         })
     },
-    getRandomItems() {
-      this.$awn.asyncBlock(global.$post("/Campaign/random_list", {}))
-        .then(response => {
-          for (var i in response.data.MSG) {
-            let percent = ((100 / response.data.MSG[i].cash) * response.data.MSG[i].cash_received)
-            response.data.MSG[i].percent = percent > 100 ? 100 : percent
-            this.projects.push(response.data.MSG[i])
-          }
-        })
-        .catch(err => {
-        })
-    }
+    // getRandomItems() {
+    //   this.$awn.asyncBlock(global.$post("/Campaign/random_list", {}))
+    //     .then(response => {
+    //       for (var i in response.data.MSG) {
+    //         let percent = ((100 / response.data.MSG[i].cash) * response.data.MSG[i].cash_received)
+    //         response.data.MSG[i].percent = percent > 100 ? 100 : percent
+    //         this.projects.push(response.data.MSG[i])
+    //       }
+    //     })
+    //     .catch(err => {
+    //     })
+    // }
   },
   mounted() {
-    this.getRandomItems()
-    this.getItem()
+    // this.getRandomItems()
+    this.loadCampaign()
   },
   data() {
     return {
-      campaign: [],
+      campaign: {},
       breadcrumbItems: [],
       socials: [{
           name: 'facebook-f',

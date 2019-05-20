@@ -169,10 +169,11 @@
 				font-size: 35px;
 				font-weight: 500;
 				line-height: 22px;
-				color: #707070;
+				color: $blue;
 			}
 
 			.text {
+				padding: .25rem;
 				float: left;
 				margin-bottom: 10px;
 				font-size: 20px;
@@ -365,7 +366,12 @@
 
 		.projeto {
 			text-align: center;
-
+			.link-icon {
+				font-size: 23px;
+				width: 26px;
+				margin-right: 1rem;
+				cursor: pointer ;
+			}
 			.title {
 				font-size: 22px;
 				font-weight: 600;
@@ -451,15 +457,24 @@
 			.info {
 				margin-top: 0;
 
-				.category,
 				.value {
 					font-size: 12px;
 					font-weight: 600;
+					color: $blue;
+
 					display: block;
 					margin-top: 0px!important;
 					padding-top: 0px!important;
 					margin-bottom: 0px!important;
 					padding-bottom: 0px!important;
+				}
+				.discount {
+					color: rgb(12, 145, 12);
+				}
+				.has-discount {
+					font-size: 10px;
+					color: rgb(177, 8, 8);
+					text-decoration: line-through;
 				}
 
 				.title {
@@ -485,6 +500,13 @@
 						margin-bottom: 0;
 					}
 
+					.no-shipping {
+						color: $orange;
+						font-size: 1rem;
+						font-weight: 600;
+						margin-bottom: 0;	
+					}
+
 					ul {
 						list-style: none;
 						padding-left: 1px;
@@ -504,6 +526,11 @@
 					margin-top: 20px;
 					font-size: 12px;
 					font-weight: 600;
+					color: $blue;
+					span {
+						color: #838383;
+						font-weight: normal;
+					}
 				}
 			}
 		}

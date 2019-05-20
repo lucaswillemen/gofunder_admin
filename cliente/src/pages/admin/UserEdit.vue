@@ -349,11 +349,26 @@
                   <b-col lg="6">
                     <b-row>
                       <b-col lg="12">
-                        <b-form>
                           <div class="main-title">
                             Recompensas
                           </div>
-                        </b-form>
+                          <section class="campaign-perk">
+                            <p>Capacete inflável</p>
+                            <b-card no-body class="overflow-hidden" style="max-width: 540px;">
+                              <b-row no-gutters>
+                                <b-col md="6">
+                                  <b-card-img src="https://picsum.photos/400/400/?image=20" class="rounded-0"></b-card-img>
+                                </b-col>
+                                <b-col md="6">
+                                  <b-card-body title="Receba seu produto antes!">
+                                    <b-card-text>
+                                      Receba seu produto antes graças a esse maravilhoso perk!
+                                    </b-card-text>
+                                  </b-card-body>
+                                </b-col>
+                              </b-row>
+                            </b-card>
+                          </section>
                       </b-col>
                     </b-row>
 
@@ -411,6 +426,7 @@ export default {
     if (this.user.token === null) {
       this.$router.push('/login')
     }
+    this.loadVuexInfo()
     this.getAddresses()
     // for (var i in this.user) {
     //   this.form1[i] = this.user[i]
@@ -430,7 +446,11 @@ export default {
         name: null,
         tinydescription: null,
         profile_picture: null,
-        description: null
+        description: null,
+        facebook: null,
+        twitter: null,
+        youtube: null,
+        website: null
       },
       addressesList: [],
       formEmail: {
@@ -490,6 +510,9 @@ export default {
   },
   methods: {
     ...mapActions('user', ['userSet']),
+    loadVuexInfo() {
+      this.form1 = {...this.user}
+    },
 
     changeImage(e) {
       this.imageProfileImg = e.target.files[0]
