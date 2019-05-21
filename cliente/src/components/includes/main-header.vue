@@ -5,8 +5,7 @@
 				<b-navbar-nav class="left-content big2">
 					<b-nav-item href="#">{{ email }}</b-nav-item>
 					<b-nav-item class="no-cursor">|</b-nav-item>
-					<b-nav-item href="#">{{phone}} </b-nav-item>
-			
+					<b-nav-item href="#">{{phone}} </b-nav-item>			
 				</b-navbar-nav>
 				<b-navbar-nav class="ml-auto right-itens">
 					<b-nav-item-dropdown right v-if="user.token !== null" class="big">
@@ -106,29 +105,25 @@ export default {
 			window.open("/#/projects/" + this.searchText);
 		},
 		logout: function() {
+			this.$router.push({ name: 'Home'}) 
 			this.userLogout()
-			this.$awn.success($f("MAIN_HEADER::Deslogado com sucesso!"))
+			this.$awn.success($f("MAIN_HEADER::Deslogado com sucesso!"))			
 			clearInterval(this.interval)
-			this.$router.push('/')
 		},
 		isPrivateUrl() {	
 			let currentLink = window.location.href
-			return	currentLink.search(window.location.host+"/#/user/") !== -1 
+			return	currentLink.search(window.location.host+"/user/") !== -1 
 			|| currentLink.search(window.location.host+"/#/user/") !== -1
 		},
 		userLocalToken() {
 			try {
-        let json = JSON.parse(window.localStorage.getItem("vuex"))
+        		let json = JSON.parse(window.localStorage.getItem("vuex"))
 				return json.user.token
 			} catch (e) {
 				return false
 			}			
 		},
 		check: function() {
-			if (!this.userLocalToken() && this.isPrivateUrl()) {
-				this.userLogout()
-				return this.$router.push('/')
-			}
 			global
 				.$get("/Auth/check", {}, this.userLocalToken())
 				.then(response => {
@@ -140,6 +135,22 @@ export default {
 						this.$router.push('/')
 					}
 				})
+		},
+		sincronize: function() {
+			this.counter++
+			if(!this.userLocalToken() && this.user.token)  {
+				return this.userLogout()
+			}
+			if(this.userLocalToken() && (!this.user.token || this.user.token.length < 8))  {
+				return this.check()
+			}
+			if (!this.userLocalToken() && this.isPrivateUrl()) {
+				this.userLogout()
+				return this.$router.push('/')
+			}	
+			if(this.counter % 30) {
+				return this.check()
+			}
 		}
 	},
 	data() {
@@ -147,12 +158,13 @@ export default {
 			searchText: "",
 			email: "contato@gofunder.io",
 			phone: "0800 3215 654",
-			logo: require("Img/logo.png")
+			logo: require("Img/logo.png"),
+			counter: 0
 		};
 	},
 	mounted() {
 		this.check()
-		this.interval = setInterval(this.check, 15000)
+		this.interval = setInterval(this.sincronize, 500)
 	}
 };
 </script>
