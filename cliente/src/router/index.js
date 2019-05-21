@@ -71,7 +71,7 @@ export default new Router({
       component: Projects
     },
     {
-      path: '/project-info/:id',
+      path: '/project-info/:id/:title',
       name: 'Financial',
       component: Financial
     },

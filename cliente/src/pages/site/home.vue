@@ -14,10 +14,10 @@
           </div>
           <div class="buttons">
             <div class="btn-noborder mright">
-              <router-link :href="'/#/project-info/'+slideData.id+ '/'+ slideData.title"><b-button>Quero Contribuir!</b-button></router-link>
+              <router-link :to="'/project-info/'+slideData.id+ '/'+ slideData.title"><b-button>Quero Contribuir!</b-button></router-link>
             </div>
             <div class="btn-noborder-blue mleft">
-              <router-link :href="'/#/project-info/'+slideData.id+ '/'+ slideData.title"><b-button>Saiba mais</b-button></router-link>
+              <router-link :to="'/project-info/'+slideData.id+ '/'+ slideData.title"><b-button>Saiba mais</b-button></router-link>
             </div>
           </div>
         </div>
@@ -39,7 +39,7 @@
     </div>
     <div class="percent">
       <svg viewBox="0 0 36 100" class="circular-chart">
-        <path class="circle" v-bind:stroke-dasharray="percent + ' 100'" d="M18 2.0845
+        <path class="circle" v-bind:stroke-dasharray="100 + ' 100'" d="M18 2.0845
 				      a 15.9155 15.9155 0 0 1 0 31.831
 				      a 15.9155 15.9155 0 0 1 0 -31.831" />
       </svg>
@@ -414,10 +414,10 @@ export default {
         return true
       }
     },
-    getValueDynamicVar(variable, i) {
-      var name = variable + i;
-      return this[name];
-    },
+    // getValueDynamicVar(variable, i) {
+    //   var name = variable + i;
+    //   return this[name];
+    // },
     loadSlides() {
       this.slidesData = []
 
