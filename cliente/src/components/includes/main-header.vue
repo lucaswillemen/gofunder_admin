@@ -145,7 +145,7 @@ export default {
 	data() {
 		return {
 			searchText: "",
-			email: "hello@gofunder.io",
+			email: "contato@gofunder.io",
 			phone: "0800 3215 654",
 			logo: require("Img/logo.png")
 		};
