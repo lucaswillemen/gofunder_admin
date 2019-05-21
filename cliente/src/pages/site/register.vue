@@ -85,7 +85,7 @@ export default {
     register: function() {
       global.$post("/Auth/register", this.form)
         .then(response => {
-          this.$awn.success("REGISTERED")
+          this.$awn.success($f("REGISTER::Você foi registrado com sucesso por favor confira seu e-mail para confirmar sua conta!"))
           this.$router.push('login')
         })
         .catch(err => {
