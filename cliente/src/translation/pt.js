@@ -1,5 +1,5 @@
 export default {
-	// HOME
+	// pages/site/home.vue
 	"HOME::casa_e_jardim": "Casa e Jardim",
 	"HOME::roupas_e_acessorios": "Roupas e Acessórios",
 	"HOME::eletronicos_e_software": "Eletrônicos e Software",
@@ -25,8 +25,9 @@ export default {
 	"HOME::veja_mais_dessa_categoria":"Veja mais dessa categoria",
 	"HOME::aqui_voce_encontra_o_que_e_de...": "Aqui você encontra o que é de mais inovador no mercado. São produtos e serviços desenvolvidos por pequenas estartups exclusivas.",
 	"HOME::compre_pequenas_cotas_de_startups...": "Compre pequenas cotas de startups com grande pontencial e consiga lucros expressivos no mercado que mais cresce em todo o mundo",
-	//LOGIN
-
+	
+	
+	// pages/site/login.vue
 	"LOGIN::Digite seus dados abaixo para entrar.": "Digite seus dados abaixo para entrar.",
 	"LOGIN::Digite seu e-mail": "Digite seu e-mail",
 	"LOGIN::Digite sua senha":"Digite sua senha",
@@ -35,6 +36,18 @@ export default {
 	"LOGIN::Login":"Login",
 	"LOGIN::Entrar com Facebook":"Entrar com Facebook",
 	"LOGIN::Cadastre-se": "Cadastre-se",
-	"LOGIN::Novo no Portal?":"Novo no Portal?"
+	"LOGIN::Novo no Portal?":"Novo no Portal?",
+
+	// components/includes/main-header.vue
+	"MAIN_HEADER::Deslogado com sucesso!" : "Deslogado com sucesso!",
+	"MAIN_HEADER::Começar uma campanha": "Começar uma campanha",
+	"MAIN_HEADER::Registrar-se" :  "Registrar-se",
+	"MAIN_HEADER::Fazer Login": "Fazer Login",
+	"MAIN_HEADER::Buscar alguma coisa ...":"Buscar alguma coisa ...",
+	"MAIN_HEADER::Olá":"Olá",
+	"MAIN_HEADER::Campanhas":"Campanhas",
+	"MAIN_HEADER::Editar Perfil":"Editar Perfil",
+	"MAIN_HEADER::Meu Perfil":"Meu Perfil",
+	"MAIN_HEADER::Deslogar" : "Deslogar"
 
 }

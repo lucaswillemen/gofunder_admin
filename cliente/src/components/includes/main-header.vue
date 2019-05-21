@@ -13,18 +13,18 @@
 						<template slot="button-content">
 							<img	class="img"	v-bind:src='user && user.img ? this.$apiEndpoint+"/uploads/profile/"+user.img : "/static/anonymous-icon.svg"'>
 							<label class="orange">
-								<b>Olá</b>
+								<b>{{"MAIN_HEADER::Olá"|fix}}</b>
 							</label>
 							<label>{{user.name}}</label>
 						</template>
 						<div class="seta"></div>
-						<b-dropdown-item href="/#/user/info/perfil">Meu Perfil</b-dropdown-item>
+						<b-dropdown-item href="/#/user/info/perfil">{{"MAIN_HEADER::Meu Perfil"|fix}}</b-dropdown-item>
 						<hr>
-						<b-dropdown-item href="/#/user/edit">Editar Perfil</b-dropdown-item>
+						<b-dropdown-item href="/#/user/edit">{{"MAIN_HEADER::Editar Perfil"|fix}}</b-dropdown-item>
 						<hr>
-						<b-dropdown-item href="/#/user/info/rascunho" target="_blank">Campanhas</b-dropdown-item>
+						<b-dropdown-item href="/#/user/info/rascunho" target="_blank">{{"MAIN_HEADER::Campanhas"|fix}}</b-dropdown-item>
 						<hr>
-						<b-dropdown-item @click="logout()">Log Out</b-dropdown-item>
+						<b-dropdown-item @click="logout()">{{"MAIN_HEADER::Deslogar"|fix}}</b-dropdown-item>
 					</b-nav-item-dropdown>
 				</b-navbar-nav>
 			</b-container>
@@ -41,7 +41,7 @@
 						<b-form-input
 							v-model="searchText"
 							style="height:30px;border-radius:2px;font-size:11.4px;width:200px;"
-							placeholder="Buscar alguma coisa ..."
+							:placeholder="$f('MAIN_HEADER::Buscar alguma coisa ...')"
 							type="text"
 							@keydown.native="searchEnter($event)"
 						></b-form-input>
@@ -56,12 +56,12 @@
 				<b-col lg="4" class="center" v-if="user.token === null">
 					<div class="btn-border margins">
 						<a href="/#/register">
-							<b-button>Registrar-se</b-button>
+							<b-button>{{"MAIN_HEADER::Registrar-se"|fix}}</b-button>
 						</a>
 					</div>
 					<div class="btn-noborder margins">
 						<a href="/#/login">
-							<b-button>Fazer Login</b-button>
+							<b-button>{{"MAIN_HEADER::Fazer Login"|fix}}</b-button>
 						</a>
 					</div>
 				</b-col>
@@ -73,7 +73,7 @@
 					</div>
 					<div class="btn-noborder margins">
 						<a href="/#/user/campaign/create">
-							<b-button>Começar uma campanha</b-button>
+							<b-button>{{"MAIN_HEADER::Começar uma campanha"|fix}}</b-button>
 						</a>
 					</div>
 				</b-col>
@@ -107,7 +107,7 @@ export default {
 		},
 		logout: function() {
 			this.userLogout()
-			this.$awn.success("Deslogado com sucesso!")
+			this.$awn.success($f("MAIN_HEADER::Deslogado com sucesso!"))
 			clearInterval(this.interval)
 			this.$router.push('/')
 		},
