@@ -14,12 +14,12 @@
                         <div class="buttons">
                             <div class="btn-noborder mright">
                                 <router-link :to="'/project-info/'+slideData.id+ '/'+ slideData.uri">
-                                    <b-button>{{"quero_contribuir" | fix }}</b-button>
+                                    <b-button>{{"HOME::quero_contribuir" | fix }}</b-button>
                                 </router-link>
                             </div>
                             <div class="btn-noborder-blue mleft">
                                 <router-link :to="'/project-info/'+slideData.id+ '/'+ slideData.uri">
-                                    <b-button>{{"saiba_mais" | fix}}</b-button>
+                                    <b-button>{{"HOME::saiba_mais" | fix}}</b-button>
                                 </router-link>
                             </div>
                         </div>
@@ -33,12 +33,12 @@
         </div>
         <div class="slide-bottom">
             <div class="center-right left">
-                <span>{{"total_arrecadado" | fix}} {{selectSlide.cash_received  | currency}}</span>
+                <span>{{"HOME::total_arrecadado" | fix}} {{selectSlide.cash_received  | currency}}</span>
             </div>
             <div class="center-obj circle"></div>
             <div class="center-obj number">{{selectSlide.percentage}}%</div>
             <div class="center-left right">
-                <span>{{"meta" | fix}} {{selectSlide.cash | currency}}</span>
+                <span>{{"HOME::meta" | fix}} {{selectSlide.cash | currency}}</span>
             </div>
             <div class="percent">
                 <svg viewBox="0 0 36 100" class="circular-chart">
@@ -58,14 +58,14 @@
                                 Funding
                             </div>
                             <div class="text">
-                                {{"compre_pequenas_cotas_de_startups..."|fix}}
+                                {{"HOME::compre_pequenas_cotas_de_startups..."|fix}}
                             </div>
                             <div class="buttons">
                                 <div class="btn-noborder-transp mright">
-                                    <b-button @click="goFunding()">{{"ver_campanhas" | fix}}</b-button>
+                                    <b-button @click="goFunding()">{{"HOME::ver_campanhas" | fix}}</b-button>
                                 </div>
                                 <div class="btn-noborder mleft">
-                                    <b-button>{{"saiba_mais_2" | fix}}</b-button>
+                                    <b-button>{{"HOME::saiba_mais_2" | fix}}</b-button>
                                 </div>
                             </div>
                         </div>
@@ -79,14 +79,14 @@
                                 Marketplace
                             </div>
                             <div class="text">
-                                {{"aqui_voce_encontra_o_que_e_de..." | fix}}
+                                {{"HOME::aqui_voce_encontra_o_que_e_de..." | fix}}
                             </div>
                             <div class="buttons">
                                 <div class="btn-noborder-transp mright">
-                                    <b-button @click="goProducts()">{{"ver_produtos" | fix}}</b-button>
+                                    <b-button @click="goProducts()">{{"HOME::ver_produtos" | fix}}</b-button>
                                 </div>
                                 <div class="btn-noborder-blue mleft">
-                                    <b-button>{{"saiba_mais3"|fix}}</b-button>
+                                    <b-button>{{"HOME::saiba_mais3"|fix}}</b-button>
                                 </div>
                             </div>
                         </div>
@@ -185,25 +185,25 @@
                 <b-row class="area-4">
                     <b-col lg="3" sm="12">
                         <div class="title">
-                            <span>{{"que_categorias_te_interessam"|fix}}</span>
+                            <span>{{"HOME::que_categorias_te_interessam"|fix}}</span>
                         </div>
                     </b-col>
                     <b-col lg="3" sm="12">
                         <div class="content">
-                            <span>{{"nossa_comunidade_e_muito_ativa..."|fix}}</span>
+                            <span>{{"HOME::nossa_comunidade_e_muito_ativa..."|fix}}</span>
                         </div>
                     </b-col>
                     <b-col lg="3" sm="12">
                         <div class="btn-noborder-blue bt1">
                             <a href="/#/register">
-                                <b-button>{{"cadastrese_e_selecione_suas_pref..."|fix}}</b-button>
+                                <b-button>{{"HOME::cadastrese_e_selecione_suas_pref..."|fix}}</b-button>
                             </a>
                         </div>
                     </b-col>
                     <b-col lg="3" sm="12">
                         <div class="btn-noborder-transp bt2">
                             <a href="/#/login">
-                                <b-button>{{"ja_sou_cadastrado"|fix}}</b-button>
+                                <b-button>{{"HOME::ja_sou_cadastrado"|fix}}</b-button>
                             </a>
                         </div>
                     </b-col>
@@ -216,7 +216,7 @@
                                 <div class="img">
                                     <i class="material-icons"  @click="selectCategory(cat.id)">{{cat.icon_name}}</i>
                                 </div>
-                                <span>{{cat.name | fix}}</span>
+                                <span>{{('HOME::'+cat.name) | fix}}</span>
                             </div>
                             <div :id="'seta-cat'+cat.id" v-bind:class="selectedId == cat.id ? 'show' : 'hide'" class="seta"></div>
                         </div>
@@ -234,7 +234,7 @@
                     <div id='d-cat9' v-bind:class="selectedId == 9 ? 'show' : 'hide'"></div>
                     <b-row class='title'>
                         <b-col lg="12">
-                            <span>{{"destaques_nessa_categoria"|fix}}</span>
+                            <span>{{"HOME::destaques_nessa_categoria"|fix}}</span>
                         </b-col>
                     </b-row>
                     <b-row>
@@ -254,7 +254,7 @@
                     <b-row class='button'>
                         <b-col lg="12">
                             <div class="btn-noborder">
-                                <b-button @click="goCategory(selectedId)">{{"veja_mais_dessa_categoria"|fix}}</b-button>
+                                <b-button @click="goCategory(selectedId)">{{"HOME::veja_mais_dessa_categoria"|fix}}</b-button>
                             </div>
                         </b-col>
                     </b-row>
@@ -280,6 +280,7 @@ import {
 
 
 export default {
+    name:'Home',
     computed: {
         ...mapState(['user'])
     },
@@ -345,7 +346,6 @@ export default {
         },
         loadSlides() {
             this.slidesData = []
-
             this.$awn.asyncBlock(global.$post("/Campaign/cover_campaigns", {}))
                 .then(response => {
                     this.slidesData = response.data

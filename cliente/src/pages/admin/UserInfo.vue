@@ -14,7 +14,7 @@
       <b-col lg="12">
         <div class="tabbed-frame">
           <b-tabs>
-            <b-tab title="Perfil" class="tabs tabprofile" :active="$route.params.tab === 'perfil'">
+            <b-tab title="Perfil" class="tabs tabprofile">
               <div id="tab1" class="tab-wrap">
                 <b-row>
                   <b-col lg="4" xl="3">
@@ -128,13 +128,12 @@
                 </b-row>
               </div>
             </b-tab>
-            <b-tab title="Campanhas do Usuário" class="tabs tabref" :active="$route.params.tab === 'finalizada'">
+            <b-tab title="Campanhas do Usuário" class="tabs tabref">
               <div id="tab2" class="tab-wrap">
-                
                 <b-card-group deck>
-                   <b-card title="Capacete inflável" img-src="https://picsum.photos/300/250/?image=41" img-alt="Image" class="campaign-card" img-top body-class="body-position" >
+                   <b-card v-for="(campanha, index) in campanhas" :key="index" :title="campanha.title" :img-src="campanha.cover_url ? $apiEndpoint+campanha.cover_url : 'https://via.placeholder.com/150' " img-alt="Image" class="campaign-card" img-top body-class="body-position" >
                     <b-card-text class="card-description">
-                    O capacete inflavel que protege você contra quedas, aumentando a taxa de sobrevivência em acidentes em até 60%
+                    {{campanha.description}}
                     </b-card-text>
                     <div class="campaign-type d-flex align-items-center justify-content-center">
                       Funding
@@ -142,33 +141,13 @@
                     <div class="card-progress mt-4">
                       <progress-bar :max="100" :current="67"></progress-bar>
                       <div class="d-flex justify-content-between">
-                        <div class="goal">Meta: $ 900.00 </div>
-                        <div class="raise">Arrecadou: $ 400.00 </div>
+                        <div class="goal">Meta: $ {{campanha.amount | currency}} </div>
+                        <div class="raise">Arrecadou: $ {{campanha.amount_received | currency}} </div>
                       </div>
                     </div>
                     <div slot="footer">
                       <div class="text-center footer-text">
-                        Lançamento em breve!
-                      </div>
-                    </div>
-                  </b-card>
-                  <b-card title="Capacete inflável" img-src="https://picsum.photos/300/250/?image=41" img-alt="Image" class="campaign-card" img-top body-class="body-position" >
-                    <b-card-text class="card-description">
-                    O capacete inflavel que protege você contra quedas, aumentando a taxa de sobrevivência em acidentes em até 60%
-                    </b-card-text>
-                    <div class="campaign-type d-flex align-items-center justify-content-center">
-                      Funding
-                    </div>
-                    <div class="card-progress mt-4">
-                      <progress-bar :max="100" :current="67"></progress-bar>
-                      <div class="d-flex justify-content-between">
-                        <div class="goal">Meta: $ 900.00 </div>
-                        <div class="raise">Arrecadou: $ 400.00 </div>
-                      </div>
-                    </div>
-                    <div slot="footer">
-                      <div class="text-center footer-text">
-                        Lançamento em breve!
+                        {{campaignStatus(campanha.status)}}
                       </div>
                     </div>
                   </b-card>
@@ -192,7 +171,8 @@ import {
 
 export default {
   computed: {
-    ...mapState(['user'])
+    ...mapState(['user']),
+    
   },
   mounted() {
     let self = this
@@ -207,25 +187,31 @@ export default {
     }
   },
   methods: {
-    getRandomItems() {
-      this.projects.push(
-        {
-          id: '1',
-          title: 'projet test',
-          image_overlay: 't',
-          category_name: 'test',
-          tipo: 'Funding',
-          lancamento: '12',
-          description: 'dfssdf',
-          cash_received: 123,
-          cash: 80,
-          percent: '40%'
-        }
-      )
+    getUserCampaign() {
+      global.$get("/Campaign/getlistcampaignid?user_id="+this.$route.params.id, {})
+      .then(response => {
+        this.campanhas = response.data
+        console.log(response)
+        // this.$awn.success("E-mail cadastrado com sucesso!")  
+           
+      })
+      .catch(err => {
+        console.log(err)
+
+        // this.$awn.alert("Ocorreu um erro!")         
+      })
+    },
+    campaignStatus(status) {
+      if(status == 'approved')
+        return 'Campanha Lançada!'
+      if(status == 'draft') 
+        return 'Rascunho de Camapanha'
+      if(status.includes('pending'))
+        return 'Lançamento em breve!'
     }
   },
   mounted() {
-    this.getRandomItems()
+    this.getUserCampaign()
   }
 }
 </script>
