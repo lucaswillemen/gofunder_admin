@@ -130,8 +130,8 @@
             </b-tab>
             <b-tab title="Campanhas do Usuário" class="tabs tabref">
               <div id="tab2" class="tab-wrap">
-                <b-card-group deck>
-                   <b-card v-for="(campanha, index) in campanhas" :key="index" :title="campanha.title" :img-src="campanha.cover_url ? $apiEndpoint+campanha.cover_url : 'https://via.placeholder.com/150' " img-alt="Image" class="campaign-card" img-top body-class="body-position" >
+                <section class="d-flex flex-wrap justify-content-start campaign-margin">
+                   <b-card style="width: 350px;" v-for="(campanha, index) in campanhas" :key="index" :title="campanha.title" :img-src="campanha.cover_url ? $apiEndpoint+campanha.cover_url : 'https://via.placeholder.com/150' " img-alt="Image" class="campaign-card mb-3" img-top body-class="body-position" >
                     <b-card-text class="card-description">
                     {{campanha.description}}
                     </b-card-text>
@@ -139,19 +139,24 @@
                       Funding
                     </div>
                     <div class="card-progress mt-4">
-                      <progress-bar :max="100" :current="67"></progress-bar>
+                      <progress-bar :max="100" :current="campaignPercentage(campanha.amount_received, campanha.amount)"></progress-bar>
                       <div class="d-flex justify-content-between">
-                        <div class="goal">Meta: $ {{campanha.amount | currency}} </div>
-                        <div class="raise">Arrecadou: $ {{campanha.amount_received | currency}} </div>
+                        <div class="raise" >Arrecadou: {{campanha.amount_received | currency}} </div>
+                        <div class="goal">Meta: {{campanha.amount | currency}} </div>
                       </div>
                     </div>
+                    <div class="other-info">
+                      <div class="type" v-b-tooltip.hover title="Ao atingir 100% do valor das doações a campanha se encerra">{{campanha.flexible}}</div>
+                      <div></div>
+                      <div></div>
+                    </div>
                     <div slot="footer">
-                      <div class="text-center footer-text">
+                      <div class="text-center footer-text" :class="{'approved-campaign': campanha.status== 'approved'}">
                         {{campaignStatus(campanha.status)}}
                       </div>
                     </div>
                   </b-card>
-                </b-card-group>
+                </section>
               </div>
             </b-tab>
           </b-tabs>
@@ -201,12 +206,16 @@ export default {
         // this.$awn.alert("Ocorreu um erro!")         
       })
     },
+    campaignPercentage(received, goal) {
+      let percentage = parseInt((received/goal) * 100)
+      return percentage < 100 ? percentage : 100
+    },
     campaignStatus(status) {
       if(status == 'approved')
         return 'Campanha Lançada!'
       if(status == 'draft') 
-        return 'Rascunho de Camapanha'
-      if(status.includes('pending'))
+        return 'Rascunho de Campanha'
+      if(status == 'pending_level')
         return 'Lançamento em breve!'
     }
   },
@@ -225,8 +234,12 @@ export default {
         .tab-wrap {
           padding: 20px;
         }
+      
         .campaign-card {
           // border-bottom: none;
+          &:not(:nth-child(3n)) {
+            margin-right: 9px;
+          }
           .body-position {
             position: relative;
           }
@@ -249,6 +262,9 @@ export default {
             color: $orange;
             font-weight: 600;
           }
+          .approved-campaign {
+            color: $blue;
+          }
           .card-progress {
             .raise {
               color: $orange;
@@ -262,16 +278,29 @@ export default {
                 margin-bottom: 2px;
               }
           }
+          .other-info {
+            color: $blue;
+            .type {
+              display: inline-block;
+              border-bottom: 1px dotted #1a2953;
+              text-transform: uppercase;
+              font-weight: 600;
+               &:hover {
+                  cursor: pointer;
+                }
+            }
+           
+          }
         }
         
           // posicao da seta de cada tab
           #tab1:after,
           #tab1:before {
-              left: 20px;
+              left: 30px;
           }
           #tab2:after,
           #tab2:before {
-              left: 105px;
+              left: 155px;
           }
           #tab3:after,
           #tab3:before {

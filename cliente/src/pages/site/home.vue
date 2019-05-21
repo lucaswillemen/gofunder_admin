@@ -211,7 +211,7 @@
                 <!-- ainda não traduzido acima !-->
                 <b-row class="area-5">
                     <b-col lg='12' id='container-circle' v-if="categories.length > 0">
-                        <div  v-for="cat in categories" :id='"cat"+cat.id' :class="selectedId == cat.id ? 'circle circle' + cat.id + ' act': 'circle circle' + cat.id" @click="selectCategory(cat.id)">
+                        <div v-for="(cat, index) in categories" :key="index" :class="selectedId == cat.id ? 'circle circle' + cat.id + ' act': 'circle circle' + cat.id" @click="selectCategory(cat.id)">
                             <div class="title center-obj">
                                 <div class="img">
                                     <i class="material-icons"  @click="selectCategory(cat.id)">{{cat.icon_name}}</i>

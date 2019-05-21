@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<b-progress :max="max">
-			<b-progress-bar :value="current">
+			<b-progress-bar :value="current" :variant="current >= 100 ? 'success': ''">
 				{{ current }}%
 			</b-progress-bar>
 		</b-progress>

@@ -51,7 +51,7 @@ export default new Router({
       component: UserEdit
     },
     {
-      path: '/user/:id/info/',
+      path: '/user/:id/info',
       name: 'UserInfo',
       component: UserInfo
     },
