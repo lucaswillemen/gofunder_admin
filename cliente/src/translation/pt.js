@@ -26,7 +26,19 @@ export default {
 	"HOME::aqui_voce_encontra_o_que_e_de...": "Aqui você encontra o que é de mais inovador no mercado. São produtos e serviços desenvolvidos por pequenas estartups exclusivas.",
 	"HOME::compre_pequenas_cotas_de_startups...": "Compre pequenas cotas de startups com grande pontencial e consiga lucros expressivos no mercado que mais cresce em todo o mundo",
 	
-	
+	// pages/site/register.vue
+	"REGISTER::Cadastrar com Facebook": "Cadastrar com Facebook",
+	"REGISTER::Já tem uma conta?":"Já tem uma conta?",
+	"REGISTER::Logue-se":"Logue-se",
+	"REGISTER::Cadastrar-se":"Cadastrar-se",
+	"REGISTER::Politica de Privacidade":"Politica de Privacidade",
+	"REGISTER::Termos de Uso":"Termos de Uso",
+	"REGISTER::Concordo com os":"Concordo com os",
+	"REGISTER::Digite sua senha": "Digite sua senha",
+	"REGISTER::Digite seu e-mail":"Digite seu e-mail",
+	"REGISTER::Digite seu nome completo":"Digite seu nome completo",
+	"REGISTER::Digite seus dados abaixo para ingressar na plataforma.":"Digite seus dados abaixo para ingressar na plataforma.",
+
 	// pages/site/login.vue
 	"LOGIN::Digite seus dados abaixo para entrar.": "Digite seus dados abaixo para entrar.",
 	"LOGIN::Digite seu e-mail": "Digite seu e-mail",
