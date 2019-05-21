@@ -14,12 +14,12 @@
                         <div class="buttons">
                             <div class="btn-noborder mright">
                                 <router-link :to="'/project-info/'+slideData.id+ '/'+ slideData.uri">
-                                    <b-button>Quero Contribuir!</b-button>
+                                    <b-button>{{"quero_contribuir" | fix }}</b-button>
                                 </router-link>
                             </div>
                             <div class="btn-noborder-blue mleft">
                                 <router-link :to="'/project-info/'+slideData.id+ '/'+ slideData.uri">
-                                    <b-button>Saiba mais</b-button>
+                                    <b-button>{{"saiba_mais" | fix}}</b-button>
                                 </router-link>
                             </div>
                         </div>
@@ -33,12 +33,12 @@
         </div>
         <div class="slide-bottom">
             <div class="center-right left">
-                <span>Total Arrecadado {{selectSlide.cash_received  | currency}}</span>
+                <span>{{"total_arrecadado" | fix}} {{selectSlide.cash_received  | currency}}</span>
             </div>
             <div class="center-obj circle"></div>
             <div class="center-obj number">{{selectSlide.percentage}}%</div>
             <div class="center-left right">
-                <span>Meta {{selectSlide.cash | currency}}</span>
+                <span>{{"meta" | fix}} {{selectSlide.cash | currency}}</span>
             </div>
             <div class="percent">
                 <svg viewBox="0 0 36 100" class="circular-chart">
@@ -58,14 +58,14 @@
                                 Funding
                             </div>
                             <div class="text">
-                                Compre pequenas cotas de startups com grande pontencial e consiga lucros expressivos no mercado que mais cresce em todo o mundo
+                                {{"compre_pequenas_cotas_de_startups..."|fix}}
                             </div>
                             <div class="buttons">
                                 <div class="btn-noborder-transp mright">
-                                    <b-button @click="goFunding()">Ver Campanhas</b-button>
+                                    <b-button @click="goFunding()">{{"ver_campanhas" | fix}}</b-button>
                                 </div>
                                 <div class="btn-noborder mleft">
-                                    <b-button>Saiba mais</b-button>
+                                    <b-button>{{"saiba_mais_2" | fix}}</b-button>
                                 </div>
                             </div>
                         </div>
@@ -79,14 +79,14 @@
                                 Marketplace
                             </div>
                             <div class="text">
-                                Aqui você encontra o que é de mais inovador no mercado. São produtos e serviços desenvolvidos por pequenas estartups exclusivas.
+                                {{"aqui_voce_encontra_o_que_e_de..." | fix}}
                             </div>
                             <div class="buttons">
                                 <div class="btn-noborder-transp mright">
-                                    <b-button @click="goProducts()">Ver Produtos</b-button>
+                                    <b-button @click="goProducts()">{{"ver_produtos" | fix}}</b-button>
                                 </div>
                                 <div class="btn-noborder-blue mleft">
-                                    <b-button>Saiba mais</b-button>
+                                    <b-button>{{"saiba_mais3"|fix}}</b-button>
                                 </div>
                             </div>
                         </div>
@@ -117,6 +117,7 @@
         <div class="area-3">
             <div class="bg" v-bind:style="{ backgroundImage: 'url(' + area3bg + ')' }"></div>
             <b-container>
+                <!--- daqui abaixo não traduzido pois vamos mudar os textos !-->
                 <b-row class="linha1">
                     <b-col lg="6" sm="12">
                         <div class="col1" v-bind:style="{ backgroundImage: 'url(' + area3img1 + ')' }">
@@ -184,29 +185,30 @@
                 <b-row class="area-4">
                     <b-col lg="3" sm="12">
                         <div class="title">
-                            <span>Que categorias <b>te interessam?</b></span>
+                            <span>{{"que_categorias_te_interessam"|fix}}</span>
                         </div>
                     </b-col>
                     <b-col lg="3" sm="12">
                         <div class="content">
-                            <span>Nossa comunidade é muito ativa em prol de inovações. Aqui você encontra produtos inovadores nas mais diversas categorias.</span>
+                            <span>{{"nossa_comunidade_e_muito_ativa..."|fix}}</span>
                         </div>
                     </b-col>
                     <b-col lg="3" sm="12">
                         <div class="btn-noborder-blue bt1">
                             <a href="/#/register">
-                                <b-button>Cadastre-se e selecione suas preferências</b-button>
+                                <b-button>{{"cadastrese_e_selecione_suas_pref..."|fix}}</b-button>
                             </a>
                         </div>
                     </b-col>
                     <b-col lg="3" sm="12">
                         <div class="btn-noborder-transp bt2">
                             <a href="/#/login">
-                                <b-button>Já sou cadastrado</b-button>
+                                <b-button>{{"ja_sou_cadastrado"|fix}}</b-button>
                             </a>
                         </div>
                     </b-col>
                 </b-row>
+                <!-- ainda não traduzido acima !-->
                 <b-row class="area-5">
                     <b-col lg='12' id='container-circle' v-if="categories.length > 0">
                         <div  v-for="cat in categories" :id='"cat"+cat.id' :class="selectedId == cat.id ? 'circle circle' + cat.id + ' act': 'circle circle' + cat.id" @click="selectCategory(cat.id)">
@@ -232,7 +234,7 @@
                     <div id='d-cat9' v-bind:class="selectedId == 9 ? 'show' : 'hide'"></div>
                     <b-row class='title'>
                         <b-col lg="12">
-                            <span>Destaques nessa categoria</span>
+                            <span>{{"destaques_nessa_categoria"|fix}}</span>
                         </b-col>
                     </b-row>
                     <b-row>
@@ -252,7 +254,7 @@
                     <b-row class='button'>
                         <b-col lg="12">
                             <div class="btn-noborder">
-                                <b-button @click="goCategory(selectedId)">Veja mais dessa categoria</b-button>
+                                <b-button @click="goCategory(selectedId)">{{"veja_mais_dessa_categoria"|fix}}</b-button>
                             </div>
                         </b-col>
                     </b-row>
@@ -364,7 +366,7 @@ export default {
                     this.categories = response.data
                 })
                 .catch(err => {
-                  
+
                 })
         }
     },
