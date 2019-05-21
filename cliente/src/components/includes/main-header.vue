@@ -1,13 +1,13 @@
 <template>
 <div>
   <b-navbar toggleable="false" type="dark" class="primary-nav topbar">
-    <b-container>
+    <b-container class="container-nav">
       <b-navbar-nav class="left-content big2">
         <b-nav-item href="#">{{ email }}</b-nav-item>
         <b-nav-item class="no-cursor"> | </b-nav-item>
         <b-nav-item href="#">{{ phone }}</b-nav-item>
       </b-navbar-nav>
-      <b-navbar-nav class="ml-auto">
+      <b-navbar-nav class="ml-auto right-itens">
         <b-nav-item-dropdown right v-if="user.token !== null" class="big">
           <template slot="button-content">
             <img class="img" v-bind:src='user && user.img ? this.$apiEndpoint+"/uploads/profile/"+user.img : "/static/anonymous-icon.svg"'/>
@@ -134,10 +134,19 @@ export default {
     background-color: $blue;
     height: 35px;
     font-size: 10px;
+    padding: 0;
+    .container-nav {
+      height: inherit;
+    }
+    .navbar-nav {
+      flex-direction: row !important;
+      height: inherit;
+
+    }
 }
 .primary-nav .left-content {
-    display: -webkit-box;
-    -webkit-box-orient: horizontal;
+    // display: -webkit-box;
+    // -webkit-box-orient: horizontal;
 }
 .primary-nav .nav-link {
     color: $bg-color!important;
@@ -201,6 +210,13 @@ hr {
 }
 .big {
     font-size: 15px!important;
+    height: inherit;
+    a {
+      height: inherit;
+      // padding: 0.07rem 0;
+      display: flex;
+      align-items: center;
+    }
 }
 .big2 {
     font-size: 13px!important;
@@ -211,14 +227,15 @@ hr {
         background-size: cover;
         height: 25px;
         width: 25px;
-        margin-top: 3px;
+        // margin-top: 3px;
         border-radius: 50px;
         float: left;
     }
 
     label {
-        margin-top: 5px;
-        margin-left: 5px;
+      margin-bottom: 0;
+      // margin-top: 5px;
+      margin-left: 5px;
     }
 }
 
