@@ -15,8 +15,16 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 // ADICIONAR O VUESELECT
 Vue.component('v-select', VueSelect.VueSelect);
 
+// PARTE DA TRADUÇÃO
 import PT from './translation/pt.js'
 
+Vue.prototype.$f = function(value) {
+  if( !PT[value] ) {
+    console.log('TRANSLATION ERROR: ', value)
+    return value
+  }
+  return PT[value] 
+}
 Vue.filter('fix', (value) => {
   if( !PT[value] ) {
     console.log('TRANSLATION ERROR: ', value)

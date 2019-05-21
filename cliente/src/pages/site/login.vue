@@ -9,7 +9,7 @@
             <font-awesome-icon :icon="['fas', 'user']" />
           </div>
           <div class="title mtop mbottom">
-            <span>Digite seus dados abaixo para entrar.</span>
+            <span>{{"LOGIN::Digite seus dados abaixo para entrar."|fix}}</span>
           </div>
           <form v-on:submit.prevent="login()">
             <div class="input-group mb-3">
@@ -18,7 +18,7 @@
                   <font-awesome-icon :icon="['fas', 'user']" />
                 </span>
               </div>
-              <b-form-input v-model="form.email" type="email" placeholder="Digite seu e-mail"></b-form-input>
+              <b-form-input v-model="form.email" type="email" :placeholder="$f('LOGIN::Digite seu e-mail')"></b-form-input>
             </div>
 
             <div class="input-group mb-3">
@@ -27,28 +27,28 @@
                   <font-awesome-icon :icon="['fas', 'lock']" />
                 </span>
               </div>
-              <b-form-input type="password" v-model="form.password" placeholder="Digite sua senha"></b-form-input>
+              <b-form-input type="password" v-model="form.password" :placeholder="$f('LOGIN::Digite sua senha')"></b-form-input>
             </div>
             <div class="options">
               <div class="checkboxes">
                 <b-form-checkbox v-model="form.selected" name="remember">
-                  <span>Lembre-me</span>
+                  <span>{{"LOGIN::Lembre-me"|fix}}</span>
                 </b-form-checkbox>
               </div>
               <div class="subtitle">
-                <span><a href="/#/remember">Esqueceu sua senha?</a></span>
+                <span><a href="/#/remember">{{"LOGIN::Esqueceu sua senha?"|fix}}</a></span>
               </div>
             </div>
             <div class="btn-noborder-blue">
-              <b-button type="submit" :disabled="!form.email || !form.password">Login</b-button>
+              <b-button type="submit" :disabled="!form.email || !form.password">{{"LOGIN::Login"|fix}}</b-button>
             </div>
           </form>
           <div class="title mtop mbottom">
-            <span>Novo no Portal? <a href="/#/register" class="orange"><b>Cadastre-se</b></a></span>
+            <span>{{"LOGIN::Novo no Portal?"|fix}} <a href="/#/register" class="orange"><b>{{"LOGIN::Cadastre-se"|fix}}</b></a></span>
           </div>
           <div class="btn-border-blue">
             <b-button>
-              <font-awesome-icon :icon="['fab', 'facebook']" /> Entrar com Facebook </b-button>
+              <font-awesome-icon :icon="['fab', 'facebook']" />{{"LOGIN::Entrar com Facebook"|fix}}</b-button>
           </div>
         </div>
       </b-col>

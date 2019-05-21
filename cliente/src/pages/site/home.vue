@@ -310,12 +310,10 @@ export default {
             area3img2: require('Img/area-3-img-2.png'),
             area3img3: require('Img/area-3-img-3.png'),
             area3img4: require('Img/area-3-img-4.png'),
-
             catImg1: require('Img/catimg1.png'),
             catImg2: require('Img/catimg2.png'),
             catImg3: require('Img/catimg3.png'),
             catImg4: require('Img/catimg4.png')
-
         }
     },
     methods: {

@@ -413,31 +413,16 @@ import {
   mapActions
 } from 'vuex'
 
-import AddCreditCard from '@/components/includes/card/AddCreditCard'
-
 export default {
   computed: {
     ...mapState(['user'])
   },
-  components: {
-    AddCreditCard
-  },
   mounted() {
-    if (this.user.token === null) {
-      this.$router.push('/login')
-    }
     this.loadVuexInfo()
     this.getAddresses()
-    // for (var i in this.user) {
-    //   this.form1[i] = this.user[i]
-    // }
     if (this.user && this.user.subscription_option && this.user.subscription_option.length > 0) {
       this.selectedEmails = this.user.subscription_option.split(",")
     }
-    this.listAllCards()
-    this.$root.$on('listAllCardsUpdate', () => {
-      this.listAllCards()
-    })
   },
   data() {
     return {
@@ -591,7 +576,6 @@ export default {
     getAddresses: function() {
       global.$get("/Profile/address", {}, this.user.token)
         .then(response => {
-          console.log('ad', response)
           this.addressesList = response.data
         })
         .catch(err => {
@@ -606,16 +590,11 @@ export default {
           this.formPass.newpassword1 = null
           this.formPass.password = null
           this.formPass.newpassword2 = null
-
         })
         .catch(err => {
 
         })
     },
-    listAllCards: function() {
-
-    },
-
     select: function(id, parent) {
       var elem = $("#" + id);
       $(elem).addClass("active");

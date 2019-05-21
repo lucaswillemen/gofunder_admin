@@ -24,6 +24,17 @@ export default {
 	"HOME::ver_produtos": "Ver Produtos",
 	"HOME::veja_mais_dessa_categoria":"Veja mais dessa categoria",
 	"HOME::aqui_voce_encontra_o_que_e_de...": "Aqui você encontra o que é de mais inovador no mercado. São produtos e serviços desenvolvidos por pequenas estartups exclusivas.",
-	"HOME::compre_pequenas_cotas_de_startups...": "Compre pequenas cotas de startups com grande pontencial e consiga lucros expressivos no mercado que mais cresce em todo o mundo"
-	
+	"HOME::compre_pequenas_cotas_de_startups...": "Compre pequenas cotas de startups com grande pontencial e consiga lucros expressivos no mercado que mais cresce em todo o mundo",
+	//LOGIN
+
+	"LOGIN::Digite seus dados abaixo para entrar.": "Digite seus dados abaixo para entrar.",
+	"LOGIN::Digite seu e-mail": "Digite seu e-mail",
+	"LOGIN::Digite sua senha":"Digite sua senha",
+	"LOGIN::Lembre-me":"Lembre-me",
+	"LOGIN::Esqueceu sua senha?":"Esqueceu sua senha?",
+	"LOGIN::Login":"Login",
+	"LOGIN::Entrar com Facebook":"Entrar com Facebook",
+	"LOGIN::Cadastre-se": "Cadastre-se",
+	"LOGIN::Novo no Portal?":"Novo no Portal?"
+
 }
