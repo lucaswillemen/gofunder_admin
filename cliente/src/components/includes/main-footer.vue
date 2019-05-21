@@ -60,7 +60,7 @@
 							required
 							placeholder="E-mail">
 						</b-form-input>
-						<b-button type="submit" variant="primary">ENVIAR</b-button>
+						<b-button :disabled="!form.email || !form.name" type="submit" variant="primary">ENVIAR</b-button>
 					</b-form>
 				</b-col>
 			</b-row>
@@ -114,7 +114,9 @@
 			global.$post("/Newsletter/add", this.form)
         .then(response => {
 					console.log(response)
-          this.$awn.success("E-mail cadastrado com sucesso!")         
+					this.$awn.success("E-mail cadastrado com sucesso!")  
+					this.form.name = null
+					this.form.email = null       
         })
         .catch(err => {
           this.$awn.alert("Ocorreu um erro!")         
