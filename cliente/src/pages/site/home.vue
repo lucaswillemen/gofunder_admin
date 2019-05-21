@@ -14,10 +14,10 @@
           </div>
           <div class="buttons">
             <div class="btn-noborder mright">
-              <router-link :to="'/project-info/'+slideData.id+ '/'+ slideData.uri"><b-button>Quero Contribuir!</b-button></router-link>
+              <router-link :to="'/project-info/'+slideData.id+ '/'+ slideData.uri "><b-button>Quero Contribuir!</b-button></router-link>
             </div>
             <div class="btn-noborder-blue mleft">
-              <router-link :to="'/project-info/'+slideData.id+ '/'+ slideData.uri"><b-button>Saiba mais</b-button></router-link>
+              <router-link :to="'/project-info/'+slideData.id+ '/'+ slideData.uri "><b-button>Saiba mais</b-button></router-link>
             </div>
           </div>
         </div>
