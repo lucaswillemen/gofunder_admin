@@ -15,8 +15,15 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 // ADICIONAR O VUESELECT
 Vue.component('v-select', VueSelect.VueSelect);
 
+import PT from './translation/pt.js'
 
-
+Vue.filter('fix', (value) => {
+  if( !PT[value] ) {
+    console.log('TRANSLATION ERROR: ', value)
+    return value
+  }
+  return PT[value] 
+})
 
 //NOTIFICAÇÕES
 import VueAWN from "vue-awesome-notifications"
