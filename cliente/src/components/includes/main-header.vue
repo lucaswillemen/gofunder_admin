@@ -148,7 +148,8 @@ export default {
 				this.userLogout()
 				return this.$router.push('/')
 			}	
-			if(this.counter % 30) {
+			// a cada 10 segundos
+			if(this.counter % 10 == 0) {
 				return this.check()
 			}
 		}
@@ -164,7 +165,7 @@ export default {
 	},
 	mounted() {
 		this.check()
-		this.interval = setInterval(this.sincronize, 500)
+		this.interval = setInterval(this.sincronize, 1000)
 	}
 };
 </script>
