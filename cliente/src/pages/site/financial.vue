@@ -168,8 +168,8 @@
               <div class="recompensas">
                 <b-card v-for="(rec, index) in campaign.perk" v-bind:key="index" :img-src="$apiEndpoint  + rec.cover_url" img-alt="Card image" style="cursor:pointer;" @click="openDonation(rec.id)"  img-top>
                   <div class="info">
-                    <span class="value" :class="{'has-discount': rec.discount > 0 && rec.discount}">Preço: <span class="price">{{rec.price | currency}}</span></span>
-                    <span v-if="rec.discount > 0 && rec.discount" class="value discount">Preço: <span class="price">{{(rec.price - rec.discount) | currency}}</span></span>
+                    <span class="value" :class="{'has-discount': rec.discount > 0 && rec.discount}">Doação Mínima <span class="price">{{rec.price | currency}}</span></span>
+                    <span v-if="rec.discount > 0 && rec.discount" class="value discount">Doação Mínima <span class="price">{{(rec.price - rec.discount) | currency}}</span></span>
                     <div class="title mt-2">{{rec.name}}</div>
                     <span v-if="rec.description" class="text" v-html="rec.description">
                       {{rec.description}}

@@ -111,7 +111,14 @@
 	methods: {
 		onSubmit (evt) {
 			evt.preventDefault();
-			alert(JSON.stringify(this.form));
+			global.$post("/Newsletter/add", this.form)
+        .then(response => {
+					console.log(response)
+          this.$awn.success("E-mail cadastrado com sucesso!")         
+        })
+        .catch(err => {
+          this.$awn.alert("Ocorreu um erro!")         
+        })
 		},
 		onReset (evt) {
 			evt.preventDefault();
