@@ -132,24 +132,27 @@
               <div id="tab2" class="tab-wrap">
                 <section class="d-flex flex-wrap justify-content-start campaign-margin">
                    <b-card style="width: 350px;" v-for="(campanha, index) in campanhas" :key="index" :title="campanha.title" :img-src="campanha.cover_url ? $apiEndpoint+campanha.cover_url : 'https://via.placeholder.com/150' " img-alt="Image" class="campaign-card mb-3" img-top body-class="body-position" >
-                    <b-card-text class="card-description">
+                    <div class="card-description">
                     {{campanha.description}}
-                    </b-card-text>
+                    </div>
                     <div class="campaign-type d-flex align-items-center justify-content-center">
                       Funding
                     </div>
-                    <div class="card-progress mt-4">
+                    <div class="other-info mt-4 mb-2 d-flex justify-content-between">
+                      <div class="type" v-if="campanha.flexible == 'static'" v-b-tooltip.hover title="Ao atingir 100% do valor das doações a campanha se encerra">{{campanha.flexible}} Goal</div>
+                      <div class="type" v-else v-b-tooltip.hover title="Ao atingir 100% do valor das doações a campanha ainda pode receber mais doações">{{campanha.flexible}} Goal</div>
+                      
+                      <div class="days-left">{{campanha.finishAt}}</div>
+                      <div></div>
+                    </div>
+                    <div class="card-progress ">
                       <progress-bar :max="100" :current="campaignPercentage(campanha.amount_received, campanha.amount)"></progress-bar>
                       <div class="d-flex justify-content-between">
                         <div class="raise" >Arrecadou: {{campanha.amount_received | currency}} </div>
                         <div class="goal">Meta: {{campanha.amount | currency}} </div>
                       </div>
                     </div>
-                    <div class="other-info">
-                      <div class="type" v-b-tooltip.hover title="Ao atingir 100% do valor das doações a campanha se encerra">{{campanha.flexible}}</div>
-                      <div></div>
-                      <div></div>
-                    </div>
+                    
                     <div slot="footer">
                       <div class="text-center footer-text" :class="{'approved-campaign': campanha.status== 'approved'}">
                         {{campaignStatus(campanha.status)}}
@@ -282,12 +285,16 @@ export default {
             color: $blue;
             .type {
               display: inline-block;
-              border-bottom: 1px dotted #1a2953;
-              text-transform: uppercase;
+              border-bottom: 1px dashed #1a2953;
+              text-transform: capitalize;
               font-weight: 600;
                &:hover {
                   cursor: pointer;
                 }
+            }
+         
+            .days-left {
+
             }
            
           }
