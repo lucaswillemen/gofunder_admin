@@ -60,7 +60,7 @@
 							required
 							placeholder="E-mail">
 						</b-form-input>
-						<b-button :disabled="!form.email || !form.name" type="submit" variant="primary">ENVIAR</b-button>
+						<b-button :disabled="!form.email || !form.name" type="submit">ENVIAR</b-button>
 					</b-form>
 				</b-col>
 			</b-row>

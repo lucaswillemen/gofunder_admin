@@ -380,18 +380,27 @@
             <b-tab title="Minhas doações" class="tabs tabfin">
               <div id="tab5" class="tab-wrap">
                 <b-row>
-                  <b-col lg="6">
-                    <b-row>
-                      <b-col lg="12">
-                        <b-form>
-                          <div class="main-title">
-                            Minhas Doações
-                          </div>
-                        </b-form>
-                      </b-col>
-                    </b-row>
-
-
+                  <b-col lg="12">
+                    <div class="main-title">
+                      Minhas Doações
+                    </div>
+                  </b-col>
+                  <b-col>
+                    <donation-table></donation-table>
+                  </b-col>
+                </b-row>
+              </div>
+            </b-tab>
+            <b-tab title="Minhas Cotas" class="tabs tabfin">
+              <div id="tab6" class="tab-wrap">
+                <b-row>
+                  <b-col lg="12">
+                    <div class="main-title">
+                      Minhas Cotas
+                    </div>
+                  </b-col>
+                  <b-col>
+                    <quota-table></quota-table>
                   </b-col>
                 </b-row>
               </div>
@@ -412,8 +421,15 @@ import {
   mapState,
   mapActions
 } from 'vuex'
+import DonationTable from '@/components/UserEdit/DonationTable'
+import QuotaTable from '@/components/UserEdit/QuotaTable'
 
 export default {
+  name: "UserEdit",
+  components: {
+    DonationTable,
+    QuotaTable
+  },
   computed: {
     ...mapState(['user'])
   },
