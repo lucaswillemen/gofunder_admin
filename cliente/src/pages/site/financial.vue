@@ -246,8 +246,8 @@ export default {
   computed: {
     ...mapState(['user']),
     currentPercentage() {
-      let percentage = ((100 / this.campaign.amount) * this.campaign.amount)
-      return  percentage > 100 ? 100 : percentage
+       let percentage = Math.round(100 / this.campaign.amount * this.campaign.amount_received)
+        return  percentage > 100 ? 100 : percentage
 
     }
   },

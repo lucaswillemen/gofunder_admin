@@ -17,11 +17,11 @@
 							<label>{{user.name}}</label>
 						</template>
 						<div class="seta"></div>
-						<b-dropdown-item href="/#/user/info/perfil">{{"MAIN_HEADER::Meu Perfil"|fix}}</b-dropdown-item>
+						<b-dropdown-item><router-link :to="'/user/'+user.id+'/info/'">{{"MAIN_HEADER::Meu Perfil"|fix}}</router-link></b-dropdown-item>
 						<hr>
-						<b-dropdown-item href="/#/user/edit">{{"MAIN_HEADER::Editar Perfil"|fix}}</b-dropdown-item>
+						<b-dropdown-item><router-link to="/user/edit">{{"MAIN_HEADER::Editar Perfil"|fix}}</router-link></b-dropdown-item>
 						<hr>
-						<b-dropdown-item href="/#/user/info/rascunho" target="_blank">{{"MAIN_HEADER::Campanhas"|fix}}</b-dropdown-item>
+						<!-- <b-dropdown-item><router-link :to="'/user/'+user.id+'/info/'">{{"MAIN_HEADER::Campanhas"|fix}}</router-link></b-dropdown-item> -->
 						<hr>
 						<b-dropdown-item @click="logout()">{{"MAIN_HEADER::Deslogar"|fix}}</b-dropdown-item>
 					</b-nav-item-dropdown>
@@ -93,7 +93,7 @@ export default {
 		return {
 			interval: null
 		};
-	},
+  },
 	methods: {
 		...mapActions("user", ["userLogout", "userSet"]),
 		searchEnter: function(event) {
@@ -257,6 +257,8 @@ hr {
 		// padding: 0.07rem 0;
 		display: flex;
 		align-items: center;
+    text-decoration: none;
+    color: inherit;
 	}
 }
 .big2 {
