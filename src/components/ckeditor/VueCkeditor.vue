@@ -49,7 +49,7 @@ export default {
 class interceptUploadAdapter {
 	constructor(loader) {
 		this.loader = loader;
-		this.endpoint = "http://25.20.68.69/";
+		this.endpoint = "http://api.gofunder.com/";
 	}
 	upload() {
 		return this.loader.file.then(

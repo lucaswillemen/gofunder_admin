@@ -5,7 +5,7 @@ import Login from '@/pages/Login.vue';
 import ResetPassword from '@/pages/ResetPassword.vue';
 import Register from '@/pages/Register.vue';
 import Root from '@/pages/Root.vue';
-import Create from '@/pages/Create.vue';
+import Create from '@/pages/CreateV2.vue';
 import Campaigns from '@/pages/Campaigns.vue';
 import Edit from '@/pages/Edit.vue';
 import Withdraw from '@/pages/Withdraw.vue';
