@@ -16,7 +16,10 @@
 			<md-step id="fourth" md-label="Faqs" :md-done.sync="steps.fourth" >
 				<Faq></Faq>
 			</md-step>
-			<md-step id="five" md-label="Enviar para análise" :md-done.sync="steps.five" >
+			<md-step id="five" md-label="Cotas" :md-done.sync="steps.five" >
+				<Cotas></Cotas>
+			</md-step>
+			<md-step id="six" md-label="Enviar para análise" :md-done.sync="steps.six" >
 				<Analysis></Analysis>
 			</md-step>
 		</md-steppers>
@@ -28,6 +31,7 @@ import Perks from "@/components/Edit/Perks";
 import Gallery from "@/components/Edit/Gallery";
 import Faq from "@/components/Edit/Faq";
 import Analysis from "@/components/Edit/Analysis";
+import Cotas from "@/components/Edit/Cotas";
 export default {
 	name: "Edit",
 	components: {
@@ -35,7 +39,8 @@ export default {
 		Perks,
 		Gallery,
 		Faq,
-		Analysis
+		Analysis,
+		Cotas
 	},
 
 	data() {
@@ -45,7 +50,8 @@ export default {
 				second: false,
 				third: false,
 				fourth: false,
-				five: false
+				five: false,
+				six: false
 			},
 			actualStep: 'first',
 			loading: false

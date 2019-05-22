@@ -5,8 +5,8 @@
 				<md-empty-state
 					style="padding-bottom: 0 !important;"
 					md-icon="find_in_page"
-					md-label="Publique sua campanha!"
-					md-description="Aqui você concorda que finalizou todas as edições da campanha e a envia para nossos profissionais analisarem para você!"
+					md-label="Criar uma cota!"
+					md-description="Você pode criar cotas para pessoas que fizerem doações para seu produto. Cotas são partes da sua empresa e cada vez que você vender este seu produto no marketplace (após ele ser lançado) parte do valor do produto vendido será revertido para o usuário que doou pra você"
 				></md-empty-state>
 				<md-card-content style="display:flex; align-items: center; flex-direction: column;">
 					<md-checkbox
