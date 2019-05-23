@@ -6,7 +6,7 @@ import router from './router/router.js'
 import './config/request'
 import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.min.css'
-import Editor from '@tinymce/tinymce-vue'
+
 
 import "@/default.css"
 import "@/style.css"
@@ -36,9 +36,6 @@ Vue.use(VueCurrencyFilter, {
 
 new Vue({
   router,
-  components: {
-    'editor': Editor
-  },
   store,
   render: h => h(App),
 }).$mount('#app')

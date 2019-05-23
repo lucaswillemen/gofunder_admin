@@ -62,7 +62,7 @@
 					<br>
 					<label for="campaignHtml" style="opacity:0.9;">Conteúdo informativo da campanha: *</label>
 				<!--	<VueCkeditor @changeHtmlValue="changeHtml" :htmlCampaign="campaign.html"></VueCkeditor>!-->
-				<editor :api-key="d982mabgtf21gq12p8992913q3pvqu3scbukpoxl623jdr9b" v-model="campaign.html"></editor>
+				<editor api-key="d982mabgtf21gq12p8992913q3pvqu3scbukpoxl623jdr9b"  :init="{}" v-model="campaign.html"></editor>
 				</md-card-content>
 				<md-card-actions>
 					<md-button class="md-primary md-raised" @click="saveCampaign()">Salvar modificações</md-button>
@@ -73,11 +73,14 @@
 </template>
 
 <script>
+import Editor from '@tinymce/tinymce-vue'
 import { required, numeric } from "vuelidate/lib/validators";
 import { mapState } from "vuex";
 
 export default {
-
+	components: {
+		Editor
+	},
 	computed: {
 		...mapState(["user"])
 	},
