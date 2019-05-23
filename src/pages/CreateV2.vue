@@ -23,7 +23,7 @@
 						<md-field :class="getValidationClass('country')">
 							<md-icon>public</md-icon>
 							<label>Qual país que seu produto será produzido?</label>
-							<md-select v-model="form.country">
+							<md-select v-model="form.country" style="margin-left: 16px;">
 								<md-option
 									:value="opt.id"
 									v-for="(opt, index) in options.country"

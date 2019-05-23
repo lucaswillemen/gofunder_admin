@@ -19,6 +19,7 @@
 					</p>
 				</md-card-content>
 				<md-card-actions>
+					<md-button class="md-raised preview-btn">Pré Visualizar Campanha</md-button>
 					<md-button :disabled="!agree" class="md-primary md-raised">Enviar campanha</md-button>
 				</md-card-actions>
 			</md-card>
@@ -38,5 +39,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.preview-btn {
+	background-color: #244584 !important;
+
+}
 </style>
 

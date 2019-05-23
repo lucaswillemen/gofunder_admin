@@ -10,6 +10,9 @@
       <md-tab id="tab-affiliate" md-label="Extratos de Afiliados" md-icon="card_membership">
         <AffiliateExtract></AffiliateExtract>
       </md-tab>
+      <md-tab id="tab-quota" md-label="Extratos de Cotas" md-icon="local_atm">
+        <QuotaExtract></QuotaExtract>
+      </md-tab>
       
     </md-tabs>
     
@@ -20,13 +23,15 @@
 import WithdrawExtract from "@/components/Extract/WithdrawExtract"
 import DonationExtract from "@/components/Extract/DonationExtract"
 import AffiliateExtract from "@/components/Extract/AffiliateExtract"
+import QuotaExtract from "@/components/Extract/QuotaExtract"
 
 export default {
   name: 'Extract',
   components: {
     WithdrawExtract,
     DonationExtract,
-    AffiliateExtract
+    AffiliateExtract,
+    QuotaExtract
   }
 }
 </script>

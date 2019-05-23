@@ -3,7 +3,7 @@
     <md-table v-model="searched" md-sort="name" md-sort-order="asc" md-card md-fixed-header>
       <md-table-toolbar>
         <div class="md-toolbar-section-start">
-          <h1 class="md-status">Afiliados</h1>
+          <h1 class="md-status">Cotas</h1>
         </div>
 
         <md-field md-clearable class="md-toolbar-section-end">
@@ -28,7 +28,7 @@
 
 <script>
 export default {
-  name: 'AffiliateExtract',
+  name: 'QuotaExtract',
   data: () => ({
     search: null,
     searched: [],

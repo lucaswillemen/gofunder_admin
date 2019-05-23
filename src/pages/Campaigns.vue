@@ -7,7 +7,7 @@
       <md-tab id="tab-lancadas" md-label="Lançadas" md-icon="check_circle">
         <div class="md-layout md-grutter">
           <div v-for="(campaign, index) in lancadas" :key="index" class="md-layout-item md-size-100 md-medium-size-50 md-large-size-33 md-xlarge-size-25">
-            <md-card>
+            <md-card style="margin-bottom: 16px;">
               <md-card-area md-inset>
                 <md-card-media md-ratio="16:9">
                   <img

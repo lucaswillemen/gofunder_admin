@@ -49,7 +49,7 @@
       <div class="md-layout-item md-small-size-100 md-medium-size-50 md-large-size-33 md-size-25">
         <br>
         <md-button :disabled="parentCall && parentCall.loadingState()" class="md-fab md-primary" @click="perkDialog = true">
-          <md-icon>Adicionar</md-icon>
+          <md-icon>add</md-icon>
         </md-button>
       </div>
     </div>
@@ -80,6 +80,7 @@
           <div class="md-layout md-gutter">
             <div class="md-layout-item md-small-size-100">
               <md-field :class="{'md-invalid': $v.perk.name.$invalid && $v.perk.name.$dirty}">
+								<md-icon>title</md-icon>
                 <label>Qual o nome do seu perk?</label>
                 <md-input v-model="perk.name" required></md-input>
                 <span class="md-error">Informe o titulo</span>
@@ -87,14 +88,18 @@
             </div>
             <div class="md-layout-item md-small-size-100">
               <md-field :class="{'md-invalid': $v.perk.price.$invalid && $v.perk.price.$dirty}">
+								<md-icon>attach_money</md-icon>
                 <label>Qual o valor do seu perk?</label>
                 <md-input v-model.number="perk.price" required></md-input>
                 <span class="md-error">Informe o valor</span>
+								<span class="md-helper-text">Insira o valor mínimo a ser doado em dólares para receber o perk</span>
+
               </md-field>
             </div>
           </div>
 
           <md-field :class="{'md-invalid': $v.perk.description.$invalid && $v.perk.description.$dirty}">
+						<md-icon>description</md-icon>
             <label>Qual a descrição do seu perk? *</label>
             <md-textarea v-model="perk.description" required md></md-textarea>
             <span class="md-error">Informe a descrição!</span>
@@ -103,16 +108,22 @@
           <div class="md-layout md-gutter">
             <div class="md-layout-item md-small-size-100">
               <md-field :class="{'md-invalid': $v.perk.stock.$invalid && $v.perk.stock.$dirty}">
+								<md-icon>store</md-icon>
                 <label>Qual o estoque do seu perk?</label>
                 <md-input v-model="perk.stock" required></md-input>
                 <span class="md-error">Informe o estoque</span>
               </md-field>
             </div>
             <div class="md-layout-item md-small-size-100">
-              <md-field :class="{'md-invalid': $v.perk.discount.$invalid && $v.perk.discount.$dirty}">
-                <label>Qual o valor do desconto?</label>
-                <md-input v-model.number="perk.discount" required></md-input>
-                <span class="md-error">Informe o valor</span>
+              <md-field>
+								<md-icon>money_off</md-icon>
+                <label>
+									Qual o valor do desconto?
+									<md-icon class="helper-icon">help
+										<md-tooltip md-direction="top" class="tooltip-perk">Este valor é uma porcentagem de desconto para o valor de doação do seu perk</md-tooltip>
+									</md-icon>
+								</label>
+                <md-input v-model.number="perk.discount"></md-input>
               </md-field>
             </div>
           </div>
@@ -125,6 +136,7 @@
             <div class="md-layout md-gutter">
               <div class="md-layout-item md-small-size-100">
                 <md-field :class="{'md-invalid': $v.perk.shipping_price.$invalid}">
+									<md-icon>commute</md-icon>
                   <label>Qual o valor do frete?</label>
                   <md-input v-model.number="perk.shipping_price" required></md-input>
                   <span class="md-error">Informe o valor</span>
@@ -132,7 +144,7 @@
               </div>
               <div class="md-layout-item md-small-size-100">
                   <md-datepicker class="no-icon" :class="{'md-invalid': $v.perk.shipping_date.$invalid}" md-immediately v-model="perk.shipping_date" required>
-              <label>Informe a data estimada de entrega do seu produto</label>
+              <label>Informe a data estimada de entrega da sua recompensa</label>
             </md-datepicker>
               </div>
             </div>
@@ -170,6 +182,7 @@
           <div class="md-layout md-gutter">
             <div class="md-layout-item md-small-size-100">
               <md-field :class="{'md-invalid': $v.perkEdit.name.$invalid && $v.perkEdit.name.$dirty}">
+								<md-icon>title</md-icon>
                 <label>Qual o nome do seu perk?</label>
                 <md-input v-model="perkEdit.name" required></md-input>
                 <span class="md-error">Informe o titulo</span>
@@ -177,15 +190,19 @@
             </div>
             <div class="md-layout-item md-small-size-100">
               <md-field :class="{'md-invalid': $v.perkEdit.price.$invalid && $v.perkEdit.price.$dirty}">
+								<md-icon>attach_money</md-icon>
                 <label>Qual o valor do seu perk?</label>
                 <md-input v-model.number="perkEdit.price" required></md-input>
                 <span class="md-error">Informe o valor</span>
+								<span class="md-helper-text">Insira o valor mínimo a ser doado em dólares para receber o perk</span>
+
               </md-field>
             </div>
           </div>
           
           <md-field
             :class="{'md-invalid': $v.perkEdit.description.$invalid && $v.perkEdit.description.$dirty}">
+							<md-icon>description</md-icon>
             <label>Qual a descrição do seu perk?</label>
             <md-textarea v-model="perkEdit.description" required></md-textarea>
             <span class="md-error">Informe o titulo</span>
@@ -193,17 +210,24 @@
           <div class="md-layout md-gutter">
             <div class="md-layout-item md-small-size-100">
               <md-field :class="{'md-invalid': $v.perkEdit.stock.$invalid && $v.perkEdit.stock.$dirty}">
+								<md-icon>store</md-icon>
                 <label>Qual o estoque do seu perk?</label>
                 <md-input v-model="perkEdit.stock" required></md-input>
                 <span class="md-error">Informe o estoque</span>
               </md-field>
             </div>
             <div class="md-layout-item md-small-size-100">
-              <md-field
-                :class="{'md-invalid': $v.perkEdit.discount.$invalid && $v.perkEdit.discount.$dirty}">
-                <label>Qual o valor do desconto?</label>
-                <md-input v-model.number="perkEdit.discount" required></md-input>
-                <span class="md-error">Informe o desconto</span>
+              <md-field>
+								<md-icon>money_off</md-icon>
+                <label>
+									Qual o valor do desconto?
+									<md-icon class="helper-icon">help
+										<md-tooltip md-direction="top" class="tooltip-perk">Este valor é uma porcentagem de desconto para o valor de doação do seu perk</md-tooltip>
+									</md-icon>
+								</label>
+                <md-input v-model.number="perkEdit.discount"></md-input>
+                <span class="md-error ">Informe o desconto</span>
+								<!-- <span class="md-helper-text">Escolha um nome bonito e chamativo para sua campanha</span>								 -->
               </md-field>
             </div>
           </div>
@@ -222,6 +246,7 @@
             <div class="md-layout md-gutter">
               <div class="md-layout-item md-small-size-100">
                   <md-field :class="{'md-invalid': $v.perkEdit.shipping_price.$invalid}">
+										<md-icon>commute</md-icon>
                     <label>Qual o valor do frete?</label>
                     <md-input v-model.number="perkEdit.shipping_price" required></md-input>
                     <span class="md-error">Informe o valor</span>
@@ -229,7 +254,7 @@
               </div>
               <div class="md-layout-item md-small-size-100">
                 <md-datepicker class="no-icon" :class="{'md-invalid': $v.perkEdit.shipping_date.$invalid}" md-immediately v-model="perkEdit.shipping_date" required>
-                  <label>Informe a data estimada de entrega do seu produto</label>
+                  <label>Informe a data estimada de entrega da sua recompensa</label>
                 </md-datepicker>
               </div>
             </div>
@@ -249,7 +274,7 @@
           </div>
         </md-dialog-content>
         <md-dialog-actions>
-          <md-button class="md-acent md-raised" @click="resetEditPerk()">Fechar</md-button>
+          <md-button class="md-acent md-raised close-btn" @click="resetEditPerk()">Fechar</md-button>
           <md-button class="md-primary md-raised" :disabled="parentCall && parentCall.loadingState()" @click="editPerk()">Salvar</md-button>
         </md-dialog-actions>
       </md-dialog>
@@ -315,9 +340,6 @@ export default {
 			price: {
 				required
 			},
-			discount: {
-				required
-			},
 			description: {
 				required
 			},
@@ -346,9 +368,6 @@ export default {
 				required
 			},
 			price: {
-				required
-			},
-			discount: {
 				required
 			},
 			description: {
@@ -543,6 +562,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.tooltip-perk {
+	background-color: #707070 !important;
+	color: white;
+	font-size: .85rem;
+}
+.helper-icon {
+	// font-size: 1.5rem !important;
+	&:hover{
+		cursor: pointer;
+	}
+}
+.close-btn {
+	background-color: #707070 !important;
+}
 .overlap-btn {
 	position: absolute;
 	right: 0;

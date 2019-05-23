@@ -40,7 +40,7 @@
 				class="md-fab md-primary"
 				@click="createFaq = true"
 			>
-				<md-icon>Adicionar</md-icon>
+				<md-icon>add</md-icon>
 			</md-button>
 		</div>
 

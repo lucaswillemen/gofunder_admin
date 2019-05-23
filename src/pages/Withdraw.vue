@@ -17,22 +17,22 @@
 								<div class="md-layout-item md-small-size-100">
 									<md-field :class="{'md-invalid': $v.usdWithdraw.country.$invalid && $v.usdWithdraw.country.$dirty}">
 										<label for="bankAcc">Pais: *</label>
-										<md-input id="bankAcc" v-model="usdWithdraw.country"></md-input>
+										<md-input id="country" v-model="usdWithdraw.country"></md-input>
 										<span class="md-error" v-if="!$v.usdWithdraw.country.required">Digite o país de destino</span>
 									</md-field>
 								</div>
 								<div class="md-layout-item md-small-size-100">
 									<md-field :class="{'md-invalid': $v.usdWithdraw.bank.$invalid && $v.usdWithdraw.bank.$dirty}">
-										<label for="bankAcc">Banco: *</label>
-										<md-input id="bankAcc" v-model="usdWithdraw.bank"></md-input>
+										<label for="bank">Banco: *</label>
+										<md-input id="bank" v-model="usdWithdraw.bank"></md-input>
 										<span class="md-error" v-if="!$v.usdWithdraw.bank.required">O nome do banco beneficiário é obrigatório</span>
 										<span class="md-error" v-if="!$v.usdWithdraw.bank.numeric && $v.usdWithdraw.bank.$dirty">Insira apenas números!</span>
 									</md-field>
 								</div>
 								<div class="md-layout-item md-small-size-100">
 									<md-field :class="{'md-invalid': $v.usdWithdraw.swift.$invalid && $v.usdWithdraw.swift.$dirty}">
-										<label for="bankAcc">SWIFT: *</label>
-										<md-input id="bankAcc" v-model="usdWithdraw.swift"></md-input>
+										<label for="swift">SWIFT: *</label>
+										<md-input id="swift" v-model="usdWithdraw.swift"></md-input>
 										<span class="md-error" v-if="!$v.usdWithdraw.swift.required">O código SWITF é obrigatória</span>
 									</md-field>
 								</div>
@@ -52,8 +52,8 @@
 								</div>
 								<div class="md-layout-item md-small-size-100">
 									<md-field :class="{'md-invalid': $v.usdWithdraw.doc.$invalid && $v.usdWithdraw.doc.$dirty}">
-										<label for="bankAcc">Documento Beneficiário: *</label>
-										<md-input id="bankAcc" v-model="usdWithdraw.doc"></md-input>
+										<label for="document">Documento Beneficiário: *</label>
+										<md-input id="document" v-model="usdWithdraw.doc"></md-input>
 										<span class="md-error" v-if="!$v.usdWithdraw.doc.required">O doc é obrigatório</span>
 									</md-field>
 								</div>
@@ -69,8 +69,8 @@
 								</div>
 								<div class="md-layout-item md-small-size-100">
 									<md-field :class="{'md-invalid': $v.usdWithdraw.name.$invalid && $v.usdWithdraw.name.$dirty}">
-										<label for="bankAcc">Nome Beneficiário: *</label>
-										<md-input id="bankAcc" v-model="usdWithdraw.name"></md-input>
+										<label for="name">Nome Beneficiário: *</label>
+										<md-input id="name" v-model="usdWithdraw.name"></md-input>
 										<span class="md-error" v-if="!$v.usdWithdraw.name.required">o nome é obrigatório</span>
 									</md-field>
 								</div>
