@@ -1,101 +1,77 @@
 <template>
-	<div class="page-conatainer">
-		<md-app md-mode="fixed">
-			<md-app-toolbar class="backgroundSidebar">
-				<div class="md-toolbar-section-start">					
-					<md-button class="md-icon-button" @click="toggleMenu" v-if="!menuVisible">
-						<md-icon  style="color:white!important;" >menu</md-icon>
-					</md-button>
-					<span class="md-title" style="color:white;">{{$route.name}}</span>
-				</div>
-				<div class="md-toolbar-section-end">
-					<md-button class="md-icon-button">
-						<md-icon style="color:white!important;">notifications</md-icon>
-					</md-button>
-					<md-button class="md-icon-button">
-						<md-icon style="color:white!important;">settings</md-icon>
-					</md-button>
-					<md-button class="md-icon-button" @click="logout()">
-						<md-icon style="color:white!important;">exit_to_app</md-icon>
-					</md-button>
-				</div>
-			</md-app-toolbar>
+    <div class="page-conatainer">
+        <md-app md-mode="fixed">
+            <md-app-toolbar class="backgroundSidebar">
+                <div class="md-toolbar-section-start">
+                    <md-button class="md-icon-button" @click="toggleMenu" v-if="!menuVisible">
+                        <md-icon style="color:white!important;">menu</md-icon>
+                    </md-button>
+                    <span class="md-title" style="color:white;">{{$route.name}}</span>
+                </div>
+                <div class="md-toolbar-section-end">
+                    <md-button class="md-icon-button">
+                        <md-icon style="color:white!important;">notifications</md-icon>
+                    </md-button>
+                    <md-button class="md-icon-button">
+                        <md-icon style="color:white!important;">settings</md-icon>
+                    </md-button>
+                    <md-button class="md-icon-button" @click="logout()">
+                        <md-icon style="color:white!important;">exit_to_app</md-icon>
+                    </md-button>
+                </div>
+            </md-app-toolbar>
 
-			<md-app-drawer :md-active.sync="menuVisible" md-persistent="mini" class="backgroundSidebar">
-		
-<md-toolbar class="md-transparent" md-elevation="0">
-          
+            <md-app-drawer :md-active.sync="menuVisible" md-persistent="mini" class="backgroundSidebar">
 
-          <div class="md-toolbar-section-end">
-			  <img style="max-width:200px;" src="https://gofunder.io/static/img/logo.8941ded.png"></img>
-            <md-button class="md-icon-button md-dense md-raised" @click="toggleMenu">
-              <md-icon  style="color:white!important;" >keyboard_arrow_left</md-icon>
-            </md-button>
-          </div>
-        </md-toolbar>
-				<md-list class="textoMenu backgroundSidebar">
-					<router-link to="/campaigns">
-						<md-list-item
-							v-bind:class="{'nav-item': true, 'active': $router.currentRoute.path=='/campaigns'}"
-						>
-							<md-icon>view_quilt</md-icon>
-							<span class="md-list-item-text">MINHAS CAMPANHAS</span>
-						</md-list-item>
-					</router-link>
-					<router-link to="/create">
-						<md-list-item
-							v-bind:class="{'nav-item': true, 'active': $router.currentRoute.path=='/create'}"
-						>
-							<md-icon>note_add</md-icon>
-							<span class="md-list-item-text">CRIAR CAMPANHA</span>
-						</md-list-item>
-					</router-link>
-					<router-link to="/withdraw">
-						<md-list-item
-							v-bind:class="{'nav-item': true, 'active': $router.currentRoute.path=='/withdraw'}"
-						>
-							<md-icon>payment</md-icon>
-							<span class="md-list-item-text">SAQUES</span>
-						</md-list-item>
-					</router-link>
-					<router-link to="/extract">
-						<md-list-item
-							v-bind:class="{'nav-item': true, 'active': $router.currentRoute.path=='/extract'}"
-						>
-							<md-icon>receipt</md-icon>
-							<span class="md-list-item-text">EXTRATOS</span>
-						</md-list-item>
-					</router-link>
-				</md-list>
+                <md-toolbar class="md-transparent" md-elevation="0">
 
-				<!--<md-divider></md-divider>
-				<div class="draft-title">CAMPANHAS RASCUNHOS</div>
-				<md-list v-for="(campaign, index) in campaigns" :key="index" class="md-triple-line bordered">
-					<router-link :to="'/edit/'+campaign.id">
-						<md-list-item>
-							<md-avatar>
-								<img :src="$url + campaign.cover_url" onerror="this.src='https://via.placeholder.com/150'">
-							</md-avatar>
+                    <div class="md-toolbar-section-end">
+                        <img style="max-width:200px;" src="https://gofunder.io/static/img/logo.8941ded.png"></img>
+                        <md-button class="md-icon-button md-dense md-raised" @click="toggleMenu">
+                            <md-icon style="color:white!important;">keyboard_arrow_left</md-icon>
+                        </md-button>
+                    </div>
+                </md-toolbar>
+                <div class="list textoMenu backgroundSidebar">
 
-							<div class="md-list-item-text">
-								<div class="box">
-									<span class="text">{{campaign.title}}</span>
-									<span class="insideBox">
-										<router-link :to="'/edit/'+campaign.id">
-										<md-icon>edit</md-icon>
-									</router-link>
-									</span>
-								</div>
-							</div>
-						</md-list-item>
-					</router-link>
-				</md-list>!-->
-			</md-app-drawer>
-			<md-app-content style="padding: 0px;">
-				<router-view></router-view>
-			</md-app-content>
-		</md-app>
-	</div>
+                    <md-list-item md-expand :md-expanded.sync="expandCampanhas">
+                        <md-icon>view_quilt</md-icon>
+                        <span class="md-list-item-text">CAMPANHAS</span>
+
+                        <md-list slot="md-expand" class="list mdListExtend backgroundSidebar">
+                            <router-link to="/campaigns">
+                                <md-list-item v-bind:class="{'nav-item': true, 'active': $router.currentRoute.path=='/campaigns'}">                                   
+                                    <span class="md-list-item-text">MINHAS CAMPANHAS</span>
+                                </md-list-item>
+                            </router-link>
+                            <router-link to="/create">
+                                <md-list-item v-bind:class="{'nav-item': true, 'active': $router.currentRoute.path=='/create'}">                                
+                                    <span class="md-list-item-text">CRIAR CAMPANHA</span>
+                                </md-list-item>
+                            </router-link>
+                        </md-list>
+                    </md-list-item>
+
+                    <router-link to="/withdraw">
+                        <md-list-item v-bind:class="{'nav-item': true, 'active': $router.currentRoute.path=='/withdraw'}">
+                            <md-icon>payment</md-icon>
+                            <span class="md-list-item-text">SAQUES</span>
+                        </md-list-item>
+                    </router-link>
+                    <router-link to="/extract">
+                        <md-list-item v-bind:class="{'nav-item': true, 'active': $router.currentRoute.path=='/extract'}">
+                            <md-icon>receipt</md-icon>
+                            <span class="md-list-item-text">EXTRATOS</span>
+                        </md-list-item>
+                    </router-link>
+                </div>
+
+            </md-app-drawer>
+            <md-app-content style="padding: 0px;">
+                <router-view></router-view>
+            </md-app-content>
+        </md-app>
+    </div>
 </template>
 
 
@@ -115,7 +91,8 @@ export default {
 		return {
 			campaigns: [],
 			intervalTimer: false,
-			menuVisible: false
+			menuVisible: false,
+			expandCampanhas: false
 		};
 	},
 	methods: {
@@ -186,26 +163,39 @@ export default {
 		text-overflow: ellipsis;
 	}
 }
-.insideBox {
-	i {
-		margin-top: -5px;
-		font-size: 20px !important;
+
+.mdListExtend {	
+	color: white;
+	margin-top:-20px;
+	.md-list-item-text {
+		font-size:12px!important;
+		margin:0 auto;
 	}
+
 }
+
 .textoMenu {
 	margin-top: 10px;
+	list-style-type:none!important;
+
+
 	span {
 		font-family: "Source Sans Pro", sans-serif;
-		text-transform: uppercase !important;
-		font-size: 14px !important;
+		text-transform: uppercase ;
 		color: white;
 	}
 	i {
 		color: #fef9e7 !important;
+		
 	}
 }
 .backgroundSidebar {
 	background-color:#080033 !important;
+}
+//md-icon md-icon-font md-icon-image md-list-expand-icon md-theme-default
+svg {		
+	
+	fill:white!important;
 }
 </style>
 
