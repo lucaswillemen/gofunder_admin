@@ -10,14 +10,15 @@
 			<md-step id="second" md-label="Perks" :md-done.sync="steps.second" >
 				<Perks></Perks>
 			</md-step>
-			<md-step id="third" md-label="Galeria" :md-done.sync="steps.third" >
-				<Gallery></Gallery>
+			<md-step id="third" md-label="Cotas" :md-done.sync="steps.third" >
+
+				<Cotas></Cotas>
 			</md-step>
 			<md-step id="fourth" md-label="Faqs" :md-done.sync="steps.fourth" >
 				<Faq></Faq>
 			</md-step>
-			<md-step id="five" md-label="Cotas" :md-done.sync="steps.five" >
-				<Cotas></Cotas>
+			<md-step id="five" md-label="Galeria" :md-done.sync="steps.five" >
+				<Gallery></Gallery>
 			</md-step>
 			<md-step id="six" md-label="Enviar para análise" :md-done.sync="steps.six" >
 				<Analysis></Analysis>
@@ -86,4 +87,3 @@ export default {
 }
 
 </style>
-

@@ -743,8 +743,7 @@ html.md-theme-default{
     fill:var(--md-theme-default-disabled-on-background, rgba(0,0,0,0.26))
 }
 .md-icon.md-theme-default.md-icon-image svg{
-    fill:rgba(0,0,0,0.54);
-    fill:var(--md-theme-default-icon-on-background, rgba(0,0,0,0.54))
+    fill:rgb(255, 255, 255);
 }
 .md-icon.md-theme-default.md-icon-image svg.md-primary{
     fill:#212121;

@@ -56,12 +56,13 @@
 							</md-field>
 						</div>
 					</div>
-		
-					
+
+
 					<br>
 					<br>
-					<label for="campaignHtml" style="opacity:0.9;">Conteúdo informativo da campanha: *</label>					
-					<VueCkeditor @changeHtmlValue="changeHtml" :htmlCampaign="campaign.html"></VueCkeditor>
+					<label for="campaignHtml" style="opacity:0.9;">Conteúdo informativo da campanha: *</label>
+				<!--	<VueCkeditor @changeHtmlValue="changeHtml" :htmlCampaign="campaign.html"></VueCkeditor>!-->
+				<editor :api-key="d982mabgtf21gq12p8992913q3pvqu3scbukpoxl623jdr9b" v-model="campaign.html"></editor>
 				</md-card-content>
 				<md-card-actions>
 					<md-button class="md-primary md-raised" @click="saveCampaign()">Salvar modificações</md-button>
@@ -74,12 +75,9 @@
 <script>
 import { required, numeric } from "vuelidate/lib/validators";
 import { mapState } from "vuex";
-import VueCkeditor from "../ckeditor/VueCkeditor.vue";
 
 export default {
-	components: {
-		VueCkeditor
-	},
+
 	computed: {
 		...mapState(["user"])
 	},
@@ -88,7 +86,7 @@ export default {
 	},
 	methods: {
 		changeHtml(html) {
-			this.campaign.html = html			
+			this.campaign.html = html
 		},
 		loadCampaign() {
 			global
@@ -135,7 +133,7 @@ export default {
 				youtube_page: "",
 				instagram_page: "",
 				facebook_page: ""
-			}			
+			}
 		};
 	},
 	mounted() {

@@ -11,6 +11,7 @@ import Edit from '@/pages/Edit.vue';
 import Withdraw from '@/pages/Withdraw.vue';
 import Extract from '@/pages/Extract.vue';
 import Test from '@/pages/Test.vue';
+import Profile from '@/pages/Profile.vue';
 
 Vue.use(Router);
 
@@ -35,7 +36,7 @@ export default new Router({
       meta: {
         onlyPublic: true
       }
-    },{
+    }, {
       path: '/login',
       name: 'Login',
       component: Login,
@@ -86,6 +87,14 @@ export default new Router({
           path: '/edit/:id',
           name: 'Edição de Campanha',
           component: Edit,
+          meta: {
+            onlyAuth: true
+          },
+        },
+        {
+          path: '/profile',
+          name: 'Perfil de Usuário',
+          component: Profile,
           meta: {
             onlyAuth: true
           },
