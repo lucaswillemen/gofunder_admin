@@ -5,9 +5,29 @@ export default {
   namespaced: true,
   state: {
     id: null,
-    token: null,
     name: null,
-    email: null
+    img: null,
+    email: null,
+    city: null,
+    country: null,
+    facebook: null,
+    instagram: null,
+    website: null,
+    zipcode: null,
+    address: null,
+    twitter: null,
+    birthday: null,
+    youtube: null,
+    usd: null,
+    btc: null,
+    token: null,
+    password: null,
+    description: null,
+    tinydescription: null,
+    recover_token: null,
+    email_confirm_code: null,
+    email_confirmed: null,
+    created_at: null
   },
   getters: {
     isUserLogged(state) {

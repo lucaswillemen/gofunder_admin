@@ -15,7 +15,7 @@
     max-width: calc(100vw - 125px);
 }
 .nav-item {
-    margin-top: 12px;
+  
 }
 .nav-item.active {
     border-left: #ffffff;

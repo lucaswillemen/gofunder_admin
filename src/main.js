@@ -7,6 +7,7 @@ import './config/request'
 import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.min.css'
 
+
 import "@/default.css"
 import "@/style.css"
 import VueCurrencyFilter from 'vue-currency-filter'
@@ -21,16 +22,17 @@ Vue.use(VueMaterial)
 Vue.use(require('vue-moment'));
 Vue.use(Vuelidate)
 Vue.use(VueTheMask)
-Vue.use(money, {precision: 4})
-Vue.use(VueCurrencyFilter,
-  {
-    symbol : '$',
-    thousandsSeparator: '.',
-    fractionCount: 2,
-    fractionSeparator: ',',
-    symbolPosition: 'front',
-    symbolSpacing: true
-  })
+Vue.use(money, {
+  precision: 4
+})
+Vue.use(VueCurrencyFilter, {
+  symbol: '$',
+  thousandsSeparator: '.',
+  fractionCount: 2,
+  fractionSeparator: ',',
+  symbolPosition: 'front',
+  symbolSpacing: true
+})
 
 new Vue({
   router,
