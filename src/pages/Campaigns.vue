@@ -84,7 +84,7 @@
 
               <md-card-actions>
                 <router-link :to="'/edit/'+campaign.id">
-                  <md-button class="md-primary" style="color: rgba(0,0,0,0.87) !important">
+                  <md-button class="custom-color-1">
                     <md-icon>edit</md-icon>Editar
                   </md-button>
                 </router-link>
@@ -225,5 +225,11 @@ export default {
     color: #244584;
   }
 }
+  .custom-color-1 {
+    .md-icon.md-icon-font.md-theme-default{
+      color: rgb(134, 41, 168);
+
+    }
+  }
 </style>
 

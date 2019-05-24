@@ -52,15 +52,15 @@
                 <div class="md-layout md-gutter">
                   <div class="md-layout-item md-size-40">
                     <md-field>
-                      <label>Pais</label>
                       <md-icon class="mdi mdi-flag"></md-icon>
+                      <label>Pais</label>
                       <md-input v-model="saveUser.country"></md-input>
                     </md-field>
                   </div>
                   <div class="md-layout-item md-size-40">
                     <md-field>
-                      <label>City</label>
                       <md-icon class="mdi mdi-city"></md-icon>
+                      <label>City</label>
                       <md-input v-model="saveUser.city"></md-input>
                     </md-field>
                   </div>
@@ -169,7 +169,6 @@
                   </md-field>
                 </div>
               </div>
-              <br />
               <div class="md-layout md-gutter">
                 <div class="md-layout-item md-small-size-100">
                   <md-field>

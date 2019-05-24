@@ -81,7 +81,7 @@
             <md-table-head>Expiração</md-table-head>
             <md-table-head>Apagar</md-table-head>
           </md-table-row>
-          <md-table-row slot="md-table-row" v-for="item in users">
+          <md-table-row slot="md-table-row" v-for="(item, index) in users" :key="index">
             <md-table-cell md-label="Doação mínima" md-sort-by="value">{{ item.value }}</md-table-cell>
             <md-table-cell md-label="Porcentagem" md-sort-by="value">{{ item.percent }}</md-table-cell>
             <md-table-cell md-label="Número máximo de cotistas" md-sort-by="value">{{ item.quotas }}</md-table-cell>
