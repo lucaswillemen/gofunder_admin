@@ -4,7 +4,10 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 
+// $apiEndpoint = url para a api
 Vue.prototype.$apiEndpoint = 'http://api.gofunder.io/'
+// $urlPainel = url para nosso template admin
+Vue.prototype.$urlPainel = 'http://localhost:8080'
 
 // BOOTSTRAP
 import BootstrapVue from 'bootstrap-vue'
@@ -18,19 +21,20 @@ Vue.component('v-select', VueSelect.VueSelect);
 // PARTE DA TRADUÇÃO
 import PT from './translation/pt.js'
 
+
 Vue.prototype.$f = function(value) {
-  if( !PT[value] ) {
+  if (!PT[value]) {
     console.log('TRANSLATION ERROR: ', value)
     return value
   }
-  return PT[value] 
+  return PT[value]
 }
 Vue.filter('fix', (value) => {
-  if( !PT[value] ) {
+  if (!PT[value]) {
     console.log('TRANSLATION ERROR: ', value)
     return value
   }
-  return PT[value] 
+  return PT[value]
 })
 
 //NOTIFICAÇÕES

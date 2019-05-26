@@ -96,7 +96,7 @@ export default {
   },
   mounted() {
     if (this.user.token !== null) {
-      this.$router.push('/user/edit')
+      location.href = this.$urlPainel + '/profile'
     }
   }
 }
