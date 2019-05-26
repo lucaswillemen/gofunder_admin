@@ -85,7 +85,10 @@ export default {
         .then(response => {
           this.$awn.success("Bem vindo " + response.data.name)
           this.userSet(response.data)
-          this.$router.push('/user/edit')
+          setTimeout(function() {
+            location.href = this.$urlPainel + '/profile'
+          }, 1200)
+
         })
         .catch(err => {
           let validErr = (err && err.response && err.response.data && err.response.data.error)
@@ -95,7 +98,7 @@ export default {
   },
   mounted() {
     if (this.user.token !== null) {
-      this.$router.push('/user/edit')
+        location.href = this.$urlPainel + '/profile'
     }
   }
 }

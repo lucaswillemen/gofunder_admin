@@ -18,19 +18,21 @@ Vue.component('v-select', VueSelect.VueSelect);
 // PARTE DA TRADUÇÃO
 import PT from './translation/pt.js'
 
+Vue.prototype.$urlPainel = 'https://devv.gofunder.io'
+
 Vue.prototype.$f = function(value) {
-  if( !PT[value] ) {
+  if (!PT[value]) {
     console.log('TRANSLATION ERROR: ', value)
     return value
   }
-  return PT[value] 
+  return PT[value]
 }
 Vue.filter('fix', (value) => {
-  if( !PT[value] ) {
+  if (!PT[value]) {
     console.log('TRANSLATION ERROR: ', value)
     return value
   }
-  return PT[value] 
+  return PT[value]
 })
 
 //NOTIFICAÇÕES
