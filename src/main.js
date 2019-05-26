@@ -17,6 +17,12 @@ import money from 'v-money'
 
 Vue.prototype.$url = 'https://api.gofunder.io/'
 
+Vue.prototype.$resetObj = (obj) => {
+  Object.keys(obj).map(key => {
+    if (obj[key] instanceof Array) obj[key] = []
+    else obj[key] = null
+  })
+}
 Vue.config.productionTip = false
 Vue.use(VueMaterial)
 Vue.use(require('vue-moment'));

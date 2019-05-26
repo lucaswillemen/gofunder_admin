@@ -13,7 +13,7 @@
           <md-field>
             <md-icon>show_chart</md-icon>
             <label>Porcentagem da cota</label>
-            <md-input v-model="number" max="100" min="0"></md-input>
+            <md-input v-model="cotaAdd.percent" max="100" min="0"></md-input>
             <span class="md-helper-text">Digite aqui de 0 a 70% do quanto das suas vendas você quer distrubir nessa cota</span>
           </md-field>
         </div>
@@ -21,7 +21,7 @@
           <md-field>
             <md-icon>people</md-icon>
             <label>Número de pessoas</label>
-            <md-input v-model="number" max="1000" min="0"></md-input>
+            <md-input v-model="cotaAdd.stock" max="1000" min="0"></md-input>
             <span class="md-helper-text">Coloque aqui o número de pessoas que vão poder adquirir essa cota. A porcetagem da cota é dividido entre essas pessoas</span>
           </md-field>
         </div>
@@ -31,10 +31,10 @@
           <md-field>
             <md-icon>event</md-icon>
             <label>Qual tempo de expiração da cota?</label>
-            <md-select v-model="movie" name="movie" id="movie">
-              <md-option value="fight-club">12 meses</md-option>
-              <md-option value="godfather">24 meses</md-option>
-              <md-option value="godfather-ii">36 meses</md-option>
+            <md-select v-model="cotaAdd.expiry" name="movie" id="movie">
+              <md-option value="12months">12 meses</md-option>
+              <md-option value="24months">24 meses</md-option>
+              <md-option value="36months">36 meses</md-option>
             </md-select>
             <span class="md-helper-text">Você pode definir tempo de expiração pras cotas vendidas vigorando a partir do lançamento no marketplace</span>
           </md-field>
@@ -43,7 +43,7 @@
           <md-field>
             <md-icon>monetization_on</md-icon>
             <label>Qual doação mínima?</label>
-            <md-input v-model="number" min="0"></md-input>
+            <md-input v-model="cotaAdd.min_donation" min="0"></md-input>
             <span class="md-helper-text">Coloque aqui a doação mínima que a pessoa deve doar para ter direito à essa cota</span>
           </md-field>
         </div>
@@ -52,7 +52,7 @@
 
     <md-dialog-actions>
       <md-button class="md-primary" @click="createQuota = false">Fechar</md-button>
-      <md-button class="md-primary md-raised" @click="createQuota = false">
+      <md-button class="md-primary md-raised" @click="addCota()" >
         <md-icon style="color:white;">save</md-icon> Criar Cota
       </md-button>
     </md-dialog-actions>
@@ -70,10 +70,10 @@
 
         <br />
         <br />
-        <span class="md-title">
+        <span class="md-title" v-if="cotaList.length > 0">
           Cotas Criadas
         </span>
-        <md-table>
+        <md-table v-if="cotaList.length > 0">
           <md-table-row>
             <md-table-head md-numeric>Doação Mínima</md-table-head>
             <md-table-head>Porcentagem</md-table-head>
@@ -81,13 +81,13 @@
             <md-table-head>Expiração</md-table-head>
             <md-table-head>Apagar</md-table-head>
           </md-table-row>
-          <md-table-row slot="md-table-row" v-for="item in users">
-            <md-table-cell md-label="Doação mínima" md-sort-by="value">{{ item.value }}</md-table-cell>
+          <md-table-row slot="md-table-row" v-for="item in cotaList">
+            <md-table-cell md-label="Doação mínima" md-sort-by="value">{{ item.min_donation }}</md-table-cell>
             <md-table-cell md-label="Porcentagem" md-sort-by="value">{{ item.percent }}</md-table-cell>
-            <md-table-cell md-label="Número máximo de cotistas" md-sort-by="value">{{ item.quotas }}</md-table-cell>
+            <md-table-cell md-label="Número máximo de cotistas" md-sort-by="value">{{ item.stock }}</md-table-cell>
             <md-table-cell md-label="Expiração" md-sort-by="value">{{ item.expiry }}</md-table-cell>
-            <md-table-cell md-label="Expiração" md-sort-by="value">
-              <md-icon class="md-mini-xs" @click="deleteQuota(item.id)">delete</md-icon>
+            <md-table-cell md-label="Ação" md-sort-by="value">
+              <md-button class="md-accent"  @click="delCota(item.id)">  <md-icon class="md-mini-xs">delete</md-icon></md-button>
             </md-table-cell>
           </md-table-row>
         </md-table>
@@ -102,42 +102,62 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   data: () => ({
     search: null,
     createQuota: false,
     searched: [],
-    quota: {
+    cotaAdd: {
       stock: 0,
-      amount: 0,
+      min_donation: 0,
       percent: 0,
-      stock: 0,
-      expiry: null
+      expiry: '12months'
     },
-    users: [{
-        percent: '10%',
-        value: '$100,00',
-        quotas: 1500,
-        expiry: '12 meses'
-      },
-      {
-        percent: '30%',
-        value: '$1000,00',
-        quotas: 1500,
-        expiry: '12 meses'
-      },
-      {
-        percent: '50%',
-        value: '$10000,00',
-        quotas: 1500,
-        expiry: '36 meses'
-      }
-    ]
+    cotaList: []
   }),
+  computed: {
+    ...mapState(["user"])
+  },
   methods: {
-    deleteQuota() {
-      alert("Cota deletada")
+    delCota(cota_id) {
+      global
+        .$post("/CampaignInfo/Cota/delete", {id: cota_id}, this.user.token)
+        .then(response => {
+        })
+        .catch(err => {
+        })
+        .finally(err => {
+          this.listCotas()
+        })
     },
+    listCotas() {
+      global
+        .$get("/CampaignInfo/Cota/get?campaign_id="+ this.$route.params.id, {}, this.user.token)
+        .then(response => {
+          this.cotaList = response.data
+        })
+        .catch(err => {
+        })
+    },
+    addCota() {
+      let params = this.cotaAdd
+      params.campaign_id = this.$route.params.id
+      global
+        .$post("/CampaignInfo/Cota/add", params, this.user.token)
+        .then(response => {
+          alert("Cota adicionada")
+        })
+        .catch(err => {
+          alert("Erro adicionar cota")
+        })
+        .finally(err => {
+          this.createQuota = false
+          this.$resetObj(this.cotaAdd)
+          this.listCotas()
+        })
+    },
+
     newUser() {
       window.alert('Noop')
     },
@@ -156,6 +176,9 @@ export default {
   },
   created() {
     this.searched = this.users
+  },
+  mounted() {
+    this.listCotas()
   }
 }
 </script>

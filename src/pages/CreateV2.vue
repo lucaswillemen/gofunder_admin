@@ -79,12 +79,13 @@
 					</div>
 					<br>
 					<div style="width: 50%;margin:auto;">
-						<md-field :class="getValidationClass('accept_bitcoin')">
+						<md-field :class="getValidationClass('payment_method')">
 							<md-icon>attach_money</md-icon>
 							<label>Você deseja receber em criptomoedas?</label>
-							<md-select v-model="form.accept_bitcoin">
-								<md-option value="yes">Sim, desejo receber em criptos</md-option>
-								<md-option value="no">Não, apenas quero receber dólar</md-option>
+							<md-select v-model="form.payment_method">
+								<md-option value="bitcoin">Desejo receber em Bitcoin</md-option>
+								<md-option value="dollar">Desejo receber em Dólar</md-option>
+								<md-option value="dollar_and_bitcoin">Desejo receber em Dólar e Bitcoin</md-option>
 							</md-select>
 							<span class="md-error">Escolha se deseja aceitar criptomoedas ou não</span>
 							<span
@@ -100,6 +101,7 @@
 							<md-select v-model="form.flexible">
 								<md-option value="flexible">Arrecadação Flexível</md-option>
 								<md-option value="static">Arrecadação Fixa</md-option>
+								<md-option value="everything_or_nothing">Tudo ou Nada</md-option>
 							</md-select>
 							<span
 								class="md-helper-text"
@@ -283,7 +285,7 @@ export default {
 				country: null,
 				amount: null,
 				flexible: null,
-				accept_bitcoin: null,
+				payment_method: null,
 				cover_url: null,
 				product_stage: null,
 				finishAt: null,
@@ -323,7 +325,7 @@ export default {
 			flexible: {
 				required
 			},
-			accept_bitcoin: {
+			payment_method: {
 				required
 			},
 			cover_url: {
@@ -415,7 +417,7 @@ export default {
 				});
 		},
 		editProject() {
-			window.location.href = '/edit/' + this.projectID 
+			window.location.href = '/edit/' + this.projectID
 		}
 	},
 	mounted() {
