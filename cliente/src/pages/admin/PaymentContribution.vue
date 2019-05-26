@@ -584,9 +584,11 @@ export default {
     login() {
       global.$post("/Auth/login", this.loginForm)
         .then(response => {
-          this.$refs['login-modal'].close()
+          this.$refs['login-modal'].hide()
           this.$awn.success("Bem vindo " + response.data.name)
           this.userSet(response.data)
+          this.donator.email = this.user.email
+          this.donator.name = this.user.name
         })
         .catch(err => {
           let validErr = (err && err.response && err.response.data && err.response.data.error)
