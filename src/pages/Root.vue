@@ -21,7 +21,7 @@
       </div>
     </md-app-toolbar>
 
-    <md-app-drawer :md-active.sync="menuVisible" md-persistent="mini" class="backgroundSidebar">
+    <md-app-drawer :md-active.sync="menuVisible"  class="backgroundSidebar">
 
       <md-toolbar class="md-transparent" md-elevation="0">
 
