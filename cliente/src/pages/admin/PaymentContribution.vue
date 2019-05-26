@@ -1,13 +1,54 @@
 <template>
 <div class="paymentContribution">
   <main-header></main-header>
+  <b-modal id="login-modal" ref="login-modal" :no-close-on-backdrop="true" :hide-header="true" :hide-footer="true" centered>
+     <div class="container wrap-login center">
+        <b-row>
+          <b-col lg="12">
+            <div class="login">
+              <div class="title mtop mbottom">
+                <span class="blue" style="font-weight: 500">{{"LOGIN::Você precisa estar logado para receber a sua recompensa!"|fix}}</span>
+              </div>
+              <div @keyup.enter="login()">
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <font-awesome-icon :icon="['fas', 'user']" />
+                    </span>
+                  </div>
+                  <b-form-input v-model="loginForm.email" type="email" :placeholder="$f('LOGIN::Digite seu e-mail')"></b-form-input>
+                </div>
+
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <font-awesome-icon :icon="['fas', 'lock']" />
+                    </span>
+                  </div>
+                  <b-form-input type="password" v-model="loginForm.password" :placeholder="$f('LOGIN::Digite sua senha')"></b-form-input>
+                </div>
+               
+              </div>
+              <div class="title mtop mbottom">
+                <span>{{"LOGIN::Novo no Portal?"|fix}} <a href="/#/register" class="orange"><b>{{"LOGIN::Cadastre-se"|fix}}</b></a></span>
+              </div>
+              <div class="btn-border-blue">
+                <b-button>
+                  <font-awesome-icon :icon="['fab', 'facebook']" />{{"LOGIN::Entrar com Facebook"|fix}}</b-button>
+              </div>
+              <b-button variant="primary" :disabled="!loginForm.email || !loginForm.password" class="float-right" @click="login()">Login</b-button>
+            </div>
+          </b-col>
+        </b-row>
+      </div>
+  </b-modal>
   <div class="container mt-5 mb-5">
     <b-row>
       <b-col cols="12" md="7" class="wrap-left pageContribution">
         <b-row>
           <b-col>
             <div class="mb-5">
-              <small>Você está contribuindo com {{campaign.owner_name}}</small>
+              <small>Você está contribuindo com <span class="blue" style="font-weight: 600;">{{campaign.owner_name}}</span></small>
               <h4>{{campaign.title}}</h4>
             </div>
             <div v-if="!user.token">
@@ -35,41 +76,42 @@
                   Checkout com conta autenticada
                 </h6>
                 <div class="userImg">
-                  <img class="img" v-bind:src='user && user.img ? this.$apiEndpoint+"/uploads/profile/"+user.img : "/static/anonymous-icon.svg"'></img>
-                </div>
+                  <img style="border-radius: 100px;height:75px;width:75px;margin-top:5px" :src="(campaign && campaign.owner_image ? $apiEndpoint+campaign.owner_image : '/static/anonymous-icon.svg')  ">                </div>
                 <div class="user">
                   <div class="name">{{user.name}}</div>
                   <div class="email">{{user.email}}</div>
-                  <div class="logout">
+                  <!-- <div class="logout">
                     <a href="/#/login"><span class="orange">Logout</span></a>
-                  </div>
+                  </div> -->
                 </div>
               </div>
-
-              <b-row>
-                <b-col cols="6" style="padding-right:3px;">
-                  <b-input-group prepend="<i class='fa fa-user'></i>">
-                    <b-form-input :disabled="bitcoinPaymentProcessing" type="text" v-model="donator.name" placeholder="Nome do doador"></b-form-input>
-                  </b-input-group>
-                </b-col>
-                <b-col cols="6" style="padding-left:3px;">
-                  <b-input-group prepend="<i class='fa fa-envelope'></i>">
-                    <b-form-input :disabled="bitcoinPaymentProcessing" type="text" v-model="donator.email" placeholder="E-mail doador"></b-form-input>
-                  </b-input-group>
-                </b-col>
-              </b-row>
+              <div v-if="selectedDonationTitleInfo != 'anonymous'">
+                Nome e email que aparecerão na doação:
+                <b-row >
+                  <b-col cols="6" style="padding-right:3px;">
+                    <b-input-group prepend="<i class='fa fa-user'></i>">
+                      <b-form-input :disabled="bitcoinPaymentProcessing" type="text" v-model="donator.name" placeholder="Nome do doador"></b-form-input>
+                    </b-input-group>
+                  </b-col>
+                  <b-col cols="6" style="padding-left:3px;">
+                    <b-input-group prepend="<i class='fa fa-envelope'></i>">
+                      <b-form-input :disabled="bitcoinPaymentProcessing" type="text" v-model="donator.email" placeholder="E-mail doador"></b-form-input>
+                    </b-input-group>
+                  </b-col>
+                </b-row>
+              </div>
             </div>
           </b-col>
         </b-row>
-        <b-row class="mt-5">
+        <b-row class="mt-4">
           <b-col lg="6" class="mt-4">
             <div>
               <h6>Exibição da contribuição</h6>
               <small>Escolha um nome para ser exibido publicamente ao lado de sua contribuição na página da campanha.</small>
             </div>
             <b-form-group>
-              <b-form-checkbox-group :disabled="bitcoinPaymentProcessing || cardProcessing" stacked v-model="selectedDonationTitleInfo" name="name" :options="donationTitleInfo" class="checkboxes checkbox-block">
-              </b-form-checkbox-group>
+              <b-form-radio-group :disabled="bitcoinPaymentProcessing || cardProcessing" stacked v-model="selectedDonationTitleInfo" :options="donationTitleInfo" class="radios radio-block">
+              </b-form-radio-group>
             </b-form-group>
           </b-col>
           <b-col lg="6" class="mt-4">
@@ -78,8 +120,8 @@
               <small>Escolha um método de pagamento para ser utilizado na doação da campanha.</small>
             </div>
             <b-form-group>
-              <b-form-checkbox-group :disabled="bitcoinPaymentProcessing || cardProcessing" stacked v-model="selectedMethodPayment" name="name" :options="methodsPayment" class="checkboxes checkbox-block">
-              </b-form-checkbox-group>
+              <b-form-radio-group :disabled="bitcoinPaymentProcessing || cardProcessing" stacked v-model="selectedMethodPayment" :options="methodsPayment" class="radios radio-block">
+              </b-form-radio-group>
             </b-form-group>
           </b-col>
         </b-row>
@@ -95,7 +137,7 @@
             <b-col cols="12" md="6">
               <!--<h6 v-if="!user.token">Cartão de Crédito</h6>
                 <h6 v-if="user.token">Pagar com outro cartão de crédito</h6>!-->
-              <div class="card-wrapper" />
+              <div class="card-wrapper"></div>
             </b-col>
             <b-col cols="12" lg="6" class="card-form">
               <h6 class="mb-4">Insira os dados do cartão</h6>
@@ -128,7 +170,7 @@
             </b-col>
           </b-row>
         </div>
-        <div class="mt-5" v-show="havePerk && worldCountries.length">
+        <div class="mt-5" v-show="haveReward && worldCountries.length">
           <div class="mb-3">
             <h6>Detalhes para entrega</h6>
             <small>Os detalhes da entrega servirão para receber o produto de recompensa após a doação.</small>
@@ -152,7 +194,7 @@
                 <v-select class="adjustCountriesSelect" placeholder="Pais" v-model="delivery.country" :options="worldCountries" label="label">
                   <template slot="option" slot-scope="option">
                     <span :class="option.icon"></span>
-                    ({{option.priceShipping}} {{campaign.coin_type}}) {{option.label}}
+                    ({{option.country_code}}) {{option.country_name}}
                   </template>
                 </v-select>
 
@@ -186,87 +228,80 @@
       <b-col v-show="!bitcoinPaymentProcessing && !cardProcessing" cols="12" md="5" class="wrap-right pageContribution">
         <div class="buy-wrap">
           <div class="mt-3">
-            <h5 class="mb-2">
-              VALOR DE CONTRIBUIÇÃO
+            <h5 class="mb-2 reward-info-title">
+              Valor de contribuição
             </h5>
 
             <b-input-group size="sm" :prepend="$" class="mb-1">
-              <b-form-input type="number" v-model="donator.value" step="0.01" placeholder="Valor para Doação"></b-form-input>
+              <b-form-input type="number" v-model="donator.value" step="0.01" placeholder="Valor para Doação" min="0"></b-form-input>
             </b-input-group>
 
-
-            <div class="subtitle text-danger" v-show="donator.value < minDonationValue">
-              Sua recompensa deve ser maior que {{minDonationValue | currency}}
+             <!-- PERK -->
+            <div v-if="campaign.perk != null" class="subtitle text-danger" v-show="donator.value < Number(campaign.perk.price)">
+              Sua recompensa deve ser maior que {{campaign.perk.price | currency}}
+            </div>
+            <!-- Cota -->
+            <div v-if="campaign.cota != null" class="subtitle text-danger" v-show="donator.value < Number(campaign.min_donation)">
+              Sua recompensa deve ser maior que {{campaign.cota.min_donation | currency}}
             </div>
           </div>
 
 
-
-          <div v-show="havePerk">
+          <!-- PERK -->
+          <div v-if="campaign.perk != null">
             <div style="margin-top:50px;">
-              <h5>
-                DADOS DA RECOMPENSA
+              <h5 class="reward-info-title">Dados da Recompensa
               </h5>
               <div>
-                <div style="font-size:15px;font-weight:500">
-
-                  {{this.perkInfo.perk_title}}
+                <div class="reward-title" style="font-size:15px;font-weight:500">{{campaign.perk.name}}
                 </div>
-                <div style="font-size:13px;">
-                  {{this.perkInfo.perk_description}}
+                <div class="reward-description" style="font-size:13px;">{{campaign.perk.description}}
                 </div>
               </div>
 
-              <div>
-                <div class="datePerk" style="margin-top:35px;font-size:14px;font-weight:400">
-                  SEUS ITENS
+              <div v-if="campaign.perk.shipping_price > 0">
+                <div class="mb-2 reward-info-title" style="margin-top:50px;font-size:15px;">
+                  Dados da Entrega
                 </div>
-                <div class="datePerkDescription" style="font-size:12px;">
-                  <div v-for="item in perkItems" class="ml-2">
-                    {{item.title}}
-                    <i class="removeBorderSelect">
-                      <select class="form-control_aqui form-control" v-on:input="react()" v-for="(item_values, item_param) in  item.options" v-model="itemsSelected[item.id][item_param]">
-                        <option>{{item_param}}</option>
-                        <option v-for="item_value in item_values">{{item_value}}</option>
-                      </select>
-                    </i>
-                    <br>
-                  </div>
-
+                <div style="font-size:12px;">
+                  Data: {{campaign.perk.shipping_date}}
                 </div>
+                 <div style="font-size:12px;">
+                  Frete: {{campaign.perk.shipping_price | currency}}
+                </div>
+                
               </div>
-
+              <div class="mt-2 no-shipping" v-else>
+                  Esta recompensa não possui entrega!
+              </div>
+            </div>
+          </div>
+          
+          <!-- COTAS -->
+          <div v-if="campaign.cota != null">
+            <div style="margin-top:50px;">
+              <h5 class="reward-info-title">Dados da Recompensa
+              </h5>
               <div>
-                <div class="datePerk" style="margin-top:50px;font-size:15px;font-weight:500">
-                  Data Estimada Entrega
+                <div class="reward-description" style="font-size:13px;">{{campaign.cota.percent}}% do valor de todas vendas dessa campanha serão convertidos para você!
                 </div>
-                <div class="datePerkDescription" style="font-size:12px;">
-                  {{this.perkInfo.perk_delivery_date}}
-                </div>
+                <div class="reward-description" style="font-size:13px;">Tempo de validade da cota: {{campaign.cota.expiry}}</div>
+                <div class="orange mt-2" style="font-weight: 600; font-size:13px;">Obs: A porcentagem da venda será dividida entre {{campaign.cota.peoples}} pessoas</div>
               </div>
             </div>
           </div>
 
+
           <hr class="mt-3 mb-3">
-          </hr>
-          <b-row v-show="havePerk">
+          <b-row v-show="haveReward">
             <b-col cols="7">
               <div>
-                <h5>VALOR</h5>
-              </div>
-            </b-col>
-            <b-col cols="5">
-              <div>
-                <span style="font-size:14px;font-weight:450">Frete {{(!this.delivery.country.priceShipping ? 0 : this.delivery.country.priceShipping) | currency}}</span>
-              </div>
-              <div>
-                <div>
-                  <span style="font-size:14px;font-weight:450;">Total {{donator.value | currency}}</span>
-                </div>
+                <span v-if="campaign.perk != null" style="font-size:14px;font-weight:450">Total: {{(Number(donator.value) + Number(campaign.perk.shipping_price)) | currency}}</span>
+                <span v-if="campaign.cota != null" style="font-size:14px;font-weight:450">Total: {{Number(donator.value) | currency}}</span>
               </div>
             </b-col>
           </b-row>
-          <b-row class="mt-5" v-show="!havePerk">
+          <b-row class="mt-5" v-show="!haveReward">
             <b-col cols="8">
               <h5>VALOR</h5>
             </b-col>
@@ -387,6 +422,10 @@ export default {
     }
   },
   mounted() {
+    if((this.$route.params.type == 'PERK' || this.$route.params.type == 'COTA') && !this.user.token) {
+      this.$refs['login-modal'].show()
+      
+    }
     this.mountCardComponent()
     this.loadCampaignData()
     if (this.user.token != '') {
@@ -396,14 +435,18 @@ export default {
   },
   data() {
     return {
+      loginForm: {
+        email: '',
+        password: '',
+      },
       cardProcessing: false,
       cardError: false,
       cardPayed: false,
-      intervalRecheckBitcoinPayment: null,
+      // intervalRecheckBitcoinPayment: null,
       selectedMethodPayment: 'card',
-      selectedDonationTitleInfo: 'anonymous',
-      havePerk: false,
-      minDonationValue: 2,
+      selectedDonationTitleInfo: 'public',
+      haveReward: false,
+      minDonationValue: null,
       bitcoinPaymentProcessing: false,
       bitcoinPayedProcessed: false,
       bitcoinPaymentInfo: {
@@ -458,58 +501,16 @@ export default {
     }
   },
   beforeDestroy() {
-    if (this.intervalRecheckBitcoinPayment) {
-      clearInterval(this.intervalRecheckBitcoinPayment)
-    }
+    // if (this.intervalRecheckBitcoinPayment) {
+    //   clearInterval(this.intervalRecheckBitcoinPayment)
+    // }
   },
   methods: {
+    ...mapActions('user', ['userSet']),
     retryPay() {
       this.cardProcessing = false
       this.cardPayed = false
       this.cardError = false
-    },
-    isCompleteSelectionItem() {
-      if (!this.perkItems.length || !this.havePerk)
-        return 'VALID'
-      for (var i in this.perkItems) {
-        for (var x in this.perkItems[i].options) {
-          if (!this.itemsSelected[this.perkItems[i].id]) return 'INVALID_ITEM'
-          if (!this.itemsSelected[this.perkItems[i].id][x]) return 'INVALID_ITEM'
-          if (this.itemsSelected[this.perkItems[i].id][x] == x) return 'INVALID_ITEM'
-        }
-      }
-      return 'VALID'
-    },
-    react() {
-      let name = this.donator.name
-      this.donator.name = ""
-      this.donator.name = name
-    },
-    isCompleteLocation() {
-      if (!this.worldCountries.length || !this.havePerk)
-        return 'VALID';
-      if (!this.delivery.country)
-        return 'COUNTRY'
-      if (!this.delivery.address || !this.delivery.city || !this.delivery.state)
-        return 'ADDRESS, CITY, STATE'
-      if (!this.delivery.name || !this.delivery.phone || !this.delivery.zipcode)
-        return 'NAME, PHONE, ZIPCODE'
-      return 'VALID'
-    },
-    isComplete() {
-      if (this.isCompleteSelectionItem() != 'VALID')
-        return this.isCompleteSelectionItem()
-      if (this.isCompleteLocation() != 'VALID')
-        return this.isCompleteLocation()
-      if (this.selectedDonationTitleInfo !== 'public' && this.selectedDonationTitleInfo !== 'anonymous')
-        return 'DONATION'
-      if (this.selectedMethodPayment !== 'card' && this.selectedMethodPayment !== 'bitcoin')
-        return 'METHOD'
-      if (!this.donator.name || !this.donator.email || this.donator.value < this.minDonationValue)
-        return 'DONATOR_INFO'
-      if (this.selectedMethodPayment == 'card' && (!this.card.name || !this.card.number || !this.card.expiry || !this.card.cvc))
-        return 'CARD'
-      return 'VALID'
     },
     copyToClipboard(value) {
       this.$copyText(value).then((e) => {
@@ -541,7 +542,7 @@ export default {
               donator_email: this.donator.email,
               campaign_id: this.$route.params.id,
               donator_type: this.selectedDonationTitleInfo,
-              perk: this.havePerk,
+              perk: this.haveReward,
               perk_id: this.perkInfo.id ? this.perkInfo.id : 0,
               perk_delivery: JSON.stringify(this.delivery),
               perk_options: JSON.stringify(this.itemsSelected)
@@ -559,46 +560,37 @@ export default {
         })
 
     },
-    recheckBitcoinPayment() {
-      var self = this
-      this.intervalRecheckBitcoinPayment = setInterval((self) => {
-        if (self.bitcoinPaymentInfo.timeout > 0) {
-          self.bitcoinPaymentInfo.timeout = self.bitcoinPaymentInfo.timeout - 1
-          if (!(self.bitcoinPaymentInfo.timeout % 10)) {
-            global.$post("/DonationBitcoin/checkState", {
-                txn_id: self.bitcoinPaymentInfo.txn_id
-              })
-              .then(response => {
-                self.bitcoinPayedProcessed = true
-                self.bitcoinPaymentProcessing = true
-              })
-              .catch(err => {})
-          }
-        }
-      }, 1000, this)
-    },
+    // recheckBitcoinPayment() {
+    //   var self = this
+    //   this.intervalRecheckBitcoinPayment = setInterval((self) => {
+    //     if (self.bitcoinPaymentInfo.timeout > 0) {
+    //       self.bitcoinPaymentInfo.timeout = self.bitcoinPaymentInfo.timeout - 1
+    //       if (!(self.bitcoinPaymentInfo.timeout % 10)) {
+    //         global.$post("/DonationBitcoin/checkState", {
+    //             txn_id: self.bitcoinPaymentInfo.txn_id
+    //           })
+    //           .then(response => {
+    //             self.bitcoinPayedProcessed = true
+    //             self.bitcoinPaymentProcessing = true
+    //           })
+    //           .catch(err => {})
+    //       }
+    //     }
+    //   }, 1000, this)
+    // },
     getBitcoinPayment() {
-      this.$awn.asyncBlock(global.$post("/DonationBitcoin/simpleDonation", {
-          donator_value: this.donator.value,
-          donator_name: this.donator.name,
-          donator_email: this.donator.email,
-          campaign_id: this.$route.params.id,
-          donator_type: this.selectedDonationTitleInfo,
-          perk: this.havePerk,
-          perk_id: this.perkInfo.id ? this.perkInfo.id : 0,
-          perk_delivery: JSON.stringify(this.delivery),
-          perk_options: JSON.stringify(this.itemsSelected)
-        }, this.user.token))
+     
+    },
+    login() {
+      global.$post("/Auth/login", this.loginForm)
         .then(response => {
-          if (response.data.MSG.error !== "ok") {
-            return this.$awn.alert(response.data.MSG.error)
-          }
-          this.bitcoinPaymentProcessing = true
-          this.bitcoinPaymentInfo = response.data.MSG.result
-          this.recheckBitcoinPayment()
+          this.$refs['login-modal'].close()
+          this.$awn.success("Bem vindo " + response.data.name)
+          this.userSet(response.data)
         })
         .catch(err => {
-          return this.$awn.alert("Não foi possível processar pagamento!")
+          let validErr = (err && err.response && err.response.data && err.response.data.error)
+          this.$awn.alert(validErr ? err.response.data.error : "INVALID_ERROR")
         })
     },
     mountCardComponent() {
@@ -613,75 +605,136 @@ export default {
         }
       })
     },
+    loadCountries() {
+      global.$post("/Donation/countries", {}, this.user.token)
+      .then(response => {
+        this.worldCountries = response.data
+      })
+      .catch(err => {
+        this.$awn.alert("Ocorreu um erro ao resgatar as informações dos países!")
+
+      })
+    },
     loadCampaignData() {
-      global.$post("/Campaign/get_public", {
-          id: this.$route.params.id
-        }, this.user.token)
+      let data = {
+        campaign_id: this.$route.params.campaign_id
+      }
+      if(this.$route.params.type == "PERK") data.perk_id = this.$route.params.reward_id
+      if(this.$route.params.type == "COTA") data.cota_id = this.$route.params.reward_id
+      global.$post("/Donation/info", data, this.user.token)
         .then(response => {
-          this.campaign = response.data.MSG
-          for (var i in this.campaign.perks) {
-            if (this.campaign.perks[i].id != this.$route.params.perk) {
-              continue;
-            }
-            this.havePerk = true
-            this.perkInfo = this.campaign.perks[i]
-            try {
-              this.campaign.perk_shipping_info = JSON.parse(this.campaign.perks[i].perk_shipping_info)
-            } catch (exp) {}
-            try {
-              this.campaign.perk_item_info = JSON.parse(this.campaign.perks[i].perk_item_info)
-            } catch (exp) {}
-            if (this.campaign.perk_item_info.length == 0) {
-              return this.havePerk = false
-            }
-            this.minDonationValue = this.perkInfo.perk_min_donation
-            this.donator.value = this.minDonationValue
-            for (var j in this.campaign.perk_item_info) {
-              let item_options = new Object()
-              for (var x in this.campaign.perk_item_info[j].options) {
-                if (!item_options[this.campaign.perk_item_info[j].options[x].param]) {
-                  item_options[this.campaign.perk_item_info[j].options[x].param] = []
-                }
-                if (!this.itemsSelected[this.campaign.perk_item_info[j].id]) {
-                  this.itemsSelected[this.campaign.perk_item_info[j].id] = {}
-                }
-                if (!this.itemsSelected[this.campaign.perk_item_info[j].id][this.campaign.perk_item_info[j].options[x].param]) {
-                  this.itemsSelected[this.campaign.perk_item_info[j].id][this.campaign.perk_item_info[j].options[x].param] = this.campaign.perk_item_info[j].options[x].param
-                }
-                item_options[this.campaign.perk_item_info[j].options[x].param].push(this.campaign.perk_item_info[j].options[x].value)
-              }
-              this.perkItems.push({
-                title: this.campaign.perk_item_info[j].title,
-                id: this.campaign.perk_item_info[j].id,
-                options: JSON.parse(JSON.stringify(item_options))
-              })
-            }
+          console.log(response)
+          this.campaign = response.data
+          this.loadCountries()
+          if(this.$route.params.type == "PERK") {
+            this.donator.value = response.data.perk.price
           }
-          let configCountries = []
-          for (var i in this.campaign.perk_shipping_info) {
-            configCountries[this.campaign.perk_shipping_info[i].locale.value] = this.campaign.perk_shipping_info[i].price
+          if(this.$route.params.type == "COTA") {
+            this.donator.value = response.data.cota.min_donation
           }
-          var countries = require('@/assets/country.json')
-          for (var i in countries) {
-            if (countries[i].value == 'ALL') continue
-            if (countries[i].value == 'REST') continue
-            countries[i].priceShipping = -1
-            if (configCountries['ALL']) {
-              countries[i].priceShipping = configCountries['ALL']
-            } else if (configCountries[countries[i].value]) {
-              countries[i].priceShipping = configCountries[countries[i].value]
-            } else if (configCountries['REST']) {
-              countries[i].priceShipping = configCountries['REST']
-            }
-            if (countries[i].priceShipping != -1) {
-              this.worldCountries.push(countries[i])
-            }
-          }
+          this.haveReward = true
+      //     this.campaign = response.data.MSG
+      //     for (var i in this.campaign.perks) {
+      //       if (this.campaign.perks[i].id != this.$route.params.perk) {
+      //         continue;
+      //       }
+      //       this.haveReward = true
+      //       this.perkInfo = this.campaign.perks[i]
+      //       try {
+      //         this.campaign.perk_shipping_info = JSON.parse(this.campaign.perks[i].perk_shipping_info)
+      //       } catch (exp) {}
+      //       try {
+      //         this.campaign.perk_item_info = JSON.parse(this.campaign.perks[i].perk_item_info)
+      //       } catch (exp) {}
+      //       if (this.campaign.perk_item_info.length == 0) {
+      //         return this.haveReward = false
+      //       }
+      //       this.minDonationValue = this.perkInfo.perk_min_donation
+      //       this.donator.value = this.minDonationValue
+      //       for (var j in this.campaign.perk_item_info) {
+      //         let item_options = new Object()
+      //         for (var x in this.campaign.perk_item_info[j].options) {
+      //           if (!item_options[this.campaign.perk_item_info[j].options[x].param]) {
+      //             item_options[this.campaign.perk_item_info[j].options[x].param] = []
+      //           }
+      //           if (!this.itemsSelected[this.campaign.perk_item_info[j].id]) {
+      //             this.itemsSelected[this.campaign.perk_item_info[j].id] = {}
+      //           }
+      //           if (!this.itemsSelected[this.campaign.perk_item_info[j].id][this.campaign.perk_item_info[j].options[x].param]) {
+      //             this.itemsSelected[this.campaign.perk_item_info[j].id][this.campaign.perk_item_info[j].options[x].param] = this.campaign.perk_item_info[j].options[x].param
+      //           }
+      //           item_options[this.campaign.perk_item_info[j].options[x].param].push(this.campaign.perk_item_info[j].options[x].value)
+      //         }
+      //         this.perkItems.push({
+      //           title: this.campaign.perk_item_info[j].title,
+      //           id: this.campaign.perk_item_info[j].id,
+      //           options: JSON.parse(JSON.stringify(item_options))
+      //         })
+      //       }
+      //     }
+      //     let configCountries = []
+      //     for (var i in this.campaign.perk_shipping_info) {
+      //       configCountries[this.campaign.perk_shipping_info[i].locale.value] = this.campaign.perk_shipping_info[i].price
+      //     }
+      //     var countries = require('@/assets/country.json')
+      //     for (var i in countries) {
+      //       if (countries[i].value == 'ALL') continue
+      //       if (countries[i].value == 'REST') continue
+      //       countries[i].priceShipping = -1
+      //       if (configCountries['ALL']) {
+      //         countries[i].priceShipping = configCountries['ALL']
+      //       } else if (configCountries[countries[i].value]) {
+      //         countries[i].priceShipping = configCountries[countries[i].value]
+      //       } else if (configCountries['REST']) {
+      //         countries[i].priceShipping = configCountries['REST']
+      //       }
+      //       if (countries[i].priceShipping != -1) {
+      //         this.worldCountries.push(countries[i])
+      //       }
+      //     }
         })
         .catch(err => {
           this.$awn.alert("Ocorreu um erro ao resgatar as informações")
         })
-    }
+    },
+    validateEmail(email) {
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+    },
+    isCompleteLocation() {
+      if (!this.worldCountries.length || !this.haveReward)
+        return 'VALID';
+      if (!this.delivery.country)
+        return 'COUNTRY'
+      if (!this.delivery.address || !this.delivery.city || !this.delivery.state)
+        return 'ADDRESS, CITY, STATE'
+      if (!this.delivery.name || !this.delivery.phone || !this.delivery.zipcode)
+        return 'NAME, PHONE, ZIPCODE'
+      return 'VALID'
+    },
+    isComplete() {
+      if (this.isCompleteLocation() != 'VALID')
+        return this.isCompleteLocation()
+      if (this.selectedDonationTitleInfo !== 'public' && this.selectedDonationTitleInfo !== 'anonymous')
+        return 'DONATION'
+      if (this.selectedMethodPayment !== 'card' && this.selectedMethodPayment !== 'bitcoin')
+        return 'METHOD'
+      if(this.campaign.perk != null) {
+        if (this.donator.value < Number(this.campaign.perk.price) || this.donator.value < 0)
+          return 'DONATOR_INFO'
+      }
+      if(this.campaign.cota != null) {
+        if (this.donator.value < Number(this.campaign.cota.min_donation) || this.donator.value < 0)
+          return 'DONATOR_INFO'
+      }
+      if(this.selectedDonationTitleInfo == 'public' && (!this.donator.name || !this.donator.email || !this.validateEmail(this.donator.email))) {
+          return 'DONATOR_INFO'
+        
+      }
+      if (this.selectedMethodPayment == 'card' && (!this.card.name || !this.card.number || !this.card.expiry || !this.card.cvc))
+        return 'CARD'
+      return 'VALID'
+    },
   }
 
 }
@@ -806,7 +859,7 @@ export default {
                         margin-top: 5px;
                         margin-bottom: 5px;
                     }
-                    .checkboxes {
+                    .radios {
                         margin-left: 10px;
                     }
                 }
@@ -943,6 +996,16 @@ export default {
                 background-color: white;
                 border-radius: 5px;
                 box-shadow: 0 0 7px;
+                .reward-info-title {
+                  color: $blue;
+                  font-weight: 600;
+                }
+                .no-shipping {
+                  color: $orange;
+                  font-size: 1rem;
+                  font-weight: 600;
+                  margin-bottom: 0;	
+                }
             }
         }
     }

@@ -487,7 +487,10 @@
 					font-size: 12px;
 					line-height: 15px;
 				}
-
+				.cota-obs {
+					color: $orange;
+					font-weight: 600;
+				}
 				.delivery,
 				.itens {
 					margin-top: 20px;
@@ -518,6 +521,7 @@
 						font-size: 12px;
 						font-weight: 400;
 					}
+					
 				}
 
 				.totals {

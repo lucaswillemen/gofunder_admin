@@ -76,7 +76,7 @@ export default new Router({
       component: Financial
     },
     {
-      path: '/payment-contribution/:id/:perk?',
+      path: '/payment-contribution/:type/:campaign_id/:reward_id?',
       name: 'PaymentContribution',
       component: PaymentContribution
     }

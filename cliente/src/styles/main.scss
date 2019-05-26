@@ -534,6 +534,45 @@ $white: #f6f6f6;
 		color: $blue;
 	}
 }
+
+.radios {
+	display: flex;
+
+	.custom-radio {
+		margin-right: 30px;
+
+		label {
+			padding-top: 4px;
+		}
+
+		.custom-control-label::before {
+			border-radius: 11px;
+			border: 1px solid $orange;
+			background-color: transparent;
+		}
+
+		.custom-control-input:checked ~ .custom-control-label::before {
+			background-color: $orange;
+		}
+	}
+
+	.custom-radio:hover label {
+		cursor: pointer;
+	}
+}
+
+.radio-block {
+	display: block;
+}
+
+.radios {
+	span {
+		font-size: 12;
+		font-weight: 500;
+		color: $blue;
+	}
+}
+
 // frame com tabs
 .tabbed-frame {
 	.tabs {

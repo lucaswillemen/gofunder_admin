@@ -50,6 +50,8 @@ export default {
 	"LOGIN::Entrar com Facebook":"Entrar com Facebook",
 	"LOGIN::Cadastre-se": "Cadastre-se",
 	"LOGIN::Novo no Portal?":"Novo no Portal?",
+	"LOGIN::Você precisa estar logado para receber a sua recompensa!": "Você precisa estar logado para receber a sua recompensa!",
+
 
 	// components/includes/main-header.vue
 	"MAIN_HEADER::Deslogado com sucesso!" : "Deslogado com sucesso!",

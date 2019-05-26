@@ -63,7 +63,7 @@
               <div class="bar">
                 <span class="total_cash">Total Arrecadado {{campaign.amount_received  | currency}}  ({{campaign.donators}} doadores)</span>
                 <progress-bar :current="currentPercentage"></progress-bar>
-                <span class="meta">Meta de arrecadação <span class="valor">{{campaign.amount  | currency}} </span></span>
+                <span class="meta">Meta de arrecadação <span class="valor">{{campaign.amount | currency}} </span></span>
                 <span class="due-date">Termina em {{campaign.remain_days}} dias</span>
               </div>
               <div class="bottom">
@@ -71,6 +71,11 @@
                   <b-button :href="'/#/payment-contribution/'+campaign.id">Apoiar</b-button>
                 </div>
                 <div class="social">
+                <div style="font-size: 1.5rem;">
+                  <i class="fab fa-facebook link-icon" :style="campaign.content[0].facebook_page? 'color: #496cb5': 'color: #707070; cursor: pointer;'"></i>
+                  <i class="fab fa-instagram link-icon" :style="campaign.content[0].instagram_page? 'color: #d6249f': 'color: #707070; cursor: pointer;'"></i>
+                  <i class="fab fa-youtube link-icon" :style="campaign.content[0].youtube_page? 'color: #ff0000': 'color: #707070; cursor: pointer;'"></i>
+                </div>
                   <!-- <ul class="social-list">
                     <li class="active">
                       <font-awesome-icon :icon="['far', 'heart']" />
@@ -123,11 +128,6 @@
                       </div>!-->
                       <div v-html="campaign.content[0].html">
                       </div>
-                      <div>
-                        <i class="fab fa-facebook link-icon" :style="campaign.content[0].facebook_page? 'color: #496cb5': 'color: #707070; cursor: auto;'"></i>
-                        <i class="fab fa-instagram link-icon" :style="campaign.content[0].instagram_page? 'color: #d6249f': 'color: #707070; cursor: auto;'"></i>
-                        <i class="fab fa-youtube link-icon" :style="campaign.content[0].youtube_page? 'color: #ff0000': 'color: #707070; cursor: auto;'"></i>
-                      </div>
                     </div>
                   </b-tab>
                   <b-tab title="FAQ">
@@ -166,7 +166,7 @@
               </div>
               <!-- {{campaign.perks}} !-->
               <div class="recompensas">
-                <b-card v-for="(rec, index) in campaign.perk" v-bind:key="index" :img-src="$apiEndpoint  + rec.cover_url" img-alt="Card image" style="cursor:pointer;" @click="openDonation(rec.id)"  img-top>
+                <b-card v-for="(rec, index) in campaign.perk" :key="index" :img-src="$apiEndpoint + rec.cover_url" img-alt="Card image" style="cursor:pointer;" @click="openDonationPerk(rec.id)"  img-top>
                   <div class="info">
                     <span class="value" :class="{'has-discount': rec.discount > 0 && rec.discount}">Doação Mínima <span class="price">{{rec.price | currency}}</span></span>
                     <span v-if="rec.discount > 0 && rec.discount" class="value discount">Doação Mínima <span class="price">{{(rec.price - rec.discount) | currency}}</span></span>
@@ -204,6 +204,22 @@
                     <div class="totals">
                       {{rec.stock}} de {{rec.stock}}<span> revindicados</span>
                     </div>
+                  </div>
+                </b-card>
+              </div>
+              <div class="recompensas">
+                <b-card v-for="(cota, index) in campaign.cota" :key="index" img-src="https://via.placeholder.com/150" img-alt="Card image" style="cursor:pointer;" @click="openDonationCota(cota.id)"  img-top>
+                  <div v-if="cota.stock > 0" class="info">
+                    <span class="value">Doação Mínima <span class="price">{{cota.min_donation | currency}}</span></span>
+                    <div class="text">Ao atingir o valor mínimo de doação, você será recompensado com {{cota.percent}}% de toda venda do produto</div>
+                    <div class="delivery">
+                      <div>
+                        <div class="due-date">Data de expiração: {{cota.expiry}}</div>
+                      </div>
+                      <div class="due-date">Estoque de cotas: {{cota.stock}}</div>
+                    </div>
+                    
+                    <div class="text cota-obs">Obs: Essa cota será divida com o {{cota.peoples}} pessoas</div>
                   </div>
                 </b-card>
               </div>
@@ -250,9 +266,13 @@ export default {
     }
   },
   methods: {
-    openDonation(perkId) {
-      // window.open('/#/payment-contribution/'+this.campaign.id+'/'+perkId)
+    openDonationPerk(id) {
+      window.open('/#/payment-contribution/PERK/'+this.campaign.id+'/'+id)
     },
+    openDonationCota(id) {
+      window.open('/#/payment-contribution/COTA/'+this.campaign.id+'/'+id)
+    },
+
     loadCampaign() {
       global.$post("/Campaign/campaigninfo", {campaign_id: this.$route.params.id}, this.user.token || null)
         .then(response => {
