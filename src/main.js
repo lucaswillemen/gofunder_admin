@@ -14,8 +14,10 @@ import VueCurrencyFilter from 'vue-currency-filter'
 import VueTheMask from 'vue-the-mask'
 import money from 'v-money'
 
-
+// $url = url para api
 Vue.prototype.$url = 'https://api.gofunder.io/'
+// $urlFrontend = url para pagina inicial (template laranja)
+Vue.prototype.$urlFrontend = 'http://localhost:8081/#'
 
 Vue.prototype.$resetObj = (obj) => {
   Object.keys(obj).map(key => {

@@ -52,7 +52,7 @@
               <div class="owner">
                 <span class="title">Proprietário do Projeto</span>
                 <div class="img">
-                  <img style="border-radius: 100px;height:75px;width:75px;margin-top:5px" :src="(campaign && campaign.owner_image ? $apiEndpoint+'/uploads/profile/'+campaign.owner_image : '/static/anonymous-icon.svg')  ">
+                  <img style="border-radius: 100px;height:75px;width:75px;margin-top:5px" :src="(campaign && campaign.owner_image ? $apiEndpoint+campaign.owner_image : '/static/anonymous-icon.svg')  ">
                 </div>
                 <div class="info">
                   <span class="name">{{campaign.owner_name}}</span>
@@ -184,7 +184,7 @@
                       <div v-if="rec.shipping_price > 0">
                         <span class="title" v-if="rec.shipping_worldwide == 'world_wide' ">Entrega em todo o mundo</span>
                         <span class="title" v-if="rec.shipping_worldwide == 'only_country' ">Entrega apenas em {{campaign.country_info.country_name}}</span>
-                        <div class="due-date">Frete: {{rec.shipping_price | currency}}</div>                        
+                        <div class="due-date">Frete: {{rec.shipping_price | currency}}</div>
                         <span class="due-date">Estimado em {{rec.shipping_date}}</span>
                       </div>
                       <div v-else>
@@ -209,9 +209,7 @@
               </div>
             </div>
           </b-col>
-          <b-col v-else class="text-center" style="font-weight: 600; font-size: 1.5rem;">
-            Esta campanha não possui nenhuma recompensa cadastrada!
-          </b-col>
+
         </b-row>
         <!-- <b-row>
           <b-col cols="12" lg="">

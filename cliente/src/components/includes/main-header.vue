@@ -5,12 +5,12 @@
 				<b-navbar-nav class="left-content big2">
 					<b-nav-item href="#">{{ email }}</b-nav-item>
 					<b-nav-item class="no-cursor">|</b-nav-item>
-					<b-nav-item href="#">{{phone}} </b-nav-item>			
+					<b-nav-item href="#">{{phone}} </b-nav-item>
 				</b-navbar-nav>
 				<b-navbar-nav class="ml-auto right-itens">
 					<b-nav-item-dropdown right v-if="user.token !== null" class="big">
 						<template slot="button-content">
-							<img	class="img"	v-bind:src='user && user.img ? this.$apiEndpoint+"/uploads/profile/"+user.img : "/static/anonymous-icon.svg"'>
+							<img	class="img"	v-bind:src='user && user.img ? this.$apiEndpoint+user.img : "/static/anonymous-icon.svg"'>
 							<label class="orange">
 								<b>{{"MAIN_HEADER::Olá"|fix}}</b>
 							</label>
@@ -71,9 +71,9 @@
 						</a>!-->
 					</div>
 					<div class="btn-noborder margins">
-						<a href="/#/user/campaign/create">
-							<b-button>{{"MAIN_HEADER::Começar uma campanha"|fix}}</b-button>
-						</a>
+
+							<b-button @click="newCampaign()">{{"MAIN_HEADER::Começar uma campanha"|fix}}</b-button>
+
 					</div>
 				</b-col>
 			</b-row>
@@ -96,6 +96,9 @@ export default {
   },
 	methods: {
 		...mapActions("user", ["userLogout", "userSet"]),
+		newCampaign() {
+			window.open(this.$urlPainel+'/create');
+		},
 		searchEnter: function(event) {
 			if (event.which === 13) {
 				this.search();
@@ -105,14 +108,14 @@ export default {
 			window.open("/#/projects/" + this.searchText);
 		},
 		logout: function() {
-			this.$router.push({ name: 'Home'}) 
+			this.$router.push({ name: 'Home'})
 			this.userLogout()
-			this.$awn.success($f("MAIN_HEADER::Deslogado com sucesso!"))			
+			this.$awn.success($f("MAIN_HEADER::Deslogado com sucesso!"))
 			clearInterval(this.interval)
 		},
-		isPrivateUrl() {	
+		isPrivateUrl() {
 			let currentLink = window.location.href
-			return	currentLink.search(window.location.host+"/user/") !== -1 
+			return	currentLink.search(window.location.host+"/user/") !== -1
 			|| currentLink.search(window.location.host+"/#/user/") !== -1
 		},
 		userLocalToken() {
@@ -121,7 +124,7 @@ export default {
 				return json.user.token
 			} catch (e) {
 				return false
-			}			
+			}
 		},
 		check: function() {
 			global
@@ -147,7 +150,7 @@ export default {
 			if (!this.userLocalToken() && this.isPrivateUrl()) {
 				this.userLogout()
 				return this.$router.push('/')
-			}	
+			}
 			// a cada 10 segundos
 			if(this.counter % 10 == 0) {
 				return this.check()
