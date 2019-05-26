@@ -83,7 +83,7 @@
                 </div>
               </div>
               <div class="md-layout-item md-size-50  ">
-								REDES SOCIAIS
+								LINKS ÚTEIS
                 <div class="md-layout md-gutter">
                   <div class="md-layout-item md-size-50">
                     <md-field>
@@ -253,6 +253,9 @@
       </form>
     </div>
   </md-tab>
+  <div class="loading-overlay" v-if="loading">
+    <md-progress-spinner md-mode="indeterminate" :md-stroke="2"></md-progress-spinner>
+  </div>
 </md-tabs>
 </template>
 <script>
@@ -265,6 +268,7 @@ export default {
   name: 'Profile',
   data() {
     return {
+      loading: false,
       sendedConfirmEmail: false,
       base64File: null,
       secureUserEmail: {
@@ -309,6 +313,7 @@ export default {
       reader.readAsDataURL(evt.target.files[0]);
     },
     saveUserEmail() {
+      this.loading = true;
       global.$post("/Auth/edit_email", this.secureUserEmail, this.user.token)
         .then(response => {
           alert("E-mail salvo com sucesso. Confirme ele na sua caixa  de entrada")
@@ -317,10 +322,12 @@ export default {
           alert("E-mail digitado é inválido ou senha inválida")
         })
         .finally(() => {
+        this.loading = false;
 
         })
     },
     saveUserPassword() {
+      this.loading = true;
       global.$post("/Auth/edit_password", this.secureUserPassword, this.user.token)
         .then(response => {
           alert("Senha salva com sucesso")
@@ -329,6 +336,7 @@ export default {
           alert("Senhas não conferem")
         })
         .finally(() => {
+          this.loading = false;
 
         })
     },
@@ -336,17 +344,17 @@ export default {
 
     },
     saveProfile() {
+      this.loading = true;      
       global.$post("/Profile/edit", this.saveUser, this.user.token)
         .then(response => {
           this.userSet(response.data)
-          alert("Perfil Salvo")
           this.base64File = this.$url + this.user.img
         })
         .catch(err => {
 
         })
         .finally(() => {
-
+          this.loading = false;
         })
     }
   },
@@ -378,5 +386,18 @@ export default {
   margin-right: auto;
   border-radius: 10px !important;
   margin-bottom: 10px;
+}
+.loading-overlay {
+	z-index: 10;
+	top: 0;
+	left: 0;
+	right: 0;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background: rgba(255, 255, 255, 0.9);
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 </style>

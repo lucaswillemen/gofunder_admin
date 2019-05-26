@@ -5,9 +5,8 @@
     <md-dialog-title>Criar uma cota</md-dialog-title>
 
     <md-card-content style="display:flex; flex-direction: column;">
-      <p>Olá, para criar sua cota preencha as informações a seguir corretamente abaixo. <br />
-        Lembrando que se a soma de suas cotas superar 70% não será possível criar novas cotas uma
-        vez que 30% das vendas do marketplace é obrigatóriamente reservado ao inventor..</p>
+      <p>Olá, para criar sua cota preencha as informações a seguir corretamente abaixo.<br />Lembrando que se a soma de suas cotas superar 70% não será possível criar novas cotas uma
+      vez que 30% das vendas do marketplace é obrigatóriamente reservado ao inventor..</p>
       <div class="md-layout md-gutter">
         <div class="md-layout-item md-size-50">
           <md-field>
@@ -22,7 +21,7 @@
             <md-icon>people</md-icon>
             <label>Número de pessoas</label>
             <md-input v-model="number" max="1000" min="0"></md-input>
-            <span class="md-helper-text">Coloque aqui o número de pessoas que vão poder adquirir essa cota. A porcetagem da cota é dividido entre essas pessoas</span>
+            <span class="md-helper-text">Número de pessoas que vão poder adquirir essa cota. A porcetagem da cota é dividido entre essas pessoas</span>
           </md-field>
         </div>
       </div>
@@ -36,7 +35,7 @@
               <md-option value="godfather">24 meses</md-option>
               <md-option value="godfather-ii">36 meses</md-option>
             </md-select>
-            <span class="md-helper-text">Você pode definir tempo de expiração pras cotas vendidas vigorando a partir do lançamento no marketplace</span>
+            <span class="md-helper-text">Você pode definir o tempo de expiração pras cotas vendidas vigorando a partir do lançamento no marketplace</span>
           </md-field>
         </div>
         <div class="md-layout-item md-size-50">
@@ -44,7 +43,7 @@
             <md-icon>monetization_on</md-icon>
             <label>Qual doação mínima?</label>
             <md-input v-model="number" min="0"></md-input>
-            <span class="md-helper-text">Coloque aqui a doação mínima que a pessoa deve doar para ter direito à essa cota</span>
+            <span class="md-helper-text">A doação mínima que a pessoa deve doar para ter direito à essa cota</span>
           </md-field>
         </div>
       </div>
