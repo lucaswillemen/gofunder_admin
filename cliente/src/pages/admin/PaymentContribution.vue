@@ -182,11 +182,7 @@
             <b-col cols="12" lg="4" style="padding-right:2px;padding-left:2px;">
               <b-input-group prepend="<i class='fa fa-flag'></i>">
                 <select placeholder="Pais" v-model="delivery.country" label="label">
-<<<<<<< HEAD
                   <option v-for="item in worldCountries" v-bind:value="item.id">{{item.country_name}}</option>
-=======
-                  <option v-for="(item, index) in worldCountries" :key="index" v-bind:value="item.country_code">{{item.country_name}}</option>
->>>>>>> a7ed8b96704427cf9e8c697331cff82578caf90b
                 </select>
               </b-input-group>
             </b-col>
@@ -496,13 +492,32 @@ export default {
       }, (e) => {})
     },
     payment() {
+      // Validar entradas aqui
+      if(this.validation.haveShipping) {
+        if(!this.delivery.name) return this.$awn.alert("Por favor digite um nome no campo entrega!")
+        if(!this.delivery.phone) return this.$awn.alert("Por favor digite um telefone no campo de entrega")
+        if(!this.delivery.zipcode) return this.$awn.alert("Por favor digite um código postal no campo de entrega")
+        if(!this.delivery.address)  return this.$awn.alert("Por favor digite um endereço no campo de entrega")
+        if(!this.delivery.city) return this.$awn.alert("Por favor digite uma cidade no campo de entrega")
+        if(!this.delivery.state)  return this.$awn.alert("Por favor digite um estado no campo de entrega")
+        if(!this.delivery.country) return this.$awn.alert("Por favor escolha um pais no campo de entrega")
+      }
+      // Validar doação
+      if(!this.donator.value) return this.$awn.alert("Por favor digite um valor para doação!")
+      if (this.selectedMethodPayment == 'card') {
+        // Validar cartao
+        if(!this.card.name) return this.$awn.alert("Por favor digite o nome do titular do cartão")
+        if(!this.card.number) return this.$awn.alert("Por favor digite o número do cartão corretamente!")
+        if(!this.card.expiry) return this.$awn.alert("Por favor digite a data de expiração da cartão!")
+        if(!this.card.cvc) return this.$awn.alert("Por favor digite o código segurança do cartão")
+        return this.getCardPayment()
+      }
+      
       if (this.selectedMethodPayment == 'bitcoin') {
         return this.getBitcoinPayment()
       }
-      if (this.selectedMethodPayment == 'card') {
-        return this.getCardPayment()
-      }
-      return this.$awn.alert("Selecione um método pagamento!")
+
+      this.$awn.alert("Selecione um método pagamento!")
     },
     login() {
       global.$post("/Auth/login", this.loginForm)
