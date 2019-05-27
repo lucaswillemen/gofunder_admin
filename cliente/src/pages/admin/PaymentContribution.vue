@@ -181,9 +181,9 @@
           <b-row class="mt-3">
             <b-col cols="12" lg="4" style="padding-right:2px;padding-left:2px;">
               <b-input-group prepend="<i class='fa fa-flag'></i>">
-                <select placeholder="Pais" v-model="delivery.country" label="label">
-                  <option v-for="item in worldCountries" v-bind:value="item.id">{{item.country_name}}</option>
-                </select>
+                <b-select placeholder="Pais" v-model="delivery.country" label="label">
+                  <option v-for="(item, index) in worldCountries" :key="index" v-bind:value="item.id">{{item.country_name}}</option>
+                </b-select>
               </b-input-group>
             </b-col>
             <b-col cols="12" lg="4" style="padding-right:2px;padding-left:2px;">
