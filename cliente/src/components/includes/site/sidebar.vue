@@ -5,15 +5,15 @@
     <b-label v-b-toggle.collapse1 variant="primary">Tipo de Projeto</b-label>
   </div>
   <b-collapse visible id="collapse1" class="level1 mt-1">
-    <p><a @click="$parent.changeType('all');" style="cursor:pointer;">Todos</a></p>
-    <p><a @click="$parent.changeType('funding');" style="cursor:pointer;">Funding</a></p>
-    <p><a @click="$parent.changeType('marketplace');" style="cursor:pointer;">Marketplace</a></p>
+    <p><a @click="changeType('all');" style="cursor:pointer;">Todos</a></p>
+    <p><a @click="changeType('funding');" style="cursor:pointer;">Funding</a></p>
+    <p><a @click="changeType('marketplace');" style="cursor:pointer;">Marketplace</a></p>
   </b-collapse>
   <div class="level0 mt-5">
     <b-label v-b-toggle.collapse2 variant="primary">Categorias</b-label>
   </div>
   <b-collapse visible id="collapse2" class="level1 mt-1">
-    <p v-for="item in campaignsCategory"><a @click="$parent.getCategory(item.id)" style="cursor:pointer">{{item.name}}</a></p>
+    <p v-for="(item, index) in categories" :key="index"><a @click="changeCategory(item)" style="cursor:pointer">{{'HOME::'+item.name | fix}}</a></p>
   </b-collapse>
   <!--
 		<small>Publicidade</small>
@@ -25,17 +25,30 @@
 
 <script>
 export default {
-  mounted() {
-    this.$awn.asyncBlock(global.$post("/Campaign/category_list", {}))
-      .then(response => {
-        this.campaignsCategory = response.data.MSG
-      })
-      .catch(err => {})
-  },
   data() {
     return {
-      campaignsCategory: []
+      categories: []
     }
+  },
+  methods: {
+    getCategories() {
+      global.$get("/Campaign/option")
+      .then(response => {
+        this.categories = response.data.category
+      })
+      .catch(err => {
+        this.$awn.alert("Ocorreu um erro ao resgatar as informações das categorias!")
+      })
+    },
+    changeCategory(category) {
+      this.$emit('changeCategory', category)
+    },
+    changeType(type) {
+      this.$emit('changeType', type)
+    }
+  },
+  mounted() {
+    this.getCategories()
   },
 }
 </script>
