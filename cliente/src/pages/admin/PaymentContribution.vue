@@ -67,7 +67,7 @@
               </div>
               <h6 v-if="!user.token">
                 Checkout como convidado ou <a style="cursor:pointer;" @click="showModalLogin()"><span class="orange">Log-in</span></a>
-                <br/>
+                <br />
               </h6>
 
               <div v-if="selectedDonationTitleInfo != 'public'">
@@ -309,7 +309,7 @@
           </b-row>
         </div>
       </b-col>
-      <!--
+
       <b-col v-show="bitcoinPaymentProcessing" cols="12" md="5" class="wrap-right pageContribution">
         <b-row class="pay-info-wrap">
           <b-col cols="12" v-show="bitcoinPayedProcessed">
@@ -359,7 +359,6 @@
           </b-col>
         </b-row>
       </b-col>
-      !-->
 
       <b-col v-show="cardProcessing" cols="12" md="5" class="wrap-right pageContribution">
         <b-row class="pay-info-wrap">
@@ -419,6 +418,11 @@ export default {
       this.donator.name = this.user.name
     }
   },
+  beforeDestroy() {
+    if (this.intervalRecheckBitcoinPayment) {
+      clearInterval(this.intervalRecheckBitcoinPayment)
+    }
+  },
   data() {
     return {
       loginForm: {
@@ -435,6 +439,7 @@ export default {
       cardProcessing: false,
       cardError: false,
       cardPayed: false,
+      intervalRecheckBitcoinPayment: null,
       selectedMethodPayment: 'card',
       selectedDonationTitleInfo: 'public',
       bitcoinPaymentProcessing: false,
@@ -493,27 +498,31 @@ export default {
     },
     payment() {
       // Validar entradas aqui
-      if(this.validation.haveShipping) {
-        if(!this.delivery.name) return this.$awn.alert("Por favor digite um nome no campo entrega!")
-        if(!this.delivery.phone) return this.$awn.alert("Por favor digite um telefone no campo de entrega")
-        if(!this.delivery.zipcode) return this.$awn.alert("Por favor digite um código postal no campo de entrega")
-        if(!this.delivery.address)  return this.$awn.alert("Por favor digite um endereço no campo de entrega")
-        if(!this.delivery.city) return this.$awn.alert("Por favor digite uma cidade no campo de entrega")
-        if(!this.delivery.state)  return this.$awn.alert("Por favor digite um estado no campo de entrega")
-        if(!this.delivery.country) return this.$awn.alert("Por favor escolha um pais no campo de entrega")
+      // Se alguma tiver errado dá um return e alerta o usuário
+      if (this.validation.haveShipping) {
+        if (!this.delivery.name) return this.$awn.alert("Por favor digite um nome no campo entrega!")
+        if (!this.delivery.phone) return this.$awn.alert("Por favor digite um telefone no campo de entrega")
+        if (!this.delivery.zipcode) return this.$awn.alert("Por favor digite um código postal no campo de entrega")
+        if (!this.delivery.address) return this.$awn.alert("Por favor digite um endereço no campo de entrega")
+        if (!this.delivery.city) return this.$awn.alert("Por favor digite uma cidade no campo de entrega")
+        if (!this.delivery.state) return this.$awn.alert("Por favor digite um estado no campo de entrega")
+        if (!this.delivery.country) return this.$awn.alert("Por favor escolha um pais no campo de entrega")
       }
-      // Validar doação
-      if(!this.donator.value) return this.$awn.alert("Por favor digite um valor para doação!")
+      // Validar doação se tiver errado dá return e acaba
+      if (!this.donator.value || this.donator.value < 5) return this.$awn.alert("Por favor digite um valor para doação!")
       if (this.selectedMethodPayment == 'card') {
-        // Validar cartao
-        if(!this.card.name) return this.$awn.alert("Por favor digite o nome do titular do cartão")
-        if(!this.card.number) return this.$awn.alert("Por favor digite o número do cartão corretamente!")
-        if(!this.card.expiry) return this.$awn.alert("Por favor digite a data de expiração da cartão!")
-        if(!this.card.cvc) return this.$awn.alert("Por favor digite o código segurança do cartão")
+        // Validar cartao se tiver algum dado não preenchido ele dá return e alerta o usuário
+        if (!this.card.name) return this.$awn.alert("Por favor digite o nome do titular do cartão")
+        if (!this.card.number) return this.$awn.alert("Por favor digite o número do cartão corretamente!")
+        if (!this.card.expiry) return this.$awn.alert("Por favor digite a data de expiração da cartão!")
+        if (!this.card.cvc) return this.$awn.alert("Por favor digite o código segurança do cartão")
+
+        // estando tudo certo chama função de fazer pagamento
         return this.getCardPayment()
       }
-      
+
       if (this.selectedMethodPayment == 'bitcoin') {
+        // aqui selecionando bitcoin e estando tudo certo ele chama função de pagar com Bitcoin
         return this.getBitcoinPayment()
       }
 
@@ -534,14 +543,58 @@ export default {
         })
     },
     /*
-    * Parte responsável pelo pagamento com Bitcoin
-    */
+     * Parte responsável pelo pagamento com Bitcoin
+     * Após pagar ele fica requisitando para verificar se o pagamento foi aprovado na blockchain
+     */
+    getDonationFormBitcoin() {
+      return {
+        perk_id: this.$route.params.perk_id ? this.$route.params.perk_id : 0,
+        cota_id: this.$route.params.cota_id ? this.$route.params.cota_id : 0,
+        campaign_id: this.$route.params.campaign_id,
+        perk_shipping_address: JSON.stringify(this.delivery),
+        perk_shipping_country: this.delivery.country,
+        payment_type: 'bitcoin',
+        usd: this.donator.value,
+        name: this.donator.name,
+        email: this.donator.email
+      }
+    },
+    recheckBitcoinPayment() {
+      var self = this
+      this.intervalRecheckBitcoinPayment = setInterval((self) => {
+        if (self.bitcoinPaymentInfo.timeout > 0) {
+          self.bitcoinPaymentInfo.timeout = self.bitcoinPaymentInfo.timeout - 1
+          if (!(self.bitcoinPaymentInfo.timeout % 3)) {
+            global.$post("/Donation/checkState", {
+                invoice: self.bitcoinPaymentInfo.server_code
+              })
+              .then(response => {
+                self.bitcoinPayedProcessed = true
+                self.bitcoinPaymentProcessing = true
+              })
+          }
+        }
+      }, 1000, this)
+    },
     getBitcoinPayment() {
-
+      this.$awn.asyncBlock(global.$post("/Donation/makeBtcDonation", this.getDonationFormBitcoin(), this.user.token))
+        .then(response => {
+          if (response.data.error !== "ok") {
+            return this.$awn.alert(response.data.error)
+          }
+          this.bitcoinPaymentProcessing = true
+          this.bitcoinPaymentInfo = response.data.result
+          this.bitcoinPaymentInfo.server_code = response.data.server_code
+          this.recheckBitcoinPayment()
+        })
+        .catch(err => {
+          return this.$awn.alert("Não foi possível processar pagamento!")
+        })
     },
     /*
-    * Parte responsável pelo sistema de pagamentos em cartão
-    */
+     * Parte responsável pelo sistema de pagamentos em cartão
+     * Precisa ser feita duas requisições. Uma pra gerar um token seguro pro cartão e outra para fazer o pagamento
+     */
     mountCardComponent() {
       let card = new Card({
         form: '.card-form',
@@ -586,6 +639,14 @@ export default {
               this.showSucceffulPaymentCard("Muito obrigado por sua doação!")
             })
             .catch(err => {
+              /*
+              * Se tiver algum erro como falta de estoque ou outras informações do backend vai retornar aqui nesse catch
+              * Nesse caso precisa fazer o tratamento futuramente dessas informações que vem de lá
+              * Ex:
+              * INVALID_MIN_DONATION (é verificada no front.. só se ele tentar burlar no inspecionar elemento)
+              * INVALID_COTA_STOCK|INVALID_PERK_STOCK: Se não tiver cota disponível... aí pode acontecer de estar faltnado 1 cota e outro usuário comprar antes que ele
+              * INVALID_COUNTRY_SHIPPING se ele escolher um pais que não é o mesmo pais que o perk entrega
+              */
               this.showTryagainCard('O cartão digitado é inválido')
             })
         })
@@ -609,9 +670,9 @@ export default {
       this.cardPayed = false
     },
     /*
-    * Parte responsável por carregar os dados na tela
-    * Aqui é geralmente chamado após mounted
-    */
+     * Parte responsável por carregar os dados na tela
+     * Aqui é geralmente chamado após mounted
+     */
     loadCountries() {
       global.$post("/Donation/countries", {}, this.user.token)
         .then(response => {
