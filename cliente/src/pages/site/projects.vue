@@ -6,7 +6,7 @@
       <div class="container">
 
         <div class="title center-obj-v">
-          <i style="color:#a3640d; font-size:54px;" :class="category.icon"></i> <span>{{category.name}}</span>
+          <i style="color:#a3640d; font-size:54px;" class="material-icons">{{category.icon_name}}</i><span>{{"HOME::"+category.name | fix}}</span>
         </div>
       </div>
     </div>
@@ -57,7 +57,7 @@
 <script>
 export default {
   mounted() {
-    this.changeCategory(0)
+    this.changeCategory({icon_name: 'search', name: 'Procurar projetos', id: 0})
   },
   data() {
     return {
@@ -67,7 +67,7 @@ export default {
       projectType: !this.$route.params.type ? 'all' : this.$route.params.type,
       searchText: !this.$route.params.search ? '' : this.$route.params.search,
       category: {
-        icon: "fab fa-searchengin",
+        icon_name: "search",
         name: "Procurar projetos",
         id: 0
       },
@@ -116,9 +116,10 @@ export default {
         })
         .catch(err => {})
     },
-    changeCategory(id) {
+    changeCategory(category) {
+      this.category = category
       this.curPage = 0
-      this.category_id = id
+      this.category_id = category.id
       this.projects = []
       this.getSearchItems()
     }

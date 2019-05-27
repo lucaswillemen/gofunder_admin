@@ -13,7 +13,7 @@
     <b-label v-b-toggle.collapse2 variant="primary">Categorias</b-label>
   </div>
   <b-collapse visible id="collapse2" class="level1 mt-1">
-    <p v-for="(item, index) in categories" :key="index"><a @click="changeCategory(item.id)" style="cursor:pointer">{{'HOME::'+item.name | fix}}</a></p>
+    <p v-for="(item, index) in categories" :key="index"><a @click="changeCategory(item)" style="cursor:pointer">{{'HOME::'+item.name | fix}}</a></p>
   </b-collapse>
   <!--
 		<small>Publicidade</small>

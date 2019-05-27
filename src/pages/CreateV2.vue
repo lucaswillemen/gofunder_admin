@@ -396,6 +396,8 @@ export default {
 				.catch(err => {});
 		},
 		createCampaign() {
+			this.form.startAt = this.form.startAt.toISOString().split('T')[0]
+			this.form.finishAt = this.form.finishAt.toISOString().split('T')[0]
 			global
 				.$post("/campaign/create", this.form, this.user.token)
 				.then(response => {
