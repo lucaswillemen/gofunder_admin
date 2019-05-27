@@ -7,27 +7,27 @@
     <md-card-content style="display:flex; flex-direction: column;">
       <p>Olá, para criar sua cota preencha as informações a seguir corretamente abaixo.<br />Lembrando que se a soma de suas cotas superar 70% não será possível criar novas cotas uma
       vez que 30% das vendas do marketplace é obrigatóriamente reservado ao inventor..</p>
-      <div class="md-layout md-gutter">
+      <div class="md-layout md-gutter" style="margin-bottom: 1.5rem;">
         <div class="md-layout-item md-size-50">
-          <md-field>
+          <md-field :class="{'md-invalid': $v.cotaAdd.percent.$invalid && $v.cotaAdd.percent.$dirty}">
             <md-icon>show_chart</md-icon>
             <label>Porcentagem da cota</label>
-            <md-input v-model="cotaAdd.percent" max="100" min="0"></md-input>
+            <md-input v-model="cotaAdd.percent" max="100" min="1"></md-input>
             <span class="md-helper-text">Digite aqui de 0 a 70% do quanto das suas vendas você quer distrubir nessa cota</span>
           </md-field>
         </div>
         <div class="md-layout-item md-size-50">
-          <md-field>
+          <md-field :class="{'md-invalid': $v.cotaAdd.stock.$invalid && $v.cotaAdd.stock.$dirty}">
             <md-icon>people</md-icon>
             <label>Número de pessoas</label>
-            <md-input v-model="cotaAdd.stock" max="1000" min="0"></md-input>
+            <md-input v-model="cotaAdd.stock" max="1000" min="1"></md-input>
             <span class="md-helper-text">Coloque aqui o número de pessoas que vão poder adquirir essa cota. A porcetagem da cota é dividido entre essas pessoas</span>
           </md-field>
         </div>
       </div>
       <div class="md-layout md-gutter">
         <div class="md-layout-item md-size-50">
-          <md-field>
+          <md-field :class="{'md-invalid': $v.cotaAdd.expiry.$invalid && $v.cotaAdd.expiry.$dirty}">
             <md-icon>event</md-icon>
             <label>Qual tempo de expiração da cota?</label>
             <md-select v-model="cotaAdd.expiry" name="movie" id="movie">
@@ -39,10 +39,10 @@
           </md-field>
         </div>
         <div class="md-layout-item md-size-50">
-          <md-field>
+          <md-field :class="{'md-invalid': $v.cotaAdd.min_donation.$invalid && $v.cotaAdd.min_donation.$dirty}">
             <md-icon>monetization_on</md-icon>
             <label>Qual doação mínima?</label>
-            <md-input v-model="cotaAdd.min_donation" min="0"></md-input>
+            <md-input v-model.lazy="cotaAdd.min_donation" min="1" v-money="money"></md-input>
             <span class="md-helper-text">Coloque aqui a doação mínima que a pessoa deve doar para ter direito à essa cota</span>
           </md-field>
         </div>
@@ -72,6 +72,8 @@
         <span class="md-title" v-if="cotaList.length > 0">
           Cotas Criadas
         </span>
+        <span class="total-percentage">(Soma das porcentagens das cotas: {{this.totalPercentage}}%)</span>
+
         <md-table v-if="cotaList.length > 0">
           <md-table-row>
             <md-table-head md-numeric>Doação Mínima</md-table-head>
@@ -102,19 +104,48 @@
 
 <script>
 import { mapState } from "vuex";
+import { required } from "vuelidate/lib/validators";
 export default {
   data: () => ({
+     money: {
+      decimal: ',',
+      thousands: '.',
+      precision: 2,
+    },
     search: null,
     createQuota: false,
     searched: [],
     cotaAdd: {
-      stock: 0,
-      min_donation: 0,
-      percent: 0,
+      stock: null,
+      min_donation: null,
+      percent: null,
       expiry: '12months'
     },
+    totalPercentage: 0,
     cotaList: []
   }),
+  validations: {
+    cotaAdd: {
+      stock: {
+        required
+      },
+      min_donation: {
+        required
+      },
+      percent: {
+        required,
+        percentInterval: function (params) {
+          if(this.cotaAdd.percent >= 0 && this.cotaAdd.percent <= 70 && (Number(this.cotaAdd.percent) + Number(this.totalPercentage)) <= 70){
+            return true
+          }
+          return false
+        }
+      },
+      expiry: {
+        required
+      }
+    }
+  },
   computed: {
     ...mapState(["user"])
   },
@@ -135,26 +166,37 @@ export default {
         .$get("/CampaignInfo/Cota/get?campaign_id="+ this.$route.params.id, {}, this.user.token)
         .then(response => {
           this.cotaList = response.data
+          this.totalPercentage = 0
+          response.data.forEach(element => {
+            this.totalPercentage+= Number(element.percent)        
+          });
+          console.log(total)
+
         })
         .catch(err => {
         })
     },
     addCota() {
-      let params = this.cotaAdd
-      params.campaign_id = this.$route.params.id
-      global
-        .$post("/CampaignInfo/Cota/add", params, this.user.token)
-        .then(response => {
-          alert("Cota adicionada")
-        })
-        .catch(err => {
-          alert("Erro adicionar cota")
-        })
-        .finally(err => {
-          this.createQuota = false
-          this.$resetObj(this.cotaAdd)
-          this.listCotas()
-        })
+      this.$v.cotaAdd.$touch();
+      if (!this.$v.cotaAdd.$invalid) {
+        let params = this.cotaAdd
+        params.campaign_id = this.$route.params.id
+        global
+          .$post("/CampaignInfo/Cota/add", params, this.user.token)
+          .then(response => {
+            alert("Cota adicionada")
+          })
+          .catch(err => {
+            alert("Erro adicionar cota")
+          })
+          .finally(err => {
+            this.createQuota = false
+            this.$resetObj(this.cotaAdd)
+            this.listCotas()
+          })
+      } else {
+        console.log('deu err')
+      }
     },
 
     newUser() {
@@ -183,6 +225,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.total-percentage {
+  font-size: 14px;
+  color: #707070;
+}
 .md-dialog {
     width: 70%;
 }

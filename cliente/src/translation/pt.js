@@ -1,5 +1,6 @@
 export default {
 	// pages/site/home.vue
+	"HOME::Procurar projetos": "Procurar projetos",
 	"HOME::casa_e_jardim": "Casa e Jardim",
 	"HOME::roupas_e_acessorios": "Roupas e Acessórios",
 	"HOME::eletronicos_e_software": "Eletrônicos e Software",
