@@ -68,7 +68,7 @@
               </div>
               <div class="bottom">
                 <div class="btn-noborder-blue button">
-                  <b-button :href="'/#/payment-contribution/'+campaign.id">Apoiar</b-button>
+                  <b-button :href="'/#/payment-contribution/campaign/'+campaign.id">Apoiar</b-button>
                 </div>
                 <div class="social">
                 <div style="font-size: 1.5rem;">
@@ -175,7 +175,7 @@
                         <span class="title" v-if="rec.shipping_worldwide == 'world_wide' ">Entrega em todo o mundo</span>
                         <span class="title" v-if="rec.shipping_worldwide == 'only_country' ">Entrega apenas em {{campaign.country_info.country_name}}</span>
                         <div class="due-date">Frete: {{rec.shipping_price | currency}}</div>
-                        <span class="due-date">Estimado em {{rec.shipping_date}}</span>
+                        <span class="due-date">Estimado em {{formattedShippingDate}}</span>
                       </div>
                       <div v-else>
                         <span class="no-shipping">Não possui entrega!</span>
@@ -243,13 +243,16 @@ import {
   mapState,
   mapGetters
 } from 'vuex'
-
+import moment from 'moment'
 export default {
   computed: {
     ...mapState(['user']),
     currentPercentage() {
        let percentage = Math.round(100 / this.campaign.amount * this.campaign.amount_received)
         return  percentage > 100 ? 100 : percentage
+    },
+    formattedShippingDate() {
+      return moment(this.campaign.perk.shipping_date).format('DD/MM/YYYY')
     }
   },
   methods: {
