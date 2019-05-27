@@ -14,6 +14,7 @@
             <label>Porcentagem da cota</label>
             <md-input v-model="cotaAdd.percent" max="100" min="1"></md-input>
             <span class="md-helper-text">Digite aqui de 0 a 70% do quanto das suas vendas você quer distrubir nessa cota</span>
+            <span class="md-error">Sua cota deve ficar entre 0% e 70%. Atualmente você tem: {{totalPercentage}}% reservado das vendas em outras cotas</span>
           </md-field>
         </div>
         <div class="md-layout-item md-size-50">
@@ -21,6 +22,7 @@
             <md-icon>people</md-icon>
             <label>Número de pessoas</label>
             <md-input v-model="cotaAdd.stock" max="1000" min="1"></md-input>
+              <span class="md-error">Digite o número de pessoas que poderão garantir a essa cota</span>
             <span class="md-helper-text">Coloque aqui o número de pessoas que vão poder adquirir essa cota. A porcetagem da cota é dividido entre essas pessoas</span>
           </md-field>
         </div>
@@ -72,7 +74,7 @@
         <span class="md-title" v-if="cotaList.length > 0">
           Cotas Criadas
         </span>
-        <span class="total-percentage">(Soma das porcentagens das cotas: {{this.totalPercentage}}%)</span>
+        <span class="total-percentage" v-if="totalPercentage">Soma das porcentagens das cotas: {{this.totalPercentage}}%</span>
 
         <md-table v-if="cotaList.length > 0">
           <md-table-row>
@@ -84,7 +86,7 @@
           </md-table-row>
           <md-table-row slot="md-table-row" v-for="(item, index) in cotaList" :key="index">
             <md-table-cell md-label="Doação mínima" md-sort-by="value">{{ item.min_donation }}</md-table-cell>
-            <md-table-cell md-label="Porcentagem" md-sort-by="value">{{ item.percent }}</md-table-cell>
+            <md-table-cell md-label="Porcentagem" md-sort-by="value">{{ item.percent }}%</md-table-cell>
             <md-table-cell md-label="Número máximo de cotistas" md-sort-by="value">{{ item.stock }}</md-table-cell>
             <md-table-cell md-label="Expiração" md-sort-by="value">{{ item.expiry }}</md-table-cell>
             <md-table-cell md-label="Ação" md-sort-by="value">
@@ -168,7 +170,7 @@ export default {
           this.cotaList = response.data
           this.totalPercentage = 0
           response.data.forEach(element => {
-            this.totalPercentage+= Number(element.percent)        
+            this.totalPercentage+= Number(element.percent)
           });
           console.log(total)
 
@@ -184,10 +186,10 @@ export default {
         global
           .$post("/CampaignInfo/Cota/add", params, this.user.token)
           .then(response => {
-            alert("Cota adicionada")
+
           })
           .catch(err => {
-            alert("Erro adicionar cota")
+
           })
           .finally(err => {
             this.createQuota = false
