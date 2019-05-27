@@ -181,9 +181,10 @@
           <b-row class="mt-3">
             <b-col cols="12" lg="4" style="padding-right:2px;padding-left:2px;">
               <b-input-group prepend="<i class='fa fa-flag'></i>">
-                <b-select placeholder="Pais" v-model="delivery.country" label="label">
+                <b-form-select v-model="delivery.country" label="label">
+                  <option :value="null" disabled>Selecione o País</option>
                   <option v-for="(item, index) in worldCountries" :key="index" v-bind:value="item.id">{{item.country_name}}</option>
-                </b-select>
+                </b-form-select>
               </b-input-group>
             </b-col>
             <b-col cols="12" lg="4" style="padding-right:2px;padding-left:2px;">
@@ -219,7 +220,7 @@
             </h5>
 
             <b-input-group size="sm" :prepend="$" class="mb-1">
-              <b-form-input type="number" v-model="donator.value" step="0.01" placeholder="Valor para Doação" :min="validation.minDonationValue"></b-form-input>
+              <b-form-input type="number" v-model="donator.value" step="0.01" placeholder="Valor para Doação" :min="validation.minDonationValue" v-money="money"></b-form-input>
             </b-input-group>
 
             <div class="subtitle">
@@ -425,6 +426,11 @@ export default {
   },
   data() {
     return {
+      money: {
+        decimal: ',',
+        thousands: '.',
+        precision: 2,
+      },
       loginForm: {
         email: '',
         password: '',
@@ -469,7 +475,7 @@ export default {
         address: '',
         city: '',
         state: '',
-        country: ''
+        country: null
       },
       perkItems: [],
       perkInfo: [],
@@ -934,10 +940,10 @@ export default {
                 font-weight: 300;
             }
             .input-group-text,
-            input,
+            input, select,
             input:focus {
                 border-radius: 2;
-                border: 1px;
+                // border: 1px;
                 background-color: rgba(200, 200, 200,0.1);
             }
             .userTab {
