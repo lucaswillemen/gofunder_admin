@@ -269,7 +269,7 @@ export default {
               href: this.campaign.category_info.route
             },
             {
-              text: this.campaign.category_info.name,
+              text: this.$f('HOME::'+this.campaign.category_info.name),
               active: true
             }
           ]

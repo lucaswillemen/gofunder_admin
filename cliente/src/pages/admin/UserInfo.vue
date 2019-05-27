@@ -239,6 +239,9 @@ export default {
         }
       
         .campaign-card {
+          .card-img-top {
+            height: 300px;
+          }
           // border-bottom: none;
           &:not(:nth-child(3n)) {
             margin-right: 9px;
