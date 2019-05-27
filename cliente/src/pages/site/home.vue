@@ -13,7 +13,7 @@
                         </div>
                         <div class="buttons">
                             <div class="btn-noborder mright">
-                                <router-link :to="'/project-info/'+slideData.id+ '/'+ slideData.uri">
+                                <router-link :to="'/payment-contribution/campaign/'+slideData.id">
                                     <b-button>{{"HOME::quero_contribuir" | fix }}</b-button>
                                 </router-link>
                             </div>
