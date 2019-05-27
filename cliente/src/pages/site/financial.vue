@@ -192,24 +192,24 @@
                       </div>!-->
                     </div>
                     <div class="totals">
-                      {{rec.stock}} de {{rec.stock}}<span> revindicados</span>
+                      {{rec.stock_remain}} de {{rec.stock_remain}}<span> revindicados</span>
                     </div>
                   </div>
                 </b-card>
               </div>
               <div class="recompensas">
                 <b-card v-for="(cota, index) in campaign.cota" :key="index" img-src="https://via.placeholder.com/150" img-alt="Card image" style="cursor:pointer;" @click="openDonationCota(cota.id)"  img-top>
-                  <div v-if="cota.stock > 0" class="info">
+                  <div v-if="cota.stock_remain > 0" class="info">
                     <span class="value">Doação Mínima <span class="price">{{cota.min_donation | currency}}</span></span>
                     <div class="text">Ao atingir o valor mínimo de doação, você será recompensado com {{cota.percent}}% de toda venda do produto</div>
                     <div class="delivery">
                       <div>
                         <div class="due-date">Data de expiração: {{cota.expiry}}</div>
                       </div>
-                      <div class="due-date">Estoque de cotas: {{cota.stock}}</div>
+                      <div class="due-date">Estoque de cotas: {{cota.stock_remain}}</div>
                     </div>
 
-                    <div class="text cota-obs">Obs: Essa cota será divida com o {{cota.peoples}} pessoas</div>
+                    <div class="text cota-obs">Obs: Essa cota será divida com o {{cota.stock}} pessoas</div>
                   </div>
                 </b-card>
               </div>

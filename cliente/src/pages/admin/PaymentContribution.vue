@@ -67,7 +67,7 @@
               </div>
               <h6 v-if="!user.token">
                 Checkout como convidado ou <a style="cursor:pointer;" @click="showModalLogin()"><span class="orange">Log-in</span></a>
-                <br /></br>
+                <br/>
               </h6>
 
               <div v-if="selectedDonationTitleInfo != 'public'">
@@ -182,7 +182,7 @@
             <b-col cols="12" lg="4" style="padding-right:2px;padding-left:2px;">
               <b-input-group prepend="<i class='fa fa-flag'></i>">
                 <select placeholder="Pais" v-model="delivery.country" label="label">
-                  <option v-for="item in worldCountries" v-bind:value="item.country_code">{{item.country_name}}</option>
+                  <option v-for="(item, index) in worldCountries" :key="index" v-bind:value="item.country_code">{{item.country_name}}</option>
                 </select>
               </b-input-group>
             </b-col>
@@ -269,7 +269,7 @@
               <h5 class="reward-info-title">Doando esse valor você irá ter direito a uma cota
               </h5>
               <div>
-                <div class="reward-description" style="font-size:13px;">Isso significa que {{campaign.cota.percent}}% do valor de todas vendas desse produto serão divididos entre {{campaign.cota.peoples}} pessoas que fizeram a doação mínima
+                <div class="reward-description" style="font-size:13px;">Isso significa que {{campaign.cota.percent}}% do valor de todas vendas desse produto serão divididos entre {{campaign.cota.stock}} pessoas que fizeram a doação mínima
                 </div>
                 <br>
                 <div class="reward-description" style="font-size:13px;">Tempo de validade da cota: <b>{{campaign.cota.expiry}}</b></div>

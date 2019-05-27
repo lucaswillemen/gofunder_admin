@@ -81,7 +81,7 @@
 					<div style="width: 50%;margin:auto;">
 						<md-field :class="getValidationClass('payment_method')">
 							<md-icon>attach_money</md-icon>
-							<label>Você deseja receber em criptomoedas?</label>
+							<label>Escolha a forma de pagamento que seu projeto aceitará</label>
 							<md-select v-model="form.payment_method">
 								<md-option value="bitcoin">Desejo receber em Bitcoin</md-option>
 								<md-option value="dollar">Desejo receber em Dólar</md-option>
@@ -354,6 +354,9 @@ export default {
 			}
 		},
 		pickImg(evt) {
+			this.form.image_upload = null
+			this.form.cover_url = null
+			this.base64File = null
 			let reader = new FileReader();
 			this.form.image_upload = evt.target.files[0];
 			reader.onload = e => {
