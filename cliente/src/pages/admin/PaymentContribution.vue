@@ -95,7 +95,7 @@
               <small>Escolha um nome para ser exibido publicamente ao lado de sua contribuição na página da campanha.</small>
             </div>
             <b-form-group>
-              <b-form-radio-group stacked  class="radios radio-block"  v-model="selectedDonationTitleInfo" >
+              <b-form-radio-group stacked class="radios radio-block" v-model="selectedDonationTitleInfo">
                 <b-form-radio v-if="!validation.forceIdentifyContribution" value="public">
                   Doação anônima
                 </b-form-radio>
@@ -111,8 +111,8 @@
               <small>Escolha um método de pagamento para ser utilizado na doação da campanha.</small>
             </div>
             <b-form-group>
-              <b-form-radio-group stacked   class="radios radio-block" v-model="selectedMethodPayment">
-                <b-form-radio v-if="campaign.payment_method && campaign.payment_method.includes('bitcoin','dollar_and_bitcoin')"  name="some-radios1" value="bitcoin">
+              <b-form-radio-group stacked class="radios radio-block" v-model="selectedMethodPayment">
+                <b-form-radio v-if="campaign.payment_method && campaign.payment_method.includes('bitcoin','dollar_and_bitcoin')" name="some-radios1" value="bitcoin">
                   Bitcoin
                 </b-form-radio>
                 <b-form-radio v-if="campaign.payment_method && campaign.payment_method.includes('dollar','dollar_and_bitcoin')" name="some-radios2" value="card">
@@ -182,7 +182,7 @@
             <b-col cols="12" lg="4" style="padding-right:2px;padding-left:2px;">
               <b-input-group prepend="<i class='fa fa-flag'></i>">
                 <select placeholder="Pais" v-model="delivery.country" label="label">
-                  <option v-for="item in worldCountries" v-bind:value="item.country_code">{{item.country_name}}</option>
+                  <option v-for="item in worldCountries" v-bind:value="item.id">{{item.country_name}}</option>
                 </select>
               </b-input-group>
             </b-col>
@@ -360,7 +360,7 @@
         </b-row>
       </b-col>
       !-->
-      <!--
+
       <b-col v-show="cardProcessing" cols="12" md="5" class="wrap-right pageContribution">
         <b-row class="pay-info-wrap">
           <b-col cols="12" v-show="cardPayed">
@@ -374,12 +374,12 @@
             <div style="font-size:15px;">
               <h3>Ops <span class="text-danger"><i class="fas fa-exclamation-circle"></i></span></h3><br>
               Seu pagamento com cartão de crédito foi recusado<br><br>
-              <a @click="retryPay()" style="cursor:pointer;color:blue;">Clique aqui para tentar novamente</a>
+              <a @click="retryCardPay()" style="cursor:pointer;color:blue;">Clique aqui para tentar novamente</a>
             </div>
           </b-col>
         </b-row>
       </b-col>
-      !-->
+
     </b-row>
   </div>
   <main-footer></main-footer>
@@ -486,11 +486,6 @@ export default {
     showModalLogin() {
       this.$refs['login-modal'].show()
     },
-    retryPay() {
-      this.cardProcessing = false
-      this.cardPayed = false
-      this.cardError = false
-    },
     copyToClipboard(value) {
       this.$copyText(value).then((e) => {
         this.$awn.success("COPIADO")
@@ -503,15 +498,7 @@ export default {
       if (this.selectedMethodPayment == 'card') {
         return this.getCardPayment()
       }
-    },
-    getCardPayment() {
-      this.cardProcessing = true
-      this.$awn.alert("Ocorreu um  erro ao pagar com este cartão!")
-      this.cardError = true
-      this.cardPayed = false
-    },
-    getBitcoinPayment() {
-
+      return this.$awn.alert("Selecione um método pagamento!")
     },
     login() {
       global.$post("/Auth/login", this.loginForm)
@@ -527,6 +514,15 @@ export default {
           this.$awn.alert(validErr ? err.response.data.error : "INVALID_ERROR")
         })
     },
+    /*
+    * Parte responsável pelo pagamento com Bitcoin
+    */
+    getBitcoinPayment() {
+
+    },
+    /*
+    * Parte responsável pelo sistema de pagamentos em cartão
+    */
     mountCardComponent() {
       let card = new Card({
         form: '.card-form',
@@ -539,7 +535,64 @@ export default {
         }
       })
     },
-
+    getCardFormInfo() {
+      return {
+        name: this.card.name,
+        number: this.card.number,
+        exp_month: this.card.expiry ? this.card.expiry.replace(/ /g, '').split('/')[0] : null,
+        exp_year: this.card.expiry ? this.card.expiry.replace(/ /g, '').split('/')[1] : null,
+        cvc: this.card.cvc
+      }
+    },
+    getDonationFormCard(cardToken) {
+      return {
+        perk_id: this.$route.params.perk_id ? this.$route.params.perk_id : 0,
+        cota_id: this.$route.params.cota_id ? this.$route.params.cota_id : 0,
+        campaign_id: this.$route.params.campaign_id,
+        perk_shipping_address: JSON.stringify(this.delivery),
+        perk_shipping_country: this.delivery.country,
+        payment_type: 'dollar',
+        card_token: cardToken,
+        usd: this.donator.value,
+        name: this.donator.name,
+        email: this.donator.email
+      }
+    },
+    getCardPayment() {
+      this.cardProcessing = true
+      global.$post("/Donation/createCardToken", this.getCardFormInfo())
+        .then(response => {
+          global.$post("/Donation/makeCardDonation", this.getDonationFormCard(response.data.id), this.user.token)
+            .then(data => {
+              this.showSucceffulPaymentCard("Muito obrigado por sua doação!")
+            })
+            .catch(err => {
+              this.showTryagainCard('O cartão digitado é inválido')
+            })
+        })
+        .catch(err => {
+          this.showTryagainCard('O cartão digitado é inválido')
+        })
+    },
+    retryCardPay() {
+      this.cardProcessing = false
+      this.cardPayed = false
+      this.cardError = false
+    },
+    showSucceffulPaymentCard(msg) {
+      this.$awn.success(msg)
+      this.cardError = false
+      this.cardPayed = true
+    },
+    showTryagainCard(msg) {
+      this.$awn.alert(msg)
+      this.cardError = true
+      this.cardPayed = false
+    },
+    /*
+    * Parte responsável por carregar os dados na tela
+    * Aqui é geralmente chamado após mounted
+    */
     loadCountries() {
       global.$post("/Donation/countries", {}, this.user.token)
         .then(response => {
