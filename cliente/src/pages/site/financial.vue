@@ -147,17 +147,7 @@
                   </b-tab>
                 </b-tabs>
               </div>
-              <!-- <div class="mt-5 tags" v-show="campaign.tags_split && campaign.tags_split.length > 1 &&  campaign.tags_split[0].length">
-                <div class="title">
-                  <span> Tags <span class="blue">Relacionadas</span></span>
-                </div>
-                <div class="tag-group">
-                  <div class="btn-border-blue" v-for="tag in campaign.tags_split" :key="tag">
-                    <b-button>{{tag}}</b-button>
-                  </div>
-                </div>
-              </div> -->
-            </b-col>
+              </b-col>
           </b-col>
           <b-col cols="12" lg="4" v-if="campaign.perk.length > 0">
             <div class="recompensa">
@@ -218,7 +208,7 @@
                       </div>
                       <div class="due-date">Estoque de cotas: {{cota.stock}}</div>
                     </div>
-                    
+
                     <div class="text cota-obs">Obs: Essa cota será divida com o {{cota.peoples}} pessoas</div>
                   </div>
                 </b-card>
@@ -254,48 +244,26 @@ import {
   mapGetters
 } from 'vuex'
 
-
-
 export default {
   computed: {
     ...mapState(['user']),
     currentPercentage() {
        let percentage = Math.round(100 / this.campaign.amount * this.campaign.amount_received)
         return  percentage > 100 ? 100 : percentage
-
     }
   },
   methods: {
     openDonationPerk(id) {
-      window.open('/#/payment-contribution/PERK/'+this.campaign.id+'/'+id)
+      window.open('/#/payment-contribution/perk/'+this.campaign.id+'/'+id)
     },
     openDonationCota(id) {
-      window.open('/#/payment-contribution/COTA/'+this.campaign.id+'/'+id)
+      window.open('/#/payment-contribution/cota/'+this.campaign.id+'/'+id)
     },
-
     loadCampaign() {
       global.$post("/Campaign/campaigninfo", {campaign_id: this.$route.params.id}, this.user.token || null)
         .then(response => {
           console.log(response.data)
           this.campaign = response.data
-          // this.campaign = response.data.MSG
-          // try {
-          //   this.campaign.campaign_faq = JSON.parse(this.campaign.campaign_faq);
-          // } catch (exp) {
-          //   this.campaign.campaign_faq = []
-          // }
-          // for (var i in this.campaign.perks) {
-          //   try {
-          //     this.campaign.perks[i].perk_shipping_info = JSON.parse(this.campaign.perks[i].perk_shipping_info);
-          //   } catch (exp) {
-          //     this.campaign.perks[i].perk_shipping_info = []
-          //   }
-          //   try {
-          //     this.campaign.perks[i].perk_item_info = JSON.parse(this.campaign.perks[i].perk_item_info);
-          //   } catch (exp) {
-          //     this.campaign.perks[i].perk_item_info = []
-          //   }
-          // }
           this.breadcrumbItems = [{
               text: 'Funding',
               href: this.campaign.category_info.route
@@ -309,22 +277,9 @@ export default {
         .catch(err => {
           this.$awn.alert("Campanha invalida!")
         })
-    },
-    // getRandomItems() {
-    //   this.$awn.asyncBlock(global.$post("/Campaign/random_list", {}))
-    //     .then(response => {
-    //       for (var i in response.data.MSG) {
-    //         let percent = ((100 / response.data.MSG[i].cash) * response.data.MSG[i].cash_received)
-    //         response.data.MSG[i].percent = percent > 100 ? 100 : percent
-    //         this.projects.push(response.data.MSG[i])
-    //       }
-    //     })
-    //     .catch(err => {
-    //     })
-    // }
+    }
   },
   mounted() {
-    // this.getRandomItems()
     this.loadCampaign()
   },
   data() {

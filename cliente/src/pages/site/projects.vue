@@ -23,7 +23,7 @@
               </div>
               <div class="select-order">
                 <b-dropdown id="ddown2" text="Ordenar Por" class="m-md-2 fullwi btn-noborder-transp lbl-on-corner no-radius-right" style="">
-                  <b-dropdown-item @click="changeOrder('relevamce')">Relevância</b-dropdown-item>
+                  <b-dropdown-item @click="changeOrder('relevance')">Relevância</b-dropdown-item>
                   <b-dropdown-item @click="changeOrder('price')">Preço</b-dropdown-item>
                   <b-dropdown-item @click="changeOrder('sells')">Vendas</b-dropdown-item>
                 </b-dropdown>
@@ -63,6 +63,7 @@ export default {
     return {
       ascOrder: false,
       orderBy: 'relevance',
+      curPage: 0,
       category_id: !this.$route.params.category ? 0 : this.$route.params.category,
       projectType: !this.$route.params.type ? 'all' : this.$route.params.type,
       searchText: !this.$route.params.search ? '' : this.$route.params.search,
@@ -99,28 +100,28 @@ export default {
       this.getSearchItems()
     },
     getSearchItems() {
-      this.$awn.asyncBlock(global.$post("/Campaign/search_list", {
-          search: this.searchText,
-          limit_page: this.curPage,
-          category_id: this.category_id,
+      this.$awn.asyncBlock(global.$post("/Campaign/search", {
+          name: this.searchText,
+          limit: this.curPage,
+          category: this.category_id,
           order_by: this.orderBy,
-          asc_order: this.ascOrder,
-          type_project: this.projectType
+          type: this.projectType,
+          ascby: this.ascOrder
         }))
         .then(response => {
-          for (var i in response.data.MSG) {
-            let percent = ((100 / response.data.MSG[i].cash) * response.data.MSG[i].cash_received)
-            response.data.MSG[i].percent = percent > 100 ? 100 : percent
-            this.projects.push(response.data.MSG[i])
+          for (var i in response.data) {
+            let percent = ((100 / response.data[i].amount) * response.data[i].amount_received)
+            response.data[i].percent = percent > 100 ? 100 : percent
+            this.projects.push(response.data[i])
           }
         })
         .catch(err => {})
     },
     getCategory(id) {
       this.curPage = 0
-      this.category_id = id
+      this.category = id
       this.projects = []
-      this.$awn.asyncBlock(global.$post("/Campaign/category_list", {}, ""))
+      this.$awn.asyncBlock(global.$post("/Campaign/listing", {}, ""))
         .then(response => {
           this.getSearchItems()
           for (var i in response.data.MSG)

@@ -74,9 +74,19 @@ export default new Router({
       path: '/project-info/:id/:title',
       name: 'Financial',
       component: Financial
+    }, ,
+    {
+      path: '/payment-contribution/campaign/:campaign_id',
+      name: 'PaymentContribution',
+      component: PaymentContribution
     },
     {
-      path: '/payment-contribution/:type/:campaign_id/:reward_id?',
+      path: '/payment-contribution/cota/:campaign_id/:cota_id',
+      name: 'PaymentContribution',
+      component: PaymentContribution
+    },
+    {
+      path: '/payment-contribution/perk/:campaign_id/:perk_id',
       name: 'PaymentContribution',
       component: PaymentContribution
     }

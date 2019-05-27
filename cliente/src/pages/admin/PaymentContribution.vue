@@ -1,46 +1,46 @@
 <template>
 <div class="paymentContribution">
   <main-header></main-header>
-  <b-modal id="login-modal" ref="login-modal" :no-close-on-backdrop="true" :hide-header="true" :hide-footer="true" centered>
-     <div class="container wrap-login center">
-        <b-row>
-          <b-col lg="12">
-            <div class="login">
-              <div class="title mtop mbottom">
-                <span class="blue" style="font-weight: 500">{{"LOGIN::Você precisa estar logado para receber a sua recompensa!"|fix}}</span>
-              </div>
-              <div @keyup.enter="login()">
-                <div class="input-group mb-3">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text">
-                      <font-awesome-icon :icon="['fas', 'user']" />
-                    </span>
-                  </div>
-                  <b-form-input v-model="loginForm.email" type="email" :placeholder="$f('LOGIN::Digite seu e-mail')"></b-form-input>
-                </div>
-
-                <div class="input-group mb-3">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text">
-                      <font-awesome-icon :icon="['fas', 'lock']" />
-                    </span>
-                  </div>
-                  <b-form-input type="password" v-model="loginForm.password" :placeholder="$f('LOGIN::Digite sua senha')"></b-form-input>
-                </div>
-               
-              </div>
-              <div class="title mtop mbottom">
-                <span>{{"LOGIN::Novo no Portal?"|fix}} <a href="/#/register" class="orange"><b>{{"LOGIN::Cadastre-se"|fix}}</b></a></span>
-              </div>
-              <div class="btn-border-blue">
-                <b-button>
-                  <font-awesome-icon :icon="['fab', 'facebook']" />{{"LOGIN::Entrar com Facebook"|fix}}</b-button>
-              </div>
-              <b-button variant="primary" :disabled="!loginForm.email || !loginForm.password" class="float-right" @click="login()">Login</b-button>
+  <b-modal id="login-modal" ref="login-modal" :no-close-on-backdrop="validation.isCotaOrPerk" :hide-header="true" :hide-footer="true" centered>
+    <div class="container wrap-login center">
+      <b-row>
+        <b-col lg="12">
+          <div class="login">
+            <div class="title mtop mbottom">
+              <span class="blue" style="font-weight: 500">{{"LOGIN::Você precisa estar logado para receber a sua recompensa!"|fix}}</span>
             </div>
-          </b-col>
-        </b-row>
-      </div>
+            <div @keyup.enter="login()">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <font-awesome-icon :icon="['fas', 'user']" />
+                  </span>
+                </div>
+                <b-form-input v-model="loginForm.email" type="email" :placeholder="$f('LOGIN::Digite seu e-mail')"></b-form-input>
+              </div>
+
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <font-awesome-icon :icon="['fas', 'lock']" />
+                  </span>
+                </div>
+                <b-form-input type="password" v-model="loginForm.password" :placeholder="$f('LOGIN::Digite sua senha')"></b-form-input>
+              </div>
+
+            </div>
+            <div class="title mtop mbottom">
+              <span>{{"LOGIN::Novo no Portal?"|fix}} <a href="/#/register" class="orange"><b>{{"LOGIN::Cadastre-se"|fix}}</b></a></span>
+            </div>
+            <div class="btn-border-blue">
+              <b-button>
+                <font-awesome-icon :icon="['fab', 'facebook']" />{{"LOGIN::Entrar com Facebook"|fix}}</b-button>
+            </div>
+            <b-button variant="primary" :disabled="!loginForm.email || !loginForm.password" class="float-right" @click="login()">Login</b-button>
+          </div>
+        </b-col>
+      </b-row>
+    </div>
   </b-modal>
   <div class="container mt-5 mb-5">
     <b-row>
@@ -51,51 +51,36 @@
               <small>Você está contribuindo com <span class="blue" style="font-weight: 600;">{{campaign.owner_name}}</span></small>
               <h4>{{campaign.title}}</h4>
             </div>
-            <div v-if="!user.token">
-              <h6>
-                Checkout como convidado ou <a href="/#/login"><span class="orange">Log-in</span></a>
-              </h6>
-              <b-row>
-                <b-col cols="6" style="padding-right:3px;">
-                  <b-input-group prepend="<i class='fa fa-user'></i>">
-                    <b-form-input :disabled="bitcoinPaymentProcessing" type="text" v-model="donator.name" placeholder="Nome do doador"></b-form-input>
-                  </b-input-group>
-                </b-col>
-                <b-col cols="6" style="padding-left:3px;">
-                  <b-input-group prepend="<i class='fa fa-envelope'></i>">
-                    <b-form-input :disabled="bitcoinPaymentProcessing" type="text" v-model="donator.email" placeholder="E-mail doador"></b-form-input>
-                  </b-input-group>
-                </b-col>
-              </b-row>
-            </div>
 
-            <div v-if="user.token">
 
-              <div class="userTab">
+            <div>
+              <div class="userTab" v-if="user.token">
                 <h6>
                   Checkout com conta autenticada
                 </h6>
                 <div class="userImg">
-                  <img style="border-radius: 100px;height:75px;width:75px;margin-top:5px" :src="(campaign && campaign.owner_image ? $apiEndpoint+campaign.owner_image : '/static/anonymous-icon.svg')  ">                </div>
+                  <img style="border-radius: 100px;height:75px;width:75px;margin-top:5px" :src="(user && user.img ? $apiEndpoint+user.img : '/static/anonymous-icon.svg')  "> </div>
                 <div class="user">
                   <div class="name">{{user.name}}</div>
                   <div class="email">{{user.email}}</div>
-                  <!-- <div class="logout">
-                    <a href="/#/login"><span class="orange">Logout</span></a>
-                  </div> -->
                 </div>
               </div>
-              <div v-if="selectedDonationTitleInfo != 'anonymous'">
+              <h6 v-if="!user.token">
+                Checkout como convidado ou <a style="cursor:pointer;" @click="showModalLogin()"><span class="orange">Log-in</span></a>
+                <br /></br>
+              </h6>
+
+              <div v-if="selectedDonationTitleInfo != 'public'">
                 Nome e email que aparecerão na doação:
-                <b-row >
+                <b-row>
                   <b-col cols="6" style="padding-right:3px;">
                     <b-input-group prepend="<i class='fa fa-user'></i>">
-                      <b-form-input :disabled="bitcoinPaymentProcessing" type="text" v-model="donator.name" placeholder="Nome do doador"></b-form-input>
+                      <b-form-input :disabled="validation.processingPayment" type="text" v-model="donator.name" placeholder="Nome do doador"></b-form-input>
                     </b-input-group>
                   </b-col>
                   <b-col cols="6" style="padding-left:3px;">
                     <b-input-group prepend="<i class='fa fa-envelope'></i>">
-                      <b-form-input :disabled="bitcoinPaymentProcessing" type="text" v-model="donator.email" placeholder="E-mail doador"></b-form-input>
+                      <b-form-input :disabled="validation.processingPayment" type="text" v-model="donator.email" placeholder="E-mail doador"></b-form-input>
                     </b-input-group>
                   </b-col>
                 </b-row>
@@ -110,7 +95,13 @@
               <small>Escolha um nome para ser exibido publicamente ao lado de sua contribuição na página da campanha.</small>
             </div>
             <b-form-group>
-              <b-form-radio-group :disabled="bitcoinPaymentProcessing || cardProcessing" stacked v-model="selectedDonationTitleInfo" :options="donationTitleInfo" class="radios radio-block">
+              <b-form-radio-group stacked  class="radios radio-block"  v-model="selectedDonationTitleInfo" >
+                <b-form-radio v-if="!validation.forceIdentifyContribution" value="public">
+                  Doação anônima
+                </b-form-radio>
+                <b-form-radio value="private">
+                  Doação com meu nome
+                </b-form-radio>
               </b-form-radio-group>
             </b-form-group>
           </b-col>
@@ -120,18 +111,18 @@
               <small>Escolha um método de pagamento para ser utilizado na doação da campanha.</small>
             </div>
             <b-form-group>
-              <b-form-radio-group :disabled="bitcoinPaymentProcessing || cardProcessing" stacked v-model="selectedMethodPayment" :options="methodsPayment" class="radios radio-block">
+              <b-form-radio-group stacked   class="radios radio-block" v-model="selectedMethodPayment">
+                <b-form-radio v-if="campaign.payment_method && campaign.payment_method.includes('bitcoin','dollar_and_bitcoin')"  name="some-radios1" value="bitcoin">
+                  Bitcoin
+                </b-form-radio>
+                <b-form-radio v-if="campaign.payment_method && campaign.payment_method.includes('dollar','dollar_and_bitcoin')" name="some-radios2" value="card">
+                  Cartão de Crédito
+                </b-form-radio>
               </b-form-radio-group>
             </b-form-group>
           </b-col>
         </b-row>
         <div class="mt-5" v-show="selectedMethodPayment =='card'">
-          <b-row v-if="user.token">
-            <!--<b-col cols="12">
-                <h6>Pagar com cartão de crédito salvo</h6>
-
-              </b-col>!-->
-          </b-row>
 
           <b-row class="mt-5">
             <b-col cols="12" md="6">
@@ -170,7 +161,7 @@
             </b-col>
           </b-row>
         </div>
-        <div class="mt-5" v-show="haveReward && worldCountries.length">
+        <div class="mt-5" v-show="validation.haveShipping">
           <div class="mb-3">
             <h6>Detalhes para entrega</h6>
             <small>Os detalhes da entrega servirão para receber o produto de recompensa após a doação.</small>
@@ -190,14 +181,9 @@
           <b-row class="mt-3">
             <b-col cols="12" lg="4" style="padding-right:2px;padding-left:2px;">
               <b-input-group prepend="<i class='fa fa-flag'></i>">
-
-                <v-select class="adjustCountriesSelect" placeholder="Pais" v-model="delivery.country" :options="worldCountries" label="label">
-                  <template slot="option" slot-scope="option">
-                    <span :class="option.icon"></span>
-                    ({{option.country_code}}) {{option.country_name}}
-                  </template>
-                </v-select>
-
+                <select placeholder="Pais" v-model="delivery.country" label="label">
+                  <option v-for="item in worldCountries" v-bind:value="item.country_code">{{item.country_name}}</option>
+                </select>
               </b-input-group>
             </b-col>
             <b-col cols="12" lg="4" style="padding-right:2px;padding-left:2px;">
@@ -233,17 +219,17 @@
             </h5>
 
             <b-input-group size="sm" :prepend="$" class="mb-1">
-              <b-form-input type="number" v-model="donator.value" step="0.01" placeholder="Valor para Doação" min="0"></b-form-input>
+              <b-form-input type="number" v-model="donator.value" step="0.01" placeholder="Valor para Doação" :min="validation.minDonationValue"></b-form-input>
             </b-input-group>
 
-             <!-- PERK -->
-            <div v-if="campaign.perk != null" class="subtitle text-danger" v-show="donator.value < Number(campaign.perk.price)">
-              Sua recompensa deve ser maior que {{campaign.perk.price | currency}}
+            <div class="subtitle">
+
             </div>
-            <!-- Cota -->
-            <div v-if="campaign.cota != null" class="subtitle text-danger" v-show="donator.value < Number(campaign.min_donation)">
-              Sua recompensa deve ser maior que {{campaign.cota.min_donation | currency}}
+
+            <div v-if="validation.minDonationValue > 0" class="subtitle">
+              Doando o valor mínimo de {{validation.minDonationValue | currency}} você terá direito a receber a recompensa
             </div>
+
           </div>
 
 
@@ -264,36 +250,37 @@
                   Dados da Entrega
                 </div>
                 <div style="font-size:12px;">
-                  Data: {{campaign.perk.shipping_date}}
+                  Data estimada de entrega <b>{{campaign.perk.shipping_date}}</b>
                 </div>
-                 <div style="font-size:12px;">
-                  Frete: {{campaign.perk.shipping_price | currency}}
+                <div style="font-size:12px;">
+                  Preço do frete <b>{{campaign.perk.shipping_price | currency}}</b>
                 </div>
-                
+
               </div>
               <div class="mt-2 no-shipping" v-else>
-                  Esta recompensa não possui entrega!
+                Esta recompensa não possui entrega!
               </div>
             </div>
           </div>
-          
+
           <!-- COTAS -->
           <div v-if="campaign.cota != null">
             <div style="margin-top:50px;">
-              <h5 class="reward-info-title">Dados da Recompensa
+              <h5 class="reward-info-title">Doando esse valor você irá ter direito a uma cota
               </h5>
               <div>
-                <div class="reward-description" style="font-size:13px;">{{campaign.cota.percent}}% do valor de todas vendas dessa campanha serão convertidos para você!
+                <div class="reward-description" style="font-size:13px;">Isso significa que {{campaign.cota.percent}}% do valor de todas vendas desse produto serão divididos entre {{campaign.cota.peoples}} pessoas que fizeram a doação mínima
                 </div>
-                <div class="reward-description" style="font-size:13px;">Tempo de validade da cota: {{campaign.cota.expiry}}</div>
-                <div class="orange mt-2" style="font-weight: 600; font-size:13px;">Obs: A porcentagem da venda será dividida entre {{campaign.cota.peoples}} pessoas</div>
+                <br>
+                <div class="reward-description" style="font-size:13px;">Tempo de validade da cota: <b>{{campaign.cota.expiry}}</b></div>
+
               </div>
             </div>
           </div>
 
 
           <hr class="mt-3 mb-3">
-          <b-row v-show="haveReward">
+          <b-row v-show="validation.haveShipping">
             <b-col cols="7">
               <div>
                 <span v-if="campaign.perk != null" style="font-size:14px;font-weight:450">Total: {{(Number(donator.value) + Number(campaign.perk.shipping_price)) | currency}}</span>
@@ -301,7 +288,7 @@
               </div>
             </b-col>
           </b-row>
-          <b-row class="mt-5" v-show="!haveReward">
+          <b-row class="mt-5" v-show="!validation.haveShipping">
             <b-col cols="8">
               <h5>VALOR</h5>
             </b-col>
@@ -317,11 +304,12 @@
           </b-row>
           <b-row class="mt-5">
             <div class="btn-noborder-blue ml-3">
-              <b-button @click="payment()" :disabled="isComplete() !== 'VALID'">REALIZAR PAGAMENTO</b-button>
+              <b-button @click="payment()">REALIZAR PAGAMENTO</b-button>
             </div>
           </b-row>
         </div>
       </b-col>
+      <!--
       <b-col v-show="bitcoinPaymentProcessing" cols="12" md="5" class="wrap-right pageContribution">
         <b-row class="pay-info-wrap">
           <b-col cols="12" v-show="bitcoinPayedProcessed">
@@ -371,7 +359,8 @@
           </b-col>
         </b-row>
       </b-col>
-
+      !-->
+      <!--
       <b-col v-show="cardProcessing" cols="12" md="5" class="wrap-right pageContribution">
         <b-row class="pay-info-wrap">
           <b-col cols="12" v-show="cardPayed">
@@ -388,9 +377,9 @@
               <a @click="retryPay()" style="cursor:pointer;color:blue;">Clique aqui para tentar novamente</a>
             </div>
           </b-col>
-
         </b-row>
       </b-col>
+      !-->
     </b-row>
   </div>
   <main-footer></main-footer>
@@ -422,13 +411,10 @@ export default {
     }
   },
   mounted() {
-    if((this.$route.params.type == 'PERK' || this.$route.params.type == 'COTA') && !this.user.token) {
-      this.$refs['login-modal'].show()
-      
-    }
     this.mountCardComponent()
+    this.loadCountries()
     this.loadCampaignData()
-    if (this.user.token != '') {
+    if (this.user.token) {
       this.donator.email = this.user.email
       this.donator.name = this.user.name
     }
@@ -439,14 +425,18 @@ export default {
         email: '',
         password: '',
       },
+      validation: {
+        isCotaOrPerk: false,
+        minDonationValue: 0.0,
+        processingPayment: false,
+        forceIdentifyContribution: false,
+        haveShipping: false
+      },
       cardProcessing: false,
       cardError: false,
       cardPayed: false,
-      // intervalRecheckBitcoinPayment: null,
       selectedMethodPayment: 'card',
       selectedDonationTitleInfo: 'public',
-      haveReward: false,
-      minDonationValue: null,
       bitcoinPaymentProcessing: false,
       bitcoinPayedProcessed: false,
       bitcoinPaymentInfo: {
@@ -479,15 +469,6 @@ export default {
       perkItems: [],
       perkInfo: [],
       itemsSelected: {},
-      methodsPayment: [{
-          text: 'Bitcoin',
-          value: 'bitcoin'
-        },
-        {
-          text: 'Cartão de Crédito',
-          value: 'card'
-        }
-      ],
       donationTitleInfo: [{
           text: 'Nome Completo',
           value: 'public'
@@ -500,13 +481,11 @@ export default {
       worldCountries: []
     }
   },
-  beforeDestroy() {
-    // if (this.intervalRecheckBitcoinPayment) {
-    //   clearInterval(this.intervalRecheckBitcoinPayment)
-    // }
-  },
   methods: {
     ...mapActions('user', ['userSet']),
+    showModalLogin() {
+      this.$refs['login-modal'].show()
+    },
     retryPay() {
       this.cardProcessing = false
       this.cardPayed = false
@@ -527,59 +506,12 @@ export default {
     },
     getCardPayment() {
       this.cardProcessing = true
-      this.$awn.asyncBlock(global.$post("/Card/createToken", {
-          name: this.card.name,
-          number: this.card.number,
-          exp_month: this.card.expiry.replace(/ /g, '').split('/')[0],
-          exp_year: this.card.expiry.replace(/ /g, '').split('/')[1],
-          cvc: this.card.cvc
-        }))
-        .then(response => {
-          return this.$awn.asyncBlock(global.$post("/Card/chargeDonation", {
-              token_card: response.data.MSG.id,
-              donator_value: this.donator.value,
-              donator_name: this.donator.name,
-              donator_email: this.donator.email,
-              campaign_id: this.$route.params.id,
-              donator_type: this.selectedDonationTitleInfo,
-              perk: this.haveReward,
-              perk_id: this.perkInfo.id ? this.perkInfo.id : 0,
-              perk_delivery: JSON.stringify(this.delivery),
-              perk_options: JSON.stringify(this.itemsSelected)
-            }, this.user.token))
-            .then(data => {
-              this.$awn.success("Muito obrigado por sua doação!")
-              this.cardError = false
-              this.cardPayed = true
-            })
-        })
-        .catch(err => {
-          this.$awn.alert("Ocorreu um  erro ao pagar com este cartão!")
-          this.cardError = true
-          this.cardPayed = false
-        })
-
+      this.$awn.alert("Ocorreu um  erro ao pagar com este cartão!")
+      this.cardError = true
+      this.cardPayed = false
     },
-    // recheckBitcoinPayment() {
-    //   var self = this
-    //   this.intervalRecheckBitcoinPayment = setInterval((self) => {
-    //     if (self.bitcoinPaymentInfo.timeout > 0) {
-    //       self.bitcoinPaymentInfo.timeout = self.bitcoinPaymentInfo.timeout - 1
-    //       if (!(self.bitcoinPaymentInfo.timeout % 10)) {
-    //         global.$post("/DonationBitcoin/checkState", {
-    //             txn_id: self.bitcoinPaymentInfo.txn_id
-    //           })
-    //           .then(response => {
-    //             self.bitcoinPayedProcessed = true
-    //             self.bitcoinPaymentProcessing = true
-    //           })
-    //           .catch(err => {})
-    //       }
-    //     }
-    //   }, 1000, this)
-    // },
     getBitcoinPayment() {
-     
+
     },
     login() {
       global.$post("/Auth/login", this.loginForm)
@@ -607,138 +539,50 @@ export default {
         }
       })
     },
+
     loadCountries() {
       global.$post("/Donation/countries", {}, this.user.token)
-      .then(response => {
-        this.worldCountries = response.data
-      })
-      .catch(err => {
-        this.$awn.alert("Ocorreu um erro ao resgatar as informações dos países!")
-
-      })
+        .then(response => {
+          this.worldCountries = response.data
+        })
+        .catch(err => {})
     },
     loadCampaignData() {
-      let data = {
-        campaign_id: this.$route.params.campaign_id
-      }
-      if(this.$route.params.type == "PERK") data.perk_id = this.$route.params.reward_id
-      if(this.$route.params.type == "COTA") data.cota_id = this.$route.params.reward_id
-      global.$post("/Donation/info", data, this.user.token)
+      global.$post("/Donation/info", {
+          campaign_id: this.$route.params.campaign_id,
+          perk_id: this.$route.params.perk_id,
+          cota_id: this.$route.params.cota_id
+        }, this.user.token)
         .then(response => {
-          console.log(response)
           this.campaign = response.data
-          this.loadCountries()
-          if(this.$route.params.type == "PERK") {
-            this.donator.value = response.data.perk.price
+          if (this.campaign.payment_method == 'bitcoin') {
+            this.selectedMethodPayment = 'bitcoin'
           }
-          if(this.$route.params.type == "COTA") {
-            this.donator.value = response.data.cota.min_donation
+          if (this.$route.params.perk_id) {
+            this.validation.isCotaOrPerk = true
+            this.validation.minDonationValue = response.data.perk.price
+            if (response.data.perk.shipping_price > 0) {
+              this.validation.haveShipping = true
+            }
           }
-          this.haveReward = true
-      //     this.campaign = response.data.MSG
-      //     for (var i in this.campaign.perks) {
-      //       if (this.campaign.perks[i].id != this.$route.params.perk) {
-      //         continue;
-      //       }
-      //       this.haveReward = true
-      //       this.perkInfo = this.campaign.perks[i]
-      //       try {
-      //         this.campaign.perk_shipping_info = JSON.parse(this.campaign.perks[i].perk_shipping_info)
-      //       } catch (exp) {}
-      //       try {
-      //         this.campaign.perk_item_info = JSON.parse(this.campaign.perks[i].perk_item_info)
-      //       } catch (exp) {}
-      //       if (this.campaign.perk_item_info.length == 0) {
-      //         return this.haveReward = false
-      //       }
-      //       this.minDonationValue = this.perkInfo.perk_min_donation
-      //       this.donator.value = this.minDonationValue
-      //       for (var j in this.campaign.perk_item_info) {
-      //         let item_options = new Object()
-      //         for (var x in this.campaign.perk_item_info[j].options) {
-      //           if (!item_options[this.campaign.perk_item_info[j].options[x].param]) {
-      //             item_options[this.campaign.perk_item_info[j].options[x].param] = []
-      //           }
-      //           if (!this.itemsSelected[this.campaign.perk_item_info[j].id]) {
-      //             this.itemsSelected[this.campaign.perk_item_info[j].id] = {}
-      //           }
-      //           if (!this.itemsSelected[this.campaign.perk_item_info[j].id][this.campaign.perk_item_info[j].options[x].param]) {
-      //             this.itemsSelected[this.campaign.perk_item_info[j].id][this.campaign.perk_item_info[j].options[x].param] = this.campaign.perk_item_info[j].options[x].param
-      //           }
-      //           item_options[this.campaign.perk_item_info[j].options[x].param].push(this.campaign.perk_item_info[j].options[x].value)
-      //         }
-      //         this.perkItems.push({
-      //           title: this.campaign.perk_item_info[j].title,
-      //           id: this.campaign.perk_item_info[j].id,
-      //           options: JSON.parse(JSON.stringify(item_options))
-      //         })
-      //       }
-      //     }
-      //     let configCountries = []
-      //     for (var i in this.campaign.perk_shipping_info) {
-      //       configCountries[this.campaign.perk_shipping_info[i].locale.value] = this.campaign.perk_shipping_info[i].price
-      //     }
-      //     var countries = require('@/assets/country.json')
-      //     for (var i in countries) {
-      //       if (countries[i].value == 'ALL') continue
-      //       if (countries[i].value == 'REST') continue
-      //       countries[i].priceShipping = -1
-      //       if (configCountries['ALL']) {
-      //         countries[i].priceShipping = configCountries['ALL']
-      //       } else if (configCountries[countries[i].value]) {
-      //         countries[i].priceShipping = configCountries[countries[i].value]
-      //       } else if (configCountries['REST']) {
-      //         countries[i].priceShipping = configCountries['REST']
-      //       }
-      //       if (countries[i].priceShipping != -1) {
-      //         this.worldCountries.push(countries[i])
-      //       }
-      //     }
+          if (this.$route.params.cota_id) {
+            this.validation.isCotaOrPerk = true
+            this.validation.minDonationValue = response.data.cota.min_donation
+          }
+          if (this.validation.isCotaOrPerk) {
+            this.selectedDonationTitleInfo = 'private'
+            this.validation.forceIdentifyContribution = true
+            this.donator.value = this.validation.minDonationValue
+            if (!this.user.token) {
+              this.showModalLogin()
+            }
+          }
         })
         .catch(err => {
           this.$awn.alert("Ocorreu um erro ao resgatar as informações")
         })
-    },
-    validateEmail(email) {
-        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return re.test(String(email).toLowerCase());
-    },
-    isCompleteLocation() {
-      if (!this.worldCountries.length || !this.haveReward)
-        return 'VALID';
-      if (!this.delivery.country)
-        return 'COUNTRY'
-      if (!this.delivery.address || !this.delivery.city || !this.delivery.state)
-        return 'ADDRESS, CITY, STATE'
-      if (!this.delivery.name || !this.delivery.phone || !this.delivery.zipcode)
-        return 'NAME, PHONE, ZIPCODE'
-      return 'VALID'
-    },
-    isComplete() {
-      if (this.isCompleteLocation() != 'VALID')
-        return this.isCompleteLocation()
-      if (this.selectedDonationTitleInfo !== 'public' && this.selectedDonationTitleInfo !== 'anonymous')
-        return 'DONATION'
-      if (this.selectedMethodPayment !== 'card' && this.selectedMethodPayment !== 'bitcoin')
-        return 'METHOD'
-      if(this.campaign.perk != null) {
-        if (this.donator.value < Number(this.campaign.perk.price) || this.donator.value < 0)
-          return 'DONATOR_INFO'
-      }
-      if(this.campaign.cota != null) {
-        if (this.donator.value < Number(this.campaign.cota.min_donation) || this.donator.value < 0)
-          return 'DONATOR_INFO'
-      }
-      if(this.selectedDonationTitleInfo == 'public' && (!this.donator.name || !this.donator.email || !this.validateEmail(this.donator.email))) {
-          return 'DONATOR_INFO'
-        
-      }
-      if (this.selectedMethodPayment == 'card' && (!this.card.name || !this.card.number || !this.card.expiry || !this.card.cvc))
-        return 'CARD'
-      return 'VALID'
-    },
+    }
   }
-
 }
 </script>
 
@@ -999,14 +843,14 @@ export default {
                 border-radius: 5px;
                 box-shadow: 0 0 7px;
                 .reward-info-title {
-                  color: $blue;
-                  font-weight: 600;
+                    color: $blue;
+                    font-weight: 600;
                 }
                 .no-shipping {
-                  color: $orange;
-                  font-size: 1rem;
-                  font-weight: 600;
-                  margin-bottom: 0;	
+                    color: $orange;
+                    font-size: 1rem;
+                    font-weight: 600;
+                    margin-bottom: 0;
                 }
             }
         }
