@@ -1,63 +1,66 @@
 <template>
 <div class="area-6">
-  <div class="bg" v-bind:style="{ backgroundImage: 'url(' + area6bg + ')' }"></div>
-  <b-container>
+  <div class="bg" v-bind:style="{ backgroundImage: 'url(' + area6bg + ')' }">
+    <b-container>
 
-    <div class="header">
-      <span class="title blue">Nosso <b class="orange">Blog</b></span>
-      <span class="text">
-        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-      </span>
-    </div>
-    <vue-glide :breakpoints="{800:{perView:1}}">
-      <vue-glide-slide v-for="i in 6" :key="i">
-        <div :id="'card'+i" class="my-card">
-          <b-img :src='getValueDynamicVar("blogImg",i)'></b-img>
-          <div class="btn-noborder">
-            <b-button>ver mais</b-button>
+      <!-- <section>
+        <div class="header">
+          <span class="title blue">Nosso <b class="orange">Blog</b></span>
+          <span class="text">
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+          </span>
+        </div>
+        <vue-glide :breakpoints="{800:{perView:1}}">
+          <vue-glide-slide v-for="i in 6" :key="i">
+            <div :id="'card'+i" class="my-card">
+              <b-img :src='getValueDynamicVar("blogImg",i)'></b-img>
+              <div class="btn-noborder see-container">
+                <b-button>ver mais</b-button>
+              </div>
+              <div class="title">
+                <span>{{ getValueDynamicVar("blogTitle", i) }}</span>
+              </div>
+              <div class="text">
+                <span>{{ getValueDynamicVar("blogText", i) }}</span>
+              </div>
+            </div>
+          </vue-glide-slide>
+          <template slot="control">
+            <button class="control ctrl-left" data-glide-dir="<">
+              <font-awesome-icon icon="chevron-left" /></button>
+            <button class="control ctrl-right" data-glide-dir=">">
+              <font-awesome-icon icon="chevron-right" /></button>
+          </template>
+        </vue-glide>
+      </section> -->
+
+
+      <div class="register" >
+        <div class="title">
+          <span>Descubra o novo e <b class="orange">faça parte do futuro</b></span>
+        </div>
+        <div class="text">
+          <span>
+            Campanhas inteligentes para seres humanos curiosos e empreendedores
+            Não há lugar melhor para começar a busca por algo inovador. Comece no GoFunder para encontrar idéias inteligentes e não convencionais que resolvam os problemas cotidianos grandes e pequenos, escolha em inúmeras possibilidades de apoiar ou
+            investir em algo inovador!</span>
+        </div>
+        <div class="buttons">
+          <div class="button btn-noborder-transp">
+            <a href="/#/register">
+              <b-button>Cadastre-se</b-button>
+            </a>
           </div>
-          <div class="title">
-            <span>{{ getValueDynamicVar("blogTitle", i) }}</span>
-          </div>
-          <div class="text">
-            <span>{{ getValueDynamicVar("blogText", i) }}</span>
+          <span>ou</span>
+          <div class="button btn-noborder">
+            <a href="/#/login">
+              <b-button>Logar na Plataforma</b-button>
+            </a>
           </div>
         </div>
-      </vue-glide-slide>
-      <template slot="control">
-        <button class="control ctrl-left" data-glide-dir="<">
-          <font-awesome-icon icon="chevron-left" /></button>
-        <button class="control ctrl-right" data-glide-dir=">">
-          <font-awesome-icon icon="chevron-right" /></button>
-      </template>
-    </vue-glide>
-
-
-    <div class="register" >
-      <div class="title">
-        <span>Descubra o novo e <b class="orange">faça parte do futuro</b></span>
       </div>
-      <div class="text">
-        <span>
-          Campanhas inteligentes para seres humanos curiosos e empreendedores
-          Não há lugar melhor para começar a busca por algo inovador. Comece no GoFunder para encontrar idéias inteligentes e não convencionais que resolvam os problemas cotidianos grandes e pequenos, escolha em inúmeras possibilidades de apoiar ou
-          investir em algo inovador!</span>
-      </div>
-      <div class="buttons">
-        <div class="button btn-noborder-transp">
-          <a href="/#/register">
-            <b-button>Cadastre-se</b-button>
-          </a>
-        </div>
-        <span>ou</span>
-        <div class="button btn-noborder">
-          <a href="/#/login">
-            <b-button>Logar na Plataforma</b-button>
-          </a>
-        </div>
-      </div>
-    </div>
-  </b-container>
+    </b-container>
+  </div>
 </div>
 </template>
 
@@ -102,46 +105,45 @@ export default {
 
 .area-6 {
 
-    padding-top: 100px;
-    padding-bottom: 100px;
+    margin-top: 30px;
+    margin-bottom: 10px;
     position: relative;
 
     .bg {
-        height: 548px;
-        position: absolute;
-        top: 332px;
-        width: 100%;
-        background-position: center;
-        z-index: -15;
+      height: 300px;
+      background-position: center;
     }
 
-    .header {
-        margin-bottom: 20px;
-        font-size: 33px;
-        line-height: 22px;
+    // .header {
+    //     margin-bottom: 20px;
+    //     font-size: 33px;
+    //     line-height: 22px;
 
-        .title {
-            display: block;
-            margin-bottom: 8px;
-        }
+    //     .title {
+    //         display: block;
+    //         margin-bottom: 8px;
+    //     }
 
-        .text {
-            font-size: 15px;
-        }
+    //     .text {
+    //         font-size: 15px;
+    //     }
 
-    }
+    // }
 
-    .glide {
-        height: 408px;
-    }
+    // .glide {
+    //     height: 408px;
+    // }
 
     .register {
-
-        padding-top: 50px;
-        color: white;
-        text-align: center;
-        width: 760px;
-        margin: 0 auto;
+      width: 760px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      text-align: center;
+      margin: 0 auto;
 
         .title {
             font-size: 33px;
@@ -176,56 +178,56 @@ export default {
 
     }
 
-    $colorControl: #0000003b;
-    .control {
-        border-radius: 15px;
-        background-color: transparent;
-        border: 1px solid $colorControl;
-        width: 27px;
-        height: 27px;
-        color: $colorControl;
-        font-size: 13px;
-        cursor: pointer;
-    }
+    // $colorControl: #0000003b;
+    // .control {
+    //     border-radius: 15px;
+    //     background-color: transparent;
+    //     border: 1px solid $colorControl;
+    //     width: 27px;
+    //     height: 27px;
+    //     color: $colorControl;
+    //     font-size: 13px;
+    //     cursor: pointer;
+    // }
 
-    .ctrl-left {
-        position: absolute;
-        top: -56px;
-        right: 35px;
-    }
-    .ctrl-right {
-        position: absolute;
-        top: -56px;
-        right: 0;
-    }
+    // .ctrl-left {
+    //     position: absolute;
+    //     top: -56px;
+    //     right: 35px;
+    // }
+    // .ctrl-right {
+    //     position: absolute;
+    //     top: -56px;
+    //     right: 0;
+    // }
 
-    .my-card {
-        height: 392px;
-        position: relative;
-        color: white;
+    // .my-card {
+    //     height: 392px;
+    //     position: relative;
+    //     color: white;
 
-        button {
-            position: absolute;
-            bottom: 139px;
-            right: 26px;
-        }
+    //     button {
+    //         position: absolute;
+    //         bottom: 139px;
+    //         right: 26px;
+    //     }
 
-        img {
-            width: 100%;
-        }
+    //     img {
+    //         width: 100%;
+    //     }
 
-        .title {
-            margin-top: 25px;
-            font-size: 18px;
-            font-weight: 600;
-        }
+    //     .title {
+    //         margin-top: 25px;
+    //         font-size: 18px;
+    //         font-weight: 600;
+    //     }
 
-        .text {
-            font-size: 13px;
-            width: 88%;
-        }
+    //     .text {
+    //         font-size: 13px;
+    //         width: 88%;
+    //     }
 
-    }
+    // }
 
 }
 

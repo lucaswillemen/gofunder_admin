@@ -447,8 +447,6 @@
 		box-shadow: 1px 1px 8px;
 		z-index: 999;
 		top: -10px;
-
-
 		.img {
 			font-size:60px!important;
 			color:white!important;
@@ -498,119 +496,94 @@
 }
 
 .area-6 {
-	padding-top: 100px;
-	padding-bottom: 100px;
-	position: relative;
+	
+	// .register {
+	// 	padding-top: 50px;
+	// 	color: white;
+	// 	text-align: center;
+	// 	width: 760px;
+	// 	margin: 0 auto;
 
-	.bg {
-		height: 548px;
-		position: absolute;
-		top: 332px;
-		width: 100%;
-		background-position: center;
-		z-index: -15;
-	}
+	// 	.title {
+	// 		font-size: 33px;
+	// 		font-weight: 100;
 
-	.header {
-		margin-bottom: 20px;
-		font-size: 33px;
-		line-height: 22px;
+	// 		b {
+	// 			font-weight: 700;
+	// 		}
+	// 	}
 
-		.title {
-			display: block;
-		}
+	// 	.text {
+	// 		font-size: 13px;
+	// 	}
 
-		.text {
-			font-size: 15px;
-		}
-	}
+	// 	.buttons {
+	// 		display: inline-flex;
+	// 		margin-top: 35px;
 
-	.register {
-		padding-top: 50px;
-		color: white;
-		text-align: center;
-		width: 760px;
-		margin: 0 auto;
+	// 		.button,
+	// 		span {
+	// 			padding-right: 14px;
+	// 		}
 
-		.title {
-			font-size: 33px;
-			font-weight: 100;
+	// 		.button button {
+	// 			padding: 1px 40px 26px;
+	// 			font-size: 16px;
+	// 		}
+	// 	}
+	// }
 
-			b {
-				font-weight: 700;
-			}
-		}
+	// $colorControl: #0000003b;
 
-		.text {
-			font-size: 13px;
-		}
+	// .control {
+	// 	border-radius: 15px;
+	// 	background-color: transparent;
+	// 	border: 1px solid $colorControl;
+	// 	width: 27px;
+	// 	height: 27px;
+	// 	color: $colorControl;
+	// 	font-size: 13px;
+	// 	cursor: pointer;
+	// }
 
-		.buttons {
-			display: inline-flex;
-			margin-top: 35px;
+	// .ctrl-left {
+	// 	position: absolute;
+	// 	top: -56px;
+	// 	right: 35px;
+	// }
 
-			.button,
-			span {
-				padding-right: 14px;
-			}
+	// .ctrl-right {
+	// 	position: absolute;
+	// 	top: -56px;
+	// 	right: 0;
+	// }
 
-			.button button {
-				padding: 1px 40px 26px;
-				font-size: 16px;
-			}
-		}
-	}
-	$colorControl: #0000003b;
+	// .my-card {
+	// 	height: 392px;
+	// 	position: relative;
+	// 	color: white;
 
-	.control {
-		border-radius: 15px;
-		background-color: transparent;
-		border: 1px solid $colorControl;
-		width: 27px;
-		height: 27px;
-		color: $colorControl;
-		font-size: 13px;
-		cursor: pointer;
-	}
+	// 	button {
+	// 		position: absolute;
+	// 		bottom: 139px;
+	// 		right: 26px;
+	// 	}
 
-	.ctrl-left {
-		position: absolute;
-		top: -56px;
-		right: 35px;
-	}
+	// 	img {
+	// 		width: 100%;
+	// 	}
 
-	.ctrl-right {
-		position: absolute;
-		top: -56px;
-		right: 0;
-	}
+	// 	.title {
+	// 		margin-top: 25px;
+	// 		font-size: 18px;
+	// 		font-weight: 600;
+	// 	}
 
-	.my-card {
-		height: 392px;
-		position: relative;
-		color: white;
-
-		button {
-			position: absolute;
-			bottom: 139px;
-			right: 26px;
-		}
-
-		img {
-			width: 100%;
-		}
-
-		.title {
-			margin-top: 25px;
-			font-size: 18px;
-			font-weight: 600;
-		}
-
-		.text {
-			font-size: 13px;
-			width: 88%;
-		}
-	}
+	// 	.text {
+	// 		font-size: 13px;
+	// 		width: 88%;
+	// 	}
+	// }
 }
 // mobile
 @media only screen and (max-width: 768px) {

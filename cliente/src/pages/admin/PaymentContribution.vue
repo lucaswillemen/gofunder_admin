@@ -73,12 +73,12 @@
               <div v-if="selectedDonationTitleInfo != 'public'">
                 Nome e email que aparecerão na doação:
                 <b-row>
-                  <b-col cols="6" style="padding-right:3px;">
+                  <b-col cols="12" md="6">
                     <b-input-group prepend="<i class='fa fa-user'></i>">
                       <b-form-input :disabled="validation.processingPayment" type="text" v-model="donator.name" placeholder="Nome do doador"></b-form-input>
                     </b-input-group>
                   </b-col>
-                  <b-col cols="6" style="padding-left:3px;">
+                  <b-col cols="12" md="6">
                     <b-input-group prepend="<i class='fa fa-envelope'></i>">
                       <b-form-input :disabled="validation.processingPayment" type="text" v-model="donator.email" placeholder="E-mail doador"></b-form-input>
                     </b-input-group>
@@ -251,7 +251,7 @@
                   Dados da Entrega
                 </div>
                 <div style="font-size:12px;">
-                  Data estimada de entrega <b>{{campaign.perk.shipping_date}}</b>
+                  Data estimada de entrega <b>{{campaign.perk.shipping_date | formatShippingDate}}</b>
                 </div>
                 <div style="font-size:12px;">
                   Preço do frete <b>{{campaign.perk.shipping_price | currency}}</b>
@@ -412,6 +412,10 @@ export default {
   filters: {
     formatDate(value) {
       return value ? moment("2015-01-01").startOf('day').seconds(value).format('H:mm:ss') : false
+    },
+    formatShippingDate(value) {
+      return moment(value).format('DD/MM/YYYY')
+
     }
   },
   mounted() {
