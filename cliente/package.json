@@ -39,6 +39,7 @@
     "vue-recaptcha": "^1.1.1",
     "vue-router": "^3.0.1",
     "vue-select2": "^0.2.6",
+    "vue-spinner": "^1.0.3",
     "vue-the-mask": "^0.11.1",
     "vue-trumbowyg": "^3.4.1",
     "vue2-filters": "^0.4.1",

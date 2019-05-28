@@ -219,8 +219,8 @@
               Valor de contribuição
             </h5>
 
-            <b-input-group size="sm" :prepend="$" class="mb-1">
-              <b-form-input type="number" v-model="donator.value" step="0.01" placeholder="Valor para Doação" :min="validation.minDonationValue" v-money="money"></b-form-input>
+            <b-input-group size="sm" prepend="$" class="mb-1">
+              <b-form-input type="number" v-model="donator.value" step="0.01" placeholder="Valor para Doação" :min="validation.minDonationValue"></b-form-input>
             </b-input-group>
 
             <div class="subtitle">
@@ -290,6 +290,7 @@
             </b-col>
           </b-row>
           <b-row class="mt-5" v-show="!validation.haveShipping">
+
             <b-col cols="8">
               <h5>VALOR</h5>
             </b-col>
@@ -310,7 +311,6 @@
           </b-row>
         </div>
       </b-col>
-
       <b-col v-show="bitcoinPaymentProcessing" cols="12" md="5" class="wrap-right pageContribution">
         <b-row class="pay-info-wrap">
           <b-col cols="12" v-show="bitcoinPayedProcessed">
@@ -353,16 +353,18 @@
                 <div class="price-wrap">
                   <span class="bit">1 BTC</span>
                   <font-awesome-icon :icon="['fas', 'exchange-alt']" />
-                  <span class="qtd">{{Math.round(donator.value/bitcoinPaymentInfo.amount | currency)}} </span>
+                  <span class="qtd">{{Math.round(donator.value/bitcoinPaymentInfo.amount) | currency}} </span>
                 </div>
               </div>
             </div>
           </b-col>
         </b-row>
       </b-col>
-
       <b-col v-show="cardProcessing" cols="12" md="5" class="wrap-right pageContribution">
         <b-row class="pay-info-wrap">
+          <div class="d-flex justify-content-center w-100">
+            <clip-loader :loading="!cardPayed && !cardError" size="60" color="#1a2953"></clip-loader>
+          </div>
           <b-col cols="12" v-show="cardPayed">
             <div style="font-size:15px;">
               <h3>Sucesso <span class="text-success"><i class="fas fa-check"></i></span></h3><br>
@@ -379,7 +381,6 @@
           </b-col>
         </b-row>
       </b-col>
-
     </b-row>
   </div>
   <main-footer></main-footer>
@@ -389,6 +390,7 @@
 <script>
 import QrcodeVue from 'qrcode.vue'
 import moment from 'moment'
+import { ClipLoader } from 'vue-spinner/dist/vue-spinner.min.js'
 
 const Card = require('card')
 
@@ -403,7 +405,9 @@ export default {
     ...mapState(['user'])
   },
   components: {
-    QrcodeVue
+    QrcodeVue,
+    ClipLoader
+
   },
   filters: {
     formatDate(value) {
@@ -426,11 +430,6 @@ export default {
   },
   data() {
     return {
-      money: {
-        decimal: ',',
-        thousands: '.',
-        precision: 2,
-      },
       loginForm: {
         email: '',
         password: '',
@@ -727,7 +726,6 @@ export default {
 
 <style lang="scss">
 @import "Styles/colors.scss";
-
 .paymentContribution {
 
     $gray: #616060;
