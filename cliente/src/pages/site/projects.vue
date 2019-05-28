@@ -111,8 +111,13 @@ export default {
           for (var i in response.data) {
             let percent = ((100 / response.data[i].amount) * response.data[i].amount_received)
             response.data[i].percent = percent > 100 ? 100 : percent
-            this.projects.push(response.data[i])
+            if(response.data[i].status == 'pending_level') response.data[i].lancamento = 'Lancamento em breve!' 
+            if(response.data[i].status == 'draft') response.data[i].lancamento = 'Rascunho de campanha!' 
+            if(response.data[i].status == 'approved') response.data[i].lancamento = 'Campanha ativa!'
+            if(response.data[i].status == 'approved' && response.data[i].remain_days > 0 && response.data[i].remain_days < 10) response.data[i]['lancamento'] = 'Quase acabando!' 
+            if(response.data[i].status == 'approved' && response.data[i].remain_days < 0) response.data[i]['lancamento'] = 'Já acabou!' 
           }
+            this.projects = response.data
         })
         .catch(err => {})
     },
