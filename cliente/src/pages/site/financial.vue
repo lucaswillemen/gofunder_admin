@@ -64,7 +64,9 @@
                 <span class="total_cash">Total Arrecadado {{campaign.amount_received  | currency}}  ({{campaign.donators}} doadores)</span>
                 <progress-bar :current="currentPercentage"></progress-bar>
                 <span class="meta">Meta de arrecadação <span class="valor">{{campaign.amount | currency}} </span></span>
-                <span class="due-date">Termina em {{campaign.remain_days}} dias</span>
+                <span class="due-date" v-if="campaign.remain_days == 1">Termina em {{campaign.remain_days}} dia</span>
+                <span class="due-date" v-else>Termina em {{campaign.remain_days}} dias</span>
+
               </div>
               <div class="bottom">
                 <div class="btn-noborder-blue button">
@@ -115,6 +117,43 @@
                 </b-row>
               </div>
             </b-row> -->
+            <b-col>
+              <section class="project-development-container">
+                <header>
+                  <div class="project-actual-stage">
+                    Prototype
+                  </div>
+                  <div class="project-stage-description">
+                    A fase de protótipo significa que o projeto ainda esta sendo refinado antes de ir para a produção.
+                  </div>
+                </header>
+                <main class="project-timeline-container" >
+                  <div class="timeline">
+                    <div class="icon-container" :class="{'active-stage-icon': campaign.product_stage == 'concept', 'done': campaign.product_stage == 'prototype' || campaign.product_stage == 'production' || campaign.product_stage == 'shipping'}">
+                      <font-awesome-icon :icon="['fas', 'lightbulb']" />
+                    </div>
+                    <div class="stage-divider" :class="{'active-stage-divider': campaign.product_stage == 'prototype' || campaign.product_stage == 'production' || campaign.product_stage == 'shipping'}"></div>
+                    <div class="icon-container" :class="{'active-stage-icon': campaign.product_stage == 'prototype', 'done': campaign.product_stage == 'production' || campaign.product_stage == 'shipping'}">
+                      <font-awesome-icon :icon="['fas', 'tools']" />
+                    </div>
+                    <div class="stage-divider" :class="{'active-stage-divider': campaign.product_stage == 'production' || campaign.product_stage=='shipping'}"></div>
+                    <div class="icon-container" :class="{'active-stage-icon': campaign.product_stage == 'production', 'done': campaign.product_stage == 'shipping'}">                    
+                      <font-awesome-icon :icon="['fas', 'boxes']" /> 
+                    </div>
+                    <div class="stage-divider" :class="{'active-stage-divider': campaign.product_stage == 'shipping'}"></div>
+                    <div class="icon-container" :class="{'active-stage-icon': campaign.product_stage == 'shipping'}">                    
+                      <font-awesome-icon :icon="['fas', 'shipping-fast']" />
+                    </div>
+                  </div>
+                  <div class="stages">
+                    <div :class="{'active' : campaign.product_stage == 'concept', 'done': campaign.product_stage == 'prototype' || campaign.product_stage == 'production' || campaign.product_stage == 'shipping'}">Concept</div>
+                    <div :class="{'active' : campaign.product_stage == 'prototype', 'done': campaign.product_stage == 'production' || campaign.product_stage == 'shipping'}">Prototype</div>
+                    <div :class="{'active' : campaign.product_stage == 'production', 'done': campaign.product_stage == 'shipping'}">Production</div>
+                    <div :class="{'active' : campaign.product_stage == 'shipping'}">Shipping</div>
+                  </div>
+                </main>
+              </section>
+            </b-col>
             <b-col cols="12" lg="12">
               <div class="tabs">
                 <b-tabs>
@@ -304,6 +343,38 @@ export default {
           link: 'http://pinterest.com/pin/create/link/?url=' + location.href,
           color: '#bd081c'
         },
+      ],
+      //por enquanto nao está sendo usado!
+      stages: [
+        {
+          icon: {
+            prefix: 'fas',
+            name: 'lightbulb'
+          },
+          name: 'Concept'
+        },
+        {
+          icon: {
+            prefix: 'fas',
+            name: 'tools'
+          },
+          name: 'Prototype'
+        },
+        {
+          icon: {
+            prefix: 'fas',
+            name: 'boxes'
+          },
+          name: 'Production'
+        },
+        {
+          icon: {
+            prefix: 'fas',
+            name: 'fast-shipping'
+          },
+          name: 'Shipping'
+        },
+        
       ],
       projects: []
     }

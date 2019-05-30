@@ -83,6 +83,12 @@ import {
 
 //Solid
 import {
+  faCheckCircle as fasCheckCircle,
+  faLightbulb as fasLifaLightbulb,
+  faBoxes,
+  faPallet,
+   faShippingFast,
+  faTools, 
   faSearch,
   faChevronLeft,
   faChevronRight,
@@ -130,7 +136,8 @@ import {
   FontAwesomeIcon
 } from '@fortawesome/vue-fontawesome'
 library.add(
-  faSearch, faFacebook, faTwitter, faInstagram,
+  fasCheckCircle, fasLifaLightbulb, faPallet, faShippingFast,
+  faBoxes, faTools, faSearch, faFacebook, faTwitter, faInstagram,
   faPinterest, faChevronLeft, faChevronRight, faHeart,
   faFacebookF, faPinterestP, faCode, faLink, faEllipsisH,
   faCreditCard, faWallet, faCheckCircle, faHeadphones,
