@@ -131,10 +131,12 @@
 	}
 
 	.number {
-		width: 50px;
+		display: flex;
+    justify-content: center;
+		align-items: center;
+		top: -1px;
 		text-align: center;
 		font-size: 30px;
-		top: -1px;
 		font-weight: 500;
 		color: white;
 	}

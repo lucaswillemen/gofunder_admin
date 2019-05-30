@@ -57,8 +57,8 @@
         </div>
       </md-tab>
       <md-tab id="tab-rascunhos" md-label="Rascunhos" md-icon="create">
-        <div class="md-layout md-grutter">
-          <div v-for="(campaign, index) in rascunhos" :key="index" class="md-layout-item md-size-100 md-medium-size-50 md-large-size-33 md-xlarge-size-25">
+        <div class="md-layout md-grutter campaign-container">
+          <div v-for="(campaign, index) in rascunhos" :key="index" class="md-layout-item card-container md-size-33">
             <md-card>
               <md-card-actions class="overlap-btn">
                 <md-button class="md-fab md-mini" @click="openDeleteConfirmation(campaign.id)">
@@ -193,10 +193,16 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.overlap-btn {
-	position: absolute;
-	right: 0;
+.campaign-container {
+  .card-container {
+    margin-bottom: 1.5rem;
+  }
+  .overlap-btn {
+    position: absolute;
+    right: 0;
+  }
 }
+
 .loading-overlay {
   z-index: 10;
   top: 0;
