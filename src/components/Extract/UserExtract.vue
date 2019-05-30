@@ -16,7 +16,7 @@
             </div>
 
             <md-field md-clearable class="md-toolbar-section-end">
-              <md-input placeholder="Procurar por nome .." v-model="search" @input="searchOnTable" />
+              <md-input placeholder="Procurar por valor .." v-model="search" @input="searchOnTable" />
             </md-field>
           </md-table-toolbar>
           <md-table-row>
@@ -98,6 +98,8 @@ export default {
           console.log('foi', response)
           this.numberPages = Math.ceil(response.data.rows/this.numberOfRows)
           this.tableData = response.data.data
+          this.searched = this.tableData
+
           this.paginationController = []
           for (let i = 0; i < this.numberPages; i++) {
             this.paginationController.push(i)
@@ -135,7 +137,7 @@ export default {
     },
     searchByName (items, term) {
       if (term) {
-        return items.filter(item => this.toLower(item.name).includes(this.toLower(term)))
+        return items.filter(item => this.toLower(item.amount).includes(this.toLower(term)))
       }
       return items
     },
@@ -184,11 +186,9 @@ export default {
       this.paginationController = newArrayPag
     },
   },
-  created () {
-    this.searched = this.tableData
-  },
   mounted() {
     this.getUserExtract()
+
   }
 }
 </script>
@@ -209,7 +209,7 @@ export default {
   
   .activePage {
     pointer-events: none;
-    background-color: rgba(95, 30, 4, 0.774) !important;
+    background-color: #091AB3!important;
   }
   button:focus {
     outline: 0 !important;
