@@ -26,7 +26,7 @@
       <md-toolbar class="md-transparent" md-elevation="0">
 
         <div class="md-toolbar-section-end">
-          <img style="max-width:180px;" src="https://gofunder.io/static/img/logo.8941ded.png"></img>
+          <img style="max-width:180px;" src="https://gofunder.io/static/img/logo.8941ded.png"/>
           <md-button class="md-icon-button md-dense md-raised" @click="toggleMenu">
             <md-icon style="color:white!important;">keyboard_arrow_left</md-icon>
           </md-button>
