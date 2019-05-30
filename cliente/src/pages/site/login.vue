@@ -86,7 +86,7 @@ export default {
           this.$awn.success("Bem vindo " + response.data.name)
           this.userSet(response.data)
           setTimeout(function() {
-            location.href = this.$urlPainel + '/profile'
+            location.href = this.$urlPainel + '/'
           }, 1200)
 
         })

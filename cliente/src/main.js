@@ -63,7 +63,10 @@ Vue.use(VueCurrencyFilter, {
 // FORMATO DE MOEDAS
 import Vue2Filters from 'vue2-filters'
 Vue.use(Vue2Filters)
-
+import money from 'v-money'
+Vue.use(money, {
+  precision: 4,
+})
 // CARREGAR AS STORES
 import store from './store'
 

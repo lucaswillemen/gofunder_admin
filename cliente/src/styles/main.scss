@@ -553,6 +553,8 @@ $white: #f6f6f6;
 
 		.custom-control-input:checked ~ .custom-control-label::before {
 			background-color: $orange;
+			border: 1px solid $blue;
+
 		}
 	}
 
@@ -566,11 +568,9 @@ $white: #f6f6f6;
 }
 
 .radios {
-	span {
-		font-size: 12;
-		font-weight: 500;
-		color: $blue;
-	}
+	font-size: 14px;
+	font-weight: 500;
+	color: $blue;
 }
 
 // frame com tabs

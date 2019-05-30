@@ -18,7 +18,7 @@
               <div id="tab1" class="tab-wrap">
                 <b-row>
                   <b-col lg="4" xl="3">
-                    <div class="img" v-bind:style="{ backgroundImage: 'url(' + (user && user.img ? this.$apiEndpoint+'/uploads/profile/'+user.img : '/static/anonymous-icon.svg')  + ')' }">
+                    <div class="img" v-bind:style="{ backgroundImage: 'url(' + (user && user.img ? this.$apiEndpoint+user.img : '/static/anonymous-icon.svg')  + ')' }">
                     </div>
                   </b-col>
                   <b-col lg="8" xl="9">
@@ -131,7 +131,7 @@
             <b-tab title="Campanhas do Usuário" class="tabs tabref">
               <div id="tab2" class="tab-wrap">
                 <section class="d-flex flex-wrap justify-content-start campaign-margin">
-                   <b-card style="width: 350px;" v-for="(campanha, index) in campanhas" :key="index" :title="campanha.title" :img-src="campanha.cover_url ? $apiEndpoint+campanha.cover_url : 'https://via.placeholder.com/150' " img-alt="Image" class="campaign-card mb-3" img-top body-class="body-position" >
+                   <!-- <b-card style="width: 350px;" v-for="(campanha, index) in campanhas" :key="index" :title="campanha.title" :img-src="campanha.cover_url ? $apiEndpoint+campanha.cover_url : 'https://via.placeholder.com/150' " img-alt="Image" class="campaign-card mb-3" img-top body-class="body-position" >
                     <div class="card-description">
                     {{campanha.description}}
                     </div>
@@ -158,7 +158,8 @@
                         {{campaignStatus(campanha.status)}}
                       </div>
                     </div>
-                  </b-card>
+                  </b-card> -->
+                  <project-card :projects="campanhas"></project-card>
                 </section>
               </div>
             </b-tab>
@@ -198,6 +199,16 @@ export default {
     getUserCampaign() {
       global.$get("/Campaign/getlistcampaignid?user_id="+this.$route.params.id, {})
       .then(response => {
+        response.data.forEach(element => {
+          let percent = ((100 / element.amount) * element.amount_received)
+          element.percent = percent > 100 ? 100 : percent
+          if(element.status == 'pending_level') element['lancamento'] = 'Lancamento em breve!' 
+          if(element.status == 'draft') element['lancamento'] = 'Rascunho de campanha!' 
+          if(element.status == 'approved') element['lancamento'] = 'Campanha ativa!'
+          if(element.status == 'approved' && element.remain_days > 0 && element.remain_days < 10) element['lancamento'] = 'Quase acabando!' 
+          if(element.status == 'approved' && element.remain_days < 0) element['lancamento'] = 'Já acabou!' 
+          element['tipo']= 'Funding'
+        });
         this.campanhas = response.data
         console.log(response)
         // this.$awn.success("E-mail cadastrado com sucesso!")  
@@ -213,14 +224,14 @@ export default {
       let percentage = parseInt((received/goal) * 100)
       return percentage < 100 ? percentage : 100
     },
-    campaignStatus(status) {
-      if(status == 'approved')
-        return 'Campanha Lançada!'
-      if(status == 'draft') 
-        return 'Rascunho de Campanha'
-      if(status == 'pending_level')
-        return 'Lançamento em breve!'
-    }
+    // campaignStatus(status) {
+    //   if(status == 'approved')
+    //     return 'Campanha Lançada!'
+    //   if(status == 'draft') 
+    //     return 'Rascunho de Campanha'
+    //   if(status == 'pending_level')
+    //     return 'Lançamento em breve!'
+    // }
   },
   mounted() {
     this.getUserCampaign()

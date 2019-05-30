@@ -73,12 +73,12 @@
               <div v-if="selectedDonationTitleInfo != 'public'">
                 Nome e email que aparecerão na doação:
                 <b-row>
-                  <b-col cols="6" style="padding-right:3px;">
+                  <b-col cols="12" md="6">
                     <b-input-group prepend="<i class='fa fa-user'></i>">
                       <b-form-input :disabled="validation.processingPayment" type="text" v-model="donator.name" placeholder="Nome do doador"></b-form-input>
                     </b-input-group>
                   </b-col>
-                  <b-col cols="6" style="padding-left:3px;">
+                  <b-col cols="12" md="6">
                     <b-input-group prepend="<i class='fa fa-envelope'></i>">
                       <b-form-input :disabled="validation.processingPayment" type="text" v-model="donator.email" placeholder="E-mail doador"></b-form-input>
                     </b-input-group>
@@ -181,9 +181,10 @@
           <b-row class="mt-3">
             <b-col cols="12" lg="4" style="padding-right:2px;padding-left:2px;">
               <b-input-group prepend="<i class='fa fa-flag'></i>">
-                <select placeholder="Pais" v-model="delivery.country" label="label">
-                  <option v-for="item in worldCountries" v-bind:value="item.id">{{item.country_name}}</option>
-                </select>
+                <b-form-select v-model="delivery.country" label="label">
+                  <option :value="null" disabled>Selecione o País</option>
+                  <option v-for="(item, index) in worldCountries" :key="index" v-bind:value="item.id">{{item.country_name}}</option>
+                </b-form-select>
               </b-input-group>
             </b-col>
             <b-col cols="12" lg="4" style="padding-right:2px;padding-left:2px;">
@@ -218,7 +219,7 @@
               Valor de contribuição
             </h5>
 
-            <b-input-group size="sm" :prepend="$" class="mb-1">
+            <b-input-group size="sm" prepend="$" class="mb-1">
               <b-form-input type="number" v-model="donator.value" step="0.01" placeholder="Valor para Doação" :min="validation.minDonationValue"></b-form-input>
             </b-input-group>
 
@@ -250,7 +251,7 @@
                   Dados da Entrega
                 </div>
                 <div style="font-size:12px;">
-                  Data estimada de entrega <b>{{campaign.perk.shipping_date}}</b>
+                  Data estimada de entrega <b>{{campaign.perk.shipping_date | formatShippingDate}}</b>
                 </div>
                 <div style="font-size:12px;">
                   Preço do frete <b>{{campaign.perk.shipping_price | currency}}</b>
@@ -289,6 +290,7 @@
             </b-col>
           </b-row>
           <b-row class="mt-5" v-show="!validation.haveShipping">
+
             <b-col cols="8">
               <h5>VALOR</h5>
             </b-col>
@@ -309,7 +311,6 @@
           </b-row>
         </div>
       </b-col>
-
       <b-col v-show="bitcoinPaymentProcessing" cols="12" md="5" class="wrap-right pageContribution">
         <b-row class="pay-info-wrap">
           <b-col cols="12" v-show="bitcoinPayedProcessed">
@@ -352,16 +353,18 @@
                 <div class="price-wrap">
                   <span class="bit">1 BTC</span>
                   <font-awesome-icon :icon="['fas', 'exchange-alt']" />
-                  <span class="qtd">{{Math.round(donator.value/bitcoinPaymentInfo.amount | currency)}} </span>
+                  <span class="qtd">{{Math.round(donator.value/bitcoinPaymentInfo.amount) | currency}} </span>
                 </div>
               </div>
             </div>
           </b-col>
         </b-row>
       </b-col>
-
       <b-col v-show="cardProcessing" cols="12" md="5" class="wrap-right pageContribution">
         <b-row class="pay-info-wrap">
+          <div class="d-flex justify-content-center w-100">
+            <clip-loader :loading="!cardPayed && !cardError" size="60" color="#1a2953"></clip-loader>
+          </div>
           <b-col cols="12" v-show="cardPayed">
             <div style="font-size:15px;">
               <h3>Sucesso <span class="text-success"><i class="fas fa-check"></i></span></h3><br>
@@ -378,7 +381,6 @@
           </b-col>
         </b-row>
       </b-col>
-
     </b-row>
   </div>
   <main-footer></main-footer>
@@ -388,6 +390,7 @@
 <script>
 import QrcodeVue from 'qrcode.vue'
 import moment from 'moment'
+import { ClipLoader } from 'vue-spinner/dist/vue-spinner.min.js'
 
 const Card = require('card')
 
@@ -402,11 +405,17 @@ export default {
     ...mapState(['user'])
   },
   components: {
-    QrcodeVue
+    QrcodeVue,
+    ClipLoader
+
   },
   filters: {
     formatDate(value) {
       return value ? moment("2015-01-01").startOf('day').seconds(value).format('H:mm:ss') : false
+    },
+    formatShippingDate(value) {
+      return moment(value).format('DD/MM/YYYY')
+
     }
   },
   mounted() {
@@ -469,7 +478,7 @@ export default {
         address: '',
         city: '',
         state: '',
-        country: ''
+        country: null
       },
       perkItems: [],
       perkInfo: [],
@@ -721,7 +730,6 @@ export default {
 
 <style lang="scss">
 @import "Styles/colors.scss";
-
 .paymentContribution {
 
     $gray: #616060;
@@ -934,10 +942,10 @@ export default {
                 font-weight: 300;
             }
             .input-group-text,
-            input,
+            input, select,
             input:focus {
                 border-radius: 2;
-                border: 1px;
+                // border: 1px;
                 background-color: rgba(200, 200, 200,0.1);
             }
             .userTab {

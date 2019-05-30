@@ -1,5 +1,5 @@
 <template>
-<div class="projects">
+<div class="project-card-container">
   <b-card  @click="openTab(project.id, project.title)" style="cursor:pointer;" v-for="(project, index) in projects" :key="index" :title="project.title" :img-src="$apiEndpoint + project.cover_url"  img-top tag="article" class="mb-4">
     <div class="bottom-img">
       <span class="center-obj-v">{{project.category_name}}</span>
@@ -16,7 +16,7 @@
     <p class="card-text">
       {{project.description}}
     </p>
-    <div class="bottomBar" v-if="project.tipo == 'Funding'">
+    <div v-if="project.tipo == 'Funding'">
       <p class="total">Total Arrecadado {{project.amount_received  | currency}} </p>
       <progress-bar :max="100" :current="project.percent"></progress-bar>
       <p class="meta">Meta {{project.amount | currency}}</p>
@@ -51,14 +51,10 @@ export default {
 <style lang="scss">
 @import "Styles/colors.scss";
 
-.projects {
-
+.project-card-container {
+    display: flex;
+    flex-wrap: wrap;
     .card {
-        .bottomBar {
-            bottom: 40px;
-            position: absolute;
-            width: 80%;
-        }
         max-width: 14rem;
         margin: 0 20px;
         float: left;

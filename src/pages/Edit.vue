@@ -72,6 +72,18 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-
+.loading-overlay {
+  z-index: 10;
+  top: 0;
+  left: 0;
+  right: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 </style>
