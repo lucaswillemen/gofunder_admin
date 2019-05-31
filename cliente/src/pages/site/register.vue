@@ -69,7 +69,10 @@ import {
 
 export default {
   computed: {
-    ...mapState(['user'])
+    ...mapState(['user']),
+    refererId() {
+      return this.$route.query.id
+    }
   },
   data() {
     return {
@@ -83,9 +86,9 @@ export default {
   },
   methods: {
     register: function() {
-      global.$post("/Auth/register", this.form)
+      global.$post("/Auth/register", {...this.form, referer_id: this.refererId})
         .then(response => {
-          this.$awn.success($f("REGISTER::Você foi registrado com sucesso por favor confira seu e-mail para confirmar sua conta!"))
+          this.$awn.success(this.$f("REGISTER::Você foi registrado com sucesso por favor confira seu e-mail para confirmar sua conta!"))
           this.$router.push('login')
         })
         .catch(err => {
@@ -120,7 +123,7 @@ export default {
             border-radius: 5px;
             position: relative;
             text-align: center;
-
+            
             .circle {
                 position: absolute;
                 width: 90px;

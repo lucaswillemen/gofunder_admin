@@ -56,9 +56,10 @@
           </md-table-row>
           <md-table-row v-for="(row, index) in tableData" :key="index">
             <md-table-cell>{{ row.created_at }}</md-table-cell>
-            <md-table-cell>{{ row.amount }}</md-table-cell>
+            <md-table-cell v-if="row.coin == 'usd'">${{ row.amount }}</md-table-cell>
+            <md-table-cell v-else-if="row.coin == 'btc'">{{ row.amount }} BTC</md-table-cell>
             <md-table-cell>{{ row.msg }}</md-table-cell>
-            <md-table-cell>{{ row.referer_id }}</md-table-cell>
+            <md-table-cell>{{ row.referer_id || 'Não há!' }}</md-table-cell>
           </md-table-row>
         </md-table>
       </section>
@@ -82,7 +83,7 @@ export default {
     alertErrorMsg: null,
     currentPage: 0,
     orderType: 'desc',
-    orderBy: 'amount',
+    orderBy: 'created_at',
     search: null,
     searched: [],
     tableData: []
