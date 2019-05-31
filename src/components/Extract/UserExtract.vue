@@ -8,7 +8,7 @@
       md-title="Erro ao tentar efetuar saque!"
       :md-content="alertErrorMsg" />
       <section>
-        <md-table v-model="searched" md-card>
+        <md-table md-card>
           <md-table-toolbar>
 
             <div class="md-toolbar-section-start">
@@ -16,7 +16,7 @@
             </div>
 
             <md-field md-clearable class="md-toolbar-section-end">
-              <md-input placeholder="Procurar por valor .." v-model="search" @input="searchOnTable" />
+              <md-input placeholder="Procurar por valor .."  />
             </md-field>
           </md-table-toolbar>
           <md-table-row>
@@ -104,6 +104,8 @@ export default {
           for (let i = 0; i < this.numberPages; i++) {
             this.paginationController.push(i)
           }
+          this.buildPagination()
+
 				})
 				.catch(err => {
 					let validErr =
@@ -124,38 +126,40 @@ export default {
       this.orderBy = column
       this.getUserExtract()
     },
-    newUser () {
-      window.alert('Noop')
-    },
     selectPage(pagOpt) {
       this.currentPage = pagOpt
-      this.buildPagination()
       this.getUserExtract()
     },
-    searchOnTable () {
-      this.searched = this.searchByName(this.tableData, this.search)
-    },
-    searchByName (items, term) {
-      if (term) {
-        return items.filter(item => this.toLower(item.amount).includes(this.toLower(term)))
-      }
-      return items
-    },
-    toLower(text) {
-      return text.toString().toLowerCase()
-    },
+    //quando fazer o search, botar o reset pagination
+    // searchOnTable () {
+    //   this.searched = this.searchByName(this.tableData, this.search)
+    // },
+    // searchByName (items, term) {
+    //   if (term) {
+    //     return items.filter(item => this.toLower(item.amount).includes(this.toLower(term)))
+    //   }
+    //   return items
+    // },
+    // toLower(text) {
+    //   return text.toString().toLowerCase()
+    // },
     buildPagination() {
+      //seta o numero de pgs caso o max pages n seja atingido
       if(this.numberPages < this.maxPages) {
         this.maxPages = this.numberPages
       }
+      //controla o current page pra n fugir dos limites
       if (this.currentPage < 0) {
         this.currentPage = 0;
       } else if (this.currentPage > this.numberPages) {
           this.currentPage = this.numberPages;
       }
+
       let halfArray = Math.ceil(this.maxPages/2)
       let lefts = []
       let rights = []
+      console.log('right', rights, 'LEFTS:', lefts)
+
       for (let i = 1; i < 3; i++) {
         if(this.currentPage + i < this.numberPages) {
           rights.push(this.currentPage + i)
@@ -185,8 +189,14 @@ export default {
 
       this.paginationController = newArrayPag
     },
+    resetPagination() {
+      this.maxPages = 5
+      this.paginationController = []
+      this.currentPage = 0
+    }
   },
   mounted() {
+    this.resetPagination()
     this.getUserExtract()
 
   }
@@ -209,7 +219,7 @@ export default {
   
   .activePage {
     pointer-events: none;
-    background-color: #091AB3!important;
+    background-color: #080033!important;
   }
   button:focus {
     outline: 0 !important;
