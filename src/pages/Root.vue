@@ -132,7 +132,7 @@ export default {
     return {
       campaigns: [],
       intervalTimer: false,
-      menuVisible: false,
+      menuVisible: true,
       expandCampanhas: false,
       expandPerfil: false,
       expandDoacoes: false,
@@ -185,6 +185,9 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.nav-item.active {
+  border-left: none;
+}
 .bordered {
     &:not(:last-child) {
         border-bottom: 1px solid var(--md-theme-default-divider, rgba(0, 0, 0, 0.12));
