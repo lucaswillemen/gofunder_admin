@@ -1,19 +1,26 @@
 <template>
   <main>
-    <div class="loading-overlay" v-if="loading">
-      <md-progress-spinner md-mode="indeterminate" :md-stroke="2"></md-progress-spinner>
-    </div>
     <md-dialog-alert
       :md-active.sync="alertError"
-      md-title="Erro ao tentar efetuar saque!"
+      md-title="Erro ao carregar informações do extrato!"
       :md-content="alertErrorMsg" />
 
        <md-dialog-alert v-if="perkInfo"
         :md-active.sync="showPerk"
-        md-title="Informações do Perk!"
-        :md-content="`Adiquirido em: <strong>${perkInfo.create_at}</strong> <br><br>
-                      Informações de entrega: Para <strong>${perkInfo.shipping_address.name}</strong> no endereço ${perkInfo.shipping_address.address} - ${perkInfo.shipping_address.city} (${perkInfo.shipping_address.state}) <br>
+        md-title="Informações do Perk"
+        :md-content="`Adquirido em: <strong>${perkInfo.create_at}</strong> <br><br>
+                      Informações de entrega:<br>
+                      Para <strong>${perkInfo.shipping_address.name}</strong> no endereço ${perkInfo.shipping_address.address} - ${perkInfo.shipping_address.city} (${perkInfo.shipping_address.state}) <br>
+                      CEP: ${perkInfo.shipping_address.zipcode} <br>
+                      Telefone para contato: ${perkInfo.shipping_address.phone} <br>
                       Preço do frete: <strong>$${perkInfo.shipping_price}</strong>`" />
+                      
+       <md-dialog-alert v-if="cotaInfo"
+        :md-active.sync="showCota"
+        md-title="Informações da Cota"
+        :md-content="`Adquirido em: <strong>${cotaInfo.created_at}</strong> <br>
+                      Porcentagem de toda venda do produto: <strong>${cotaInfo.percent}%</strong><br>
+                      Expira em: <strong>${cotaInfo.expiry}</strong>`" />
     <section>
         <md-table md-card>
           <md-table-toolbar>
@@ -30,8 +37,8 @@
             <md-table-head>
               <div @click="changeOrdenation('date_donation')" style="width: 100%">
                 Data
-                <md-icon class="custom-icon" v-if="orderType=='desc' && orderBy=='created_at'">arrow_downward</md-icon>
-                <md-icon class="custom-icon" v-else-if="orderType=='asc' && orderBy=='created_at'">arrow_upward</md-icon>
+                <md-icon class="custom-icon" v-if="orderType=='desc' && orderBy=='date_donation'">arrow_downward</md-icon>
+                <md-icon class="custom-icon" v-else-if="orderType=='asc' && orderBy=='date_donation'">arrow_upward</md-icon>
                 <md-icon class="custom-icon" v-else>arrow_downward</md-icon>
               </div>
             
@@ -39,8 +46,8 @@
             <md-table-head>
               <div @click="changeOrdenation('value_donation')" style="width: 100%">
                 Valor
-                <md-icon class="custom-icon" v-if="orderType=='desc' && orderBy=='amount'">arrow_downward</md-icon>
-                <md-icon class="custom-icon" v-else-if="orderType=='asc' && orderBy=='amount'">arrow_upward</md-icon>
+                <md-icon class="custom-icon" v-if="orderType=='desc' && orderBy=='value_donation'">arrow_downward</md-icon>
+                <md-icon class="custom-icon" v-else-if="orderType=='asc' && orderBy=='value_donation'">arrow_upward</md-icon>
                 <md-icon class="custom-icon" v-else>arrow_downward</md-icon>
               </div>
             </md-table-head>
@@ -81,7 +88,7 @@
           </md-table-row>
         </md-table>
       </section>
-    <section class="pagination" v-if="!loading && tableData.length != 0">
+    <section class="pagination" v-if="tableData.length != 0">
         <md-button class="md-raised md-primary md-dense" v-for="(pagOpt, index) in paginationController" :key="index"  :class="pagOpt == currentPage ? 'activePage' :''" @click="selectPage(pagOpt)">{{ (pagOpt+1) }}</md-button>  
     </section>
   </main>
@@ -102,7 +109,6 @@ export default {
     numberPages: null,
     numberOfRows: 10,
     paginationController: [],
-    loading: false,
     alertError: false,
     alertErrorMsg: null,
     currentPage: 0,
@@ -116,10 +122,8 @@ export default {
   },
   methods: {
     getCampaignExtract() {
-      this.loading = true
-				global.$post("/Extract/campaign",{ page: this.currentPage, order_type: this.orderType, order_by: this.orderBy}, this.user.token)
+				global.$post("/Extract/campaign", { page: this.currentPage, order_type: this.orderType, order_by: this.orderBy}, this.user.token)
 				.then(response => {
-          console.log('foi camapi', response)
           this.numberPages = Math.ceil(response.data.rows/this.numberOfRows)
           this.tableData = response.data.data
           this.paginationController = []
@@ -135,10 +139,6 @@ export default {
 					this.alertErrorMsg = validErr ? err.response.data.error : "INVALID_ERROR"; // enviar alerta
 					this.alertError = true;
         })
-        .finally(() => {
-          this.loading = false
-        })
-
     }, 
     changeOrdenation(column) {
       if(column != this.orderBy)
@@ -171,6 +171,7 @@ export default {
       	global.$post("/Extract/cotaDonationInfo",{cota_id: id}, this.user.token)
 				.then(response => {
           this.cotaInfo = response.data.data[0]
+           this.cotaInfo.created_at = moment(this.cotaInfo.created_at).format('DD/MM/YYYY - HH:mm')
           this.showCota = true; 
 				})
 				.catch(err => {
@@ -283,19 +284,6 @@ export default {
   button:not(:last-child) {
     margin-right: 0.5rem;
   }
-}
-.loading-overlay {
-  z-index: 10;
-  top: 0;
-  left: 0;
-  right: 0;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.9);
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 .custom-icon {
   cursor: pointer;

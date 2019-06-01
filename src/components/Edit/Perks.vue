@@ -68,8 +68,8 @@
             <input type="file"  style="display: none" id="input-file-perk" @change="pickImgPerk($event)">
             <md-button @click="clickOnFileInputPerk()" class="md-raised md-primary">
               Adicionar uma Foto <md-icon>add_a_photo</md-icon>
-              <div v-if="$v.imageToUploadPerk.$invalid && $v.imageToUploadPerk.$dirty" style="color: #ff1744;">Insira uma imagem para o perk</div>
             </md-button>
+            <div v-if="$v.imageToUploadPerk.$invalid && $v.imageToUploadPerk.$dirty" style="color: #ff1744;">Insira uma imagem para o perk *</div>
           </div>
             <div v-if="base64FilePerk">
             <input type="file"  style="display: none" id="input-file-perk" @change="pickImgPerk($event)">
@@ -81,7 +81,7 @@
 
             <md-field :class="{'md-invalid': $v.perk.description.$invalid && $v.perk.description.$dirty}">
               <md-icon>description</md-icon>
-              <label>Qual a descrição do seu perk? *</label>
+              <label>Qual a descrição do seu perk?</label>
               <md-textarea v-model="perk.description" required md></md-textarea>
               <span class="md-error">Informe a descrição!</span>
             </md-field>
@@ -110,7 +110,7 @@
             <md-field>
               <md-icon>money_off</md-icon>
               <label>
-                Qual o valor do desconto?
+                Há um valor de desconto?
               </label>
               <span class="md-helper-text">Este valor é uma porcentagem de desconto para o valor de doação do seu perk</span>
               <md-input v-model.number="perk.discount"></md-input>
@@ -136,7 +136,6 @@
             </div>
             <div class="md-layout-item md-small-size-100">
               <md-datepicker class="no-icon" :class="{'md-invalid': $v.perk.shipping_date.$invalid}" md-immediately v-model="perk.shipping_date" required>
-                <md-icon>event</md-icon>
                 <label>Informe a data estimada de entrega da sua recompensa</label>
                 <span class="md-helper-text">O usuário será informado que receberá o prêmio aproximadamente nessa data</span>
               </md-datepicker>
@@ -531,6 +530,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.md-icon.md-theme-default.md-icon-image svg {
+  fill: black !important;
+}
 .tooltip-perk {
     background-color: #707070 !important;
     color: white;

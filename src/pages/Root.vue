@@ -49,24 +49,26 @@
         </router-link>
 
 
+        <md-list class="mdListExtend backgroundSidebar">
+          <md-list-item md-expand :md-expanded.sync="expandCampanhas">
+            <md-icon>view_quilt</md-icon>
+            <span class="md-list-item-text">Minhas Campanhas</span>
 
-        <md-list-item md-expand :md-expanded.sync="expandCampanhas">
-          <md-icon>view_quilt</md-icon>
-          <span class="md-list-item-text">Minhas Campanhas</span>
+            <md-list slot="md-expand" class="mdListExtend backgroundSidebar">
+              <router-link to="/campaigns">
+                <md-list-item v-bind:class="{'nav-item': true, 'active': $router.currentRoute.path=='/campaigns'}">
+                  <span class="md-list-item-text">Ver Campanhas</span>
+                </md-list-item>
+              </router-link>
+              <router-link to="/create">
+                <md-list-item v-bind:class="{'nav-item': true, 'active': $router.currentRoute.path=='/create'}">
+                  <span class="md-list-item-text">Criar Campanhas</span>
+                </md-list-item>
+              </router-link>
+            </md-list>
+          </md-list-item>
+        </md-list>
 
-          <md-list slot="md-expand" class="mdListExtend backgroundSidebar">
-            <router-link to="/campaigns">
-              <md-list-item v-bind:class="{'nav-item': true, 'active': $router.currentRoute.path=='/campaigns'}">
-                <span class="md-list-item-text">Ver Campanhas</span>
-              </md-list-item>
-            </router-link>
-            <router-link to="/create">
-              <md-list-item v-bind:class="{'nav-item': true, 'active': $router.currentRoute.path=='/create'}">
-                <span class="md-list-item-text">Criar Campanhas</span>
-              </md-list-item>
-            </router-link>
-          </md-list>
-        </md-list-item>
 
 <!--
         <md-list-item md-expand :md-expanded.sync="expandProdutos">

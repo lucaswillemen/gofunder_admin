@@ -1,6 +1,13 @@
 <template>
 <main>
-
+  <md-dialog-alert
+      :md-active.sync="alertError"
+      md-title="Erro ao criar cota!"
+      :md-content="alertErrorMsg" />
+       <md-dialog-alert
+        :md-active.sync="alertSuccess"
+        md-title="Cota criada!"
+        md-content="Cota adicionada com sucesso!" />
   <md-dialog :md-active.sync="createQuota">
     <md-dialog-title>Criar uma cota</md-dialog-title>
 
@@ -107,6 +114,9 @@ import { mapState } from "vuex";
 import { required } from "vuelidate/lib/validators";
 export default {
   data: () => ({
+    alertError: false,
+    alertErrorMsg: null,
+    alertSuccess: false,
      money: {
       decimal: ',',
       thousands: '.',
@@ -184,10 +194,13 @@ export default {
         global
           .$post("/CampaignInfo/Cota/add", params, this.user.token)
           .then(response => {
-            alert("Cota adicionada")
+            this.alertSuccess = true
           })
           .catch(err => {
-            alert("Erro adicionar cota")
+            let validErr =
+              err && err.response && err.response.data && err.response.data.error;
+            this.alertErrorMsg = validErr ? err.response.data.error : "INVALID_ERROR"; // enviar alerta
+            this.alertError = true;
           })
           .finally(err => {
             this.createQuota = false

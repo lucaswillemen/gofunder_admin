@@ -49,8 +49,7 @@
 					<div style="width: 290px;margin:auto;">
 						<md-button
 							class="md-raised"
-							@click="moveStep(['title','description','country'], 'first', 'second')"
-						>
+							@click="moveStep(['title','description','country'], 'first', 'second')">
 							Avançar para próxima etapa
 							<md-icon style="color:white;">arrow_forward</md-icon>
 						</md-button>
@@ -338,10 +337,20 @@ export default {
 				required
 			},
 			finishAt: {
-				required
+				required,
+				validFinishDate: function () {
+					if(this.form.finishAt < this.form.startAt)
+						return false
+					return true
+				}
 			},
 			startAt: {
-				required
+				required,
+				validStartDate: function () {
+					if(this.form.startAt > this.form.finishAt)
+						return false
+					return true
+				}
 			}
 		}
 	},

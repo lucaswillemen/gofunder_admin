@@ -1,11 +1,8 @@
 <template>
   <main>
-    <div class="loading-overlay" v-if="loading">
-      <md-progress-spinner md-mode="indeterminate" :md-stroke="2"></md-progress-spinner>
-    </div>
     <md-dialog-alert
       :md-active.sync="alertError"
-      md-title="Erro ao tentar efetuar saque!"
+      md-title="Erro ao carregar informações de extrato!"
       :md-content="alertErrorMsg" />
       <section>
         <md-table md-card>
@@ -14,10 +11,6 @@
             <div class="md-toolbar-section-start">
               <h1 class="md-status">Usuário</h1>
             </div>
-
-            <md-field md-clearable class="md-toolbar-section-end">
-              <md-input placeholder="Procurar por valor .."  />
-            </md-field>
           </md-table-toolbar>
           <md-table-row>
             <md-table-head>
@@ -38,19 +31,13 @@
               </div>
             </md-table-head>
             <md-table-head>
-              <div @click="changeOrdenation('msg')" style="width: 100%">
+              <div style="width: 100%">
                 Mensagem
-                <md-icon class="custom-icon" v-if="orderType=='desc' && orderBy=='msg'">arrow_downward</md-icon>
-                <md-icon class="custom-icon" v-else-if="orderType=='asc' && orderBy=='msg'">arrow_upward</md-icon>
-                <md-icon class="custom-icon" v-else>arrow_downward</md-icon>
               </div>
             </md-table-head>
             <md-table-head>
-              <div @click="changeOrdenation('referer_id')" style="width: 100%">
+              <div style="width: 100%">
                 Referência
-                <md-icon class="custom-icon" v-if="orderType=='desc' && orderBy=='referer_id'">arrow_downward</md-icon>
-                <md-icon class="custom-icon" v-else-if="orderType=='asc' && orderBy=='referer_id'">arrow_upward</md-icon>
-                <md-icon class="custom-icon" v-else>arrow_downward</md-icon>
               </div>
             </md-table-head>
           </md-table-row>
@@ -63,7 +50,7 @@
           </md-table-row>
         </md-table>
       </section>
-    <section class="pagination" v-if="!loading && tableData.length != 0">
+    <section class="pagination" v-if="tableData.length != 0">
         <md-button class="md-raised md-primary md-dense" v-for="(pagOpt, index) in paginationController" :key="index"  :class="pagOpt == currentPage ? 'activePage' :''" @click="selectPage(pagOpt)">{{ (pagOpt+1) }}</md-button>  
     </section>
   </main>
@@ -78,7 +65,6 @@ export default {
     numberPages: null,
     numberOfRows: 10,
     paginationController: [],
-    loading: false,
     alertError: false,
     alertErrorMsg: null,
     currentPage: 0,
@@ -93,7 +79,6 @@ export default {
   },
   methods: {
     getUserExtract() {
-      this.loading = true
 				global.$post("/Extract/user",{ page: this.currentPage, order_type: this.orderType, order_by: this.orderBy}, this.user.token)
 				.then(response => {
           console.log('foi', response)
@@ -114,10 +99,6 @@ export default {
 					this.alertErrorMsg = validErr ? err.response.data.error : "INVALID_ERROR"; // enviar alerta
 					this.alertError = true;
         })
-        .finally(() => {
-          this.loading = false
-        })
-
     }, 
     changeOrdenation(column) {
       if(column != this.orderBy)
