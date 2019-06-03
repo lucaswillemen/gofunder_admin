@@ -14,13 +14,11 @@
           <div class="item-title">
             <h2>{{itemProp.item.name}}</h2>
           </div>
-          <div class="md-subhead">
-            Valor mínimo para ganhar recompensa:
+          <div class="md-subhead">Valor mínimo para ganhar recompensa:
             <div>{{itemProp.item.price | currency}}</div>
           </div>
-         <div class="item-description" style="margin-top: 1rem;">
-            {{itemProp.item.description}}
-          </div>
+         <div class="item-description" style="margin-top: 1rem;">{{itemProp.item.description}}
+         </div>
         </div>
       </template>
       <template v-slot:footer="itemProp">

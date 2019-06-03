@@ -72,7 +72,7 @@ export default {
     flex-direction: column;
     background-color: white;
     // margin-bottom: 1rem;
-    width: 350px;
+    width: 310px;
     @media (max-width: 330px) {
       width: 295px;
       margin-right: 0;
