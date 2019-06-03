@@ -372,18 +372,12 @@ export default {
         })
     },
     copyToClipboard() {
-      let testingCodeToCopy = document.querySelector('#referal-input')
-      testingCodeToCopy.setAttribute('type', 'text')
-      testingCodeToCopy.select()
-      try {
-        var successful = document.execCommand('copy');
-        this.copyAlertMsg = 'Link copiado com sucesso!'
-      } catch (err) {
-        this.copyAlertMsg = 'Opa, não foi possivel copiar o link!'
-      } finally {
-        this.showAlertMsg = true;
-      }
-      window.getSelection().removeAllRanges()
+      let dummy = document.createElement("textarea");
+      document.body.appendChild(dummy);
+      dummy.value = this.referalLink
+      dummy.select();
+      document.execCommand("copy");
+      document.body.removeChild(dummy);
     },
     confirmCodeEmail() {
 
