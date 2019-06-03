@@ -8,37 +8,27 @@
     </md-card>
   </span>
   <div class="md-layout md-grutter" v-else>
-    <div v-for="(perk, index) in perkList" :key="index" class="md-layout-item md-small-size-100 md-medium-size-50 md-large-size-33 md-size-25">
-      <md-card>
-        <md-card-actions class="overlap-btn">
-          <md-button class="md-fab md-mini" @click="openDeleteConfirmation(perk.id)">
-            <md-icon>delete</md-icon>
-          </md-button>
-        </md-card-actions>
-        <md-card-area md-inset>
-          <md-card-media md-ratio="16:9">
-            <img :src="$url + perk.cover_url" onerror="this.src='https://via.placeholder.com/250'">
-          </md-card-media>
-          <md-card-header>
-            <h2 class="md-title">{{perk.name}}</h2>
-            <div class="md-subhead">
-              Valor mínimo para ganhar recompensa:
-              <div>{{perk.price | currency}}</div>
-            </div>
-          </md-card-header>
-        </md-card-area>
-        <md-card-content>
-          <md-list>
-            {{perk.description}}
-            <md-button class="md-raised md-primary" @click="showModalEditPerk(perk)">Editar Recompensa</md-button>
-          </md-list>
-        </md-card-content>
-        <!-- <md-card-actions>
-            <md-checkbox v-model="allow" value="1">Mostrar disponivel</md-checkbox>
-          </md-card-actions> -->
-      </md-card>
-    </div>
-
+    <card-items :items="perkList">
+      <template v-slot:body="itemProp">
+        <div class="item-body">
+          <div class="item-title">
+            <h2>{{itemProp.item.name}}</h2>
+          </div>
+          <div class="md-subhead">
+            Valor mínimo para ganhar recompensa:
+            <div>{{itemProp.item.price | currency}}</div>
+          </div>
+         <div class="item-description" style="margin-top: 1rem;">
+            {{itemProp.item.description}}
+          </div>
+        </div>
+      </template>
+      <template v-slot:footer="itemProp">
+        <div style="display: block; margin-top: auto">
+          <md-button class="md-raised md-primary" @click="showModalEditPerk(itemProp.item)" style="width: 95%">Editar Recompensa</md-button>
+        </div>
+      </template>
+    </card-items>
     <div class="md-layout-item md-small-size-100 md-medium-size-50 md-large-size-33 md-size-25">
       <br>
       <md-button :disabled="parentCall && parentCall.loadingState()" class="md-fab md-primary" @click="perkDialog = true">
@@ -262,7 +252,11 @@ import {
 import {
   required
 } from "vuelidate/lib/validators";
+import CardItems from '@/components/CardItems'
 export default {
+  components: {
+    CardItems
+  },
   data() {
     return {
       showDeleteConfirmation: false,
