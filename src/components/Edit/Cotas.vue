@@ -81,7 +81,7 @@
         </span>
         <span class="total-percentage">(Soma das porcentagens das cotas: {{this.totalPercentage}}%)</span>
 
-        <md-table v-if="cotaList.length > 0">
+        <md-table v-if="cotaList.length > 0" class="tabela-cotas">
           <md-table-row>
             <md-table-head md-numeric>Doação Mínima</md-table-head>
             <md-table-head>Porcentagem</md-table-head>
@@ -238,6 +238,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@media (max-width: 860px) {
+  .tabela-cotas {
+    overflow-x: auto;
+  }
+}
+.tabela-cotas {
+  max-width: 85%;
+
+}
 .total-percentage {
   font-size: 14px;
   color: #707070;
