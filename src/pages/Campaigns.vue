@@ -6,39 +6,30 @@
     <md-tabs class="md-primary">
       <md-tab id="tab-lancadas" md-label="Lançadas" md-icon="check_circle">
         <div class="md-layout md-grutter">
-          <div v-for="(campaign, index) in lancadas" :key="index" class="md-layout-item md-size-100 md-medium-size-50 md-large-size-33 md-xlarge-size-25">
-            <md-card style="margin-bottom: 16px;">
-              <md-card-area md-inset>
-                <md-card-media md-ratio="16:9">
-                  <img
-                    :src="$url +campaign.cover_url"
-                    onerror="this.src='https://via.placeholder.com/150'"
-                  >
-                </md-card-media>
-
-
-                <md-card-header>
-                  <h2 class="md-title">{{campaign.title}}</h2>
-                  <div class="md-subhead">
-                    <md-icon>group</md-icon>
-                    <span>{{campaign.number_of_investor}} investidores</span>
-                  </div>
-                </md-card-header>
-
-                <md-card-content>{{campaign.description}}</md-card-content>
-              </md-card-area>
-
-              <md-card-content>
-                <h3 class="md-subheading">Progresso</h3>
+          <card-items :items="lancadas" :hideDelete="true" hideFooter="true">
+            <template v-slot:body="itemProp">
+              <div class="item-body">
+                <div class="item-title">
+                  <h2>{{itemProp.item.title}}</h2>
+                </div>
+                <div class="md-subhead">
+                  <md-icon>group</md-icon>
+                  <span>{{itemProp.item.number_of_investor}} investidores</span>
+                </div>
+                <div class="item-description" style="margin-top: 1rem;">
+                  <p>{{itemProp.item.description}}
+                  </p>
+                </div>
+                <h3 class="md-subheading" style="margin-bottom: 0">Progresso</h3>
                 <div class="card-reservation">
                   <div class="md-button-group md-layout md-alignment-center-center">
-                    <md-button class="md-layout-item">${{campaign.arrecadation}}</md-button>de
-                    <md-button class="md-layout-item">${{campaign.amount}}</md-button>
+                    <md-button class="md-layout-item">${{itemProp.item.arrecadation}}</md-button>de
+                    <md-button class="md-layout-item">${{itemProp.item.amount}}</md-button>
                   </div>
                 </div>
                 <md-progress-bar
                   md-mode="determinate"
-                  :md-value="(campaign.arrecadation/campaign.amount)*100"
+                  :md-value="(itemProp.item.arrecadation/itemProp.item.amount)*100"
                 ></md-progress-bar>
               </md-card-content>
 <!--
@@ -54,53 +45,19 @@
               </md-card-actions> -->
             </md-card>
           </div>
+
+              </div>
+            </template>
+          </card-items>
         </div>
       </md-tab>
       <md-tab id="tab-rascunhos" md-label="Rascunhos" md-icon="create">
-        <div class="md-layout md-grutter campaign-container">
-          <div v-for="(campaign, index) in rascunhos" :key="index" class="md-layout-item card-container md-size-33">
-            <md-card>
-              <md-card-actions class="overlap-btn">
-                <md-button class="md-fab md-mini" @click="openDeleteConfirmation(campaign.id)">
-                  <md-icon>delete</md-icon>
-                </md-button>
-              </md-card-actions>
-              <md-card-area md-inset>
-                <md-card-media md-ratio="16:9">
-                  <img
-                    :src="$url +campaign.cover_url"
-                    onerror="this.src='https://via.placeholder.com/150'"
-                  >
-                </md-card-media>
-
-
-                <md-card-header>
-                  <h2 class="md-title">{{campaign.title}}</h2>
-                </md-card-header>
-
-                <md-card-content>{{campaign.description}}</md-card-content>
-              </md-card-area>
-
-
-              <md-card-actions>
-                <router-link :to="'/edit/'+campaign.id">
-                  <md-button class="custom-color-1">
-                    <md-icon>edit</md-icon>Editar
-                  </md-button>
-                </router-link>
-                <md-button class="custom-color-2">
-                  <md-icon>find_in_page</md-icon>Prévia
-                </md-button>
-                <md-button class="custom-color">
-                  <md-icon>send</md-icon>Publicar
-                </md-button>
-              </md-card-actions>
-            </md-card>
-          </div>
-        </div>
+      <card-items :items="rascunhos"></card-items>
       </md-tab>
       <md-tab id="tab-analise" md-label="Em Análise" md-icon="timeline">
-        <div class="md-layout md-grutter">
+      <card-items :items="analysis" hideDelete="true" hideFooter="true"></card-items>
+
+        <!-- <div class="md-layout md-grutter">
           <div v-for="(campaign, index) in analysis" :key="index" class="md-layout-item md-size-100 md-medium-size-50 md-large-size-33 md-xlarge-size-25">
             <md-card>
               <md-card-area md-inset>
@@ -120,7 +77,7 @@
               </md-card-area>
             </md-card>
           </div>
-        </div>
+        </div> -->
       </md-tab>
     </md-tabs>
     <md-dialog-confirm
@@ -136,8 +93,12 @@
 
 </template>
 <script>
+import CardItems from '@/components/CardItems'
 import { mapState } from "vuex";
 export default {
+  components: {
+    CardItems
+  },
   data() {
     return {
       campaignIdToDelete: null,
@@ -193,15 +154,82 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.campaign-container {
-  .card-container {
-    margin-bottom: 1.5rem;
-  }
-  .overlap-btn {
-    position: absolute;
-    right: 0;
-  }
-}
+// .cards-container {
+//   display: flex;
+//   flex-wrap: wrap;
+//   // display: grid;
+//   // grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+//   // grid-gap: 20px;
+//   @media (max-width: 679px) {
+//     justify-content: center;
+//   }
+
+//   .card-container {
+//     box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+//     margin-top: 1rem;
+//     margin-right: 1rem;
+//     display: flex;
+//     flex-direction: column;
+//     background-color: white;
+//     // margin-bottom: 1rem;
+//     width: 350px;
+//     @media (max-width: 330px) {
+//       width: 295px;
+//       margin-right: 0;
+//     }
+//     .img-container {
+//       position: relative;
+//       img {
+//         width: 100%;
+//         height: 225px;
+//       }
+//       .delete-btn {
+//         position: absolute;
+//          right: 0;
+//       }
+//     }
+//     .campaign-body {
+//       display: flex;
+//       flex-direction: column;
+//       flex-wrap: wrap;
+//       padding: 1rem;
+//       .campaign-title {
+//         h2 {
+//           font-weight: 500;
+//         }
+//       }
+//       .campaign-description {
+//         p {
+//           margin: 0;
+//         }
+//       }
+//     }
+//     .campaign-footer {
+//       display: flex;
+//       position: relative;
+//       margin-top: auto;
+//       justify-content: center;
+//       &::before {
+//         position: absolute;
+//         content: '';
+//         border-bottom: 1px solid rgba(0,0,0,0.12);;
+//         width: 90%;
+//         transform: translateX(-50%);
+//         left: 50%;
+//       }
+//     }
+//   }
+// }
+
+// .campaign-container {
+//   .card-container {
+//     margin-bottom: 1.5rem;
+//   }
+//   .overlap-btn {
+//     position: absolute;
+//     right: 0;
+//   }
+// }
 
 .loading-overlay {
   z-index: 10;
@@ -216,25 +244,9 @@ export default {
   align-items: center;
   justify-content: center;
 }
-.md-card-actions.md-alignment-right {
-  i {
-    font-size: 23px !important;
-  }
-}
-.custom-color {
-  .md-icon.md-icon-font.md-theme-default{
-    color: #31a235;
-  }
-}
-.custom-color-2 {
-  .md-icon.md-icon-font.md-theme-default{
-    color: #244584;
-  }
-}
-  .custom-color-1 {
-    .md-icon.md-icon-font.md-theme-default{
-      color: rgb(134, 41, 168);
-
-    }
-  }
+// .md-card-actions.md-alignment-right {
+//   i {
+//     font-size: 23px !important;
+//   }
+// }
 </style>

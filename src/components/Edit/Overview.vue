@@ -55,6 +55,13 @@
 								<md-input v-model="campaign.youtube_page"></md-input>
 							</md-field>
 						</div>
+						<div class="md-layout-item md-small-size-100">
+							<md-field>
+								<md-icon class="mdi mdi-linkedin"></md-icon>
+								<label>Perfil do Linkedin</label>
+								<md-input v-model="campaign.linkedin_page"></md-input>
+							</md-field>
+						</div>
 					</div>
 
 

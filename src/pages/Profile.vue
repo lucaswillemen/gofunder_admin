@@ -206,6 +206,9 @@
 
   </md-tab>
   <md-tab id="tab-email" md-label="Configurações E-mail" md-icon="email">
+    <md-dialog-alert
+      :md-active.sync="showAlertMsg"
+      :md-title="copyAlertMsg" />
     <div class="md-layout md-grutter">
       <form novalidate class="md-layout">
         <md-card class="md-layout-item">
@@ -253,6 +256,31 @@
       </form>
     </div>
   </md-tab>
+  <md-tab id="tab-referal" md-label="Referência" md-icon="email">
+    <div class="md-layout md-grutter">
+      <md-card class="md-layout-item">
+          <md-card-header>
+            <h4 class="header_title">Link de Referência</h4>
+          </md-card-header>
+
+          <md-card-content>
+            <div class="md-layout md-gutter">
+              <div class="md-layout-item md-small-size-100">
+                Copie o link asseguir e compartilhe com que você gostaria de indicar para a plataforma, você ganhará uma porcentagem de toda doação autenticada que seu convidado realizar!
+              </div>
+            </div>
+
+            <div class="link-div">
+              <md-field style="width: 300px;">
+                <label>Link:</label>
+                <md-input type="text" id="referal-input" v-model="referalLink" disabled></md-input>
+              </md-field>
+              <md-button class="md-raised md-primary" @click="copyToClipboard()">Copiar</md-button>
+            </div>
+          </md-card-content>
+        </md-card>
+    </div>
+  </md-tab>
   <div class="loading-overlay" v-if="loading">
     <md-progress-spinner md-mode="indeterminate" :md-stroke="2"></md-progress-spinner>
   </div>
@@ -268,6 +296,9 @@ export default {
   name: 'Profile',
   data() {
     return {
+      showAlertMsg: false,
+      copyAlertMsg: null,
+      referalLink: null,
       loading: false,
       sendedConfirmEmail: false,
       base64File: null,
@@ -340,6 +371,14 @@ export default {
 
         })
     },
+    copyToClipboard() {
+      let dummy = document.createElement("textarea");
+      document.body.appendChild(dummy);
+      dummy.value = this.referalLink
+      dummy.select();
+      document.execCommand("copy");
+      document.body.removeChild(dummy);
+    },
     confirmCodeEmail() {
 
     },
@@ -362,12 +401,13 @@ export default {
     this.base64File = this.$url + this.user.img
     this.saveUser = this.user
     this.secureUserEmail.email = this.user.email
+    this.referalLink = `https://gofunder.io/register?id=${this.user.id}`
   }
 };
 </script>
 
 
-<style>
+<style lang="scss" scoped>
 .header_title {
   color: gray;
   font-size: 21px;
@@ -399,5 +439,9 @@ export default {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+}
+.link-div {
+  display: flex;
+  align-items: center;
 }
 </style>

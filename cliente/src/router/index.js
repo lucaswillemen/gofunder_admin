@@ -57,17 +57,17 @@ export default new Router({
     },
     {
       path: '/projects/:search?',
-      name: 'Projects',
+      name: 'ProjectsSearch',
       component: Projects
     },
     {
       path: '/projects-category/:category?',
-      name: 'Projects',
+      name: 'ProjectsCategory',
       component: Projects
     },
     {
       path: '/projects-type/:type?',
-      name: 'Projects',
+      name: 'ProjectsType',
       component: Projects
     },
     {
@@ -77,17 +77,17 @@ export default new Router({
     }, ,
     {
       path: '/payment-contribution/campaign/:campaign_id',
-      name: 'PaymentContribution',
+      name: 'PaymentContributionCampaign',
       component: PaymentContribution
     },
     {
       path: '/payment-contribution/cota/:campaign_id/:cota_id',
-      name: 'PaymentContribution',
+      name: 'PaymentContributionCota',
       component: PaymentContribution
     },
     {
       path: '/payment-contribution/perk/:campaign_id/:perk_id',
-      name: 'PaymentContribution',
+      name: 'PaymentContributionPerk',
       component: PaymentContribution
     }
   ]

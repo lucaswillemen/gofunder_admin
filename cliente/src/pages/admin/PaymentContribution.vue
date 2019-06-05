@@ -220,15 +220,14 @@
             </h5>
 
             <b-input-group size="sm" prepend="$" class="mb-1">
-              <b-form-input type="number" v-model="donator.value" step="0.01" placeholder="Valor para Doação" :min="validation.minDonationValue"></b-form-input>
+              <money class="form-control" v-model="donator.value" placeholder="Valor para Doação" v-bind="moneyConfig" :min="validation.minDonationValue"></money>
             </b-input-group>
 
             <div class="subtitle">
 
             </div>
 
-            <div v-if="validation.minDonationValue > 0" class="subtitle">
-              Doando o valor mínimo de {{validation.minDonationValue | currency}} você terá direito a receber a recompensa
+            <div v-if="validation.minDonationValue > 0" class="subtitle">Doando o valor mínimo de {{validation.minDonationValue | currency}} você terá direito a receber a recompensa
             </div>
 
           </div>
@@ -434,6 +433,14 @@ export default {
   },
   data() {
     return {
+      moneyConfig: {
+				decimal: ",",
+				thousands: ".",
+				prefix: "$ ",
+				suffix: "",
+				precision: 2,
+				masked: false
+			},
       loginForm: {
         email: '',
         password: '',

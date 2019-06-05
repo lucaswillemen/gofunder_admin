@@ -1,12 +1,13 @@
 <template>
 <main>
-
+  <md-dialog-alert :md-active.sync="alertError" md-title="Erro ao criar cota!" :md-content="alertErrorMsg" />
+  <md-dialog-alert :md-active.sync="alertSuccess" md-title="Cota criada!" md-content="Cota adicionada com sucesso!" />
   <md-dialog :md-active.sync="createQuota">
     <md-dialog-title>Criar uma cota</md-dialog-title>
 
     <md-card-content style="display:flex; flex-direction: column;">
       <p>Olá, para criar sua cota preencha as informações a seguir corretamente abaixo.<br />Lembrando que se a soma de suas cotas superar 70% não será possível criar novas cotas uma
-      vez que 30% das vendas do marketplace é obrigatóriamente reservado ao inventor..</p>
+        vez que 30% das vendas do marketplace é obrigatóriamente reservado ao inventor..</p>
       <div class="md-layout md-gutter" style="margin-bottom: 1.5rem;">
         <div class="md-layout-item md-size-50">
           <md-field :class="{'md-invalid': $v.cotaAdd.percent.$invalid && $v.cotaAdd.percent.$dirty}">
@@ -22,7 +23,7 @@
             <md-icon>people</md-icon>
             <label>Número de pessoas</label>
             <md-input v-model="cotaAdd.stock" max="1000" min="1"></md-input>
-              <span class="md-error">Digite o número de pessoas que poderão garantir a essa cota</span>
+            <span class="md-error">Digite o número de pessoas que poderão garantir a essa cota</span>
             <span class="md-helper-text">Coloque aqui o número de pessoas que vão poder adquirir essa cota. A porcetagem da cota é dividido entre essas pessoas</span>
           </md-field>
         </div>
@@ -53,7 +54,7 @@
 
     <md-dialog-actions>
       <md-button class="md-primary" @click="createQuota = false">Fechar</md-button>
-      <md-button class="md-primary md-raised" @click="addCota()" >
+      <md-button class="md-primary md-raised" @click="addCota()">
         <md-icon style="color:white;">save</md-icon> Criar Cota
       </md-button>
     </md-dialog-actions>
@@ -76,7 +77,7 @@
         </span>
         <span class="total-percentage" v-if="totalPercentage">Soma das porcentagens das cotas: {{this.totalPercentage}}%</span>
 
-        <md-table v-if="cotaList.length > 0">
+        <md-table v-if="cotaList.length > 0" class="tabela-cotas">
           <md-table-row>
             <md-table-head md-numeric>Doação Mínima</md-table-head>
             <md-table-head>Porcentagem</md-table-head>
@@ -90,7 +91,9 @@
             <md-table-cell md-label="Número máximo de cotistas" md-sort-by="value">{{ item.stock }}</md-table-cell>
             <md-table-cell md-label="Expiração" md-sort-by="value">{{ item.expiry }}</md-table-cell>
             <md-table-cell md-label="Ação" md-sort-by="value">
-              <md-button class="md-accent"  @click="delCota(item.id)">  <md-icon class="md-mini-xs">delete</md-icon></md-button>
+              <md-button class="md-accent" @click="delCota(item.id)">
+                <md-icon class="md-mini-xs">delete</md-icon>
+              </md-button>
             </md-table-cell>
           </md-table-row>
         </md-table>
@@ -105,11 +108,18 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import { required } from "vuelidate/lib/validators";
+import {
+  mapState
+} from "vuex";
+import {
+  required
+} from "vuelidate/lib/validators";
 export default {
   data: () => ({
-     money: {
+    alertError: false,
+    alertErrorMsg: null,
+    alertSuccess: false,
+    money: {
       decimal: ',',
       thousands: '.',
       precision: 2,
@@ -136,8 +146,8 @@ export default {
       },
       percent: {
         required,
-        percentInterval: function (params) {
-          if(this.cotaAdd.percent >= 0 && this.cotaAdd.percent <= 70 && (Number(this.cotaAdd.percent) + Number(this.totalPercentage)) <= 70){
+        percentInterval: function(params) {
+          if (this.cotaAdd.percent >= 0 && this.cotaAdd.percent <= 70 && (Number(this.cotaAdd.percent) + Number(this.totalPercentage)) <= 70) {
             return true
           }
           return false
@@ -154,29 +164,28 @@ export default {
   methods: {
     delCota(cota_id) {
       global
-        .$post("/CampaignInfo/Cota/delete", {id: cota_id}, this.user.token)
-        .then(response => {
-        })
-        .catch(err => {
-        })
+        .$post("/CampaignInfo/Cota/delete", {
+          id: cota_id
+        }, this.user.token)
+        .then(response => {})
+        .catch(err => {})
         .finally(err => {
           this.listCotas()
         })
     },
     listCotas() {
       global
-        .$get("/CampaignInfo/Cota/get?campaign_id="+ this.$route.params.id, {}, this.user.token)
+        .$get("/CampaignInfo/Cota/get?campaign_id=" + this.$route.params.id, {}, this.user.token)
         .then(response => {
           this.cotaList = response.data
           this.totalPercentage = 0
           response.data.forEach(element => {
-            this.totalPercentage+= Number(element.percent)
+            this.totalPercentage += Number(element.percent)
           });
           console.log(total)
 
         })
-        .catch(err => {
-        })
+        .catch(err => {})
     },
     addCota() {
       this.$v.cotaAdd.$touch();
@@ -186,10 +195,14 @@ export default {
         global
           .$post("/CampaignInfo/Cota/add", params, this.user.token)
           .then(response => {
+            this.alertSuccess = true
 
           })
           .catch(err => {
-
+            let validErr =
+              err && err.response && err.response.data && err.response.data.error;
+            this.alertErrorMsg = validErr ? err.response.data.error : "INVALID_ERROR"; // enviar alerta
+            this.alertError = true;
           })
           .finally(err => {
             this.createQuota = false
@@ -227,9 +240,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@media (max-width: 860px) {
+    .tabela-cotas {
+        overflow-x: auto;
+    }
+}
+.tabela-cotas {
+    max-width: 85%;
+
+}
 .total-percentage {
-  font-size: 14px;
-  color: #707070;
+    font-size: 14px;
+    color: #707070;
 }
 .md-dialog {
     width: 70%;
