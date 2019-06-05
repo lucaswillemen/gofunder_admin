@@ -41,7 +41,7 @@
                   :md-value="(campaign.arrecadation/campaign.amount)*100"
                 ></md-progress-bar>
               </md-card-content>
-<!-- 
+<!--
               <md-card-actions v-if="campaign.status == 0">
                 <router-link :to="'/edit/'+campaign.id">
                   <md-button class="md-primary">
@@ -238,4 +238,3 @@ export default {
     }
   }
 </style>
-
