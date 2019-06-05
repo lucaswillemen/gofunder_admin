@@ -196,7 +196,6 @@ export default {
           .$post("/CampaignInfo/Cota/add", params, this.user.token)
           .then(response => {
             this.alertSuccess = true
-
           })
           .catch(err => {
             let validErr =
