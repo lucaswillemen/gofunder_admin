@@ -31,21 +31,6 @@
                   md-mode="determinate"
                   :md-value="(itemProp.item.arrecadation/itemProp.item.amount)*100"
                 ></md-progress-bar>
-              </md-card-content>
-<!--
-              <md-card-actions v-if="campaign.status == 0">
-                <router-link :to="'/edit/'+campaign.id">
-                  <md-button class="md-primary">
-                    <md-icon>edit</md-icon>Editar
-                  </md-button>
-                </router-link>
-                <md-button class="md-primary">
-                  <md-icon>send</md-icon>Publicar
-                </md-button>
-              </md-card-actions> -->
-            </md-card>
-          </div>
-
               </div>
             </template>
           </card-items>
@@ -207,7 +192,7 @@ export default {
 //     .campaign-footer {
 //       display: flex;
 //       position: relative;
-//       margin-top: auto;
+//       margin-top: auto; 
 //       justify-content: center;
 //       &::before {
 //         position: absolute;
@@ -250,3 +235,4 @@ export default {
 //   }
 // }
 </style>
+
