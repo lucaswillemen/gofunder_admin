@@ -8,7 +8,7 @@
         <md-checkbox id="agree" v-model="agree">Você concorda que ja editou tudo que precisava em sua campanha?</md-checkbox>
         <p v-if="agree">
           Ao clicar em enviar campanha você
-          <strong>NUNCA MAIS!</strong> poderá editá-la novamente. Apenas envia sua campanha caso tenha certeza que tudo está dentre os conformes!
+          <strong>NUNCA MAIS!</strong> poderá editá-la novamente. Apenas envie sua campanha caso tenha certeza que tudo está dentre os conformes!
         </p>
       </md-card-content>
       <md-card-actions>

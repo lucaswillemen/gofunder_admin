@@ -207,8 +207,20 @@
   </md-tab>
   <md-tab id="tab-email" md-label="Configurações E-mail" md-icon="email">
     <md-dialog-alert
+      :md-active.sync="showAlertProfile"
+      :md-title="profileAlertMsg" />
+
+    <md-dialog-alert
       :md-active.sync="showAlertMsg"
       :md-title="copyAlertMsg" />
+
+    <md-dialog-alert
+    :md-active.sync="showAlertEmail"
+    :md-title="emailAlertMsg" />
+
+    <md-dialog-alert
+    :md-active.sync="showAlertPassword"
+    :md-title="passwordAlertMsg" />
     <div class="md-layout md-grutter">
       <form novalidate class="md-layout">
         <md-card class="md-layout-item">
@@ -298,6 +310,12 @@ export default {
     return {
       showAlertMsg: false,
       copyAlertMsg: null,
+      showAlertProfile: false,
+      profileAlertMsg: null,
+      showAlertEmail: false,
+      emailAlertMsg: null,
+      showAlertPassword: false,
+      passwordAlertMsg: null,
       referalLink: null,
       loading: false,
       sendedConfirmEmail: false,
@@ -347,13 +365,14 @@ export default {
       this.loading = true;
       global.$post("/Auth/edit_email", this.secureUserEmail, this.user.token)
         .then(response => {
-          alert("E-mail salvo com sucesso. Confirme ele na sua caixa  de entrada")
+          this.emailAlertMsg = 'E-mail salvo com sucesso. Confirme ele na sua caixa  de entrada'
         })
         .catch(err => {
-          alert("E-mail digitado é inválido ou senha inválida")
+          this.emailAlertMsg = "E-mail ou senha inválido!"
         })
         .finally(() => {
-        this.loading = false;
+          this.showAlertEmail = true
+          this.loading = false;
 
         })
     },
@@ -361,12 +380,13 @@ export default {
       this.loading = true;
       global.$post("/Auth/edit_password", this.secureUserPassword, this.user.token)
         .then(response => {
-          alert("Senha salva com sucesso")
+          this.passwordAlertMsg = "Senha salva com sucesso"
         })
         .catch(err => {
-          alert("Senhas não conferem")
+          this.passwordAlertMsg = "Senhas não conferem"
         })
         .finally(() => {
+          this.showAlertPassword = true
           this.loading = false;
 
         })
@@ -388,11 +408,14 @@ export default {
         .then(response => {
           this.userSet(response.data)
           this.base64File = this.$url + this.user.img
+          this.profileAlertMsg = 'Informações de perfil salvas com sucesso'
         })
         .catch(err => {
-
-        })
+          
+          this.profileAlertMsg = 'Erro ao salvar informações!'
+          })
         .finally(() => {
+          this.showAlertProfile = true
           this.loading = false;
         })
     }

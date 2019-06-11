@@ -81,7 +81,7 @@
 						<md-field :class="getValidationClass('payment_method')">
 							<md-icon>attach_money</md-icon>
 							<label>Escolha a forma de pagamento que seu projeto aceitará</label>
-							<md-select v-model="form.payment_method">
+							<md-select v-model="form.payment_method" style="margin-left: 14px;">
 								<md-option value="bitcoin">Desejo receber em Bitcoin</md-option>
 								<md-option value="dollar">Desejo receber em Dólar</md-option>
 								<md-option value="dollar_and_bitcoin">Desejo receber em Dólar e Bitcoin</md-option>
@@ -97,7 +97,7 @@
 						<md-field :class="getValidationClass('flexible')">
 							<md-icon>dashboard</md-icon>
 							<label>Qual tipo de arrecadação?</label>
-							<md-select v-model="form.flexible">
+							<md-select v-model="form.flexible" style="margin-left: 14px;">
 								<md-option value="flexible">Arrecadação Flexível</md-option>
 								<md-option value="static">Arrecadação Fixa</md-option>
 								<md-option value="everything_or_nothing">Tudo ou Nada</md-option>
@@ -150,7 +150,7 @@
 									<md-icon>public</md-icon>
 									<label>Qual categoria de produto se encaixa?</label>
 
-									<md-select v-model="form.category">
+									<md-select v-model="form.category" style="margin-left: 14px;">
 										<md-option
 											:value="opt.id"
 											v-for="(opt, index) in options.category"

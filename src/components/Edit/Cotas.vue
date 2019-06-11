@@ -37,7 +37,7 @@
           <md-field :class="{'md-invalid': $v.cotaAdd.expiry.$invalid && $v.cotaAdd.expiry.$dirty}">
             <md-icon>event</md-icon>
             <label>Qual tempo de expiração da cota?</label>
-            <md-select v-model="cotaAdd.expiry" name="movie" id="movie">
+            <md-select v-model="cotaAdd.expiry" name="movie" id="movie" style="margin-left: 14px;">
               <md-option value="12months">12 meses</md-option>
               <md-option value="24months">24 meses</md-option>
               <md-option value="36months">36 meses</md-option>

@@ -28,7 +28,7 @@
               <md-icon>edit</md-icon>Editar
             </md-button>
           </router-link>
-          <md-button class="custom-color-2">
+          <md-button class="custom-color-2" @click="previewCampaign(item.id, item.title)">
             <md-icon>find_in_page</md-icon>Prévia
           </md-button>
           <md-button class="custom-color">
@@ -49,6 +49,11 @@ export default {
 
     }
   },
+  methods: {
+    previewCampaign(id, title) {
+      window.open(this.$urlFrontend + '/project-info/' + id + title);
+    }
+  }
   
 }
 </script>
