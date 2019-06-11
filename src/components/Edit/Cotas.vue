@@ -1,19 +1,13 @@
 <template>
 <main>
-  <md-dialog-alert
-      :md-active.sync="alertError"
-      md-title="Erro ao criar cota!"
-      :md-content="alertErrorMsg" />
-       <md-dialog-alert
-        :md-active.sync="alertSuccess"
-        md-title="Cota criada!"
-        md-content="Cota adicionada com sucesso!" />
+  <md-dialog-alert :md-active.sync="alertError" md-title="Erro ao criar cota!" :md-content="alertErrorMsg" />
+  <md-dialog-alert :md-active.sync="alertSuccess" md-title="Cota criada!" md-content="Cota adicionada com sucesso!" />
   <md-dialog :md-active.sync="createQuota">
     <md-dialog-title>Criar uma cota</md-dialog-title>
 
     <md-card-content style="display:flex; flex-direction: column;">
       <p>Olá, para criar sua cota preencha as informações a seguir corretamente abaixo.<br />Lembrando que se a soma de suas cotas superar 70% não será possível criar novas cotas uma
-      vez que 30% das vendas do marketplace é obrigatóriamente reservado ao inventor..</p>
+        vez que 30% das vendas do marketplace é obrigatóriamente reservado ao inventor..</p>
       <div class="md-layout md-gutter" style="margin-bottom: 1.5rem;">
         <div class="md-layout-item md-size-50">
           <md-field :class="{'md-invalid': $v.cotaAdd.percent.$invalid && $v.cotaAdd.percent.$dirty}">
@@ -21,6 +15,7 @@
             <label>Porcentagem da cota</label>
             <md-input v-model="cotaAdd.percent" max="100" min="1"></md-input>
             <span class="md-helper-text">Digite aqui de 0 a 70% do quanto das suas vendas você quer distrubir nessa cota</span>
+            <span class="md-error">Sua cota deve ficar entre 0% e 70%. Atualmente você tem: {{totalPercentage}}% reservado das vendas em outras cotas</span>
           </md-field>
         </div>
         <div class="md-layout-item md-size-50">
@@ -28,6 +23,7 @@
             <md-icon>people</md-icon>
             <label>Número de pessoas</label>
             <md-input v-model="cotaAdd.stock" max="1000" min="1"></md-input>
+            <span class="md-error">Digite o número de pessoas que poderão garantir a essa cota</span>
             <span class="md-helper-text">Coloque aqui o número de pessoas que vão poder adquirir essa cota. A porcetagem da cota é dividido entre essas pessoas</span>
           </md-field>
         </div>
@@ -58,7 +54,7 @@
 
     <md-dialog-actions>
       <md-button class="md-primary" @click="createQuota = false">Fechar</md-button>
-      <md-button class="md-primary md-raised" @click="addCota()" >
+      <md-button class="md-primary md-raised" @click="addCota()">
         <md-icon style="color:white;">save</md-icon> Criar Cota
       </md-button>
     </md-dialog-actions>
@@ -79,7 +75,7 @@
         <span class="md-title" v-if="cotaList.length > 0">
           Cotas Criadas
         </span>
-        <span class="total-percentage">(Soma das porcentagens das cotas: {{this.totalPercentage}}%)</span>
+        <span class="total-percentage" v-if="totalPercentage">Soma das porcentagens das cotas: {{this.totalPercentage}}%</span>
 
         <md-table v-if="cotaList.length > 0" class="tabela-cotas">
           <md-table-row>
@@ -91,11 +87,13 @@
           </md-table-row>
           <md-table-row slot="md-table-row" v-for="(item, index) in cotaList" :key="index">
             <md-table-cell md-label="Doação mínima" md-sort-by="value">{{ item.min_donation }}</md-table-cell>
-            <md-table-cell md-label="Porcentagem" md-sort-by="value">{{ item.percent }}</md-table-cell>
+            <md-table-cell md-label="Porcentagem" md-sort-by="value">{{ item.percent }}%</md-table-cell>
             <md-table-cell md-label="Número máximo de cotistas" md-sort-by="value">{{ item.stock }}</md-table-cell>
             <md-table-cell md-label="Expiração" md-sort-by="value">{{ item.expiry }}</md-table-cell>
             <md-table-cell md-label="Ação" md-sort-by="value">
-              <md-button class="md-accent"  @click="delCota(item.id)">  <md-icon class="md-mini-xs">delete</md-icon></md-button>
+              <md-button class="md-accent" @click="delCota(item.id)">
+                <md-icon class="md-mini-xs">delete</md-icon>
+              </md-button>
             </md-table-cell>
           </md-table-row>
         </md-table>
@@ -110,14 +108,18 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import { required } from "vuelidate/lib/validators";
+import {
+  mapState
+} from "vuex";
+import {
+  required
+} from "vuelidate/lib/validators";
 export default {
   data: () => ({
     alertError: false,
     alertErrorMsg: null,
     alertSuccess: false,
-     money: {
+    money: {
       decimal: ',',
       thousands: '.',
       precision: 2,
@@ -144,8 +146,8 @@ export default {
       },
       percent: {
         required,
-        percentInterval: function (params) {
-          if(this.cotaAdd.percent >= 0 && this.cotaAdd.percent <= 70 && (Number(this.cotaAdd.percent) + Number(this.totalPercentage)) <= 70){
+        percentInterval: function(params) {
+          if (this.cotaAdd.percent >= 0 && this.cotaAdd.percent <= 70 && (Number(this.cotaAdd.percent) + Number(this.totalPercentage)) <= 70) {
             return true
           }
           return false
@@ -162,29 +164,28 @@ export default {
   methods: {
     delCota(cota_id) {
       global
-        .$post("/CampaignInfo/Cota/delete", {id: cota_id}, this.user.token)
-        .then(response => {
-        })
-        .catch(err => {
-        })
+        .$post("/CampaignInfo/Cota/delete", {
+          id: cota_id
+        }, this.user.token)
+        .then(response => {})
+        .catch(err => {})
         .finally(err => {
           this.listCotas()
         })
     },
     listCotas() {
       global
-        .$get("/CampaignInfo/Cota/get?campaign_id="+ this.$route.params.id, {}, this.user.token)
+        .$get("/CampaignInfo/Cota/get?campaign_id=" + this.$route.params.id, {}, this.user.token)
         .then(response => {
           this.cotaList = response.data
           this.totalPercentage = 0
           response.data.forEach(element => {
-            this.totalPercentage+= Number(element.percent)        
+            this.totalPercentage += Number(element.percent)
           });
           console.log(total)
 
         })
-        .catch(err => {
-        })
+        .catch(err => {})
     },
     addCota() {
       this.$v.cotaAdd.$touch();
@@ -239,17 +240,17 @@ export default {
 
 <style lang="scss" scoped>
 @media (max-width: 860px) {
-  .tabela-cotas {
-    overflow-x: auto;
-  }
+    .tabela-cotas {
+        overflow-x: auto;
+    }
 }
 .tabela-cotas {
-  max-width: 85%;
+    max-width: 85%;
 
 }
 .total-percentage {
-  font-size: 14px;
-  color: #707070;
+    font-size: 14px;
+    color: #707070;
 }
 .md-dialog {
     width: 70%;
