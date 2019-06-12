@@ -248,7 +248,7 @@
                       <div class="due-date">Estoque de cotas: {{cota.stock_remain}}</div>
                     </div>
 
-                    <div class="text cota-obs">Obs: Essa cota será divida com o {{cota.stock}} pessoas</div>
+                    <div class="text cota-obs">Obs: Essa cota será divida com {{cota.stock}} pessoas</div>
                   </div>
                 </b-card>
               </div>
