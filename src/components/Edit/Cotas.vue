@@ -212,10 +212,6 @@ export default {
         console.log('deu err')
       }
     },
-
-    newUser() {
-      window.alert('Noop')
-    },
     searchOnTable() {
       this.searched = this.searchByName(this.users, this.search)
     },

@@ -130,6 +130,8 @@ export default {
   },
   data() {
     return {
+      alertError: false,
+    	alertErrorMsg: null,
       campaigns: [],
       intervalTimer: false,
       menuVisible: true,
@@ -165,10 +167,11 @@ export default {
           this.campaigns = response.data;
         })
         .catch(err => {
-          let validErr =
-            err && err.response && err.response.data && err.response.data.error;
-          alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
-        });
+					let validErr =
+						err && err.response && err.response.data && err.response.data.error;
+					this.alertErrorMsg = validErr ? err.response.data.error : "INVALID_ERROR"; // enviar alerta
+					this.alertError = true;
+				})
     },
     toggleMenu() {
       this.menuVisible = !this.menuVisible;

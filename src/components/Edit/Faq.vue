@@ -1,12 +1,12 @@
 <template>
 	<main>
+		<md-dialog-alert :md-active.sync="alertError" md-title="Erro ao criar cota!" :md-content="alertErrorMsg" />
 		<span class="md-layout-item md-small-size-100 md-size-100" v-if="faqList.length == 0">
 			<md-card class="mt-layout-item">
 				<md-empty-state
 					md-icon="question_answer"
 					md-label="Perguntas e respostas frequentes"
-					md-description="Responda algumas possíveis dúvidas que seus investidores possam apresentar."
-				>
+					md-description="Responda algumas possíveis dúvidas que seus investidores possam apresentar.">
 					<md-button class="md-primary md-raised" @click="createFaq = true">Criar FAQ</md-button>
 				</md-empty-state>
 			</md-card>
@@ -105,6 +105,8 @@ import { required } from "vuelidate/lib/validators";
 export default {
 	data() {
 		return {
+			alertError: false,
+    	alertErrorMsg: null,
 			faqIdToDelete: 0,
 			showDeleteConfirmation: false,
 			parentCall: null,
@@ -157,8 +159,9 @@ export default {
 				.catch(err => {
 					let validErr =
 						err && err.response && err.response.data && err.response.data.error;
-					alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
-				});
+					this.alertErrorMsg = validErr ? err.response.data.error : "INVALID_ERROR"; // enviar alerta
+					this.alertError = true;
+				})
 		},
 		addFaq() {
 			this.$v.faq.$touch();
@@ -176,18 +179,15 @@ export default {
 						this.resetFaq();
 						this.loadFaq();
 					})
-					.catch(err => {
-						console.log(err)
-						let validErr =
-							err &&
-							err.response &&
-							err.response.data &&
-							err.response.data.error;
-						alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
-					})
-					.finally(() => {
-						this.parentCall.hideLoading();
-					});
+				.catch(err => {
+					let validErr =
+						err && err.response && err.response.data && err.response.data.error;
+					this.alertErrorMsg = validErr ? err.response.data.error : "INVALID_ERROR"; // enviar alerta
+					this.alertError = true;
+				})
+				.finally(() => {
+					this.parentCall.hideLoading();
+				});
 			}
 		},
 		resetFaq() {
@@ -216,7 +216,8 @@ export default {
 				.catch(err => {
 					let validErr =
 						err && err.response && err.response.data && err.response.data.error;
-					alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
+					this.alertErrorMsg = validErr ? err.response.data.error : "INVALID_ERROR"; // enviar alerta
+					this.alertError = true;
 				})
 				.finally(() => {
 					this.parentCall.hideLoading();
@@ -246,11 +247,9 @@ export default {
 					})
 					.catch(err => {
 						let validErr =
-							err &&
-							err.response &&
-							err.response.data &&
-							err.response.data.error;
-						alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
+							err && err.response && err.response.data && err.response.data.error;
+						this.alertErrorMsg = validErr ? err.response.data.error : "INVALID_ERROR"; // enviar alerta
+						this.alertError = true;
 					})
 					.finally(() => {
 						this.parentCall.hideLoading();

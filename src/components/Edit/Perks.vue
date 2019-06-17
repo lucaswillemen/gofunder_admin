@@ -1,5 +1,6 @@
 <template>
 <main>
+  <md-dialog-alert :md-active.sync="alertError" md-title="Erro ao criar cota!" :md-content="alertErrorMsg" />
   <span class="md-layout-item md-small-size-100 md-size-100" v-if="perkList.length == 0">
     <md-card class="mt-layout-item">
       <md-empty-state md-icon="card_giftcard" md-label="Crie Perk" md-description="Os perks servem como recompensa para as pessoas que doaram para sua campanha.">
@@ -9,6 +10,14 @@
   </span>
   <div class="md-layout md-grutter" v-else>
     <card-items :items="perkList">
+      <template v-slot:img="itemProp">
+        <div class="img-container">
+          <img :src="$url +itemProp.item.cover_url" onerror="this.src='https://via.placeholder.com/150'" alt="">
+          <md-button class="md-fab md-mini delete-btn" @click="openDeleteConfirmation(itemProp.item.id)">
+            <md-icon>delete</md-icon>
+          </md-button>
+        </div>
+      </template>
       <template v-slot:body="itemProp">
         <div class="item-body">
           <div class="item-title">
@@ -53,14 +62,14 @@
           <div class="md-layout-item md-small-size-100">
             <img :src="base64FilePerk" class="imagePerk /">
             <div v-if="!base64FilePerk">
-            <input type="file"  style="display: none" id="input-file-perk" @change="pickImgPerk($event)">
+            <input type="file"  style="display: none" id="input-file-perk" @change="pickImgPerk($event)" accept="image/*">
             <md-button @click="clickOnFileInputPerk()" class="md-raised md-primary">
               Adicionar uma Foto <md-icon>add_a_photo</md-icon>
             </md-button>
             <div v-if="$v.imageToUploadPerk.$invalid && $v.imageToUploadPerk.$dirty" style="color: #ff1744;">Insira uma imagem para o perk *</div>
           </div>
             <div v-if="base64FilePerk">
-            <input type="file"  style="display: none" id="input-file-perk" @change="pickImgPerk($event)">
+            <input type="file"  style="display: none" id="input-file-perk" @change="pickImgPerk($event)" accept="image/*">
             <md-button @click="clickOnFileInputPerk()" class="md-raised md-primary">
               Alterar essa foto <md-icon>add_a_photo</md-icon>
               <div v-if="$v.imageToUploadPerk.$invalid && $v.imageToUploadPerk.$dirty" style="color: #ff1744;">Insira uma imagem para o perk</div>
@@ -77,9 +86,9 @@
           <div class="md-layout-item md-small-size-100">
             <md-field :class="{'md-invalid': $v.perk.name.$invalid && $v.perk.name.$dirty}">
               <md-icon>title</md-icon>
-              <label>Qual o nome da sua reocmpensa?</label>
+              <label>Qual o nome da sua recompensa?</label>
               <md-input v-model="perk.name" required></md-input>
-              <span class="md-error">Informe o titulo da sua reocmpensa</span>
+              <span class="md-error">Informe o titulo da sua recompensa</span>
             </md-field>
             <md-field :class="{'md-invalid': $v.perk.price.$invalid && $v.perk.price.$dirty}">
               <md-icon>attach_money</md-icon>
@@ -95,33 +104,22 @@
               <span class="md-error">Informe o estoque</span>
               <span class="md-helper-text">Informe quantas pessoas devem podem resgatar esse prêmio</span>
             </md-field>
-            <md-field>
+            <md-field :class="{'md-invalid': $v.perk.discount.$invalid && $v.perk.discount.$dirty}">
               <md-icon>money_off</md-icon>
               <label>
                 Há um valor de desconto?
               </label>
               <span class="md-helper-text">Este valor é uma porcentagem de desconto para o valor de doação do seu perk</span>
               <md-input v-model.number="perk.discount"></md-input>
+              <span class="md-error ">Informe uma porcentagem válida!</span>
+
             </md-field>
           </div>
         </div>
-
-
-
-
         <md-switch  class="md-primary" v-model="perk.haveFrete">Seu produto será enviado pelos correios?</md-switch>
-
 
         <div v-show="perk.haveFrete">
           <div class="md-layout md-gutter">
-            <div class="md-layout-item md-small-size-100">
-              <md-field :class="{'md-invalid': $v.perk.shipping_price.$invalid}">
-                <md-icon>commute</md-icon>
-                <label>Qual o valor do frete?</label>
-                <md-input v-model.number="perk.shipping_price" required></md-input>
-                <span class="md-error">Informe o valor do frete em dólares!</span>
-              </md-field>
-            </div>
             <div class="md-layout-item md-small-size-100">
               <md-datepicker class="no-icon" :class="{'md-invalid': $v.perk.shipping_date.$invalid}" md-immediately v-model="perk.shipping_date" required>
                 <label>Informe a data estimada de entrega da sua recompensa</label>
@@ -130,14 +128,60 @@
             </div>
           </div>
           <div>
-            <br/>
-            <div>
-              <b>Opções de envio:</b>
+            <b>Opções de envio:</b>
+          </div>
+          <div style="display:flex">
+            <md-radio v-model="perk.shipping_worldwide" value="only_country">Meu produto será enviado apenas para o país</md-radio>
+            <md-radio v-model="perk.shipping_worldwide" value="world_wide">Meu produto será enviado para diversos países</md-radio>
+          </div>
+          <div v-if="perk.shipping_worldwide == 'only_country'" class="md-layout-item md-small-size-100">
+            <md-field :class="{'md-invalid': $v.perk.shipping_price.$invalid}">
+              <md-icon>commute</md-icon>
+              <label>Qual o valor do frete?</label>
+              <md-input v-model.number="perk.shipping_price" required></md-input>
+              <span class="md-error">Informe o valor do frete em dólares!</span>
+            </md-field>
+          </div>
+          <div v-else-if="perk.shipping_worldwide == 'world_wide'" class="md-layout-item md-small-size-100">
+            <h4>Lista de frete: <span v-if="perk.shippingArray.length == 0"> Vazia!</span> </h4>
+            <div class="shipping-list">
+              <div v-for="(shipping, index) in perk.shippingArray" :key="index" class="shipping-added">
+                <div>
+                  <md-icon>commute</md-icon>
+                  {{shipping.country_name}} - {{shipping.price | currency}}
+                </div>
+                <div @click="removeShippingPerk(index, perk.shippingArray)" style="cursor: pointer">
+                  <md-icon style="color: #ad0000">delete</md-icon>
+                </div>
+              </div>
             </div>
-            <div>
-              <md-radio v-model="perk.shipping_worldwide" value="only_country">Meu produto será enviado apenas para o país</md-radio>
-              <md-radio v-model="perk.shipping_worldwide" value="world_wide">Meu produto será enviado para qualquer lugar do mundo</md-radio>
+            <div class="multiple-shipping-container">
+              <div style="display: flex; flex-direction: column; width:90%;">
+                <div style="text-align: center; margin: 1rem; 0">
+                  <div>Escolha os países que você deseja entregar sua recompensa e seus respectivos valores de frete</div>
+                  <small><strong>É possível definir o mesmo valor de frete para países diferentes!</strong></small>
+                </div>
+                <multiselect v-model="countriesSelecteds" placeholder="Pesquise um país" label="country_name" track-by="id" :options="countries" :multiple="true" :max-height="210">
+                  <template slot="noResult">
+                    <span><strong>Sua pesquisa não encontrou nenhum país, tente novamente</strong></span>
+                  </template>
+                  <template slot="noOptions">
+                    <span><strong>Nenhum país encontrado, tente recarregar a página ou contate o administrador</strong></span>
+                  </template>
+                </multiselect>
+                <md-field>
+                  <md-icon>commute</md-icon>
+                  <label class="input-label-selected">Qual o valor do frete para o(s) país(es) selecionados?</label>
+                  <money v-model.number="multipleShippingValue" class="md-input"></money>
+                  <span class="md-error">Informe o valor do frete em dólares!</span>
+                </md-field>
+              </div>
+              <md-button :disabled="multipleShippingValue <= 0 || countriesSelecteds.length <= 0" class="md-raised md-icon-button" @click="addMultipleShippingPerk(perk.shippingArray)">
+                <md-icon style="color: white">add</md-icon>
+              </md-button>
+
             </div>
+
           </div>
         </div>
       </md-dialog-content>
@@ -189,7 +233,7 @@
             </md-field>
           </div>
           <div class="md-layout-item md-small-size-100">
-            <md-field>
+            <md-field :class="{'md-invalid': $v.perkEdit.discount.$invalid && $v.perkEdit.discount.$dirty}">
               <md-icon>money_off</md-icon>
               <label>
                 Qual o valor do desconto?
@@ -198,7 +242,7 @@
                 </md-icon>
               </label>
               <md-input v-model.number="perkEdit.discount"></md-input>
-              <span class="md-error ">Informe o desconto</span>
+              <span class="md-error ">Informe uma porcentagem válida!</span>
               <!-- <span class="md-helper-text">Escolha um nome bonito e chamativo para sua campanha</span>								 -->
             </md-field>
           </div>
@@ -206,8 +250,75 @@
 
         <input type="checkbox" id="id-name--1" name="set-name" class="switch-input" @change="mudou()" :checked="perkEdit.haveFrete">
         <label for="id-name--1" class="switch-label">Seu produto será enviado pelos correios?</label>
-
+        
         <div v-show="perkEdit.haveFrete">
+          <div class="md-layout md-gutter">
+            <div class="md-layout-item md-small-size-100">
+              <md-datepicker class="no-icon" :class="{'md-invalid': $v.perkEdit.shipping_date.$invalid}" md-immediately v-model="perkEdit.shipping_date" required>
+                <label>Informe a data estimada de entrega da sua recompensa</label>
+                <span class="md-helper-text">O usuário será informado que receberá o prêmio aproximadamente nessa data</span>
+              </md-datepicker>
+            </div>
+          </div>
+          <div>
+            <b>Opções de envio:</b>
+          </div>
+          <div>
+            <md-radio v-model="perkEdit.shipping_worldwide" value="only_country">Meu produto será enviado apenas para o país</md-radio>
+            <md-radio v-model="perkEdit.shipping_worldwide" value="world_wide">Meu produto será enviado para diversos países</md-radio>
+          </div>
+          <div v-if="perkEdit.shipping_worldwide == 'only_country'" class="md-layout-item md-small-size-100">
+            <md-field :class="{'md-invalid': $v.perkEdit.shipping_price.$invalid}">
+              <md-icon>commute</md-icon>
+              <label>Qual o valor do frete?</label>
+              <md-input v-model.number="perkEdit.shipping_price" required></md-input>
+              <span class="md-error">Informe o valor do frete em dólares!</span>
+            </md-field>
+          </div>
+          <div v-else-if="perkEdit.shipping_worldwide == 'world_wide'" class="md-layout-item md-small-size-100">
+            <h4>Lista de frete: <span v-if="perkEdit.shippingArray.length == 0"> Vazia!</span> </h4>
+            <div class="shipping-list">
+              <div v-for="(shipping, index) in perkEdit.shippingArray" :key="index" class="shipping-added">
+                <div>
+                  <md-icon>commute</md-icon>
+                  {{shipping.country_name}} - {{shipping.price | currency}}
+                </div>
+                <div @click="removeShippingPerk(index, perkEdit.shippingArray)" style="cursor: pointer">
+                  <md-icon style="color: #ad0000">delete</md-icon>
+                </div>
+              </div>
+            </div>
+
+            <div class="multiple-shipping-container">
+              <div style="display: flex; flex-direction: column; width:90%;">
+                <div style="text-align: center; margin: 1rem; 0">
+                  <div>Escolha os países que você deseja entregar sua recompensa e seus respectivos valores de frete</div>
+                  <small><strong>É possível definir o mesmo valor de frete para países diferentes!</strong></small>
+                </div>
+                <multiselect v-model="countriesSelecteds" placeholder="Pesquise um país" label="country_name" track-by="id" :options="countries" :multiple="true" :max-height="210">
+                  <template slot="noResult">
+                    <span><strong>Sua pesquisa não encontrou nenhum país, tente novamente</strong></span>
+                  </template>
+                  <template slot="noOptions">
+                    <span><strong>Nenhum país encontrado, tente recarregar a página ou contate o administrador</strong></span>
+                  </template>
+                </multiselect>
+                <md-field>
+                  <md-icon>commute</md-icon>
+                  <label class="input-label-selected">Qual o valor do frete para o(s) país(es) selecionados?</label>
+                  <money class="md-input" v-model.number="multipleShippingValue"></money>
+                  <span class="md-error">Informe o valor do frete em dólares!</span>
+                </md-field>
+              </div>
+              <md-button :disabled="multipleShippingValue <= 0 || countriesSelecteds.length <= 0" class="md-raised md-icon-button" @click="addMultipleShippingPerk(perkEdit.shippingArray)">
+                <md-icon style="color: white">add</md-icon>
+              </md-button>
+
+            </div>
+
+          </div>
+        </div>
+        <!-- <div v-show="perkEdit.haveFrete">
           <div class="md-layout md-gutter">
             <div class="md-layout-item md-small-size-100">
               <md-field :class="{'md-invalid': $v.perkEdit.shipping_price.$invalid}">
@@ -228,9 +339,9 @@
             <b>Opções de envio:</b>
             <br>
             <md-radio v-model="perkEdit.shipping_worldwide" value="only_country">Meu produto será enviado apenas para o país</md-radio>
-            <md-radio v-model="perkEdit.shipping_worldwide" value="world_wide">Meu produto será enviado para qualquer lugar do mundo</md-radio>
+            <md-radio v-model="perkEdit.shipping_worldwide" value="world_wide">Meu produto será enviado para diversos países</md-radio>
           </div>
-        </div>
+        </div> -->
       </md-dialog-content>
       <md-dialog-actions>
         <md-button class="md-acent md-raised close-btn" @click="resetEditPerk()">Fechar</md-button>
@@ -251,12 +362,21 @@ import {
   required
 } from "vuelidate/lib/validators";
 import CardItems from '@/components/CardItems'
+import 'vue-multiselect/dist/vue-multiselect.min.css'
+import Multiselect from 'vue-multiselect'
+
 export default {
   components: {
+    Multiselect,
     CardItems
   },
   data() {
     return {
+      alertError: false,
+    	alertErrorMsg: null,
+      countries: [],
+      countriesSelecteds: [],
+      multipleShippingValue: 0,
       showDeleteConfirmation: false,
       perkIdToDelete: null,
       parentCall: null,
@@ -265,25 +385,29 @@ export default {
       perkEditDialog: false,
       perkEdit: {
         name: "",
+        discount: 0,
         stock: "",
         price: null,
         shipping_price: 0.0,
         shipping_date: null,
         description: "",
         haveFrete: false,
-        shipping_worldwide: "world_wide"
+        shipping_worldwide: "world_wide",
+        shippingArray: []
       },
       allow: true,
       imageToUploadPerk: null,
       perk: {
         name: "",
         stock: "",
+        discount: 0,
         price: null,
         shipping_price: 0.0,
         shipping_date: null,
         description: "",
         haveFrete: false,
-        shipping_worldwide: "world_wide"
+        shipping_worldwide: "world_wide",
+        shippingArray: []
       },
       perkList: [],
     };
@@ -292,6 +416,13 @@ export default {
     perkEdit: {
       name: {
         required
+      },
+      discount: {
+        validPercent: function() {
+          if(this.perkEdit.discount > 100 || this.perkEdit.discount < 0)
+            return false;
+          return true;
+        }
       },
       stock: {
         required
@@ -323,6 +454,13 @@ export default {
       name: {
         required
       },
+      discount: {
+        validPercent: function() {
+          if(this.perk.discount > 100 || this.perk.discount < 0)
+            return false;
+          return true;
+        }
+      },
       stock: {
         required
       },
@@ -334,7 +472,7 @@ export default {
       },
       shipping_price: {
         checkFrete: function() {
-          if (this.perk.haveFrete && (!this.perk.shipping_price || this.perk.shipping_price <= 0)) {
+          if (this.perk.haveFrete && this.perk.shipping_worldwide == "only_country" && (!this.perk.shipping_price || this.perk.shipping_price <= 0)) {
             return false
           }
           return true
@@ -357,6 +495,54 @@ export default {
     ...mapState(["user"]),
   },
   methods: {
+    addMultipleShippingPerk(arr) {
+      //verifica se tem um frete digitado
+      this.countriesSelecteds.forEach((elem) => {
+        let elemPosition = this.checkPerkShippingArray(elem, arr)
+        if(!elemPosition)
+          arr.push({...elem, price: this.multipleShippingValue})
+        else
+          this.$set(arr, elemPosition, {...elem, price: this.multipleShippingValue})
+      })
+      this.countriesSelecteds = []
+      this.multipleShippingValue = 0
+    },
+    checkPerkShippingArray(objToCheck, arr) {
+      for (const key in arr) {
+        const element = arr[key];
+        if(element.id == objToCheck.id)
+          return key
+      }
+      return false
+    },
+    removeShippingPerk(index, arr) {
+      arr.splice(index, 1)
+    },
+    //  addMultipleShippingPerkEdit() {
+    //    //verifica se tem um frete digitado
+    //    console.log(this.countriesSelecteds)
+    //   this.countriesSelecteds.forEach((elem) => {
+    //     let elemPosition = this.checkPerkEditShippingArray(elem)
+    //     console.log("pos", this.perkEdit.shippingArray)
+    //     if(!elemPosition)
+    //       this.perkEdit.shippingArray.push({...elem, price: this.multipleShippingValue})
+    //     else
+    //       this.$set(this.perkEdit.shippingArray, elemPosition, {...elem, price: this.multipleShippingValue})
+    //   })
+    //   this.countriesSelecteds = []
+    //   this.multipleShippingValue = 0
+    // },
+    // checkPerkEditShippingArray(objToCheck) {
+    //   for (const key in this.perkEdit.shippingArray) {
+    //     const element = this.perkEdit.shippingArray[key];
+    //     if(element.id == objToCheck.id)
+    //       return key
+    //   }
+    //   return false
+    // },
+    // removeShippingPerkEdit(index) {
+    //   this.perkEdit.shippingArray.splice(index, 1)
+    // },
     mudou() {
       this.perkEdit.haveFrete = !this.perkEdit.haveFrete
       if (!this.perkEdit.haveFrete) {
@@ -372,12 +558,14 @@ export default {
         this.perkEdit = {
           ...perkToEdit,
           haveFrete: false,
-          shipping_date: null
+          shipping_date: null,
+          shippingArray: []
         };
       } else {
         this.perkEdit = {
           ...perkToEdit,
-          haveFrete: false
+          haveFrete: false,
+          shippingArray: []
         };
       }
       if (this.perkEdit.shipping_price > 0) {
@@ -392,12 +580,13 @@ export default {
         )
         .then(res => {
           this.perkList = res.data;
-        })
-        .catch(err => {
-          let validErr =
-            err && err.response && err.response.data && err.response.data.error;
-          alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
-        })
+				})
+				.catch(err => {
+					let validErr =
+						err && err.response && err.response.data && err.response.data.error;
+					this.alertErrorMsg = validErr ? err.response.data.error : "INVALID_ERROR"; // enviar alerta
+					this.alertError = true;
+				})
     },
     uploadNewPerk() {
       this.$v.perk.$touch();
@@ -424,14 +613,12 @@ export default {
             this.perk = [];
             this.imageToUploadPerk = "";
             this.base64FilePerk = "";
-          })
-          .catch(err => {
+				  })
+				  .catch(err => {
             let validErr =
-              err &&
-              err.response &&
-              err.response.data &&
-              err.response.data.error;
-            alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
+              err && err.response && err.response.data && err.response.data.error;
+            this.alertErrorMsg = validErr ? err.response.data.error : "INVALID_ERROR"; // enviar alerta
+            this.alertError = true;
           })
           .finally(() => {
             this.parentCall.hideLoading()
@@ -455,11 +642,9 @@ export default {
           })
           .catch(err => {
             let validErr =
-              err &&
-              err.response &&
-              err.response.data &&
-              err.response.data.error;
-            alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
+              err && err.response && err.response.data && err.response.data.error;
+            this.alertErrorMsg = validErr ? err.response.data.error : "INVALID_ERROR"; // enviar alerta
+            this.alertError = true;
           })
           .finally(() => {
             this.parentCall.hideLoading();
@@ -478,12 +663,13 @@ export default {
         }, this.user.token)
         .then(res => {
           this.loadPerk();
-        })
-        .catch(err => {
-          let validErr =
-            err && err.response && err.response.data && err.response.data.error;
-          alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
-        })
+				})
+				.catch(err => {
+					let validErr =
+						err && err.response && err.response.data && err.response.data.error;
+					this.alertErrorMsg = validErr ? err.response.data.error : "INVALID_ERROR"; // enviar alerta
+					this.alertError = true;
+				})
         .finally(() => {
           this.parentCall.hideLoading();
         });
@@ -513,15 +699,53 @@ export default {
       };
       reader.readAsDataURL(evt.target.files[0]);
     },
+    loadCountries() {
+      global.$get("/Donation/countries")
+      .then(res => {
+        this.countries = res.data;
+      })
+      .catch(err => {
+        let validErr =
+          err && err.response && err.response.data && err.response.data.error;
+        this.alertErrorMsg = validErr ? err.response.data.error : "INVALID_ERROR"; // enviar alerta
+        this.alertError = true;
+      })
+    }
   },
   mounted() {
     this.loadPerk()
+    this.loadCountries()
     this.parentCall = this.$parent.$parent.$parent
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.shipping-list {
+  display: flex;
+  flex-wrap: wrap;
+  .shipping-added {
+    display: flex;
+    align-items: center;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: .25rem;
+    padding: .25rem;
+    &:not(:last-child) {
+      margin-right: .5rem;
+    }
+  }
+}
+.multiple-shipping-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .input-label-selected {
+    pointer-events: auto;
+    top: 0;
+    opacity: 1;
+    font-size: 12px;
+  }
+}
 .md-icon.md-theme-default.md-icon-image svg {
   fill: black !important;
 }

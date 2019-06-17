@@ -1,5 +1,6 @@
 <template class=" md-grutter">
 <md-tabs class="md-primary">
+  <md-dialog-alert :md-active.sync="alertError" md-title="Erro ao criar cota!" :md-content="alertErrorMsg" />
   <md-tab id="tab-user" md-label="Perfil" md-icon="people">
     <div class="md-layout md-grutter">
       <form novalidate class="md-layout">

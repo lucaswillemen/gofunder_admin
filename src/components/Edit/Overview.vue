@@ -1,5 +1,6 @@
 <template>
 	<div class="md-layout md-grutter md-alignment-center-center maxHeight">
+		<md-dialog-alert :md-active.sync="alertError" md-title="Erro ao criar cota!" :md-content="alertErrorMsg" />
 		<md-dialog-alert
 			:md-active.sync="dadosSalvos"
 			md-content="Os dados iniciais da sua campanhas foram salvos!"
@@ -111,8 +112,9 @@ export default {
 				.catch(err => {
 					let validErr =
 						err && err.response && err.response.data && err.response.data.error;
-					alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
-				});
+					this.alertErrorMsg = validErr ? err.response.data.error : "INVALID_ERROR"; // enviar alerta
+					this.alertError = true;
+				})
 		},
 		saveCampaign() {
 			global
@@ -127,12 +129,15 @@ export default {
 				.catch(err => {
 					let validErr =
 						err && err.response && err.response.data && err.response.data.error;
-					alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
-				});
+					this.alertErrorMsg = validErr ? err.response.data.error : "INVALID_ERROR"; // enviar alerta
+					this.alertError = true;
+				})
 		}
 	},
 	data() {
 		return {
+			alertError: false,
+    	alertErrorMsg: null,
 			dadosSalvos: false,
 			parentCall: null,
 			editorData: null,

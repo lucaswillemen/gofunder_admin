@@ -11,11 +11,11 @@
         </md-field>
       </md-table-toolbar>
 
-      <md-table-empty-state
+      <!-- <md-table-empty-state
         md-label="Nenhum usuário encontrado"
         :md-description="`Nenhum retorno para '${search}'. Tente uma busca diferente.`">
         <md-button class="md-primary md-raised" @click="newUser">Buscar</md-button>
-      </md-table-empty-state>
+      </md-table-empty-state> -->
 
       <md-table-row slot="md-table-row" slot-scope="{ item }">
         <md-table-cell md-label="Data" md-sort-by="name">{{ item.date }}</md-table-cell>
@@ -64,9 +64,6 @@ export default {
     ]
   }),
   methods: {
-    newUser () {
-      window.alert('Noop')
-    },
     searchOnTable () {
       this.searched = this.searchByName(this.users, this.search)
     },

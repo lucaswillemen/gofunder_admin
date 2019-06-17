@@ -1,5 +1,6 @@
 <template>
   <main>
+    <md-dialog-alert :md-active.sync="alertError" md-title="Erro ao criar cota!" :md-content="alertErrorMsg" />
   	<div class="md-layout-item md-small-size-100 md-size-100">
       <md-card>
         <md-card-header>
@@ -38,6 +39,8 @@ import {mapState} from 'vuex'
 export default {
 	data() {
     return {
+      alertError: false,
+    	alertErrorMsg: null,
       social: {
 			  parentCall: null,
 				instagram: null,
@@ -65,7 +68,8 @@ export default {
 				.catch(err => {
 					let validErr =
 						err && err.response && err.response.data && err.response.data.error;
-					alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
+					this.alertErrorMsg = validErr ? err.response.data.error : "INVALID_ERROR"; // enviar alerta
+					this.alertError = true;
 				})
 				.finally(() => {});
 		}

@@ -92,7 +92,7 @@
                       <div class="img" v-bind:style="{ backgroundImage: 'url(' + (user && user.img ? $apiEndpoint+'/uploads/profile/'+user.img : '/static/anonymous-icon.svg')  + ')' }">
                         <div class="circle">
                           <font-awesome-icon :icon="['fas', 'camera']" />
-                          <input id="fileupload" type="file" v-on:change="changeImage" ref="fileInput" style="opacity: 0; position:absolute; z-index:999999999!important;" />
+                          <input id="fileupload" type="file" v-on:change="changeImage" ref="fileInput" style="opacity: 0; position:absolute; z-index:999999999!important;" accept="image/*"/>
                         </div>
                       </div>
                     </div>

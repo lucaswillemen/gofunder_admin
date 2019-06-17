@@ -23,7 +23,7 @@
       </slot>
       <slot v-if="!hideFooter" name="footer" :item="item">  
         <div class="item-footer">
-          <router-link :to="'/edit/'+item.id">
+          <router-link :to="`/edit/${item.id}`">
             <md-button class="custom-color-1">
               <md-icon>edit</md-icon>Editar
             </md-button>

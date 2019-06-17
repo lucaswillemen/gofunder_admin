@@ -31,7 +31,7 @@ Vue.use(require('vue-moment'));
 Vue.use(Vuelidate)
 Vue.use(VueTheMask)
 Vue.use(money, {
-  precision: 4,
+  precision: 2,
 })
 Vue.use(VueCurrencyFilter, {
   symbol: '$',

@@ -1,5 +1,6 @@
 <template>
   <main>
+    <md-dialog-alert :md-active.sync="alertError" md-title="Erro ao criar cota!" :md-content="alertErrorMsg" />
     <div class="loading-overlay" v-if="loading">
       <md-progress-spinner md-mode="indeterminate" :md-stroke="2"></md-progress-spinner>
     </div>
@@ -86,6 +87,8 @@ export default {
   },
   data() {
     return {
+      alertError: false,
+    	alertErrorMsg: null,
       campaignIdToDelete: null,
       showDeleteConfirmation: false,
       loading: false,
@@ -113,13 +116,13 @@ export default {
               this.analysis.push(element)
             }
           });
-        })
-        .catch(err => {
-          let validErr =
-            err && err.response && err.response.data && err.response.data.error;
-          alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
-          this.loading = false;
-        })
+				})
+				.catch(err => {
+					let validErr =
+						err && err.response && err.response.data && err.response.data.error;
+					this.alertErrorMsg = validErr ? err.response.data.error : "INVALID_ERROR"; // enviar alerta
+					this.alertError = true;
+				})
         .finally(() => {
           this.loading = false;
         });

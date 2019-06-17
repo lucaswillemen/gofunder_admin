@@ -7,8 +7,8 @@
 					md-label="Faça sua galeria!"
 					md-description="As imagens serão mostradas na sua galeria de fotos da campanha!"
 				>
-					<input type="file" style="display: none" id="input-file" @change="pickImg($event)">
-					<md-button v-if="!imageToUpload" @click="clickOnFileInput()" class="md-fab md-primary">
+					<input type="file" style="display: none" id="input-file" @change="pickImg($event)" accept="image/*">
+					<md-button v-if="!imageToUpload" @click="clickOnFileInput()" class="md-fab md-primary" >
 						<md-icon>add_a_photo</md-icon>
 					</md-button>
 				</md-empty-state>
@@ -47,6 +47,8 @@ import { mapState } from "vuex";
 export default {
 	data() {
 		return {
+			alertError: false,
+    	alertErrorMsg: null,
 			picIdToDelete: null,
 			showDeleteConfirmation: false,
 			parentCall: null,
@@ -73,8 +75,9 @@ export default {
 				.catch(err => {
 					let validErr =
 						err && err.response && err.response.data && err.response.data.error;
-					alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
-				});
+					this.alertErrorMsg = validErr ? err.response.data.error : "INVALID_ERROR"; // enviar alerta
+					this.alertError = true;
+				})
 		},
 		clickOnFileInput() {
 			document.getElementById("input-file").click();
@@ -105,7 +108,8 @@ export default {
 				.catch(err => {
 					let validErr =
 						err && err.response && err.response.data && err.response.data.error;
-					alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
+					this.alertErrorMsg = validErr ? err.response.data.error : "INVALID_ERROR"; // enviar alerta
+					this.alertError = true;
 				})
 				.finally(() => {
 					this.parentCall.hideLoading();
@@ -128,7 +132,8 @@ export default {
 				.catch(err => {
 					let validErr =
 						err && err.response && err.response.data && err.response.data.error;
-					alert(validErr ? err.response.data.error : "INVALID_ERROR"); // enviar alerta
+					this.alertErrorMsg = validErr ? err.response.data.error : "INVALID_ERROR"; // enviar alerta
+					this.alertError = true;
 				})
 				.finally(() => {
 					this.parentCall.hideLoading();
