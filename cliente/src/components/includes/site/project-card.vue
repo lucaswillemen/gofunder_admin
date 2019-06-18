@@ -17,7 +17,7 @@
       {{project.description}}
     </p>
     <div v-if="project.tipo == 'Funding'">
-      <p class="total">Total Arrecadado {{project.amount_received  | currency}} </p>
+      <p class="total">Total Arrecadado {{project.amount_received | currency}} </p>
       <progress-bar :max="100" :current="project.percent"></progress-bar>
       <p class="meta">Meta {{project.amount | currency}}</p>
     </div>
@@ -77,14 +77,14 @@ export default {
             position: relative;
             max-width: 100%;
             max-height: 200px;
-            height: 100%;
+            height: 200px;
         }
         .card-body {
             background-color: #f0f0f0;
             padding-top: 50px;
             padding-bottom: 50px;
             position: relative;
-            height: 100%;
+            // height: 100%;
             max-height: 300px;
 
             .bottom-img {

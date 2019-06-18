@@ -45,11 +45,11 @@ export default new Router({
       name: 'Remember',
       component: Remember
     },
-    {
-      path: '/user/edit',
-      name: 'UserEdit',
-      component: UserEdit
-    },
+    // {
+    //   path: '/user/edit',
+    //   name: 'UserEdit',
+    //   component: UserEdit
+    // },
     {
       path: '/user/:id/info',
       name: 'UserInfo',

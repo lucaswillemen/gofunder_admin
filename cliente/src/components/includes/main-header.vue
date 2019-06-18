@@ -18,9 +18,9 @@
 						</template>
 						<div class="seta"></div>
 						<b-dropdown-item><router-link :to="'/user/'+user.id+'/info/'">{{"MAIN_HEADER::Meu Perfil"|fix}}</router-link></b-dropdown-item>
-						<hr>
-						<b-dropdown-item><router-link to="/user/edit">{{"MAIN_HEADER::Editar Perfil"|fix}}</router-link></b-dropdown-item>
-						<hr>
+						<!-- <hr>
+						<b-dropdown-item><router-link to="/user/edit">{{"MAIN_HEADER::Editar Perfil"|fix}}</router-link></b-dropdown-item> -->
+						<!-- <hr> -->
 						<!-- <b-dropdown-item><router-link :to="'/user/'+user.id+'/info/'">{{"MAIN_HEADER::Campanhas"|fix}}</router-link></b-dropdown-item> -->
 						<hr>
 						<b-dropdown-item @click="logout()">{{"MAIN_HEADER::Deslogar"|fix}}</b-dropdown-item>

@@ -45,7 +45,7 @@
             Não há lugar melhor para começar a busca por algo inovador. Comece no GoFunder para encontrar idéias inteligentes e não convencionais que resolvam os problemas cotidianos grandes e pequenos, escolha em inúmeras possibilidades de apoiar ou
             investir em algo inovador!</span>
         </div>
-        <div class="buttons">
+        <div class="buttons" v-if="!user.token">
           <div class="button btn-noborder-transp">
             <a href="/#/register">
               <b-button>Cadastre-se</b-button>
@@ -54,7 +54,7 @@
           <span>ou</span>
           <div class="button btn-noborder">
             <a href="/#/login">
-              <b-button>Logar na Plataforma</b-button>
+              <b-button>Faça Login</b-button>
             </a>
           </div>
         </div>
@@ -66,6 +66,7 @@
 
 
 <script>
+import {mapState} from 'vuex'
 export default {
   data() {
     return {
@@ -89,6 +90,9 @@ export default {
       blogTitle6: 'O que mudou com o GoFunder?',
       blogText6: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry',
     }
+  },
+  computed: {
+    ...mapState(['user'])
   },
   methods: {
     getValueDynamicVar(variable, i) {
