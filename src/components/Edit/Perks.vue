@@ -161,7 +161,7 @@
                   <div>Escolha os países que você deseja entregar sua recompensa e seus respectivos valores de frete</div>
                   <small><strong>É possível definir o mesmo valor de frete para países diferentes!</strong></small>
                 </div>
-                <multiselect v-model="countriesSelecteds" placeholder="Pesquise um país" label="country_name" track-by="id" :options="countries" :multiple="true" :max-height="210">
+                <multiselect v-model="countriesSelecteds" placeholder="Pesquise um país" label="country_name" track-by="id" :options="countries" :multiple="true" :max-height="210" :hideSelected="true" selectLabel="Clique para selecionar" selectedLabel="Selecionado" :close-on-select="false">
                   <template slot="noResult">
                     <span><strong>Sua pesquisa não encontrou nenhum país, tente novamente</strong></span>
                   </template>
@@ -295,7 +295,7 @@
                   <div>Escolha os países que você deseja entregar sua recompensa e seus respectivos valores de frete</div>
                   <small><strong>É possível definir o mesmo valor de frete para países diferentes!</strong></small>
                 </div>
-                <multiselect v-model="countriesSelecteds" placeholder="Pesquise um país" label="country_name" track-by="id" :options="countries" :multiple="true" :max-height="210">
+                <multiselect v-model="countriesSelecteds" placeholder="Pesquise um país" label="country_name" track-by="id" :options="countries" :multiple="true" :max-height="210" :hideSelected="true" selectLabel="Clique para selecionar" selectedLabel="Selecionado" :close-on-select="false">
                   <template slot="noResult">
                     <span><strong>Sua pesquisa não encontrou nenhum país, tente novamente</strong></span>
                   </template>

@@ -20,17 +20,19 @@
 					</div>
 					<br>
 					<div style="width: 50%;margin:auto;">
+							
 						<md-field :class="getValidationClass('country')">
 							<md-icon>public</md-icon>
-							<label>Qual país que seu produto será produzido?</label>
-							<md-select v-model="form.country" style="margin-left: 16px;">
-								<md-option
-									:value="opt.id"
-									v-for="(opt, index) in options.country"
-									:key="index"
-								>{{opt.country_name}}</md-option>
-							</md-select>
+							<multiselect v-model="form.country" class="select-country" placeholder="Pesquise um país" label="country_name" track-by="id" :options="options.country" selectLabel="Clique para selecionar" selectedLabel="Selecionado" :hideSelected="true">
+							 <template slot="noResult">
+                    <span><strong>Sua pesquisa não encontrou nenhum país, tente novamente</strong></span>
+                  </template>
+                  <template slot="noOptions">
+                    <span><strong>Nenhum país encontrado, tente recarregar a página ou contate o administrador</strong></span>
+                  </template>
+							</multiselect>
 							<span class="md-error">Escolha qual pais seu produto é produzido</span>
+							<span class="md-helper-text">Escolha o país de origem da sua campanha</span>
 						</md-field>
 					</div>
 					<br>
@@ -63,8 +65,7 @@
 					class="md-accent"
 					md-icon="monetization_on"
 					md-label="Informações Financeiras"
-					md-description="Antes de criar uma campanha você precisa especificar por qual método você deseja receber pagamentos e quais valores para sua campanha
-"
+					md-description="Antes de criar uma campanha você precisa especificar por qual método você deseja receber pagamentos e quais valores para sua campanha"
 				></md-empty-state>
 				<div style="height:400px;">
 					<div style="width: 50%;margin:auto;">
@@ -256,6 +257,8 @@
 </template>
 <script>
 import { mapGetters, mapActions, mapState } from "vuex";
+import 'vue-multiselect/dist/vue-multiselect.min.css'
+import Multiselect from 'vue-multiselect'
 import {
 	required,
 	minLength,
@@ -267,6 +270,9 @@ import { validationMixin } from "vuelidate";
 
 export default {
 	name: "Create",
+	components: {
+		Multiselect
+	},
 	mixins: [validationMixin],
 	data() {
 		return {
@@ -441,6 +447,12 @@ export default {
 </script>
 
 <style lang="scss">
+.select-country {
+	cursor: pointer;
+	div[class="multiselect__tags"] {
+		border: none !important;
+	}
+}
 .img-preview {
 	max-width: 120px;
 	margin-left: auto;
