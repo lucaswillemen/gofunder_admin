@@ -1,6 +1,6 @@
 <template>
   <main>
-    <md-dialog-alert :md-active.sync="alertError" md-title="Erro ao criar cota!" :md-content="alertErrorMsg" />
+    <md-dialog-alert :md-active.sync="alertError" md-title="Erro!" :md-content="alertErrorMsg" />
     <div class="loading-overlay" v-if="loading">
       <md-progress-spinner md-mode="indeterminate" :md-stroke="2"></md-progress-spinner>
     </div>

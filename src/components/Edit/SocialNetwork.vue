@@ -1,6 +1,6 @@
 <template>
   <main>
-    <md-dialog-alert :md-active.sync="alertError" md-title="Erro ao criar cota!" :md-content="alertErrorMsg" />
+    <md-dialog-alert :md-active.sync="alertError" md-title="Erro!" :md-content="alertErrorMsg" />
   	<div class="md-layout-item md-small-size-100 md-size-100">
       <md-card>
         <md-card-header>
