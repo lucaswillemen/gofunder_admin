@@ -72,12 +72,12 @@
                 <div class="btn-noborder-blue button">
                   <b-button :href="'/#/payment-contribution/campaign/'+campaign.id">Apoiar</b-button>
                 </div>
-                <div class="social">
-                <div style="font-size: 1.5rem;">
-                  <i class="fab fa-facebook link-icon" :style="campaign.content[0].facebook_page? 'color: #496cb5': 'color: #707070; cursor: pointer;'"></i>
-                  <i class="fab fa-instagram link-icon" :style="campaign.content[0].instagram_page? 'color: #d6249f': 'color: #707070; cursor: pointer;'"></i>
-                  <i class="fab fa-youtube link-icon" :style="campaign.content[0].youtube_page? 'color: #ff0000': 'color: #707070; cursor: pointer;'"></i>
-                </div>
+                <div class="social" v-if="campaign.content.length > 0">
+                  <div style="font-size: 1.5rem;">
+                    <a :href="campaign.content[0].facebook_page"><i class="fab fa-facebook link-icon " :style="campaign.content[0].facebook_page ? 'color: #496cb5': 'color: #707070;'"></i></a>
+                    <a :href="campaign.content[0].instagram_page"><i class="fab fa-instagram link-icon " :style="campaign.content[0].instagram_page ? 'color: #d6249f': 'color: #707070;'"></i></a>
+                    <a :href="campaign.content[0].youtube_page"><i class="fab fa-youtube link-icon " :style="campaign.content[0].youtube_page ? 'color: #ff0000': 'color: #707070;'"></i></a>
+                  </div>
                   <!-- <ul class="social-list">
                     <li class="active">
                       <font-awesome-icon :icon="['far', 'heart']" />
@@ -132,11 +132,11 @@
                     <div class="icon-container" :class="{'active-stage-icon': campaign.product_stage == 'concept', 'done': campaign.product_stage == 'prototype' || campaign.product_stage == 'production' || campaign.product_stage == 'shipping'}">
                       <font-awesome-icon :icon="['fas', 'lightbulb']" />
                     </div>
-                    <div class="stage-divider" :class="{'active-stage-divider': campaign.product_stage == 'prototype' || campaign.product_stage == 'production' || campaign.product_stage == 'shipping'}"></div>
+                    <div class="stage-divider" :class="{'done-stage-divider': campaign.product_stage == 'production' || campaign.product_stage == 'shipping', 'active-stage-divider': campaign.product_stage == 'prototype'}"></div>
                     <div class="icon-container" :class="{'active-stage-icon': campaign.product_stage == 'prototype', 'done': campaign.product_stage == 'production' || campaign.product_stage == 'shipping'}">
                       <font-awesome-icon :icon="['fas', 'tools']" />
                     </div>
-                    <div class="stage-divider" :class="{'active-stage-divider': campaign.product_stage == 'production' || campaign.product_stage=='shipping'}"></div>
+                    <div class="stage-divider" :class="{'done-stage-divider': campaign.product_stage=='shipping', 'active-stage-divider': campaign.product_stage == 'production'}"></div>
                     <div class="icon-container" :class="{'active-stage-icon': campaign.product_stage == 'production', 'done': campaign.product_stage == 'shipping'}">                    
                       <font-awesome-icon :icon="['fas', 'boxes']" /> 
                     </div>
@@ -158,7 +158,7 @@
               <div class="tabs">
                 <b-tabs>
                   <b-tab title="Projeto" active>
-                    <div class="projeto" v-if="campaign.content.length > 0 && campaign.content[0].html">
+                    <div class="projeto" v-if="campaign.content.length > 0">
                       <!--<div class="title">
                         <span>{{campaign.title}}</span>
                       </div>

@@ -277,6 +277,12 @@
 
 				.social {
 					float: right;
+					
+					.link-icon {
+						// &:hover {
+						// 	cursor: pointer;
+						// }
+					}
 
 					.social-list {
 						margin-top: 3px;
@@ -378,6 +384,9 @@
 				}
 				.active-stage-divider {
 					background-image: linear-gradient(90deg, $blue, #088366);
+				}
+				.done-stage-divider{
+					background-color: $blue;
 				}
 				.active-stage-icon {
 					background-color: #088366;
