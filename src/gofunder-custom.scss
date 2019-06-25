@@ -1,0 +1,21 @@
+.datepicker-correct-icon {
+  .md-button.md-icon-button.md-dense.md-input-action.md-clear.md-theme-default {
+    display: none;
+  }
+  svg {
+    fill: rgba(0,0,0,0.54) !important;
+  }
+}
+.datepicker-correct-icon.md-invalid {
+  svg {
+    fill: #ff1744 !important;
+  }
+}
+.money-input {
+  &::before {
+    opacity: 0 !important;
+  }
+  label {
+    color: rgba(0,0,0,0.54) !important;
+  }
+}

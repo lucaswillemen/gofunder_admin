@@ -352,6 +352,7 @@ export default {
 	"PERKS::Qual o valor do frete?": "Qual o valor do frete?",
 	"PERKS::Informe o valor do frete em dólares!": "Informe o valor do frete em dólares!",
 	"PERKS::Lista de frete:": "Lista de frete:",
+	"PERKS::Remover": "Remover",
 	"PERKS::Vazia!": "Vazia!",
 	"PERKS::Escolha os países que você deseja entregar sua recompensa e seus respectivos valores de frete": "Escolha os países que você deseja entregar sua recompensa e seus respectivos valores de frete",
 	"PERKS::É possível definir o mesmo valor de frete para países diferentes!": "É possível definir o mesmo valor de frete para países diferentes!",

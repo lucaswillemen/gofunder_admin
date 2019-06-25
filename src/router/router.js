@@ -76,7 +76,7 @@ export default new Router({
           }
         },
         {
-          path: '/edit/:id',
+          path: '/edit/:id/:title',
           name: 'Edição de Campanha',
           component: Edit,
           meta: {

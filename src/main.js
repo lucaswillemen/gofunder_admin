@@ -10,6 +10,7 @@ import 'vue-material/dist/vue-material.min.css'
 
 import "@/default.css"
 import "@/style.css"
+import "@/gofunder-custom.scss"
 import VueCurrencyFilter from 'vue-currency-filter'
 import VueTheMask from 'vue-the-mask'
 import money from 'v-money'

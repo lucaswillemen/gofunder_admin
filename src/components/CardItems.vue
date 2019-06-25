@@ -23,7 +23,7 @@
       </slot>
       <slot v-if="!hideFooter" name="footer" :item="item">  
         <div class="item-footer">
-          <router-link :to="`/edit/${item.id}`">
+          <router-link :to="`/edit/${item.id}/${item.title}`">
             <md-button class="custom-color-1">
               <md-icon>edit</md-icon>{{"CARD_ITEMS::Editar" | fix}}
             </md-button>
@@ -51,10 +51,9 @@ export default {
   },
   methods: {
     previewCampaign(id, title) {
-      window.open(this.$urlFrontend + '/project-info/' + id + title);
+      window.open(this.$urlFrontend + '/project-info/' + id +'/'+ title);
     }
-  }
-  
+  },  
 }
 </script>
 
@@ -85,6 +84,7 @@ export default {
     .img-container {
       position: relative;
       img {
+        object-fit: cover;
         width: 100%;
         height: 225px;
       }

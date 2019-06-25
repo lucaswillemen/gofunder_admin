@@ -29,7 +29,7 @@ export default {
   },
   methods: {
     previewCampaign() {
-      window.open(this.$urlFrontend + '/project-info/' + this.$route.params.id + '/title');
+      window.open(`${this.$urlFrontend}/project-info/${this.$route.params.id}/${this.$route.params.title}`);
     }
   },
   mounted() {

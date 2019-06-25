@@ -12,7 +12,7 @@
     <card-items :items="perkList">
       <template v-slot:img="itemProp">
         <div class="img-container">
-          <img :src="$url +itemProp.item.cover_url" onerror="this.src='https://via.placeholder.com/150'" alt="">
+          <img :src="$url +itemProp.item.cover_url" onerror="this.src='https://via.placeholder.com/150'" alt="" >
           <md-button class="md-fab md-mini delete-btn" @click="openDeleteConfirmation(itemProp.item.id)">
             <md-icon>delete</md-icon>
           </md-button>
@@ -132,13 +132,13 @@
           <div v-else-if="perk.shipping_worldwide == 'world_wide'" class="md-layout-item md-small-size-100">
             <h4>{{"PERKS::Lista de frete:" | fix}} <span v-if="perk.shipping_data.length == 0"> {{"PERKS::Vazia!" | fix}}</span> </h4>
             <div class="shipping-list">
-              <div v-for="(shipping, index) in perk.shipping_data" :key="index" class="shipping-added">
+              <div v-for="(shipping, index) in perk.shipping_data" :key="index" class="shipping-added" @click="removeShippingPerk(index, perk.shipping_data)">
+                <div class="shipping-added-text">
+                  {{"PERKS::Remover" | fix}}
+                </div>
                 <div>
                   <md-icon>commute</md-icon>
                   {{shipping.country_name}} - {{shipping.price | currency}}
-                </div>
-                <div @click="removeShippingPerk(index, perk.shipping_data)" style="cursor: pointer">
-                  <md-icon style="color: #ad0000">delete</md-icon>
                 </div>
               </div>
             </div>
@@ -271,13 +271,13 @@
           <div v-else-if="perkEdit.shipping_worldwide == 'world_wide'" class="md-layout-item md-small-size-100">
             <h4>{{"PERKS::Lista de frete:" | fix}} <span v-if="perkEdit.shipping_data.length == 0"> {{"PERKS::Vazia!" | fix}}</span> </h4>
             <div class="shipping-list">
-              <div v-for="(shipping, index) in perkEdit.shipping_data" :key="index" class="shipping-added">
+              <div v-for="(shipping, index) in perkEdit.shipping_data" :key="index" class="shipping-added" @click="removeShippingPerk(index, perkEdit.shipping_data)">
+                <div class="shipping-added-text">
+                  {{"PERKS::Remover" | fix}}
+                </div>
                 <div>
                   <md-icon>commute</md-icon>
                   {{shipping.country_name}} - {{shipping.price | currency}}
-                </div>
-                <div @click="removeShippingPerk(index, perkEdit.shipping_data)" style="cursor: pointer">
-                  <md-icon style="color: #ad0000">delete</md-icon>
                 </div>
               </div>
             </div>
@@ -718,23 +718,6 @@ export default {
 </script>
 
 <style lang="scss" >
-
-.datepicker-correct-icon {
-  .md-button.md-icon-button.md-dense.md-input-action.md-clear.md-theme-default {
-    display: none;
-  }
-  svg {
-    fill: rgba(0,0,0,0.54) !important;
-  }
-}
-.money-input {
-  &::before {
-    opacity: 0 !important;
-  }
-  label {
-    color: rgba(0,0,0,0.54) !important;
-  }
-}
 .shipping-list {
   display: flex;
   flex-wrap: wrap;
@@ -744,8 +727,27 @@ export default {
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: .25rem;
     padding: .25rem;
+    position: relative;
+    .shipping-added-text {
+      text-shadow: 2px 1px black;
+      font-weight: 500;
+      color: rgb(255, 255, 255);
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
     &:not(:last-child) {
       margin-right: .5rem;
+    }
+    &:hover {
+      background-color: rgba(105,105,105, 1);
+      cursor: pointer;
+      .shipping-added-text {
+        display: block;
+      }
+
     }
   }
 }
