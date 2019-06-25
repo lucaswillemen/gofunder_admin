@@ -3,26 +3,26 @@
         <md-content class="md-elevation-3">
             <div class="title">
                 <img src="../../public/go-funder-icon.png">
-                <div class="md-title">Login</div>
+                <div class="md-title">{{"LOGIN::Login" | fix}}</div>
             </div>
             <form novalidate @submit.prevent="auth()">
                 <div class="form">
                     <md-field :class="getValidationClass('email')">
-                        <label>E-mail</label>
+                        <label>{{"LOGIN::E-mail" | fix}}</label>
                         <md-input v-model="login.email" type="email" name="email" autofocus required></md-input>
-                        <span class="md-error">E-mail digitado é inválido</span>
+                        <span class="md-error">{{"LOGIN::E-mail digitado é inválido" | fix}}</span>
                     </md-field>
                     <md-field  :class="getValidationClass('password')">
-                        <label>Senha</label>
+                        <label>{{"LOGIN::Senha" | fix}}</label>
                         <md-input v-model="login.password" type="password" required></md-input>
-                        <span class="md-error">Senha inválida</span>
+                        <span class="md-error">{{"LOGIN::Senha inválida" | fix}}</span>
                     </md-field>
-                    <a href="/resetpassword">Eu perdi minha senha</a>
+                    <a href="/resetpassword">{{"LOGIN::Eu perdi minha senha" | fix}}</a>
                 </div>
-                <md-button type="submit" class="md-raised md-primary md-auth">Entrar na minha conta</md-button>
+                <md-button type="submit" class="md-raised md-primary md-auth">{{"LOGIN::Entrar na minha conta" | fix}}</md-button>
             </form>
             <router-link to="/register">
-                <md-button class="md-raised md-primary md-auth">Criar nova conta</md-button>
+                <md-button class="md-raised md-primary md-auth">{{"LOGIN::Criar nova conta" | fix}}</md-button>
             </router-link>
             <div class="loading-overlay" v-if="loading">
                 <md-progress-spinner md-mode="indeterminate" :md-stroke="2"></md-progress-spinner>
@@ -30,8 +30,8 @@
 
             <md-dialog-alert
               :md-active.sync="loginError"
-              md-content="O login digitado é inválido"
-              md-confirm-text="Ok!" />
+              :md-content="$f('LOGIN::O login digitado é inválido')"
+              :md-confirm-text="$f('COMMON::Ok!')" />
         </md-content>
 
     </div>

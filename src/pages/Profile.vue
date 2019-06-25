@@ -1,12 +1,11 @@
 <template class=" md-grutter">
 <md-tabs class="md-primary">
-  <md-dialog-alert :md-active.sync="alertError" md-title="Erro!" :md-content="alertErrorMsg" />
-  <md-tab id="tab-user" md-label="Perfil" md-icon="people">
+  <md-tab id="tab-user" :md-label="$f('PROFILE::Perfil')" md-icon="people">
     <div class="md-layout md-grutter">
       <form novalidate class="md-layout">
         <md-card class="md-layout-item">
           <md-card-header>
-            <h4 class="header_title">Configurações Perfil</h4>
+            <h4 class="header_title">`{{"PROFILE::Configurações Perfil" | fix}}`</h4>
           </md-card-header>
 
           <md-card-content>
@@ -18,14 +17,14 @@
                   <div class="md-layout-item md-size-40">
                     <md-field>
                       <md-icon>people</md-icon>
-                      <label>Nome: *</label>
+                      <label>{{"PROFILE::Nome:"| fix}} * </label>
                       <md-input v-model="saveUser.name"></md-input>
                     </md-field>
                   </div>
 									<div class="md-layout-item md-size-40">
 										<md-field>
 											<md-icon>event</md-icon>
-											<label>Data Nascimento: *</label>
+											<label>{{"PROFILE::Data Nascimento:"| fix}} * </label>
 											<md-input v-model="saveUser.birthday"></md-input>
 										</md-field>
 									</div>
@@ -34,7 +33,7 @@
 
 
                 <br />
-                <span class="md-subheading">Sua imagem de perfil</span>
+                <span class="md-subheading">{{"PROFILE::Sua imagem de perfil" | fix}}l</span>
                 <div class="md-layout md-gutter">
                   <div class="md-layout-item md-size-80">
 
@@ -49,19 +48,19 @@
                 </div>
                 <br />
                 <br />
-                <span class="md-subheading">Endereço</span>
+                <span class="md-subheading">{{"PROFILE::Endereço" | fix}} </span>
                 <div class="md-layout md-gutter">
                   <div class="md-layout-item md-size-40">
                     <md-field>
                       <md-icon class="mdi mdi-flag"></md-icon>
-                      <label>Pais</label>
+                      <label>{{"PROFILE::País:"| fix}}  </label>
                       <md-input v-model="saveUser.country"></md-input>
                     </md-field>
                   </div>
                   <div class="md-layout-item md-size-40">
                     <md-field>
                       <md-icon class="mdi mdi-city"></md-icon>
-                      <label>City</label>
+                      <label>{{"PROFILE::Cidade:"| fix}}  </label>
                       <md-input v-model="saveUser.city"></md-input>
                     </md-field>
                   </div>
@@ -70,61 +69,61 @@
                   <div class="md-layout-item md-size-40">
                     <md-field>
                       <md-icon class="mdi mdi-code-equal"></md-icon>
-                      <label>Zipcode</label>
+                      <label>{{"PROFILE::CEP:"| fix}}  </label>
                       <md-input v-model="saveUser.zipcode"></md-input>
                     </md-field>
                   </div>
                   <div class="md-layout-item md-size-40">
                     <md-field>
                       <md-icon class="mdi mdi-card-text-outline"></md-icon>
-                      <label>Endereço</label>
+                      <label>{{"PROFILE::Endereço:"| fix}}  </label>
                       <md-input v-model="saveUser.address"></md-input>
                     </md-field>
                   </div>
                 </div>
               </div>
               <div class="md-layout-item md-size-50  ">
-								LINKS ÚTEIS
+								{{"PROFILE::LINKS ÚTEIS" | fix}}
                 <div class="md-layout md-gutter">
                   <div class="md-layout-item md-size-50">
                     <md-field>
                       <md-icon class="mdi mdi-web"></md-icon>
-                      <label>Website</label>
+                      <label>{{"PROFILE::Website" | fix}}</label>
                       <md-input v-model="saveUser.website"></md-input>
                     </md-field>
                   </div>
                   <div class="md-layout-item md-size-50">
                     <md-field>
                       <md-icon class="mdi mdi-instagram"></md-icon>
-                      <label>Instagram</label>
+                      <label>{{"PROFILE::Instagram" | fix}}</label>
                       <md-input v-model="saveUser.instagram"></md-input>
                     </md-field>
                   </div>
                   <div class="md-layout-item md-size-50">
                     <md-field>
                       <md-icon class="mdi mdi-facebook"></md-icon>
-                      <label>Facebook</label>
+                      <label>{{"PROFILE::Facebook" | fix}}</label>
                       <md-input v-model="saveUser.facebook"></md-input>
                     </md-field>
                   </div>
                   <div class="md-layout-item md-size-50">
                     <md-field>
                       <md-icon class="mdi mdi-twitter"></md-icon>
-                      <label>Twitter</label>
+                      <label>{{"PROFILE::Twitter" | fix}}</label>
                       <md-input v-model="saveUser.twitter"></md-input>
                     </md-field>
                   </div>
                   <div class="md-layout-item md-size-50">
                     <md-field>
                       <md-icon class="mdi mdi-youtube"></md-icon>
-                      <label>Youtube</label>
+                      <label>{{"PROFILE::Youtube" | fix}}</label>
                       <md-input v-model="saveUser.youtube"></md-input>
                     </md-field>
                   </div>
                   <div class="md-layout-item md-size-50">
                     <md-field>
                       <md-icon class="mdi mdi-linkedin"></md-icon>
-                      <label>Linkedin</label>
+                      <label>{{"PROFILE::Linkedin" | fix}}</label>
                       <md-input v-model="saveUser.likedin"></md-input>
                     </md-field>
                   </div>
@@ -133,16 +132,16 @@
                 <div class="md-layout-item md-small-size-100">
                   <md-field>
                     <md-icon>description</md-icon>
-                    <label>Descrição: *</label>
+                    <label>{{"PROFILE::Descrição:" | fix}} * </label>
                     <md-textarea v-model="saveUser.description"></md-textarea>
-										<span class="md-helper-text">Insira aqui uma pequena nota ou biografia do qual as pessoas poderão ver ao acessar seu perfil</span>
+										<span class="md-helper-text">{{"PROFILE::Insira aqui uma pequena nota ou biografia do qual as pessoas poderão ver ao acessar seu perfil" | fix}}</span>
                   </md-field>
                 </div>
               </div>
             </div>
           </md-card-content>
           <md-card-actions>
-            <md-button type="submit" @click.prevent="saveProfile()" class="md-raised md-roxo">Salvar meu perfil</md-button>
+            <md-button type="submit" @click.prevent="saveProfile()" class="md-raised md-roxo">{{"PROFILE::Salvar meu perfil" | fix}}</md-button>
             <br />
             <br />
           </md-card-actions>
@@ -150,12 +149,12 @@
       </form>
     </div>
   </md-tab>
-  <md-tab id="tab-senha" md-label="Trocar Senha" md-icon="security">
+  <md-tab id="tab-senha" :md-label="$f('PROFILE::Trocar Senha')" md-icon="security">
     <div class="md-layout md-grutter">
       <form novalidate class="md-layout">
         <md-card class="md-layout-item">
           <md-card-header>
-            <h5 class="header_title">Configurações de Senha</h5>
+            <h5 class="header_title">{{"PROFILE::Configurações de Senha" | fix}}</h5>
           </md-card-header>
 
           <md-card-content>
@@ -164,9 +163,9 @@
                 <div class="md-layout-item md-small-size-100">
                   <md-field>
                     <md-icon>security</md-icon>
-                    <label>Senha</label>
+                    <label>{{"PROFILE::Senha:" | fix}}</label>
                     <md-input v-model="secureUserPassword.password" type="password"></md-input>
-                    <span class="md-helper-text">Para confirmar que é você precisamos da sua senha antiga</span>
+                    <span class="md-helper-text">{{"PROFILE::Para confirmar que é você precisamos da sua senha antiga" | fix}}</span>
                   </md-field>
                 </div>
               </div>
@@ -174,9 +173,9 @@
                 <div class="md-layout-item md-small-size-100">
                   <md-field>
                     <md-icon>shield</md-icon>
-                    <label>Nova senha:</label>
+                    <label>{{"PROFILE::Nova Senha:"| fix}}</label>
                     <md-input v-model="secureUserPassword.newPassword2" type="password"></md-input>
-                    <span class="md-helper-text">Digite uma senha forte e segura para aprimorar sua segurança na Gofunder</span>
+                    <span class="md-helper-text">{{"PROFILE::Digite uma senha forte e segura para aprimorar sua segurança na Gofunder" | fix}}</span>
                   </md-field>
                 </div>
               </div>
@@ -185,10 +184,10 @@
                 <div class="md-layout-item md-small-size-100">
                   <md-field :class="{'md-invalid' : secureUserPassword.newPassword1  && secureUserPassword.newPassword2 && secureUserPassword.newPassword1 != secureUserPassword.newPassword2}">
                     <md-icon>done</md-icon>
-                    <label>Confirmar nova senha:</label>
+                    <label>{{"PROFILE::Confirmar nova senha:" | fix}}</label>
                     <md-input v-model="secureUserPassword.newPassword1" type="password"></md-input>
-                    <span class="md-error">As senhas digitadas não conferem!</span>
-                    <span class="md-helper-text">Digite novamente a senha para conferirmos se está tudo certo</span>
+                    <span class="md-error">{{"PROFILE::As senhas digitadas não conferem!" | fix}}</span>
+                    <span class="md-helper-text">{{"PROFILE::Digite novamente a senha para conferirmos se está tudo certo" | fix}}</span>
                   </md-field>
                 </div>
               </div>
@@ -196,7 +195,7 @@
               <br />
               <div class="md-layout md-gutter">
                 <div class="md-layout-item md-small-size-100">
-                  <md-button type="submit" @click.prevent="saveUserPassword()" class="md-raised md-roxo">Salvar nova senha</md-button>
+                  <md-button type="submit" @click.prevent="saveUserPassword()" class="md-raised md-roxo">{{"PROFILE::Salvar nova senha" | fix}}</md-button>
                 </div>
               </div>
             </div>
@@ -206,7 +205,7 @@
     </div>
 
   </md-tab>
-  <md-tab id="tab-email" md-label="Configurações E-mail" md-icon="email">
+  <md-tab id="tab-email" :md-label="$f('PROFILE::Configurações E-mail')" md-icon="email">
     <md-dialog-alert
       :md-active.sync="showAlertProfile"
       :md-title="profileAlertMsg" />
@@ -226,7 +225,7 @@
       <form novalidate class="md-layout">
         <md-card class="md-layout-item">
           <md-card-header>
-            <h4 class="header_title">Configurações de E-mail</h4>
+            <h4 class="header_title">{{"PROFILE::Configurações de E-mail" | fix}}</h4>
           </md-card-header>
 
           <md-card-content>
@@ -235,7 +234,7 @@
                 <div class="md-layout-item md-small-size-100">
                   <md-field>
                     <md-icon>email</md-icon>
-                    <label>E-mail antigo</label>
+                    <label>{{"PROFILE::E-mail antigo:" | fix}}</label>
                     <md-input v-model="secureUserEmail.email" :disabled="true"></md-input>
                   </md-field>
                 </div>
@@ -244,7 +243,7 @@
                 <div class="md-layout-item md-small-size-100">
                   <md-field>
                     <md-icon>shield</md-icon>
-                    <label>Novo e-mail:</label>
+                    <label>{{"PROFILE::Novo e-mail:" | fix}}</label>
                     <md-input v-model="secureUserEmail.newEmail"></md-input>
                   </md-field>
                 </div>
@@ -253,14 +252,14 @@
                 <div class="md-layout-item md-small-size-100">
                   <md-field>
                     <md-icon>security</md-icon>
-                    <label>Digite sua senha:</label>
+                    <label>{{"PROFILE::Digite sua senha:" | fix}}</label>
                     <md-input v-model="secureUserEmail.password" type="password"></md-input>
                   </md-field>
                 </div>
               </div>
               <div class="md-layout md-gutter">
                 <div class="md-layout-item md-small-size-100">
-                  <md-button type="submit" @click.prevent="saveUserEmail()" class="md-raised md-roxo">Salvar Novo E-mail</md-button>
+                  <md-button type="submit" @click.prevent="saveUserEmail()" class="md-raised md-roxo">{{"PROFILE::Salvar Novo E-mail" | fix}}</md-button>
                 </div>
               </div>
             </div>
@@ -273,22 +272,22 @@
     <div class="md-layout md-grutter">
       <md-card class="md-layout-item">
           <md-card-header>
-            <h4 class="header_title">Link de Referência</h4>
+            <h4 class="header_title">{{"PROFILE::Link de Referência" | fix}}</h4>
           </md-card-header>
 
           <md-card-content>
             <div class="md-layout md-gutter">
               <div class="md-layout-item md-small-size-100">
-                Copie o link asseguir e compartilhe com que você gostaria de indicar para a plataforma, você ganhará uma porcentagem de toda doação autenticada que seu convidado realizar!
+                {{"PROFILE::Copie o link asseguir e compartilhe com que você gostaria de indicar para a plataforma, você ganhará uma porcentagem de toda doação autenticada que seu convidado realizar!" | fix}}!
               </div>
             </div>
 
             <div class="link-div">
               <md-field style="width: 300px;">
-                <label>Link:</label>
+                <label>{{"PROFILE::Link:" | fix}}</label>
                 <md-input type="text" id="referal-input" v-model="referalLink" disabled></md-input>
               </md-field>
-              <md-button class="md-raised md-primary" @click="copyToClipboard()">Copiar</md-button>
+              <md-button class="md-raised md-primary" @click="copyToClipboard()">{{"PROFILE::Copiar" | fix}}</md-button>
             </div>
           </md-card-content>
         </md-card>
@@ -366,10 +365,10 @@ export default {
       this.loading = true;
       global.$post("/Auth/edit_email", this.secureUserEmail, this.user.token)
         .then(response => {
-          this.emailAlertMsg = 'E-mail salvo com sucesso. Confirme ele na sua caixa  de entrada'
+          this.emailAlertMsg = $f('PROFILE::E-mail salvo com sucesso. Confirme ele na sua caixa  de entrada')
         })
         .catch(err => {
-          this.emailAlertMsg = "E-mail ou senha inválido!"
+          this.emailAlertMsg = $f("PROFILE::E-mail ou senha inválido!")
         })
         .finally(() => {
           this.showAlertEmail = true
@@ -381,10 +380,10 @@ export default {
       this.loading = true;
       global.$post("/Auth/edit_password", this.secureUserPassword, this.user.token)
         .then(response => {
-          this.passwordAlertMsg = "Senha salva com sucesso"
+          this.passwordAlertMsg = $f("PROFILE::Senha salva com sucesso")
         })
         .catch(err => {
-          this.passwordAlertMsg = "Senhas não conferem"
+          this.passwordAlertMsg = $f("PROFILE::Senhas não conferem")
         })
         .finally(() => {
           this.showAlertPassword = true
@@ -409,11 +408,11 @@ export default {
         .then(response => {
           this.userSet(response.data)
           this.base64File = this.$url + this.user.img
-          this.profileAlertMsg = 'Informações de perfil salvas com sucesso'
+          this.profileAlertMsg = $f('PROFILE::Informações de perfil salvas com sucesso')
         })
         .catch(err => {
           
-          this.profileAlertMsg = 'Erro ao salvar informações!'
+          this.profileAlertMsg = $f('PROFILE::Erro ao salvar informações!')
           })
         .finally(() => {
           this.showAlertProfile = true

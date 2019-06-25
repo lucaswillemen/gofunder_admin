@@ -1,11 +1,11 @@
 <template>
   <main>
-    <md-dialog-alert :md-active.sync="alertError" md-title="Erro!" :md-content="alertErrorMsg" />
+    <md-dialog-alert :md-active.sync="alertError" :md-title="$f('CAMPAIGN::Erro!')" :md-content="alertErrorMsg" />
     <div class="loading-overlay" v-if="loading">
       <md-progress-spinner md-mode="indeterminate" :md-stroke="2"></md-progress-spinner>
     </div>
     <md-tabs class="md-primary">
-      <md-tab id="tab-lancadas" md-label="Lançadas" md-icon="check_circle">
+      <md-tab id="tab-lancadas" :md-label="$f('CAMPAIGN::Lançadas')" md-icon="check_circle">
         <div class="md-layout md-grutter">
           <card-items :items="lancadas" :hideDelete="true" hideFooter="true">
             <template v-slot:body="itemProp">
@@ -15,13 +15,13 @@
                 </div>
                 <div class="md-subhead">
                   <md-icon>group</md-icon>
-                  <span>{{itemProp.item.number_of_investor}} investidores</span>
+                  <span>{{itemProp.item.number_of_investor}} {{"CAMPAIGN::investidores" | fix}}</span>
                 </div>
                 <div class="item-description" style="margin-top: 1rem;">
                   <p>{{itemProp.item.description}}
                   </p>
                 </div>
-                <h3 class="md-subheading" style="margin-bottom: 0">Progresso</h3>
+                <h3 class="md-subheading" style="margin-bottom: 0">{{"CAMPAIGN::Progresso" | fix}}</h3>
                 <div class="card-reservation">
                   <div class="md-button-group md-layout md-alignment-center-center">
                     <md-button class="md-layout-item">${{itemProp.item.arrecadation}}</md-button>de
@@ -37,10 +37,10 @@
           </card-items>
         </div>
       </md-tab>
-      <md-tab id="tab-rascunhos" md-label="Rascunhos" md-icon="create">
+      <md-tab id="tab-rascunhos" :md-label="$f('CAMPAIGN::Rascunhos')" md-icon="create">
       <card-items :items="rascunhos"></card-items>
       </md-tab>
-      <md-tab id="tab-analise" md-label="Em Análise" md-icon="timeline">
+      <md-tab id="tab-analise" :md-label="$f('CAMPAIGN::Em Análise')" md-icon="timeline">
       <card-items :items="analysis" hideDelete="true" hideFooter="true"></card-items>
 
         <!-- <div class="md-layout md-grutter">
@@ -68,10 +68,10 @@
     </md-tabs>
     <md-dialog-confirm
 			:md-active.sync="showDeleteConfirmation"
-			md-title="Tem certeza que deseja deletar esta camapanha?"
-			md-content="Ao clicar em 'OK', não será possível recuperar nenhum dos dados já cadastrados nessa campanha."
-			md-confirm-text="Ok"
-			md-cancel-text="Fechar"
+			:md-title="$f('CAMPAIGN::Tem certeza que deseja deletar esta campanha?')"
+			:md-content="$f('CAMPAIGN::Ao clicar em \'OK\', não será possível recuperar nenhum dos dados já cadastrados nessa campanha.')"
+			:md-confirm-text="$f('COMMON::Ok')"
+			:md-cancel-text="$f('COMMON::Fechar')"
 			@md-cancel="showDeleteConfirmation = false"
 			@md-confirm="deleteCampaign()"
 		/>

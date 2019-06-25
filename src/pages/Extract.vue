@@ -1,13 +1,13 @@
 <template>
 <main>
   <md-tabs class="md-primary">
-    <md-tab id="tab-home" md-label="Extratos de Usuário" md-icon="payment">
+    <md-tab id="tab-home" :md-label="$f('EXTRACT::Extratos de Usuário')" md-icon="payment">
       <UserExtract></UserExtract>
     </md-tab>
-    <md-tab id="tab-doacoes" md-label="Extratos de Campanha" md-icon="card_giftcard">
+    <md-tab id="tab-doacoes" :md-label="$f('EXTRACT::Extratos de Campanha')" md-icon="card_giftcard">
       <CampaignExtract></CampaignExtract>
     </md-tab>
-    <md-tab id="tab-affiliate" md-label="Extratos de Produtos" md-icon="card_membership">
+    <md-tab id="tab-affiliate" :md-label="$f('EXTRACT::Extratos de Produtos')" md-icon="card_membership">
       <ProductExtract></ProductExtract>
     </md-tab>
 

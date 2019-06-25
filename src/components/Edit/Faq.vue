@@ -5,8 +5,8 @@
 			<md-card class="mt-layout-item">
 				<md-empty-state
 					md-icon="question_answer"
-					md-label="Perguntas e respostas frequentes"
-					md-description="Responda algumas possíveis dúvidas que seus investidores possam apresentar.">
+					:md-label="$f('FAQ::Perguntas e respostas frequentes')"
+					:md-description="$f('FAQ::Responda algumas possíveis dúvidas que seus investidores possam apresentar.')">
 					<md-button class="md-primary md-raised" @click="createFaq = true">Criar FAQ</md-button>
 				</md-empty-state>
 			</md-card>
@@ -14,7 +14,7 @@
 		<div class="md-layout-item md-small-size-100 md-size-100" v-else>	
 			<md-card style="min-width: 50%">
 				<md-card-header>
-					<div class="md-title">Perguntas e respostas frequentes</div>
+					<div class="md-title">{{"FAQ::Perguntas e respostas frequentes" | fix}}</div>
 				</md-card-header>
 				<md-list class="md-double-line md-size-100" style="min-width: 50%">
 					<md-divider></md-divider>
@@ -38,25 +38,24 @@
 			<md-button
 				:disabled="parentCall && parentCall.loadingState()"
 				class="md-fab md-primary"
-				@click="createFaq = true"
-			>
+				@click="createFaq = true">
 				<md-icon>add</md-icon>
 			</md-button>
 		</div>
 
 		<div class="md-layout-item md-small-size-100 md-size-100">
 			<md-dialog :md-active.sync="createFaq">
-				<md-dialog-title>Criar novo FAQ</md-dialog-title>
+				<md-dialog-title>{{"FAQ::Criar novo FAQ" | fix}}</md-dialog-title>
 				<md-dialog-content>
 					<md-field :class="{'md-invalid': $v.faq.question.$invalid && $v.faq.question.$dirty}">
-						<label>Escreva uma pergunta</label>
+						<label>{{"FAQ::Escreva uma pergunta" | fix}}</label>
 						<md-input v-model="faq.question" required></md-input>
-						<span class="md-error">Insira uma pergunta</span>
+						<span class="md-error">{{"FAQ::Insira uma pergunta" | fix}}</span>
 					</md-field>
 					<md-field :class="{'md-invalid': $v.faq.answer.$invalid && $v.faq.answer.$dirty}">
-						<label>Escreva uma resposta</label>
+						<label>{{"FAQ::Escreva uma resposta" | fix}}</label>
 						<md-input v-model="faq.answer" required></md-input>
-						<span class="md-error">Insira uma resposta</span>
+						<span class="md-error">{{"FAQ::Insira uma resposta" | fix}}</span>
 					</md-field>
 				</md-dialog-content>
 				<md-dialog-actions>
@@ -64,35 +63,36 @@
 					<md-button
 						:disabled="parentCall && parentCall.loadingState()"
 						class="md-primary md-raised"
-						@click="addFaq()"
-					>Adicionar</md-button>
+						@click="addFaq()">
+						{{"COMMON::Adicionar" | fix}}
+					</md-button>
 				</md-dialog-actions>
 			</md-dialog>
 			<md-dialog :md-active.sync="edittingFaq">
-				<md-dialog-title>Editar FAQ</md-dialog-title>
+				<md-dialog-title>{{"FAQ::Editar FAQ" | fix}}</md-dialog-title>
 				<md-dialog-content>
 					<md-field :class="{'md-invalid': $v.faqEdit.question.$invalid && $v.faqEdit.question.$dirty}">
-						<label>Edite sua pergunta</label>
+						<label>{{"FAQ::Edite sua pergunta" | fix}}</label>
 						<md-input v-model="faqEdit.question" required></md-input>
-						<span class="md-error">Insira uma pergunta</span>
+						<span class="md-error">{{"FAQ::Insira uma pergunta" | fix}}</span>
 					</md-field>
 					<md-field :class="{'md-invalid': $v.faqEdit.answer.$invalid && $v.faqEdit.answer.$dirty}">
-						<label>Edite sua resposta</label>
+						<label>{{"FAQ::Edite sua resposta" | fix}}</label>
 						<md-input v-model="faqEdit.answer" required></md-input>
-						<span class="md-error">Insira uma resposta</span>
+						<span class="md-error">{{"FAQ::Insira uma resposta" | fix}}</span>
 					</md-field>
 				</md-dialog-content>
 				<md-dialog-actions>
-					<md-button class="md-acent md-raised" @click="resetFaq()">Fechar</md-button>
-					<md-button class="md-primary md-raised" @click="editFaq()">Editar</md-button>
+					<md-button class="md-acent md-raised" @click="resetFaq()">{{"COMMON::Fechar" | fix}}</md-button>
+					<md-button class="md-primary md-raised" @click="editFaq()">{{"COMMON::Editar" | fix}}</md-button>
 				</md-dialog-actions>
 			</md-dialog>
 			<md-dialog-confirm
 				:md-active.sync="showDeleteConfirmation"
-				md-title="Tem certeza que deseja deletar este FAQ?"
-				md-content="Ao clicar em 'OK', não será possível recuperar o FAQ deletado..."
-				md-confirm-text="Ok"
-				md-cancel-text="Fechar"
+				:md-title="$f('FAQ::Tem certeza que deseja deletar este FAQ?')"
+				:md-content="$f('FAQ::Ao clicar em \'OK\', não será possível recuperar o FAQ deletado...')"
+				:md-confirm-text="$f('COMMON::Ok')"
+				:md-cancel-text="$f('COMMON::Fechar')"
 				@md-cancel="showDeleteConfirmation = false"
 				@md-confirm="deleteFaq()" />
 		</div>

@@ -25,14 +25,14 @@
         <div class="item-footer">
           <router-link :to="`/edit/${item.id}`">
             <md-button class="custom-color-1">
-              <md-icon>edit</md-icon>Editar
+              <md-icon>edit</md-icon>{{"CARD_ITEMS::Editar" | fix}}
             </md-button>
           </router-link>
           <md-button class="custom-color-2" @click="previewCampaign(item.id, item.title)">
-            <md-icon>find_in_page</md-icon>Prévia
+            <md-icon>find_in_page</md-icon>{{"CARD_ITEMS::Prévia" | fix}}
           </md-button>
           <md-button class="custom-color">
-            <md-icon>send</md-icon>Publicar
+            <md-icon>send</md-icon>{{"CARD_ITEMS::Publicar" | fix}}
           </md-button>
         </div>
       </slot>
@@ -98,6 +98,7 @@ export default {
       flex-direction: column;
       flex-wrap: wrap;
       padding: 1rem;
+      word-break: break-word;
       .item-title {
         h2 {
           font-weight: 500;

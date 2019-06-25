@@ -37,14 +37,14 @@
         <router-link to="/">
           <md-list-item v-bind:class="{'nav-item': true, 'active': $router.currentRoute.path=='/'}">
             <md-icon>home</md-icon>
-            <span class="md-list-item-text">Dashboard</span>
+            <span class="md-list-item-text">{{"ROOT::Dashboard" | fix}}</span>
           </md-list-item>
         </router-link>
 
         <router-link to="/profile">
           <md-list-item v-bind:class="{'nav-item': true, 'active': $router.currentRoute.path=='/profile'}">
             <md-icon>person</md-icon>
-            <span class="md-list-item-text">Perfil</span>
+            <span class="md-list-item-text">{{"ROOT::Perfil" | fix}}</span>
           </md-list-item>
         </router-link>
 
@@ -52,17 +52,17 @@
         <md-list class="mdListExtend backgroundSidebar">
           <md-list-item md-expand :md-expanded.sync="expandCampanhas">
             <md-icon>view_quilt</md-icon>
-            <span class="md-list-item-text">Minhas Campanhas</span>
+            <span class="md-list-item-text">{{"ROOT::Minhas Campanhas" | fix}}</span>
 
             <md-list slot="md-expand" class="mdListExtend backgroundSidebar">
               <router-link to="/campaigns">
                 <md-list-item v-bind:class="{'nav-item': true, 'active': $router.currentRoute.path=='/campaigns'}">
-                  <span class="md-list-item-text">Ver Campanhas</span>
+                  <span class="md-list-item-text">{{"ROOT::Ver Campanhas" | fix}}</span>
                 </md-list-item>
               </router-link>
               <router-link to="/create">
                 <md-list-item v-bind:class="{'nav-item': true, 'active': $router.currentRoute.path=='/create'}">
-                  <span class="md-list-item-text">Criar Campanhas</span>
+                <span class="md-list-item-text">{{"ROOT::Criar Campanhas" | fix}}</span>
                 </md-list-item>
               </router-link>
             </md-list>
@@ -92,13 +92,13 @@
         <router-link to="/withdraw">
           <md-list-item v-bind:class="{'nav-item': true, 'active': $router.currentRoute.path=='/withdraw'}">
             <md-icon>payment</md-icon>
-            <span class="md-list-item-text">Saques</span>
+            <span class="md-list-item-text">{{"ROOT::Saques" | fix}}</span>
           </md-list-item>
         </router-link>
         <router-link to="/extract">
           <md-list-item v-bind:class="{'nav-item': true, 'active': $router.currentRoute.path=='/extract'}">
             <md-icon>receipt</md-icon>
-            <span class="md-list-item-text">Relatórios</span>
+            <span class="md-list-item-text">{{"ROOT::Relatórios" | fix}}</span>
           </md-list-item>
         </router-link>
       </div>

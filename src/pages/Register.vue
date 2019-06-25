@@ -4,37 +4,37 @@
 
     <div class="title">
       <img src="../../public/go-funder-icon.png">
-      <div class="md-title">Register</div>
+      <div class="md-title">{{"REGISTER::Cadastro" | fix}}</div>
     </div>
     <form novalidate @submit.prevent="registerUser()">
       <div class="form">
         <md-field :class="getValidationClass('name')">
-          <label>Nome</label>
+          <label>{{"REGISTER::Nome" | fix}}</label>
           <md-input v-model="register.name" name="name" autofocus required></md-input>
-          <span class="md-error">Digite seu nome corretamente</span>
+          <span class="md-error">{{"REGISTER::Digite seu nome corretamente" | fix}}</span>
         </md-field>
         <md-field :class="getValidationClass('email')">
-          <label>E-mail</label>
+          <label>{{"REGISTER::E-mail" | fix}}</label>
           <md-input v-model="register.email" name="email" autofocus required></md-input>
-          <span class="md-error">Digite um e-mail válido para registro!</span>
+          <span class="md-error">{{"REGISTER::Digite um e-mail válido para registro!" | fix}}</span>
         </md-field>
 
         <md-field :class="getValidationClass('password')">
-          <label>Senha</label>
+          <label>{{"REGISTER::Senha" | fix}}</label>
           <md-input v-model="register.password" name="password" type="password" required></md-input>
-          <span class="md-error">Informe uma senha!</span>
+          <span class="md-error">{{"REGISTER::Informe uma senha!" | fix}}</span>
         </md-field>
 
         <md-field :class="getValidationClass('password2')">
-          <label>Confirme sua senha</label>
+          <label>{{"REGISTER::Confirme sua senha" | fix}}</label>
           <md-input v-model="register.password2" type="password" name="password2" required></md-input>
-          <span class="md-error">As senhas digitadas não conferem!</span>
+          <span class="md-error">{{"REGISTER::As senhas digitadas não conferem!" | fix}}</span>
         </md-field>
 
-        <router-link to="/login">Você já tem uma conta?</router-link>
+        <router-link to="/login">{{"REGISTER::Você já tem uma conta?" | fix}}</router-link>
       </div>
       <div class="">
-        <md-button type="submit" class="md-raised md-primary md-auth">Registrar</md-button>
+        <md-button type="submit" class="md-raised md-primary md-auth">{{"REGISTER::Registrar" | fix}}</md-button>
       </div>
     </form>
 
@@ -45,7 +45,7 @@
 
 
   </md-content>
-  <md-dialog-alert :md-active.sync="emailUsed" md-content="O e-mail já está sendo usado!" md-confirm-text="Fechar" />
+  <md-dialog-alert :md-active.sync="emailUsed" :md-content="$f('REGISTER::O e-mail já está sendo usado!')" md-confirm-text="Fechar" />
 
   <div class="background" />
 </div>

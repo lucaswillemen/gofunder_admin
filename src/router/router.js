@@ -10,7 +10,6 @@ import Campaigns from '@/pages/Campaigns.vue';
 import Edit from '@/pages/Edit.vue';
 import Withdraw from '@/pages/Withdraw.vue';
 import Extract from '@/pages/Extract.vue';
-import Test from '@/pages/Test.vue';
 import Profile from '@/pages/Profile.vue';
 
 Vue.use(Router);
@@ -30,13 +29,6 @@ export default new Router({
     };
   },
   routes: [{
-      path: '/test',
-      name: 'Test',
-      component: Test,
-      meta: {
-        onlyPublic: true
-      }
-    }, {
       path: '/login',
       name: 'Login',
       component: Login,

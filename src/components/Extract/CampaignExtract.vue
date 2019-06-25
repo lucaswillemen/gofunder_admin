@@ -2,31 +2,31 @@
   <main>
     <md-dialog-alert
       :md-active.sync="alertError"
-      md-title="Erro ao carregar informações do extrato!"
+      :md-title="$f('CAMPAIGN_EXTRACT::Erro ao carregar informações do extrato!')"
       :md-content="alertErrorMsg" />
 
        <md-dialog-alert v-if="perkInfo"
         :md-active.sync="showPerk"
-        md-title="Informações do Perk"
-        :md-content="`Adquirido em: <strong>${perkInfo.create_at}</strong> <br><br>
-                      Informações de entrega:<br>
-                      Para <strong>${perkInfo.shipping_address.name}</strong> no endereço ${perkInfo.shipping_address.address} - ${perkInfo.shipping_address.city} (${perkInfo.shipping_address.state}) <br>
-                      CEP: ${perkInfo.shipping_address.zipcode} <br>
-                      Telefone para contato: ${perkInfo.shipping_address.phone} <br>
-                      Preço do frete: <strong>$${perkInfo.shipping_price}</strong>`" />
+        :md-title="$f('CAMPAIGN_EXTRACT::Informações do Perk')"
+        :md-content="`${$f('CAMPAIGN_EXTRACT::Adquirido em:')} <strong>${perkInfo.create_at}</strong> <br><br>
+                      ${$f('CAMPAIGN_EXTRACT::Informações de entrega:')}<br>
+                      ${$f('CAMPAIGN_EXTRACT::Para')} <strong>${perkInfo.shipping_address.name}</strong> ${$f('CAMPAIGN_EXTRACT::no endereço')} ${perkInfo.shipping_address.address} - ${perkInfo.shipping_address.city} (${perkInfo.shipping_address.state}) <br>
+                      ${$f('CAMPAIGN_EXTRACT::CEP:')} ${perkInfo.shipping_address.zipcode} <br>
+                      ${$f('CAMPAIGN_EXTRACT::Telefone para contato:')} ${perkInfo.shipping_address.phone} <br>
+                      ${$f('CAMPAIGN_EXTRACT::Preço do frete:')} <strong>$${perkInfo.shipping_price}</strong>`" />
                       
        <md-dialog-alert v-if="cotaInfo"
         :md-active.sync="showCota"
-        md-title="Informações da Cota"
-        :md-content="`Adquirido em: <strong>${cotaInfo.created_at}</strong> <br>
-                      Porcentagem de toda venda do produto: <strong>${cotaInfo.percent}%</strong><br>
-                      Expira em: <strong>${cotaInfo.expiry}</strong>`" />
+        :md-title="$f('CAMPAIGN_EXTRACT::Informações da Cota')"
+        :md-content="`${$f('CAMPAIGN_EXTRACT::Adquirido em:')} <strong>${cotaInfo.created_at}</strong> <br>
+                     ${$f('CAMPAIGN_EXTRACT:: Porcentagem de toda venda do produto:')} <strong>${cotaInfo.percent}%</strong><br>
+                      ${$f('CAMPAIGN_EXTRACT::Expira em:')} <strong>${$f('DB::'+cotaInfo.expiry)}</strong>`" />
     <section>
         <md-table md-card>
           <md-table-toolbar>
 
             <div class="md-toolbar-section-start">
-              <h1 class="md-status">Campanhas</h1>
+              <h1 class="md-status">{{"CAMPAIGN_EXTRACT::Campanhas" | fix}}</h1>
             </div>
 
             <!-- <md-field md-clearable class="md-toolbar-section-end">
@@ -36,7 +36,7 @@
           <md-table-row>
             <md-table-head>
               <div @click="changeOrdenation('date_donation')" style="width: 100%">
-                Data
+                {{"CAMPAIGN_EXTRACT::Data" | fix}}
                 <md-icon class="custom-icon" v-if="orderType=='desc' && orderBy=='date_donation'">arrow_downward</md-icon>
                 <md-icon class="custom-icon" v-else-if="orderType=='asc' && orderBy=='date_donation'">arrow_upward</md-icon>
                 <md-icon class="custom-icon" v-else>arrow_downward</md-icon>
@@ -45,7 +45,7 @@
             </md-table-head>
             <md-table-head>
               <div @click="changeOrdenation('value_donation')" style="width: 100%">
-                Valor
+                {{"CAMPAIGN_EXTRACT::Valor" | fix}}
                 <md-icon class="custom-icon" v-if="orderType=='desc' && orderBy=='value_donation'">arrow_downward</md-icon>
                 <md-icon class="custom-icon" v-else-if="orderType=='asc' && orderBy=='value_donation'">arrow_upward</md-icon>
                 <md-icon class="custom-icon" v-else>arrow_downward</md-icon>
@@ -53,37 +53,38 @@
             </md-table-head>
             <md-table-head>
               <div style="width: 100%">
-                  Usuário
+                  {{"CAMPAIGN_EXTRACT::Usuário" | fix}}
                 </div>
             </md-table-head>
             <md-table-head>
               <div style="width: 100%">
-                Recompensa
+                {{"CAMPAIGN_EXTRACT::Recompensa" | fix}}
               </div>
             </md-table-head>
             <md-table-head>
               <div style="width: 100%">
-                Cota  
+                {{"CAMPAIGN_EXTRACT::Cota" | fix}}  
               </div>
             </md-table-head>
           </md-table-row>
           <md-table-row v-for="(row, index) in tableData" :key="index">
             <md-table-cell>{{ row.date_donation }}</md-table-cell>
             <md-table-cell>{{ row.value_donation }}</md-table-cell>
-            <md-table-cell>{{ row.DonatorName }}</md-table-cell>
+            <md-table-cell v-if="row.DonatorName == 'anonymous'">{{ $f('DB::anonymous') }}</md-table-cell>
+            <md-table-cell v-else>{{ row.DonatorName}}</md-table-cell>
             <md-table-cell v-if="row.IdRecompensa">
               <md-button @click="getRewardById(row.IdRecompensa)" class="md-icon-button md-dense">
                 <md-icon>info</md-icon>
               </md-button>
             </md-table-cell>
-            <md-table-cell v-if="!row.IdRecompensa">Não há!
+            <md-table-cell v-if="!row.IdRecompensa">{{"CAMPAIGN_EXTRACT::Não há!" | fix}}
             </md-table-cell>
             <md-table-cell v-if="row.IdCota">
               <md-button @click="getCotaById(row.IdCota)" class="md-icon-button md-dense">
                 <md-icon>info</md-icon>
               </md-button>
             </md-table-cell>
-            <md-table-cell v-if="!row.IdCota">Não há!
+            <md-table-cell v-if="!row.IdCota">{{"CAMPAIGN_EXTRACT::Não há!" | fix}}
             </md-table-cell>
           </md-table-row>
         </md-table>
@@ -156,7 +157,7 @@ export default {
           try {
           this.perkInfo.shipping_address =  JSON.parse(JSON.parse(this.perkInfo.shipping_address))            
           } catch (error) {
-          this.perkInfo.shipping_address = 'Não foi possível resgatar os dados de entrega do nosso banco de dados!'
+          this.perkInfo.shipping_address = $f('CAMPAIGN_EXTRACT::Não foi possível resgatar os dados de entrega do nosso banco de dados!')
           }
           this.showPerk = true
 				})

@@ -2,20 +2,20 @@
   <main>
     <md-dialog-alert
       :md-active.sync="alertError"
-      md-title="Erro ao carregar informações de extrato!"
+      :md-title="$f('USER_EXTRACT::Erro ao carregar informações de extrato!')"
       :md-content="alertErrorMsg" />
       <section>
         <md-table md-card>
           <md-table-toolbar>
 
             <div class="md-toolbar-section-start">
-              <h1 class="md-status">Usuário</h1>
+              <h1 class="md-status">{{"USER_EXTRACT::Usuário" | fix}}</h1>
             </div>
           </md-table-toolbar>
           <md-table-row>
             <md-table-head>
               <div @click="changeOrdenation('created_at')" style="width: 100%">
-                Data
+                {{"USER_EXTRACT::Data" | fix}}
                 <md-icon class="custom-icon" v-if="orderType=='desc' && orderBy=='created_at'">arrow_downward</md-icon>
                 <md-icon class="custom-icon" v-else-if="orderType=='asc' && orderBy=='created_at'">arrow_upward</md-icon>
                 <md-icon class="custom-icon" v-else>arrow_downward</md-icon>
@@ -24,7 +24,7 @@
             </md-table-head>
             <md-table-head>
               <div @click="changeOrdenation('amount')" style="width: 100%">
-                Valor
+                {{"USER_EXTRACT::Valor" | fix}}                
                 <md-icon class="custom-icon" v-if="orderType=='desc' && orderBy=='amount'">arrow_downward</md-icon>
                 <md-icon class="custom-icon" v-else-if="orderType=='asc' && orderBy=='amount'">arrow_upward</md-icon>
                 <md-icon class="custom-icon" v-else>arrow_downward</md-icon>
@@ -32,12 +32,12 @@
             </md-table-head>
             <md-table-head>
               <div style="width: 100%">
-                Mensagem
+                {{"USER_EXTRACT::Mensagem" | fix}}                                
               </div>
             </md-table-head>
             <md-table-head>
               <div style="width: 100%">
-                Referência
+                {{"USER_EXTRACT::Referência" | fix}}                                
               </div>
             </md-table-head>
           </md-table-row>
@@ -46,7 +46,7 @@
             <md-table-cell v-if="row.coin == 'usd'">${{ row.amount }}</md-table-cell>
             <md-table-cell v-else-if="row.coin == 'btc'">{{ row.amount }} BTC</md-table-cell>
             <md-table-cell>{{ row.msg }}</md-table-cell>
-            <md-table-cell>{{ row.referer_id || 'Não há!' }}</md-table-cell>
+            <md-table-cell>{{ row.referer_id || $f('USER_EXTRACT::Não há!') }}</md-table-cell>
           </md-table-row>
         </md-table>
       </section>
@@ -81,7 +81,6 @@ export default {
     getUserExtract() {
 				global.$post("/Extract/user",{ page: this.currentPage, order_type: this.orderType, order_by: this.orderBy}, this.user.token)
 				.then(response => {
-          console.log('foi', response)
           this.numberPages = Math.ceil(response.data.rows/this.numberOfRows)
           this.tableData = response.data.data
           this.searched = this.tableData

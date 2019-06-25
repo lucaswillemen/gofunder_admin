@@ -4,8 +4,8 @@
 			<md-card class="mt-layout-item">
 				<md-empty-state
 					md-icon="add_a_photo"
-					md-label="Faça sua galeria!"
-					md-description="As imagens serão mostradas na sua galeria de fotos da campanha!"
+					:md-label="$f('GALLERY::Faça sua galeria!')"
+					:md-description="$f('GALLERY::As imagens serão mostradas na sua galeria de fotos da campanha!')"
 				>
 					<input type="file" style="display: none" id="input-file" @change="pickImg($event)" accept="image/*">
 					<md-button v-if="!imageToUpload" @click="clickOnFileInput()" class="md-fab md-primary" >
@@ -19,8 +19,7 @@
 							class="flexGallery"
 							v-for="(picture, index) in pictures"
 							:key="index"
-							:style="{backgroundImage: 'url(\''+$url + picture.picture_url+'\')' }"
-						>
+							:style="{backgroundImage: 'url(\''+$url + picture.picture_url+'\')' }">
 							<md-button class="md-fab md-mini-mini" @click="openDeleteConfirmation(picture.id)">
 								<md-icon>delete</md-icon>
 							</md-button>
@@ -32,10 +31,10 @@
 
 		<md-dialog-confirm
 			:md-active.sync="showDeleteConfirmation"
-			md-title="Tem certeza que deseja deletar esta imagem da galeria?"
-			md-content="Ao clicar em 'OK', não será possível recuperar a imagem deletada da galeria."
-			md-confirm-text="Ok"
-			md-cancel-text="Fechar"
+			:md-title="$f('GALLERY::Tem certeza que deseja deletar esta imagem da galeria?')"
+			:md-content="$f('GALLERY::Ao clicar em \'OK\', não será possível recuperar a imagem deletada da galeria.')"
+			:md-confirm-text="$f('COMMON::Ok')"
+			:md-cancel-text="$f('COMMON::Fechar')"
 			@md-cancel="showDeleteConfirmation = false"
 			@md-confirm="deleteImage()"
 		/>

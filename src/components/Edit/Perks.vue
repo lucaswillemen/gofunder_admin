@@ -3,8 +3,8 @@
   <md-dialog-alert :md-active.sync="alertError" md-title="Erro!" :md-content="alertErrorMsg" />
   <span class="md-layout-item md-small-size-100 md-size-100" v-if="perkList.length == 0">
     <md-card class="mt-layout-item">
-      <md-empty-state md-icon="card_giftcard" md-label="Crie Perk" md-description="Os perks servem como recompensa para as pessoas que doaram para sua campanha.">
-        <md-button class="md-primary md-raised" @click="perkDialog = true">Criar uma recompensa</md-button>
+      <md-empty-state md-icon="card_giftcard" :md-label="$f('PERKS::Crie seu perk!')" :md-description="$f('PERKS::Os perks servem como recompensa para as pessoas que doaram para sua campanha.')">
+        <md-button class="md-primary md-raised" @click="perkDialog = true">{{"PERKS::Criar uma recompensa" | fix}}</md-button>
       </md-empty-state>
     </md-card>
   </span>
@@ -23,7 +23,7 @@
           <div class="item-title">
             <h2>{{itemProp.item.name}}</h2>
           </div>
-          <div class="md-subhead">Valor mínimo para ganhar recompensa:
+          <div class="md-subhead">{{"PERKS::Valor mínimo para ganhar recompensa:" | fix}}
             <div>{{itemProp.item.price | currency}}</div>
           </div>
          <div class="item-description" style="margin-top: 1rem;">{{itemProp.item.description}}
@@ -32,7 +32,7 @@
       </template>
       <template v-slot:footer="itemProp">
         <div style="display: block; margin-top: auto">
-          <md-button class="md-raised md-primary" @click="showModalEditPerk(itemProp.item)" style="width: 95%">Editar Recompensa</md-button>
+          <md-button class="md-raised md-primary" @click="showModalEditPerk(itemProp.item)" style="width: 95%">{{"PERKS::Editar Recompensa" | fix}}</md-button>
         </div>
       </template>
     </card-items>
@@ -45,7 +45,7 @@
   </div>
   <div>
     <md-dialog :md-active.sync="perkDialog">
-      <md-dialog-title>Criar novo Perk</md-dialog-title>
+      <md-dialog-title>{{"PERKS::Criar novo Perk" | fix}}</md-dialog-title>
       <md-dialog-content>
         <div class="md-layout md-gutter">
           <div class="md-layout-item md-small-size-100">
@@ -53,84 +53,84 @@
             <div v-if="!base64FilePerk">
               <input type="file"  style="display: none" id="input-file-perk" @change="pickImgPerk($event)" accept="image/*">
               <md-button @click="clickOnFileInputPerk()" class="md-raised md-primary">
-                Adicionar uma Foto <md-icon>add_a_photo</md-icon>
+                {{"PERKS::Adicionar uma Foto" | fix}} <md-icon>add_a_photo</md-icon>
               </md-button>
-              <div v-if="$v.perk.image.$invalid && $v.perk.image.$dirty" style="color: #ff1744;">Insira uma imagem para o perk *</div>
+              <div v-if="$v.perk.image.$invalid && $v.perk.image.$dirty" style="color: #ff1744;">{{"PERKS::Insira uma imagem para o perk" | fix}} *</div>
             </div>
             <div v-if="base64FilePerk">
               <input type="file"  style="display: none" id="input-file-perk" @change="pickImgPerk($event)" accept="image/*">
               <md-button @click="clickOnFileInputPerk()" class="md-raised md-primary">
-                Alterar essa foto <md-icon>add_a_photo</md-icon>
-                <div v-if="$v.perk.image.$invalid && $v.perk.image.$dirty" style="color: #ff1744;">Insira uma imagem para o perk</div>
+                {{"PERKS::Alterar essa foto" | fix}}<md-icon>add_a_photo</md-icon>
+                <div v-if="$v.perk.image.$invalid && $v.perk.image.$dirty" style="color: #ff1744;">{{"PERKS::Insira uma imagem para o perk" | fix}}</div>
               </md-button>
             </div>
             <md-field :class="{'md-invalid': $v.perk.description.$invalid && $v.perk.description.$dirty}">
               <md-icon>description</md-icon>
-              <label>Qual a descrição do seu perk?</label>
+              <label>{{"PERKS::Qual a descrição do seu perk?" | fix}}</label>
               <md-textarea v-model="perk.description" required md></md-textarea>
-              <span class="md-error">Informe a descrição!</span>
+              <span class="md-error">{{"PERKS::Informe a descrição!" | fix}}</span>
             </md-field>
           </div>
           <div class="md-layout-item md-small-size-100">
             <md-field :class="{'md-invalid': $v.perk.name.$invalid && $v.perk.name.$dirty}">
               <md-icon>title</md-icon>
-              <label>Qual o nome da sua recompensa?</label>
+              <label>{{"PERKS::Qual o nome da sua recompensa?" | fix}}</label>
               <md-input v-model="perk.name" required></md-input>
-              <span class="md-error">Informe o titulo da sua recompensa</span>
+              <span class="md-error">{{"PERKS::Informe o titulo da sua recompensa" | fix}}</span>
             </md-field>
             <md-field :class="{'md-invalid': $v.perk.price.$invalid && $v.perk.price.$dirty}" class="md-focused money-input">
               <md-icon>attach_money</md-icon>
-              <label>Qual o valor do seu perk?</label>
+              <label>{{"PERKS::Qual o valor do seu perk?" | fix}}</label>
               <money class="md-input" v-model.number="perk.price" required></money>
-              <span class="md-error">Informe o valor</span>
-              <span class="md-helper-text">Insira o valor mínimo a ser doado em dólares para receber o perk</span>
+              <span class="md-error">{{"PERKS::Informe o valor" | fix}}</span>
+              <span class="md-helper-text">{{"PERKS::Insira o valor mínimo a ser doado em dólares para receber o perk" | fix}}</span>
             </md-field>
             <md-field :class="{'md-invalid': $v.perk.stock.$invalid && $v.perk.stock.$dirty}">
               <md-icon>store</md-icon>
-              <label>Qual o estoque do seu perk?</label>
+              <label>{{"PERKS::Qual o estoque do seu perk?" | fix}}</label>
               <md-input v-mask="'######'" v-model.number="perk.stock" required></md-input>
-              <span class="md-error">Informe o estoque</span>
-              <span class="md-helper-text">Informe quantas pessoas devem podem resgatar esse prêmio</span>
+              <span class="md-error">{{"PERKS::Informe o estoque" | fix}}</span>
+              <span class="md-helper-text">{{"PERKS::Informe quantas pessoas devem podem resgatar esse prêmio" | fix}}</span>
             </md-field>
             <md-field :class="{'md-invalid': $v.perk.discount.$invalid && $v.perk.discount.$dirty}">
               <md-icon>money_off</md-icon>
               <label>
-                Há um valor de desconto?
+                {{"PERKS::Há um valor de desconto?" | fix}}
               </label>
-              <span class="md-helper-text">Este valor é uma porcentagem de desconto para o valor de doação do seu perk</span>
+              <span class="md-helper-text">{{"PERKS::Este valor é uma porcentagem de desconto para o valor de doação do seu perk" | fix}}</span>
               <md-input v-mask="'###'" v-model.number="perk.discount"></md-input>
-              <span class="md-error ">Informe uma porcentagem válida!</span>
+              <span class="md-error ">{{"PERKS::Informe uma porcentagem válida!" | fix}}</span>
 
             </md-field>
           </div>
         </div>
-        <md-switch class="md-primary" v-model="perk.haveFrete">Seu produto será enviado pelos correios?</md-switch>
+        <md-switch class="md-primary" v-model="perk.haveFrete">{{"PERKS::Seu produto será enviado pelos correios?" | fix}}</md-switch>
         <div v-show="perk.haveFrete">
           <div class="md-layout md-gutter">
             <div class="md-layout-item md-small-size-100">
               <md-datepicker class="datepicker-correct-icon" :class="{'md-invalid': $v.perk.shipping_date.$invalid}" md-immediately v-model="perk.shipping_date" required>
-                <label>Informe a data estimada de entrega da sua recompensa</label>
-                <span class="md-helper-text">O usuário será informado que receberá o prêmio aproximadamente nessa data</span>
+                <label>{{"PERKS::Informe a data estimada de entrega da sua recompensa" | fix}}</label>
+                <span class="md-helper-text">{{"PERKS::O usuário será informado que receberá o prêmio aproximadamente nessa data" | fix}}</span>
               </md-datepicker>
             </div>
           </div>
           <div>
-            <b>Opções de envio:</b>
+            <b>{{"PERKS::Opções de envio:" | fix}}</b>
           </div>
           <div style="display:flex">
-            <md-radio v-model="perk.shipping_worldwide" value="only_country">Meu produto será enviado apenas para o país</md-radio>
-            <md-radio v-model="perk.shipping_worldwide" value="world_wide">Meu produto será enviado para diversos países</md-radio>
+            <md-radio v-model="perk.shipping_worldwide" value="only_country">{{"PERKS::Meu produto será enviado apenas para o país" | fix}}</md-radio>
+            <md-radio v-model="perk.shipping_worldwide" value="world_wide">{{"PERKS::Meu produto será enviado para diversos países" | fix}}</md-radio>
           </div>
           <div v-if="perk.shipping_worldwide == 'only_country'" class="md-layout-item md-small-size-100">
             <md-field :class="{'md-invalid': $v.perk.shipping_price.$invalid}" style="margin-top: 1rem;">
               <md-icon>commute</md-icon>
-              <label>Qual o valor do frete?</label>
+              <label>{{"PERKS::Qual o valor do frete?" | fix}}</label>
               <md-input v-model.number="perk.shipping_price" required></md-input>
-              <span class="md-error">Informe o valor do frete em dólares!</span>
+              <span class="md-error">{{"PERKS::Informe o valor do frete em dólares!" | fix}}</span>
             </md-field>
           </div>
           <div v-else-if="perk.shipping_worldwide == 'world_wide'" class="md-layout-item md-small-size-100">
-            <h4>Lista de frete: <span v-if="perk.shipping_data.length == 0"> Vazia!</span> </h4>
+            <h4>{{"PERKS::Lista de frete:" | fix}} <span v-if="perk.shipping_data.length == 0"> {{"PERKS::Vazia!" | fix}}</span> </h4>
             <div class="shipping-list">
               <div v-for="(shipping, index) in perk.shipping_data" :key="index" class="shipping-added">
                 <div>
@@ -145,22 +145,25 @@
             <div class="multiple-shipping-container">
               <div style="display: flex; flex-direction: column; width:90%;">
                 <div style="text-align: center; margin: 1rem; 0">
-                  <div>Escolha os países que você deseja entregar sua recompensa e seus respectivos valores de frete</div>
-                  <small><strong>É possível definir o mesmo valor de frete para países diferentes!</strong></small>
+                  <div>{{"PERKS::Escolha os países que você deseja entregar sua recompensa e seus respectivos valores de frete" | fix}}</div>
+                  <small><strong>{{"PERKS::É possível definir o mesmo valor de frete para países diferentes!" | fix}}</strong></small>
                 </div>
-                <multiselect v-model="countriesSelecteds" placeholder="Pesquise um país" label="country_name" track-by="id" :options="countries" :multiple="true" :max-height="210" :hideSelected="true" selectLabel="Clique para selecionar" selectedLabel="Selecionado" :close-on-select="false">
+                <multiselect v-model="countriesSelecteds" :placeholder="$f('MULTISELECT::Pesquise um país')" label="country_name" track-by="id" :options="countries" :multiple="true" :max-height="210" :hideSelected="true" :selectLabel="$f('MULTISELECT::Clique para selecionar')" :selectedLabel="$f('MULTISELECT::Selecionado')" :close-on-select="false">
                   <template slot="noResult">
-                    <span><strong>Sua pesquisa não encontrou nenhum país, tente novamente</strong></span>
+                    <span><strong>{{"MULTISELECT::Sua pesquisa não encontrou nenhum país, tente novamente" | fix}}</strong></span>
                   </template>
                   <template slot="noOptions">
-                    <span><strong>Nenhum país encontrado, tente recarregar a página ou contate o administrador</strong></span>
+                    <span><strong>{{"MULTISELECT::Nenhum país encontrado, tente recarregar a página ou contate o administrador" | fix}}</strong></span>
                   </template>
                 </multiselect>
+                <div style="text-align: center">
+                  <small><strong>{{"PERKS::Para editar o valor do frete de um país ja adicionado, pesquise-o acima e o insira um novo valor para sobrescrever o antigo!" | fix}}</strong></small>
+                </div>
                 <md-field>
                   <md-icon>commute</md-icon>
-                  <label class="input-label-selected">Qual o valor do frete para o(s) país(es) selecionados?</label>
+                  <label class="input-label-selected">{{"PERKS::Qual o valor do frete para o(s) país(es) selecionados?" | fix}}</label>
                   <money v-model.number="multipleShippingValue" class="md-input"></money>
-                  <span class="md-error">Informe o valor do frete em dólares!</span>
+                  <span class="md-error">{{"PERKS::Informe o valor do frete em dólares!" | fix}}</span>
                 </md-field>
               </div>
               <md-button :disabled="multipleShippingValue <= 0 || countriesSelecteds.length <= 0" class="md-raised md-icon-button" @click="addMultipleShippingPerk(perk.shipping_data)">
@@ -173,15 +176,15 @@
         </div>
       </md-dialog-content>
       <md-dialog-actions>
-        <md-button class="md-gray md-raised" @click="resetPerk()">Fechar</md-button>
-        <md-button class="md-primary md-raised" :disabled="parentCall && parentCall.loadingState()" @click="uploadNewPerk()">Adicionar</md-button>
+        <md-button class="md-gray md-raised" @click="resetPerk()">{{"COMMON::Fechar" | fix}}</md-button>
+        <md-button class="md-primary md-raised" :disabled="parentCall && parentCall.loadingState()" @click="uploadNewPerk()">{{"COMMON::Adicionar" | fix}}</md-button>
       </md-dialog-actions>
     </md-dialog>
   </div>
 
   <div>
     <md-dialog :md-active.sync="perkEditDialog">
-      <md-dialog-title>Editar Perk</md-dialog-title>
+      <md-dialog-title>{{"PERKS::Editar Perk" | fix}}</md-dialog-title>
       <md-dialog-content>
         <div class="md-layout md-gutter">
           <div class="md-layout-item md-small-size-100">
@@ -189,84 +192,84 @@
             <input type="file"  style="display: none" id="edit-input-file-perk" @change="pickImgPerkEdit($event)" accept="image/*">
             <div v-if="!base64FilePerkEdit">
               <md-button @click="clickOnFileInputPerkEdit()" class="md-raised md-primary">
-                Adicionar uma Foto <md-icon>add_a_photo</md-icon>
+                {{"PERKS::Adicionar uma Foto" | fix}} <md-icon>add_a_photo</md-icon>
               </md-button>
             </div>
             <div v-if="base64FilePerkEdit">
               <md-button @click="clickOnFileInputPerkEdit()" class="md-raised md-primary">
-                Alterar essa foto <md-icon>add_a_photo</md-icon>
+                {{"PERKS::Alterar essa foto" | fix}} <md-icon>add_a_photo</md-icon>
               </md-button>
             </div>
-            <div v-if="$v.perk.image.$invalid && $v.perk.image.$dirty" style="color: #ff1744;">Insira uma imagem para o perk</div>
+            <div v-if="$v.perk.image.$invalid && $v.perk.image.$dirty" style="color: #ff1744;">{{"PERKS::Insira uma imagem para o perk" | fix}}</div>
             <md-field :class="{'md-invalid': $v.perkEdit.description.$invalid && $v.perkEdit.description.$dirty}">
               <md-icon>description</md-icon>
-              <label>Qual a descrição do seu perk?</label>
+              <label>{{"PERKS::Qual a descrição do seu perk?" | fix}}</label>
               <md-textarea v-model="perkEdit.description" required md></md-textarea>
-              <span class="md-error">Informe a descrição!</span>
+              <span class="md-error">{{"PERKS::Informe a descrição!" | fix}}</span>
             </md-field>
           </div>
           <div class="md-layout-item md-small-size-100">
             <md-field :class="{'md-invalid': $v.perkEdit.name.$invalid && $v.perkEdit.name.$dirty}">
               <md-icon>title</md-icon>
-              <label>Qual o nome da sua recompensa?</label>
+              <label>{{"PERKS::Qual o nome da sua recompensa?" |fix}}</label>
               <md-input v-model="perkEdit.name" required></md-input>
-              <span class="md-error">Informe o titulo da sua recompensa</span>
+              <span class="md-error">{{"PERKS::Informe o titulo da sua recompensa" | fix}}</span>
             </md-field>
             <md-field :class="{'md-invalid': $v.perkEdit.price.$invalid && $v.perkEdit.price.$dirty}" class="md-focused money-input">
               <md-icon>attach_money</md-icon>
-              <label>Qual o valor do seu perk?</label>
+              <label>{{"PERKS::Qual o valor do seu perk?" | fix}}</label>
               <money class="md-input" v-model.number="perkEdit.price" required></money>
-              <span class="md-error">Informe o valor</span>
-              <span class="md-helper-text">Insira o valor mínimo a ser doado em dólares para receber o perk</span>
+              <span class="md-error">{{"PERKS::Informe o valor" | fix}}</span>
+              <span class="md-helper-text">{{"PERKS::Insira o valor mínimo a ser doado em dólares para receber o perk" | fix}}</span>
             </md-field>
             <md-field :class="{'md-invalid': $v.perkEdit.stock.$invalid && $v.perkEdit.stock.$dirty}">
               <md-icon>store</md-icon>
-              <label>Qual o estoque do seu perk?</label>
+              <label>{{"PERKS::Qual o estoque do seu perk?" | fix}}</label>
               <md-input v-mask="'######'" v-model="perkEdit.stock" required></md-input>
-              <span class="md-error">Informe o estoque</span>
-              <span class="md-helper-text">Informe quantas pessoas devem podem resgatar esse prêmio</span>
+              <span class="md-error">{{"PERKS::Informe o estoque" | fix}}</span>
+              <span class="md-helper-text">{{"PERKS::Informe quantas pessoas devem podem resgatar esse prêmio" | fix}}</span>
             </md-field>
             <md-field :class="{'md-invalid': $v.perkEdit.discount.$invalid && $v.perkEdit.discount.$dirty}">
               <md-icon>money_off</md-icon>
               <label>
-                Há um valor de desconto?
+                {{"PERKS::Há um valor de desconto?" | fix}}
               </label>
-              <span class="md-helper-text">Este valor é uma porcentagem de desconto para o valor de doação do seu perk</span>
+              <span class="md-helper-text">{{"PERKS::Este valor é uma porcentagem de desconto para o valor de doação do seu perk" | fix}}</span>
               <md-input v-mask="'###'" v-model.number="perkEdit.discount"></md-input>
-              <span class="md-error ">Informe uma porcentagem válida!</span>
+              <span class="md-error ">{{"PERKS::Informe uma porcentagem válida!" | fix}}</span>
 
             </md-field>
           </div>
         </div>
         <input type="checkbox" id="id-name--1" name="set-name" class="switch-input" @change="mudou()" :checked="perkEdit.haveFrete">
-        <label for="id-name--1" class="switch-label">Seu produto será enviado pelos correios?</label>
+        <label for="id-name--1" class="switch-label">{{"PERKS::Seu produto será enviado pelos correios?" | fix}}</label>
         
         <div v-show="perkEdit.haveFrete">
           <div class="md-layout md-gutter">
             <div class="md-layout-item md-small-size-100">
               <md-datepicker class="datepicker-correct-icon" :class="{'md-invalid': $v.perkEdit.shipping_date.$invalid}" md-immediately v-model="perkEdit.shipping_date" required>
-                <label>Informe a data estimada de entrega da sua recompensa</label>
-                <span class="md-helper-text">O usuário será informado que receberá o prêmio aproximadamente nessa data</span>
+                <label>{{"PERKS::Informe a data estimada de entrega da sua recompensa" | fix}}</label>
+                <span class="md-helper-text">{{"PERKS::O usuário será informado que receberá o prêmio aproximadamente nessa data" | fix}}</span>
               </md-datepicker>
             </div>
           </div>
           <div>
-            <b>Opções de envio:</b>
+            <b>{{"PERKS::Opções de envio:" | fix}}</b>
           </div>
           <div>
-            <md-radio v-model="perkEdit.shipping_worldwide" value="only_country">Meu produto será enviado apenas para o país</md-radio>
-            <md-radio v-model="perkEdit.shipping_worldwide" value="world_wide">Meu produto será enviado para diversos países</md-radio>
+            <md-radio v-model="perkEdit.shipping_worldwide" value="only_country">{{"PERKS::Meu produto será enviado apenas para o país" | fix}}</md-radio>
+            <md-radio v-model="perkEdit.shipping_worldwide" value="world_wide">{{"PERKS::Meu produto será enviado para diversos países" | fix}}</md-radio>
           </div>
           <div v-if="perkEdit.shipping_worldwide == 'only_country'" class="md-layout-item md-small-size-100">
             <md-field :class="{'md-invalid': $v.perkEdit.shipping_price.$invalid}" style="margin-top: 1rem;">
               <md-icon>commute</md-icon>
-              <label>Qual o valor do frete?</label>
+              <label>{{"PERKS::Qual o valor do frete?" | fix}}</label>
               <md-input v-model.number="perkEdit.shipping_price" required></md-input>
-              <span class="md-error">Informe o valor do frete em dólares!</span>
+              <span class="md-error">{{"PERKS::Informe o valor do frete em dólares!" | fix}}</span>
             </md-field>
           </div>
           <div v-else-if="perkEdit.shipping_worldwide == 'world_wide'" class="md-layout-item md-small-size-100">
-            <h4>Lista de frete: <span v-if="perkEdit.shipping_data.length == 0"> Vazia!</span> </h4>
+            <h4>{{"PERKS::Lista de frete:" | fix}} <span v-if="perkEdit.shipping_data.length == 0"> {{"PERKS::Vazia!" | fix}}</span> </h4>
             <div class="shipping-list">
               <div v-for="(shipping, index) in perkEdit.shipping_data" :key="index" class="shipping-added">
                 <div>
@@ -282,22 +285,25 @@
             <div class="multiple-shipping-container">
               <div style="display: flex; flex-direction: column; width:90%;">
                 <div style="text-align: center; margin: 1rem; 0">
-                  <div>Escolha os países que você deseja entregar sua recompensa e seus respectivos valores de frete</div>
-                  <small><strong>É possível definir o mesmo valor de frete para países diferentes!</strong></small>
+                  <div>{{"PERKS::Escolha os países que você deseja entregar sua recompensa e seus respectivos valores de frete" | fix}}</div>
+                  <small><strong>{{"PERKS::É possível definir o mesmo valor de frete para países diferentes!" | fix}}</strong></small>
                 </div>
-                <multiselect v-model="countriesSelecteds" placeholder="Pesquise um país" label="country_name" track-by="id" :options="countries" :multiple="true" :max-height="210" :hideSelected="true" selectLabel="Clique para selecionar" selectedLabel="Selecionado" :close-on-select="false">
+                <multiselect v-model="countriesSelecteds" :placeholder="$f('MULTISELECT::Pesquise um país')" label="country_name" track-by="id" :options="countries" :multiple="true" :max-height="210" :hideSelected="true" :selectLabel="$f('MULTISELECT::Clique para selecionar')" :selectedLabel="$f('MULTISELECT::Selecionado')" :close-on-select="false">
                   <template slot="noResult">
-                    <span><strong>Sua pesquisa não encontrou nenhum país, tente novamente</strong></span>
+                    <span><strong>{{"MULTISELECT::Sua pesquisa não encontrou nenhum país, tente novamente" | fix}}</strong></span>
                   </template>
                   <template slot="noOptions">
-                    <span><strong>Nenhum país encontrado, tente recarregar a página ou contate o administrador</strong></span>
+                    <span><strong>{{"MULTISELECT::Nenhum país encontrado, tente recarregar a página ou contate o administrador" | fix}}</strong></span>
                   </template>
                 </multiselect>
+                <div style="text-align: center">
+                  <small><strong>{{"PERKS::Para editar o valor do frete de um país ja adicionado, pesquise-o acima e o insira um novo valor para sobrescrever o antigo!" | fix}}</strong></small>
+                </div>
                 <md-field>
                   <md-icon>commute</md-icon>
-                  <label class="input-label-selected">Qual o valor do frete para o(s) país(es) selecionados?</label>
+                  <label class="input-label-selected">{{"PERKS::Qual o valor do frete para o(s) país(es) selecionados?" | fix}}</label>
                   <money class="md-input" v-model.number="multipleShippingValue"></money>
-                  <span class="md-error">Informe o valor do frete em dólares!</span>
+                  <span class="md-error">{{"PERKS::Informe o valor do frete em dólares!" | fix}}</span>
                 </md-field>
               </div>
               <md-button :disabled="multipleShippingValue <= 0 || countriesSelecteds.length <= 0" class="md-raised md-icon-button" @click="addMultipleShippingPerk(perkEdit.shipping_data)">
@@ -308,38 +314,14 @@
 
           </div>
         </div>
-        <!-- <div v-show="perkEdit.haveFrete">
-          <div class="md-layout md-gutter">
-            <div class="md-layout-item md-small-size-100">
-              <md-field :class="{'md-invalid': $v.perkEdit.shipping_price.$invalid}">
-                <md-icon>commute</md-icon>
-                <label>Qual o valor do frete?</label>
-                <md-input v-model.number="perkEdit.shipping_price" required></md-input>
-                <span class="md-error">Informe o valor</span>
-              </md-field>
-            </div>
-            <div class="md-layout-item md-small-size-100">
-              <md-datepicker class="datepicker-correct-icon" :class="{'md-invalid': $v.perkEdit.shipping_date.$invalid}" md-immediately v-model="perkEdit.shipping_date" required>
-                <label>Informe a data estimada de entrega da sua recompensa</label>
-              </md-datepicker>
-            </div>
-          </div>
-          <div>
-            <br>
-            <b>Opções de envio:</b>
-            <br>
-            <md-radio v-model="perkEdit.shipping_worldwide" value="only_country">Meu produto será enviado apenas para o país</md-radio>
-            <md-radio v-model="perkEdit.shipping_worldwide" value="world_wide">Meu produto será enviado para diversos países</md-radio>
-          </div>
-        </div> -->
       </md-dialog-content>
       <md-dialog-actions>
-        <md-button class="md-acent md-raised close-btn" @click="resetEditPerk()">Fechar</md-button>
-        <md-button class="md-primary md-raised" :disabled="parentCall && parentCall.loadingState()" @click="editPerk()">Salvar</md-button>
+        <md-button class="md-acent md-raised close-btn" @click="resetEditPerk()">{{"COMMON::Fechar" | fix}}</md-button>
+        <md-button class="md-primary md-raised" :disabled="parentCall && parentCall.loadingState()" @click="editPerk()">{{"COMMON::Salvar" | fix}}</md-button>
       </md-dialog-actions>
     </md-dialog>
   </div>
-  <md-dialog-confirm class="delete-dialog" :md-active.sync="showDeleteConfirmation" md-title="Tem certeza que deseja deletar este perk?" md-content="Ao clicar em 'OK', não será possível recuperá-lo." md-confirm-text="Ok" md-cancel-text="Fechar"
+  <md-dialog-confirm class="delete-dialog" :md-active.sync="showDeleteConfirmation" :md-title="$f('PERKS::Tem certeza que deseja deletar este perk?')" :md-content="$f('PERKS::Ao clicar em \'OK\', não será possível recuperá-lo.')" :md-confirm-text="$f('COMMON::Ok')" :md-cancel-text="$f('COMMON::Fechar')"
     @md-cancel="showDeleteConfirmation = false" @md-confirm="deletePerk()" />
 </main>
 </template>

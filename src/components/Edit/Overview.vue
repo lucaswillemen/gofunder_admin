@@ -1,34 +1,34 @@
 <template>
 	<div class="md-layout md-grutter md-alignment-center-center maxHeight">
-		<md-dialog-alert :md-active.sync="alertError" md-title="Erro!" :md-content="alertErrorMsg" />
+		<md-dialog-alert :md-active.sync="alertError" :md-title="$f('OVERVIEW::Erro!')" :md-content="alertErrorMsg" />
 		<md-dialog-alert
 			:md-active.sync="dadosSalvos"
-			md-content="Os dados iniciais da sua campanhas foram salvos!"
-			md-confirm-text="Ok"
+			:md-content="$f('OVERVIEW::Os dados iniciais da sua campanhas foram salvos!')"
+			:md-confirm-text="$f('COMMON::Ok')"
 		/>
 		<div class="md-layout-item md-small-size-100 md-size-100">
 			<md-card>
 				<md-empty-state
 					md-icon="card_giftcard"
-					md-label="Informações Básicas"
-					md-description="Nessa guia você irá alterar configurações básicas para sua campanha! Avance para os próximos itens para editar mais informações"
+					:md-label="$f('OVERVIEW::Informações Básicas')"
+					:md-description="$f('OVERVIEW::Nessa guia você irá alterar configurações básicas para sua campanha! Avance para os próximos itens para editar mais informações')"
 				></md-empty-state>
 				<md-card-content>
 					<div class="md-layout md-gutter">
             <div class="md-layout-item md-small-size-100">
 							<md-field :class="{'md-invalid': $v.title.$invalid && $v.title.$dirty}">
 								<md-icon class="mdi mdi-card-text"></md-icon>
-								<label for="campaignTitle">Titulo da campanha: *</label>
+								<label for="campaignTitle">{{"OVERVIEW::Titulo da campanha:" | fix}} *</label>
 								<md-input id="campaignTitle" v-model="campaign.title"></md-input>
-								<span class="md-error" v-if="!$v.title.required">Seu titulo da campanha é obrigatório</span>
+								<span class="md-error" v-if="!$v.title.required">{{"OVERVIEW::Seu titulo da campanha é obrigatório" | fix}}</span>
 							</md-field>
             </div>
             <div class="md-layout-item md-small-size-100">
 							<md-field :class="{'md-invalid': $v.title.$invalid && $v.title.$dirty}">
 								<md-icon class="mdi mdi-text"></md-icon>
-								<label for="campaignDesc">Descrição da campanha: *</label>
+								<label for="campaignDesc">{{"OVERVIEW::Descrição da campanha:" | fix}} *</label>
 								<md-input id="campaignDesc" v-model="campaign.description"></md-input>
-								<span class="md-error" v-if="!$v.title.required">A descrição da campanha é obrigatório</span>
+								<span class="md-error" v-if="!$v.title.required">{{"OVERVIEW::A descrição da campanha é obrigatório" | fix}}</span>
 							</md-field>
             </div>
 					</div>
@@ -36,7 +36,7 @@
             <div class="md-layout-item md-small-size-100">
 							<md-field>
 								<md-icon class="mdi mdi-instagram"></md-icon>
-								<label>Perfil do Instagram</label>
+								<label>{{"OVERVIEW::Perfil do Instagram" | fix}}</label>
 								<md-input v-model="campaign.instagram_page"></md-input>
 							</md-field>
             </div>
@@ -44,7 +44,7 @@
 
 							<md-field>
 								<md-icon class="mdi mdi-facebook"></md-icon>
-								<label>Perfil do Facebook</label>
+								<label>{{"OVERVIEW::Perfil do Facebook" | fix}}</label>
 								<md-input v-model="campaign.facebook_page"></md-input>
 							</md-field>
             </div>
@@ -52,14 +52,14 @@
 
 							<md-field>
 								<md-icon class="mdi mdi-youtube"></md-icon>
-								<label>Canal do Youtube</label>
+								<label>{{"OVERVIEW::Canal do Youtube" | fix}}</label>
 								<md-input v-model="campaign.youtube_page"></md-input>
 							</md-field>
 						</div>
 						<div class="md-layout-item md-small-size-100">
 							<md-field>
 								<md-icon class="mdi mdi-linkedin"></md-icon>
-								<label>Perfil do Linkedin</label>
+								<label>{{"OVERVIEW::Perfil do Linkedin" | fix}}</label>
 								<md-input v-model="campaign.linkedin_page"></md-input>
 							</md-field>
 						</div>
@@ -68,12 +68,12 @@
 
 					<br>
 					<br>
-					<label for="campaignHtml" style="opacity:0.9;">Conteúdo informativo da campanha: *</label>
+					<label for="campaignHtml" style="opacity:0.9;">{{"OVERVIEW::Conteúdo informativo da campanha:" | fix}} *</label>
 				<!--	<VueCkeditor @changeHtmlValue="changeHtml" :htmlCampaign="campaign.html"></VueCkeditor>!-->
 				<editor api-key="d982mabgtf21gq12p8992913q3pvqu3scbukpoxl623jdr9b"  :init="{}" v-model="campaign.html"></editor>
 				</md-card-content>
 				<md-card-actions>
-					<md-button class="md-primary md-raised" @click="saveCampaign()">Salvar modificações</md-button>
+					<md-button class="md-primary md-raised" @click="saveCampaign()">{{"OVERVIEW::Salvar modificações" | fix}}</md-button>
 				</md-card-actions>
 			</md-card>
 		</div>

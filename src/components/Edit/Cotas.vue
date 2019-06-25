@@ -1,30 +1,29 @@
 <template>
 <main>
-  <md-dialog-alert :md-active.sync="alertError" md-title="Erro ao criar cota!" :md-content="alertErrorMsg" />
-  <md-dialog-alert :md-active.sync="alertSuccess" md-title="Cota criada!" md-content="Cota adicionada com sucesso!" />
+  <md-dialog-alert :md-active.sync="alertError" :md-title="$f('COTAS::Erro ao criar cota!')" :md-content="alertErrorMsg" />
+  <md-dialog-alert :md-active.sync="alertSuccess" :md-title="$f('COTAS::Cota criada!')" :md-content="$f('COTAS::Cota adicionada com sucesso!')" />
   <md-dialog :md-active.sync="createQuota">
-    <md-dialog-title>Criar uma cota</md-dialog-title>
+    <md-dialog-title>{{"COTAS::Criar uma cota" | fix}}</md-dialog-title>
 
     <md-card-content style="display:flex; flex-direction: column;">
-      <p>Olá, para criar sua cota preencha as informações a seguir corretamente abaixo.<br />Lembrando que se a soma de suas cotas superar 70% não será possível criar novas cotas uma
-        vez que 30% das vendas do marketplace é obrigatóriamente reservado ao inventor..</p>
+      <p>{{"COTAS::Olá, para criar sua cota preencha as informações a seguir corretamente abaixo." | fix}}<br/> {{"COTAS::Lembrando que se a soma de suas cotas superar 70% não será possível criar novas cotas uma vez que 30% das vendas do marketplace é obrigatóriamente reservado ao inventor..." | fix}}</p>
       <div class="md-layout md-gutter" style="margin-bottom: 1.5rem;">
         <div class="md-layout-item md-size-50">
           <md-field :class="{'md-invalid': $v.cotaAdd.percent.$invalid && $v.cotaAdd.percent.$dirty}">
             <md-icon>show_chart</md-icon>
-            <label>Porcentagem da cota</label>
+            <label>{{"COTAS::Porcentagem da cota" | fix}}</label>
             <md-input v-model="cotaAdd.percent" max="100" min="1"></md-input>
-            <span class="md-helper-text">Digite aqui de 0 a 70% do quanto das suas vendas você quer distrubir nessa cota</span>
-            <span class="md-error">Sua cota deve ficar entre 0% e 70%. Atualmente você tem: {{totalPercentage}}% reservado das vendas em outras cotas</span>
+            <span class="md-helper-text">{{"COTAS::Digite aqui de 0 a 70% do quanto das suas vendas você quer distrubir nessa cota" | fix}}</span>
+            <span class="md-error">{{"COTAS::Sua cota deve ficar entre 0% e 70%. Atualmente você tem:" | fix}} {{totalPercentage}}% {{"COTAS::reservado das vendas em outras cotas" | fix}}</span>
           </md-field>
         </div>
         <div class="md-layout-item md-size-50">
           <md-field :class="{'md-invalid': $v.cotaAdd.stock.$invalid && $v.cotaAdd.stock.$dirty}">
             <md-icon>people</md-icon>
-            <label>Número de pessoas</label>
+            <label>{{"COTAS::Número de pessoas" | fix}}</label>
             <md-input v-model="cotaAdd.stock" max="1000" min="1"></md-input>
-            <span class="md-error">Digite o número de pessoas que poderão garantir a essa cota</span>
-            <span class="md-helper-text">Coloque aqui o número de pessoas que vão poder adquirir essa cota. A porcetagem da cota é dividido entre essas pessoas</span>
+            <span class="md-error">{{"COTAS::Digite o número de pessoas que poderão garantir a essa cota" | fix}}</span>
+            <span class="md-helper-text">{{"COTAS::Coloque aqui o número de pessoas que vão poder adquirir essa cota. A porcetagem da cota é dividido entre essas pessoas" | fix}}</span>
           </md-field>
         </div>
       </div>
@@ -32,30 +31,30 @@
         <div class="md-layout-item md-size-50">
           <md-field :class="{'md-invalid': $v.cotaAdd.expiry.$invalid && $v.cotaAdd.expiry.$dirty}">
             <md-icon>event</md-icon>
-            <label>Qual tempo de expiração da cota?</label>
+            <label>{{"COTAS::Qual tempo de expiração da cota?" | fix}}</label>
             <md-select v-model="cotaAdd.expiry" name="movie" id="movie" style="margin-left: 14px;">
-              <md-option value="12months">12 meses</md-option>
-              <md-option value="24months">24 meses</md-option>
-              <md-option value="36months">36 meses</md-option>
+              <md-option value="12months">{{"DB::12months" | fix}}</md-option>
+              <md-option value="24months">{{"DB::24months" | fix}}</md-option>
+              <md-option value="36months">{{"DB::36months" | fix}}</md-option>
             </md-select>
-            <span class="md-helper-text">Você pode definir o tempo de expiração pras cotas vendidas vigorando a partir do lançamento no marketplace</span>
+            <span class="md-helper-text">{{"COTAS::Você pode definir o tempo de expiração pras cotas vendidas vigorando a partir do lançamento no marketplace" | fix}}</span>
           </md-field>
         </div>
         <div class="md-layout-item md-size-50">
           <md-field :class="{'md-invalid': $v.cotaAdd.min_donation.$invalid && $v.cotaAdd.min_donation.$dirty}">
             <md-icon>monetization_on</md-icon>
-            <label>Qual doação mínima?</label>
+            <label>{{"COTAS::Qual doação mínima?" | fix}}</label>
             <md-input v-model.lazy="cotaAdd.min_donation" min="1" v-money="money"></md-input>
-            <span class="md-helper-text">Coloque aqui a doação mínima que a pessoa deve doar para ter direito à essa cota</span>
+            <span class="md-helper-text">{{"COTAS::Coloque aqui a doação mínima que a pessoa deve doar para ter direito à essa cota" | fix}}</span>
           </md-field>
         </div>
       </div>
     </md-card-content>
 
     <md-dialog-actions>
-      <md-button class="md-primary" @click="createQuota = false">Fechar</md-button>
+      <md-button class="md-primary" @click="createQuota = false">{{"COMMON::Fechar" | fix}}</md-button>
       <md-button class="md-primary md-raised" @click="addCota()">
-        <md-icon style="color:white;">save</md-icon> Criar Cota
+        <md-icon style="color:white;">save</md-icon> {{"COTAS::Criar Cota" | fix}}
       </md-button>
     </md-dialog-actions>
 
@@ -64,33 +63,33 @@
 
   <div class="md-layout-item md-small-size-100 md-size-100">
     <md-card>
-      <md-empty-state style="padding-bottom: 0 !important;" md-icon="find_in_page" md-label="Criar uma cota!" md-description="Você pode criar cotas para pessoas que realizarem doações para seu produto.
-					Cada vez que você vender este seu produto no marketplace (após ele ser lançado) parte do valor do produto vendido
-					 será revertido para o usuário que doou pra você e ganhou uma cota"></md-empty-state>
+      <md-empty-state style="padding-bottom: 0 !important;" md-icon="find_in_page" :md-label="$f('COTAS::Criar uma cota!')" :md-description="$f('COTAS::Você pode criar cotas para pessoas que realizarem doações para seu produto. Cada vez que você vender este seu produto no marketplace (após ele ser lançado) parte do valor do produto vendido será revertido para o usuário que doou pra você e ganhou uma cota')"></md-empty-state>
       <md-card-content style="display:flex; align-items: center; flex-direction: column;">
-        <md-button class="md-primary md-raised" @click="createQuota = true">Criar uma cota</md-button>
-
-        <br />
-        <br />
+        <md-button :disabled="totalPercentage == 70" class="md-primary md-raised" @click="createQuota = true">{{"COTAS::Criar uma cota" | fix}}</md-button>
+        <div v-if="totalPercentage == 70">
+          <p style="color: #ff1744">{{"COTAS::Você já atingiu 70% do valor do seu produto em cotas, não é possível adicionar mais cotas no momento!" | fix}}</p>
+        </div>
+        <br>
+        <br>
         <span class="md-title" v-if="cotaList.length > 0">
-          Cotas Criadas
+          {{"COTAS::Cotas Criadas" | fix}}
         </span>
-        <span class="total-percentage" v-if="totalPercentage">Soma das porcentagens das cotas: {{this.totalPercentage}}%</span>
+        <span class="total-percentage" v-if="totalPercentage">{{"COTAS::Soma das porcentagens das cotas:" | fix}} {{this.totalPercentage}}%</span>
 
         <md-table v-if="cotaList.length > 0" class="tabela-cotas">
           <md-table-row>
-            <md-table-head md-numeric>Doação Mínima</md-table-head>
-            <md-table-head>Porcentagem</md-table-head>
-            <md-table-head>Número Cotistas Máximo</md-table-head>
-            <md-table-head>Expiração</md-table-head>
-            <md-table-head>Apagar</md-table-head>
+            <md-table-head md-numeric>{{"COTAS::Doação Mínima" | fix}}</md-table-head>
+            <md-table-head>{{"COTAS::Porcentagem" | fix}}</md-table-head>
+            <md-table-head>{{"COTAS::Número máximo de cotistas" | fix}}</md-table-head>
+            <md-table-head>{{"COTAS::Expiração" | fix}}</md-table-head>
+            <md-table-head>{{"COTAS::Apagar" | fix}}</md-table-head>
           </md-table-row>
           <md-table-row slot="md-table-row" v-for="(item, index) in cotaList" :key="index">
-            <md-table-cell md-label="Doação mínima" md-sort-by="value">{{ item.min_donation }}</md-table-cell>
-            <md-table-cell md-label="Porcentagem" md-sort-by="value">{{ item.percent }}%</md-table-cell>
-            <md-table-cell md-label="Número máximo de cotistas" md-sort-by="value">{{ item.stock }}</md-table-cell>
-            <md-table-cell md-label="Expiração" md-sort-by="value">{{ item.expiry }}</md-table-cell>
-            <md-table-cell md-label="Ação" md-sort-by="value">
+            <md-table-cell :md-label="$f('COTAS::Doação Mínima')" md-sort-by="value">{{ item.min_donation }}</md-table-cell>
+            <md-table-cell :md-label="$f('COTAS::Porcentagem')" md-sort-by="value">{{ item.percent }}%</md-table-cell>
+            <md-table-cell :md-label="$f('COTAS::Número máximo de cotistas')" md-sort-by="value">{{ item.stock }}</md-table-cell>
+            <md-table-cell :md-label="$f('COTAS::Expiração')" md-sort-by="value">{{ $f(`DB::${item.expiry}`) }}</md-table-cell>
+            <md-table-cell :md-label="$f('COTAS::Ação')" md-sort-by="value">
               <md-button class="md-accent" @click="delCota(item.id)">
                 <md-icon class="md-mini-xs">delete</md-icon>
               </md-button>
@@ -206,6 +205,7 @@ export default {
           .finally(err => {
             this.createQuota = false
             this.$resetObj(this.cotaAdd)
+            this.$v.$reset()
             this.listCotas()
           })
       } else {

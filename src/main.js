@@ -25,6 +25,24 @@ Vue.prototype.$resetObj = (obj) => {
     else obj[key] = null
   })
 }
+// PARTE DA TRADUÇÃO
+import PT from '@/translation/pt.js'
+
+Vue.prototype.$f = function(value) {
+  if (!PT[value]) {
+    console.log('TRANSLATION ERROR: ', value)
+    return value
+  }
+  return PT[value]
+}
+Vue.filter('fix', (value) => {
+  if (!PT[value]) {
+    console.log('TRANSLATION ERROR: ', value)
+    return value
+  }
+  return PT[value]
+})
+
 Vue.config.productionTip = false
 Vue.use(VueMaterial)
 Vue.use(require('vue-moment'));

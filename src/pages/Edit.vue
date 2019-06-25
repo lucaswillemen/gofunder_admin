@@ -4,23 +4,23 @@
 			<md-progress-spinner md-mode="indeterminate" :md-stroke="2"></md-progress-spinner>
 		</div>
 		<md-steppers :md-active-step.sync="actualStep"  md-alternative>
-			<md-step id="first" md-label="Resumo" :md-done.sync="steps.first" >
+			<md-step id="first" :md-label="$f('EDIT::Resumo')" :md-done.sync="steps.first" >
 				<Overview></Overview>
 			</md-step>
-			<md-step id="second" md-label="Perks" :md-done.sync="steps.second" >
+			<md-step id="second" :md-label="$f('EDIT::Perks')" :md-done.sync="steps.second" >
 				<Perks></Perks>
 			</md-step>
-			<md-step id="third" md-label="Cotas" :md-done.sync="steps.third" >
+			<md-step id="third" :md-label="$f('EDIT::Cotas')" :md-done.sync="steps.third" >
 
 				<Cotas></Cotas>
 			</md-step>
-			<md-step id="fourth" md-label="Faqs" :md-done.sync="steps.fourth" >
+			<md-step id="fourth" :md-label="$f('EDIT::Faqs')" :md-done.sync="steps.fourth" >
 				<Faq></Faq>
 			</md-step>
-			<md-step id="five" md-label="Galeria" :md-done.sync="steps.five" >
+			<md-step id="five" :md-label="$f('EDIT::Galeria')" :md-done.sync="steps.five" >
 				<Gallery></Gallery>
 			</md-step>
-			<md-step id="six" md-label="Enviar para análise" :md-done.sync="steps.six" >
+			<md-step id="six" :md-label="$f('EDIT::Enviar para análise')" :md-done.sync="steps.six" >
 				<Analysis></Analysis>
 			</md-step>
 		</md-steppers>

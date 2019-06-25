@@ -3,38 +3,38 @@
   <md-content class="md-elevation-3">
     <div class="title">
       <img src="../../public/go-funder-icon.png">
-      <div class="md-title">Recuperação de Senha</div>
+      <div class="md-title">{{"RESETPASS::Recuperação de Senha" | fix}}</div>
     </div>
     <form v-if="!emailCheck" novalidate @submit.prevent="sendRecoverPass()">
       <div class="form">
         <md-field :class="getValidationClass('email')">
           <label>E-mail</label>
           <md-input v-model="login.email" type="email" name="email" autofocus required></md-input>
-          <span class="md-error">O e-mail digitado é inválido</span>
+          <span class="md-error">{{"RESETPASS::O e-mail digitado é inválido" | fix}}</span>
         </md-field>
       </div>
-      <md-button type="submit" class="md-raised md-primary md-auth">Enviar código recuperação!</md-button>
+      <md-button type="submit" class="md-raised md-primary md-auth">{{"RESETPASS::Enviar código recuperação!" | fix}}</md-button>
     </form>
 
     <form v-if="emailCheck" novalidate @submit.prevent="recoverPassword()">
       <div class="form">
         <md-field :class="getValidationClass('password')">
-          <label>Nova senha</label>
+          <label>{{"RESETPASS::Nova senha" | fix}}</label>
           <md-input v-model="login.newpass" type="password" name="password" autofocus required></md-input>
-          <span class="md-error">A senha digitada é inválida</span>
+          <span class="md-error">{{"RESETPASS::A senha digitada é inválida" | fix}}</span>
         </md-field>
         <md-field :class="getValidationClass('password')">
-          <label>Confirme sua nova senha</label>
+          <label>{{"RESETPASS::Confirme sua nova senha" | fix}}</label>
           <md-input v-model="login.newpass2" type="password" name="password" autofocus required></md-input>
-          <span class="md-error">A senha digitada é inválida</span>
+          <span class="md-error">{{"RESETPASS::A senha digitada é inválida" | fix}}</span>
         </md-field>
         <md-field :class="getValidationClass('password2')">
-          <label>Código enviado por e-mail</label>
+          <label>{{"RESETPASS::Código enviado por e-mail" | fix}}</label>
           <md-input v-model="login.code" type="code" name="code" autofocus required></md-input>
-          <span class="md-error">O código digitado é inválido</span>
+          <span class="md-error">{{"RESETPASS::O código digitado é inválido" | fix}}</span>
         </md-field>
       </div>
-      <md-button type="submit" class="md-raised md-primary md-auth">Recuperar minha conta</md-button>
+      <md-button type="submit" class="md-raised md-primary md-auth">{{"RESETPASS::Recuperar minha conta" | fix}}</md-button>
     </form>
 
 
@@ -44,14 +44,14 @@
 
     <md-dialog-alert
       :md-active.sync="alteredPassword"
-      md-title="Senha alterada"
-      md-content="Sua senha foi alterada com sucesso!" />
+      :md-title="$f('RESETPASS::Senha alterada')"
+      :md-content="$f('RESETPASS::Sua senha foi alterada com sucesso!')" />
 
-    <md-dialog-alert :md-active.sync="recoverError" md-content="O código digitado está inválido" md-confirm-text="Ok" />
+    <md-dialog-alert :md-active.sync="recoverError" :md-content="$f('RESETPASS::O código digitado é inválido')" :md-confirm-text="$f('COMMON::Ok!')" />
 
-    <md-dialog-alert :md-active.sync="loginError" md-content="Não foi encontrada nenhuma conta para este e-mail!" md-confirm-text="Ok" />
+    <md-dialog-alert :md-active.sync="loginError" :md-content="$f('RESETPASS::Não foi encontrada nenhuma conta para este e-mail!')" :md-confirm-text="$f('COMMON::Ok')" />
 
-    <md-dialog-alert :md-active.sync="passwordError" md-content="As senhas digitadas não são iguais!" md-confirm-text="Ok" />
+    <md-dialog-alert :md-active.sync="passwordError" :md-content="$f('RESETPASS::As senhas digitadas não são iguais!')" :md-confirm-text="$f('COMMON::Ok')" />
   </md-content>
 
 </div>
