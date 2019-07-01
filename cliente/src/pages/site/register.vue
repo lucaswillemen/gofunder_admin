@@ -88,7 +88,7 @@ export default {
     register: function() {
       global.$post("/Auth/register", {...this.form, referer_id: this.refererId})
         .then(response => {
-          this.$awn.success(this.$f("REGISTER::Você foi registrado com sucesso por favor confira seu e-mail para confirmar sua conta!"))
+          this.$awn.success(this.$f("REGISTER::Você foi registrado com sucesso, por favor confira seu e-mail para confirmar sua conta!"))
           this.$router.push('login')
         })
         .catch(err => {

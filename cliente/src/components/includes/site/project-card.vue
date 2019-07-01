@@ -2,8 +2,8 @@
 <div class="project-card-container">
   <b-card  @click="openTab(project.id, project.title)" style="cursor:pointer;" v-for="(project, index) in projects" :key="index" :title="project.title" :img-src="$apiEndpoint + project.cover_url"  img-top tag="article" class="mb-4">
     <div class="bottom-img">
-      <span class="center-obj-v">{{project.category_name}}</span>
-      <font-awesome-icon :icon="['far', 'heart']"></font-awesome-icon>
+      <span class="center-obj-v">{{"DB::"+project.category_name | fix}}</span>
+      <font-awesome-icon :icon="['far', 'heart']" v-if="project.status == 'approved' "></font-awesome-icon>
     </div>
     <div class="line" :class="getClassTopLine(project.tipo)">
       <span class="center-obj-v">{{project.tipo}}</span>
@@ -35,8 +35,10 @@ export default {
   props: ['projects'],
   methods: {
     openTab(id, title) {
-      window.location.replace("/#/project-info/" + id+ "/"+title)
-      return window.location.reload(true)
+      // window.location.replace()
+      // return window.location.reload(true)
+      let routeData = this.$router.resolve({path: "/project-info/" + id+ "/"+title});
+      window.open(routeData.href, '_blank');
     },
     getClassTopLine(type) {
       return (type == 'Funding' ? 'bgorange' : 'bgblue')

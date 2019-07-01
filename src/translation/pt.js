@@ -112,11 +112,11 @@ export default {
 	//tab perfil
 "PROFILE::Erro!": "Erro!",
 "PROFILE::Perfil": "Perfil",
-"PROFILE::Configurações Perfil": "Configurações Perfil",
+"PROFILE::Configurações de Perfil": "Configurações de Perfil",
 "PROFILE::Nome:": "Nome:",
 "PROFILE::Data Nascimento:": "Data Nascimento:",
 "PROFILE::Sua imagem de perfil": "Sua imagem de perfil",
-"PROFILE::Endereço": "Endereço",
+"PROFILE::Endereço:": "Endereço:",
 "PROFILE::País:": "País:",
 "PROFILE::Cidade:": "Cidade:",
 "PROFILE::CEP:": "CEP:",
@@ -143,7 +143,6 @@ export default {
 "PROFILE::Digite novamente a senha para conferirmos se está tudo certo": "Digite novamente a senha para conferirmos se está tudo certo",
 "PROFILE::Salvar nova senha": "Salvar nova senha",
 	//tab email
-"PROFILE::Configurações E-mail": "Configurações E-mail",
 "PROFILE::Configurações de E-mail": "Configurações de E-mail",
 "PROFILE::E-mail antigo:": "E-mail antigo:",
 "PROFILE::Novo e-mail:": "Novo e-mail:",
@@ -155,10 +154,12 @@ export default {
 "PROFILE::Link:": "Link:",
 "PROFILE::Copiar": "Copiar",
 //script
+
 "PROFILE::E-mail salvo com sucesso. Confirme ele na sua caixa  de entrada": "E-mail salvo com sucesso. Confirme ele na sua caixa  de entrada",
 "PROFILE::E-mail ou senha inválido!": "E-mail ou senha inválido!",
 "PROFILE::Senha salva com sucesso": "Senha salva com sucesso",
 "PROFILE::Senhas não conferem": "Senhas não conferem",
+"PROFILE::Informações de perfil salvas com sucesso": "Informações de perfil salvas com sucesso",
 "PROFILE::Erro ao salvar informações!": "Erro ao salvar informações!",
 // END OF PAGE PROFILE
 

@@ -41,7 +41,7 @@
         </div>
         <div class="text">
           <span>
-            Campanhas inteligentes para seres humanos curiosos e empreendedores
+            Campanhas inteligentes para seres humanos curiosos e empreendedores.
             Não há lugar melhor para começar a busca por algo inovador. Comece no GoFunder para encontrar idéias inteligentes e não convencionais que resolvam os problemas cotidianos grandes e pequenos, escolha em inúmeras possibilidades de apoiar ou
             investir em algo inovador!</span>
         </div>

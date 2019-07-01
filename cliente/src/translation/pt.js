@@ -1,15 +1,6 @@
 export default {
 	// pages/site/home.vue
 	"HOME::Procurar projetos": "Procurar projetos",
-	"HOME::casa_e_jardim": "Casa e Jardim",
-	"HOME::roupas_e_acessorios": "Roupas e Acessórios",
-	"HOME::eletronicos_e_software": "Eletrônicos e Software",
-	"HOME::saude_e_beleza": "Saúde e Beleza",
-	"HOME::carros_barcos_avioes": "Carros, aviões e barcos",
-	"HOME::viagens_e_turismo": "Viagens e Turismo",
-	"HOME::filmes_musica_e_cultura": "Filmes, música e cultura",
-	"HOME::empresas_e_negocios": "Empresas e  Negócios",
-	"HOME::diversos": "Diversos",
 	"HOME::saiba_mais3": "Saiba Mais",
 	"HOME::quero_contribuir" : "Quero Contribuir!",
 	"HOME::saiba_mais": "Saiba mais",
@@ -39,7 +30,7 @@ export default {
 	"REGISTER::Digite seu e-mail":"Digite seu e-mail",
 	"REGISTER::Digite seu nome completo":"Digite seu nome completo",
 	"REGISTER::Digite seus dados abaixo para ingressar na plataforma.":"Digite seus dados abaixo para ingressar na plataforma.",
-	"REGISTER::Você foi registrado com sucesso por favor confira seu e-mail para confirmar sua conta!":"Você foi registrado com sucesso por favor confira seu e-mail para confirmar sua conta!",
+	"REGISTER::Você foi registrado com sucesso, por favor confira seu e-mail para confirmar sua conta!":"Você foi registrado com sucesso, por favor confira seu e-mail para confirmar sua conta!",
 
 	// pages/site/login.vue
 	"LOGIN::Digite seus dados abaixo para entrar.": "Digite seus dados abaixo para entrar.",
@@ -64,6 +55,18 @@ export default {
 	"MAIN_HEADER::Campanhas":"Campanhas",
 	"MAIN_HEADER::Editar Perfil":"Editar Perfil",
 	"MAIN_HEADER::Meu Perfil":"Meu Perfil",
-	"MAIN_HEADER::Deslogar" : "Deslogar"
+	"MAIN_HEADER::Deslogar" : "Deslogar",
 
+	//DB
+	"DB::casa_e_jardim": "Casa e Jardim",
+	"DB::roupas_e_acessorios": "Roupas e Acessórios",
+	"DB::eletronicos_e_software": "Eletrônicos e Software",
+	"DB::saude_e_beleza": "Saúde e Beleza",
+	"DB::carros_barcos_avioes": "Carros, aviões e barcos",
+	"DB::viagens_e_turismo": "Viagens e Turismo",
+	"DB::filmes_musica_e_cultura": "Filmes, música e cultura",
+	"DB::empresas_e_negocios": "Empresas e  Negócios",
+	"DB::diversos": "Diversos",
+	"DB::Procurar projetos": "Procurar projetos",
+	"DB::Todos": "Todos",
 }

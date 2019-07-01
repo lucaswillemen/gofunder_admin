@@ -216,7 +216,7 @@
                                 <div class="img">
                                     <i class="material-icons"  @click="selectCategory(cat.id)">{{cat.icon_name}}</i>
                                 </div>
-                                <span>{{('HOME::'+cat.name) | fix}}</span>
+                                <span>{{('DB::'+cat.name) | fix}}</span>
                             </div>
                             <div :id="'seta-cat'+cat.id" v-bind:class="selectedId == cat.id ? 'show' : 'hide'" class="seta"></div>
                         </div>

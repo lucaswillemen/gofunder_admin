@@ -83,29 +83,32 @@ export default {
     login: function() {
       global.$post("/Auth/login", this.form)
         .then(response => {
-          global.$get("/Auth/is_email_confirmed?email="+ this.form.email)
-          .then(response2 => {
-            if (response2['EMAIL_CONFIRMED']) {
-              //efetua o login
-              this.$awn.success("Bem vindo " + response.data.name)
-              this.userSet(response.data)
-              setTimeout(function() {
-                location.href = this.$urlPainel + '/'
-              }, 1200)
-            } else {
-              console.log('email não está confirmado')
-            }
-          })
-          .catch((err2) => {
-            global.$post("/Auth/send_email_confirmation", this.form.email)
-            .then(resp => {
-              this.$awn.info("Verifique seu e-mail para ativar sua conta")
-            })
-            .catch((error => {
-              let validErr = (err && err.response && err.response.data && err.response.data.error)
-              this.$awn.alert(validErr ? err.response.data.error : "INVALID_ERROR")
-            }))
-          })
+          this.userSet(response.data)
+          this.$awn.success("Bem vindo " + response.data.name)
+          this.$router.push({ path: '/' })
+          // global.$get("/Auth/is_email_confirmed?email="+ this.form.email)
+          // .then(response2 => {
+          //   if (response2['EMAIL_CONFIRMED']) {
+          //     //efetua o login
+          //     this.$awn.success("Bem vindo " + response.data.name)
+          //     this.userSet(response.data)
+          //     setTimeout(function() {
+          //       location.href = this.$urlPainel + '/'
+          //     }, 1200)
+          //   } else {
+          //     console.log('email não está confirmado')
+          //   }
+          // })
+          // .catch((err2) => {
+          //   global.$post("/Auth/send_email_confirmation", this.form.email)
+          //   .then(resp => {
+          //     this.$awn.info("Verifique seu e-mail para ativar sua conta")
+          //   })
+          //   .catch((error => {
+          //     let validErr = (err && err.response && err.response.data && err.response.data.error)
+          //     this.$awn.alert(validErr ? err.response.data.error : "INVALID_ERROR")
+          //   }))
+          // })
         })
         .catch(err => {
           let validErr = (err && err.response && err.response.data && err.response.data.error)

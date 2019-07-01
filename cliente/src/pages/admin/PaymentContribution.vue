@@ -70,7 +70,7 @@
                 <br />
               </h6>
 
-              <div v-if="selectedDonationTitleInfo != 'public'">
+              <div v-if="selectedDonationTitleInfo == 'public'">
                 Nome e email que aparecerão na doação:
                 <b-row>
                   <b-col cols="12" md="6">
@@ -96,10 +96,10 @@
             </div>
             <b-form-group>
               <b-form-radio-group stacked class="radios radio-block" v-model="selectedDonationTitleInfo">
-                <b-form-radio v-if="!validation.forceIdentifyContribution" value="public">
+                <b-form-radio v-if="!validation.forceIdentifyContribution" value="private">
                   Doação anônima
                 </b-form-radio>
-                <b-form-radio value="private">
+                <b-form-radio value="public">
                   Doação com meu nome
                 </b-form-radio>
               </b-form-radio-group>
@@ -500,6 +500,15 @@ export default {
         }
       ],
       worldCountries: []
+    }
+  },
+  watch: {
+    selectedDonationTitleInfo: function(newVal) {
+      if(newVal == 'private') 
+        this.donator.name = "anonymous"
+      else 
+        this.donator.name = this.user.name
+      
     }
   },
   methods: {

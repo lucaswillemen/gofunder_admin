@@ -6,14 +6,18 @@
   </div>
   <b-collapse visible id="collapse1" class="level1 mt-1">
     <p><a @click="changeType('all');" style="cursor:pointer;">Todos</a></p>
-    <p><a @click="changeType('funding');" style="cursor:pointer;">Funding</a></p>
-    <p><a @click="changeType('marketplace');" style="cursor:pointer;">Marketplace</a></p>
+    <p><a @click="changeType('Funding');" style="cursor:pointer;">Funding</a></p>
+    <p><a @click="changeType('Marketplace');" style="cursor:pointer;">Marketplace</a></p>
   </b-collapse>
   <div class="level0 mt-5">
     <b-label v-b-toggle.collapse2 variant="primary">Categorias</b-label>
   </div>
   <b-collapse visible id="collapse2" class="level1 mt-1">
-    <p v-for="(item, index) in categories" :key="index"><a @click="changeCategory(item)" style="cursor:pointer">{{'HOME::'+item.name | fix}}</a></p>
+    <p v-for="(item, index) in categories" :key="index">
+      <a v-if="index == 0" @click="changeCategory(item)" style="cursor:pointer">Todos</a>
+      <a v-else @click="changeCategory(item)" style="cursor:pointer">{{'DB::'+item.name | fix}}</a>
+
+    </p>
   </b-collapse>
   <!--
 		<small>Publicidade</small>
@@ -35,6 +39,7 @@ export default {
       global.$get("/Campaign/option")
       .then(response => {
         this.categories = response.data.category
+        this.categories.unshift({name: "Todos", id: 0, icon: ''})
       })
       .catch(err => {
         this.$awn.alert("Ocorreu um erro ao resgatar as informações das categorias!")

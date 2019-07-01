@@ -5,7 +5,7 @@
       <form novalidate class="md-layout">
         <md-card class="md-layout-item">
           <md-card-header>
-            <h4 class="header_title">`{{"PROFILE::Configurações Perfil" | fix}}`</h4>
+            <h4 class="header_title">{{"PROFILE::Configurações de Perfil" | fix}}</h4>
           </md-card-header>
 
           <md-card-content>
@@ -25,7 +25,7 @@
 										<md-field>
 											<md-icon>event</md-icon>
 											<label>{{"PROFILE::Data Nascimento:"| fix}} * </label>
-											<md-input v-model="saveUser.birthday"></md-input>
+											<md-input v-model="saveUser.birthday" v-mask="'##/##/####'"></md-input>
 										</md-field>
 									</div>
 
@@ -33,7 +33,7 @@
 
 
                 <br />
-                <span class="md-subheading">{{"PROFILE::Sua imagem de perfil" | fix}}l</span>
+                <span class="md-subheading">{{"PROFILE::Sua imagem de perfil" | fix}}</span>
                 <div class="md-layout md-gutter">
                   <div class="md-layout-item md-size-80">
 
@@ -48,13 +48,19 @@
                 </div>
                 <br />
                 <br />
-                <span class="md-subheading">{{"PROFILE::Endereço" | fix}} </span>
+                <span class="md-subheading">{{"PROFILE::Endereço:" | fix}} </span>
                 <div class="md-layout md-gutter">
                   <div class="md-layout-item md-size-40">
                     <md-field>
                       <md-icon class="mdi mdi-flag"></md-icon>
-                      <label>{{"PROFILE::País:"| fix}}  </label>
-                      <md-input v-model="saveUser.country"></md-input>
+                      <multiselect v-model="saveUser.country" class="select-country" :placeholder="$f('PROFILE::País:')" :options="countries" :showLabels="false" :hideSelected="true">
+                        <template slot="noResult">
+                          <span><strong>{{"MULTISELECT::Sua pesquisa não encontrou nenhum país, tente novamente" | fix}}</strong></span>
+                        </template>
+                        <template slot="noOptions">
+                          <span><strong>{{"MULTISELECT::Nenhum país encontrado, tente recarregar a página ou contate o administrador" | fix}}</strong></span>
+                        </template>
+                      </multiselect>
                     </md-field>
                   </div>
                   <div class="md-layout-item md-size-40">
@@ -124,7 +130,7 @@
                     <md-field>
                       <md-icon class="mdi mdi-linkedin"></md-icon>
                       <label>{{"PROFILE::Linkedin" | fix}}</label>
-                      <md-input v-model="saveUser.likedin"></md-input>
+                      <md-input v-model="saveUser.linkedin"></md-input>
                     </md-field>
                   </div>
                 </div>
@@ -205,7 +211,7 @@
     </div>
 
   </md-tab>
-  <md-tab id="tab-email" :md-label="$f('PROFILE::Configurações E-mail')" md-icon="email">
+  <md-tab id="tab-email" :md-label="$f('PROFILE::Configurações de E-mail')" md-icon="email">
     <md-dialog-alert
       :md-active.sync="showAlertProfile"
       :md-title="profileAlertMsg" />
@@ -299,6 +305,8 @@
 </md-tabs>
 </template>
 <script>
+import 'vue-multiselect/dist/vue-multiselect.min.css'
+import Multiselect from 'vue-multiselect'
 import {
   mapState,
   mapActions
@@ -306,6 +314,9 @@ import {
 
 export default {
   name: 'Profile',
+  components: {
+    Multiselect
+  },
   data() {
     return {
       showAlertMsg: false,
@@ -338,11 +349,13 @@ export default {
         address: "",
         zipcode: "",
         instagram: "",
+        linkedin: "",
         city: "",
         country: "",
         website: "",
         image: null
-      }
+      },
+      countries: [],
     }
   },
   computed: {
@@ -365,10 +378,10 @@ export default {
       this.loading = true;
       global.$post("/Auth/edit_email", this.secureUserEmail, this.user.token)
         .then(response => {
-          this.emailAlertMsg = $f('PROFILE::E-mail salvo com sucesso. Confirme ele na sua caixa  de entrada')
+          this.emailAlertMsg = this.$f('PROFILE::E-mail salvo com sucesso. Confirme ele na sua caixa  de entrada')
         })
         .catch(err => {
-          this.emailAlertMsg = $f("PROFILE::E-mail ou senha inválido!")
+          this.emailAlertMsg = this.$f("PROFILE::E-mail ou senha inválido!")
         })
         .finally(() => {
           this.showAlertEmail = true
@@ -380,10 +393,10 @@ export default {
       this.loading = true;
       global.$post("/Auth/edit_password", this.secureUserPassword, this.user.token)
         .then(response => {
-          this.passwordAlertMsg = $f("PROFILE::Senha salva com sucesso")
+          this.passwordAlertMsg = this.$f("PROFILE::Senha salva com sucesso")
         })
         .catch(err => {
-          this.passwordAlertMsg = $f("PROFILE::Senhas não conferem")
+          this.passwordAlertMsg = this.$f("PROFILE::Senhas não conferem")
         })
         .finally(() => {
           this.showAlertPassword = true
@@ -403,28 +416,40 @@ export default {
 
     },
     saveProfile() {
-      this.loading = true;      
+      this.loading = true;  
+      console.log(this.saveUser)   
       global.$post("/Profile/edit", this.saveUser, this.user.token)
         .then(response => {
           this.userSet(response.data)
           this.base64File = this.$url + this.user.img
-          this.profileAlertMsg = $f('PROFILE::Informações de perfil salvas com sucesso')
+          this.profileAlertMsg = this.$f('PROFILE::Informações de perfil salvas com sucesso')
         })
         .catch(err => {
           
-          this.profileAlertMsg = $f('PROFILE::Erro ao salvar informações!')
+          this.profileAlertMsg = this.$f('PROFILE::Erro ao salvar informações!')
           })
         .finally(() => {
           this.showAlertProfile = true
           this.loading = false;
         })
-    }
+    },
+    getOptions() {
+			global
+				.$get("/campaign/option", {}, this.user.token)
+				.then(response => {
+					this.countries = response.data.country.map((element) => {
+            return element.country_name
+          })
+				})
+				.catch(err => {});
+		},
   },
   mounted() {
     this.base64File = this.$url + this.user.img
     this.saveUser = this.user
     this.secureUserEmail.email = this.user.email
     this.referalLink = `https://gofunder.io/register?id=${this.user.id}`
+    this.getOptions()
   }
 };
 </script>

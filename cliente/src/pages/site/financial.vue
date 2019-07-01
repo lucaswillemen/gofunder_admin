@@ -311,7 +311,7 @@ export default {
               href: this.campaign.category_info.route
             },
             {
-              text: this.$f('HOME::'+this.campaign.category_info.name),
+              text: this.$f('DB::'+this.campaign.category_info.name),
               active: true
             }
           ]
@@ -345,37 +345,6 @@ export default {
         },
       ],
       //por enquanto nao está sendo usado!
-      stages: [
-        {
-          icon: {
-            prefix: 'fas',
-            name: 'lightbulb'
-          },
-          name: 'Concept'
-        },
-        {
-          icon: {
-            prefix: 'fas',
-            name: 'tools'
-          },
-          name: 'Prototype'
-        },
-        {
-          icon: {
-            prefix: 'fas',
-            name: 'boxes'
-          },
-          name: 'Production'
-        },
-        {
-          icon: {
-            prefix: 'fas',
-            name: 'fast-shipping'
-          },
-          name: 'Shipping'
-        },
-        
-      ],
       projects: []
     }
   },

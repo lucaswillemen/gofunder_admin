@@ -6,7 +6,7 @@
     <b-row class="mtop mb-30">
       <b-col lg="12">
         <div class="main-title">
-          <span> Perfil de <span class="orange">{{user.name}}</span></span>
+          <span> Perfil de <span class="orange">{{userData.name}}</span></span>
         </div>
       </b-col>
     </b-row>
@@ -18,7 +18,7 @@
               <div id="tab1" class="tab-wrap">
                 <b-row>
                   <b-col lg="4" xl="3">
-                    <div class="img" v-bind:style="{ backgroundImage: 'url(' + (user && user.img ? this.$apiEndpoint+user.img : '/static/anonymous-icon.svg')  + ')' }">
+                    <div class="img" v-bind:style="{ backgroundImage: 'url(' + (userData && userData.img ? this.$apiEndpoint+userData.img : '/static/anonymous-icon.svg')  + ')' }">
                     </div>
                   </b-col>
                   <b-col lg="8" xl="9">
@@ -30,10 +30,7 @@
                           </div>
                         </div>
                         <div class="info">
-                         <span>{{user.tinydescription}}</span>!
-                        </div>
-                        <div class="info">
-                         <span>{{user.description}}</span>!
+                         <span>{{userData.description}}</span>
                         </div>
                       </b-col>
                     </b-row>
@@ -44,7 +41,7 @@
                         <div class="boxes">
                           <div class="box">
                             <div class="top">
-                            <span>{{user.total_campaigns || 10}}</span>
+                            <span>{{campanhas.length}}</span>
                             </div>
                             <div class="bottom">
                               <span>Campanha (s)</span>
@@ -53,17 +50,16 @@
 
                           <div class="box">
                             <div class="top">
-                              <span>27</span>
-
+                              <span>{{userData.donations_received}}</span>
                             </div>
                             <div class="bottom">
                               <span>Doações recebidas</span>
                             </div>
                           </div>
+
                           <div class="box">
                             <div class="top">
-                              <span>12</span>
-
+                              <span>{{userData.donations_done}}</span>
                             </div>
                             <div class="bottom">
                               <span>Doações efetuadas</span>
@@ -83,41 +79,18 @@
                           <section class="email-contact mr-md-3 mb-3 mb-md-0">
                             <header class="mb-md-0 mb-2">Entre em contato comigo pelo meu email:</header>
                             <div class="p-md-2 d-flex align-items-center">
-                              <i class="fa fa-at link-icon-email"></i> <span>{{user.email}}</span>
+                              <i class="fa fa-at link-icon-email"></i> <span>{{userData.email}}</span>
                             </div>
                           </section>
-                          <section>
+                          <section v-if="userData.facebook || userData.twitter || userData.youtube || userData.linkedin || userData.website">
                             <header class="mb-md-0 mb-2">Ou então, descubra mais sobre mim verificando os links abaixo:</header>
                             <div class="list p-md-2">        
-                                <i class="fab fa-facebook link-icon" :style="true? 'color: #496cb5': ''"></i>
-                                <i class="fab fa-twitter link-icon" :style="true? 'color: #4ab3f4': ''"></i>
-                                <i class="fab fa-youtube link-icon" :style="true? 'color: #ff0000': ''"></i>
-                                <i class="fa fa-globe link-icon" :style="true? 'color: #1a2953': ''"></i>
-                              <!-- <div v-bind:class="user.facebook_confirmed ? 'checked' : 'not_checked'">
-                                <font-awesome-icon v-if="!user.facebook_confirmed" :icon="['fas', 'exclamation-circle']" />
-                                <font-awesome-icon v-if="user.facebook_confirmed" :icon="['far', 'check-circle']" />
-                                <span class="item">
-                                  Facebook
-                                </span>
-                              </div>
-
-                              <div v-bind:class="user.linkedin_confirmed ? 'checked' : 'not_checked'">
-                                <font-awesome-icon v-if="!user.linkedin_confirmed" :icon="['fas', 'exclamation-circle']" />
-                                <font-awesome-icon v-if="user.linkedin_confirmed" :icon="['far', 'check-circle']" />
-                                <span class="item">
-                                  Linkedin
-                                </span>
-                              </div>
-
-
-                              <div v-bind:class="user.email_confirmed ? 'checked' : 'not_checked'">
-                                <font-awesome-icon v-if="!user.email_confirmed" :icon="['fas', 'exclamation-circle']" />
-                                <font-awesome-icon v-if="user.email_confirmed" :icon="['far', 'check-circle']" />
-                                <span class="item">
-                                  E-mail Proprietário
-                                </span>
-                              </div> -->
-                               
+                                <a :href="userData.facebook" target="_blank"  :style="userData.facebook ? 'color: #496cb5': 'pointer-events: none;'"><i class="fab fa-facebook link-icon"></i></a>
+                                <a :href="userData.instagram" target="_blank"  :style="userData.instagram ? 'color: #d6249f': 'pointer-events: none;'"><i class="fab fa-instagram link-icon"></i></a>                                
+                                <a :href="userData.twitter"  target="_blank" :style="userData.twitter ? 'color: #4ab3f4': 'pointer-events: none;'"><i class="fab fa-twitter link-icon"></i></a>
+                                <a :href="userData.youtube"  target="_blank" :style="userData.youtube ? 'color: #ff0000': 'pointer-events: none;'"><i class="fab fa-youtube link-icon"></i></a>
+                                <a :href="userData.linkedin" target="_blank"  :style="userData.linkedin ? 'color: #0077B5': 'pointer-events: none;'"><i class="fab fa-linkedin link-icon"></i></a>                                
+                                <a :href="userData.website"  target="_blank" :style="userData.website ? 'color: #0065B5': 'pointer-events: none;'"><i class="fa fa-globe link-icon"></i></a>
                             </div>
                           </section>
                         </div>
@@ -159,7 +132,10 @@
                       </div>
                     </div>
                   </b-card> -->
-                  <project-card :projects="campanhas"></project-card>
+                  <project-card :projects="campanhas" v-if="campanhas.length > 0"></project-card>
+                  <div v-else class="text-center w-100">
+                    <h3>O usuário não possui nenhuma campanha!</h3>
+                  </div>
                 </section>
               </div>
             </b-tab>
@@ -173,22 +149,14 @@
 </template>
 
 <script>
-import {
-  mapState,
-  mapActions
-} from 'vuex'
-
 export default {
-  computed: {
-    ...mapState(['user']),
-    
-  },
   mounted() {
     let self = this
    },
   data() {
     return {
       campanhas: [],
+      userData: {},
       rascunhos: [],
       finalizadas: [],
       extratos: [],
@@ -196,6 +164,19 @@ export default {
     }
   },
   methods: {
+    getProfileData() {
+      global.$get("/Profile/getuserbyid?user_id="+this.$route.params.id, {})
+      .then(response => {
+      this.userData = response.data
+      // this.$awn.success("E-mail cadastrado com sucesso!")  
+          
+      })
+      .catch(err => {
+        console.log(err)
+
+        // this.$awn.alert("Ocorreu um erro!")         
+      })
+    },
     getUserCampaign() {
       global.$get("/Campaign/getlistcampaignid?user_id="+this.$route.params.id, {})
       .then(response => {
@@ -207,10 +188,8 @@ export default {
           if(element.status == 'approved') element['lancamento'] = 'Campanha ativa!'
           if(element.status == 'approved' && element.remain_days > 0 && element.remain_days < 10) element['lancamento'] = 'Quase acabando!' 
           if(element.status == 'approved' && element.remain_days < 0) element['lancamento'] = 'Já acabou!' 
-          element['tipo']= 'Funding'
         });
         this.campanhas = response.data
-        console.log(response)
         // this.$awn.success("E-mail cadastrado com sucesso!")  
            
       })
@@ -234,6 +213,7 @@ export default {
     // }
   },
   mounted() {
+    this.getProfileData()
     this.getUserCampaign()
   }
 }
@@ -667,11 +647,19 @@ export default {
               margin-right: .5rem;
             }
           .list {
+            a {
+              text-decoration: none;
+              color: #707070;
+              margin-right: 1rem;
+
+              &:hover {
+              color: #707070;              
+              }
+
+            }
             .link-icon {
               font-size: 23px;
               width: 26px;
-              margin-right: 1rem;
-              cursor: pointer ;
             }
               display: flex;
 

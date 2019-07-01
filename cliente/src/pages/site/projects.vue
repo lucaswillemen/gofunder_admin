@@ -6,7 +6,7 @@
       <div class="container">
 
         <div class="title center-obj-v">
-          <i style="color:#a3640d; font-size:54px;" class="material-icons">{{category.icon_name}}</i><span>{{"HOME::"+category.name | fix}}</span>
+          <i style="color:#a3640d; font-size:54px;" class="material-icons">{{category.icon_name}}</i><span>{{"DB::"+category.name | fix}}</span>
         </div>
       </div>
     </div>
@@ -22,8 +22,8 @@
                 <font-awesome-icon  v-on:click='newSearch()' icon="search" class="icon-search" />
               </div>
               <div class="select-order">
-                <b-dropdown id="ddown2" text="Ordenar Por" class="m-md-2 fullwi btn-noborder-transp lbl-on-corner no-radius-right" style="">
-                  <b-dropdown-item @click="changeOrder('relevamce')">Relevância</b-dropdown-item>
+                <b-dropdown id="ddown2" :text="'Ordenar Por: '+orderText" class="m-md-2 fullwi btn-noborder-transp lbl-on-corner no-radius-right" style="">
+                  <b-dropdown-item @click="changeOrder('relevance')">Relevância</b-dropdown-item>
                   <b-dropdown-item @click="changeOrder('price')">Preço</b-dropdown-item>
                   <b-dropdown-item @click="changeOrder('sells')">Vendas</b-dropdown-item>
                 </b-dropdown>
@@ -62,7 +62,8 @@ export default {
   data() {
     return {
       ascOrder: false,
-      orderBy: 'relevance',
+      orderBy: '',
+      orderText: '',
       category_id: !this.$route.params.category ? 0 : this.$route.params.category,
       projectType: !this.$route.params.type ? 'all' : this.$route.params.type,
       searchText: !this.$route.params.search ? '' : this.$route.params.search,
@@ -85,6 +86,12 @@ export default {
       }
     },
     changeOrder(order) {
+      if(order == 'relevance')
+        this.orderText = 'Relevância'
+      else if(order == 'price')
+        this.orderText = "Preço"
+      else if(order == 'sells')
+        this.orderText = "Vendas"
       this.ascOrder = (order == this.orderBy)
       this.orderBy = order
       this.projects = []
