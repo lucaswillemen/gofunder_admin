@@ -16,19 +16,21 @@
 				<md-card-content>
 					<div class="md-layout md-gutter">
             <div class="md-layout-item md-small-size-100">
-							<md-field :class="{'md-invalid': $v.title.$invalid && $v.title.$dirty}">
+							<md-field :class="{'md-invalid': $v.campaign.title.$invalid && $v.campaign.title.$dirty}">
 								<md-icon class="mdi mdi-card-text"></md-icon>
 								<label for="campaignTitle">{{"OVERVIEW::Titulo da campanha:" | fix}} *</label>
 								<md-input id="campaignTitle" v-model="campaign.title"></md-input>
-								<span class="md-error" v-if="!$v.title.required">{{"OVERVIEW::Seu titulo da campanha é obrigatório" | fix}}</span>
+							<span class="md-error">{{"OVERVIEW::Digite algo entre 10 e 60 caracteres" | fix}}</span>
+
 							</md-field>
             </div>
             <div class="md-layout-item md-small-size-100">
-							<md-field :class="{'md-invalid': $v.title.$invalid && $v.title.$dirty}">
+							<md-field :class="{'md-invalid': $v.campaign.description.$invalid && $v.campaign.description.$dirty}">
 								<md-icon class="mdi mdi-text"></md-icon>
 								<label for="campaignDesc">{{"OVERVIEW::Descrição da campanha:" | fix}} *</label>
 								<md-input id="campaignDesc" v-model="campaign.description"></md-input>
-								<span class="md-error" v-if="!$v.title.required">{{"OVERVIEW::A descrição da campanha é obrigatório" | fix}}</span>
+								<span class="md-error">{{"OVERVIEW::Digite um resumo entre 34 e 128 caracteres" | fix}}</span>
+
 							</md-field>
             </div>
 					</div>
@@ -82,7 +84,7 @@
 
 <script>
 import Editor from '@tinymce/tinymce-vue'
-import { required, numeric } from "vuelidate/lib/validators";
+import { required, numeric, minLength, maxLength, } from "vuelidate/lib/validators";
 import { mapState } from "vuex";
 
 export default {
@@ -107,7 +109,7 @@ export default {
 					this.user.token
 				)
 				.then(response => {
-					this.campaign = response.data;
+					this.campaign = { ...this.campaign, ...response.data};
 				})
 				.catch(err => {
 					let validErr =
@@ -117,8 +119,9 @@ export default {
 				})
 		},
 		saveCampaign() {
-			global
-				.$post(
+			this.$v.campaign.$touch()
+			if(!this.$v.campaign.$invalid)
+			global.$post(
 					"/Campaign/saveoverview?campaign_id=" + this.$route.params.id,
 					this.campaign,
 					this.user.token
@@ -134,6 +137,7 @@ export default {
 				})
 		}
 	},
+	
 	data() {
 		return {
 			alertError: false,
@@ -142,14 +146,29 @@ export default {
 			parentCall: null,
 			editorData: null,
 			campaign: {
-				title: "",
-				description: "",
-				html: null,
+				title: null,
+				description: null,
+				html: "",
 				youtube_page: "",
 				instagram_page: "",
-				facebook_page: ""
-			}
+				facebook_page: "",
+				linkedin_page: ""
+			}	
 		};
+	},
+	validations: {
+		campaign: {
+			title: {
+				required,
+				minLength: minLength(10),
+				maxLength: maxLength(60)
+			},
+			description: {
+				required,
+				minLength: minLength(30),
+				maxLength: maxLength(128)
+			},
+		}
 	},
 	mounted() {
 		this.loadCampaign()

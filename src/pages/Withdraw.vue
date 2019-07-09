@@ -6,7 +6,7 @@
 				<md-dialog-confirm
 					:md-active.sync="confirmUsd"
 					:md-title="$f('WITHDRAW::Tem certeza que deseja sacar este valor?')"
-					:md-content="`${$f('WITHDRAW::O valor total(valor + taxa) a ser descontado será de:')}<strong>$${totalAmountUsd}</strong> <br><br> ${$f('WITHDRAW::Taxa: 1% do valor a ser sacado')}`"
+					:md-content="`${$f('WITHDRAW::O valor total(valor + taxa) a ser descontado será de:')}<strong>$${parseFloat(totalAmountUsd).toFixed(2)}</strong> <br><br> ${$f('WITHDRAW::Taxa (1% do valor a ser sacado):')} $${parseFloat(totalAmountUsd*0.01).toFixed(2)}`"
 					:md-confirm-text="$f('COMMON::Ok')"
 					:md-cancel-text="$f('COMMON::Cancelar')"
 					@md-cancel="confirmUsd = false"
@@ -24,7 +24,7 @@
 					<md-dialog-alert
 						:md-active.sync="alertError"
 						:md-title="$f('WITHDRAW::Erro ao tentar efetuar saque!')"
-						:md-content="alertErrorMsg" />
+						:md-content="alertErrorMsg ? $f('DB::'+alertErrorMsg) : ''" />
 
 				<form novalidate class="md-layout">
 					<md-card class="md-layout-item">
@@ -309,8 +309,17 @@ export default {
 			}
 		}
 	},
-	mounted() {}
+	mounted() {
+		global.$getBitcoinInfo()
+		.then(res => {
+			console.log(res)
+		})
+		.catch(err => {
+			console.log(err)
+		})
+	}
 };
+
 </script>
 
 

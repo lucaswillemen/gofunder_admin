@@ -51,6 +51,8 @@ Vue.use(Vuelidate)
 Vue.use(VueTheMask)
 Vue.use(money, {
   precision: 2,
+  decimal: ',',
+  thousands: '.',
 })
 Vue.use(VueCurrencyFilter, {
   symbol: '$',

@@ -6,7 +6,12 @@ if (!global.$post) {
 var axios = require('axios')
 var apiUrl = 'https://api.gofunder.io'
 
-
+global.$getBitcoinInfo = function() {
+  return axios({
+    method: 'GET',
+    url: 'https://api.coindesk.com/v1/bpi/currentprice.json',
+  })
+}
 global.$get = function(section, form, token = false) {
   let data = global.$parseData(section, form)
 

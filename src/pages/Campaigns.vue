@@ -7,7 +7,10 @@
     <md-tabs class="md-primary">
       <md-tab id="tab-lancadas" :md-label="$f('CAMPAIGN::Lançadas')" md-icon="check_circle">
         <div class="md-layout md-grutter">
-          <card-items :items="lancadas" :hideDelete="true" hideFooter="true">
+          <div v-if="lancadas.length == 0">
+            <h2>Você não possui campanhas lançadas</h2>
+          </div>
+          <card-items v-else :items="lancadas" :hideDelete="true" hideFooter="true">
             <template v-slot:body="itemProp">
               <div class="item-body">
                 <div class="item-title">
@@ -38,9 +41,15 @@
         </div>
       </md-tab>
       <md-tab id="tab-rascunhos" :md-label="$f('CAMPAIGN::Rascunhos')" md-icon="create">
+      <div v-if="rascunhos.length == 0">
+        <h2>Você não possui campanhas em rascunho</h2>
+      </div>
       <card-items :items="rascunhos"></card-items>
       </md-tab>
       <md-tab id="tab-analise" :md-label="$f('CAMPAIGN::Em Análise')" md-icon="timeline">
+      <div v-if="analysis.length == 0">
+        <h2>Você não possui campanhas em análise</h2>
+      </div>
       <card-items :items="analysis" hideDelete="true" hideFooter="true"></card-items>
 
         <!-- <div class="md-layout md-grutter">

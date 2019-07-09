@@ -178,6 +178,8 @@ export default {
     }
   },
   mounted() {
+    if(window.innerWidth < 1024)
+      this.menuVisible = false
     this.checkLogin();
     this.listCampaigns();
     this.intervalTimer = setInterval(this.checkLogin, 10000);

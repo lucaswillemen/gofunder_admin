@@ -1,10 +1,10 @@
 <template>
 <main>
-  <md-dialog-alert :md-active.sync="alertError" md-title="Erro!" :md-content="alertErrorMsg" />
+  <md-dialog-alert :md-active.sync="alertError" md-title="Erro!" :md-content="alertErrorMsg"  />
   <span class="md-layout-item md-small-size-100 md-size-100" v-if="perkList.length == 0">
     <md-card class="mt-layout-item">
       <md-empty-state md-icon="card_giftcard" :md-label="$f('PERKS::Crie seu perk!')" :md-description="$f('PERKS::Os perks servem como recompensa para as pessoas que doaram para sua campanha.')">
-        <md-button class="md-primary md-raised" @click="perkDialog = true">{{"PERKS::Criar uma recompensa" | fix}}</md-button>
+        <md-button class="md-primary md-raised" @click="resetPerk(); perkDialog = true">{{"PERKS::Criar uma recompensa" | fix}}</md-button>
       </md-empty-state>
     </md-card>
   </span>
@@ -32,19 +32,19 @@
       </template>
       <template v-slot:footer="itemProp">
         <div style="display: block; margin-top: auto">
-          <md-button class="md-raised md-primary" @click="showModalEditPerk(itemProp.item)" style="width: 95%">{{"PERKS::Editar Recompensa" | fix}}</md-button>
+          <md-button class="md-raised md-primary" @click="resetPerk(); showModalEditPerk(itemProp.item)" style="width: 95%">{{"PERKS::Editar Recompensa" | fix}}</md-button>
         </div>
       </template>
     </card-items>
     <div class="md-layout-item md-small-size-100 md-medium-size-50 md-large-size-33 md-size-25">
       <br>
-      <md-button :disabled="parentCall && parentCall.loadingState()" class="md-fab md-primary" @click="perkDialog = true">
+      <md-button :disabled="parentCall && parentCall.loadingState()" class="md-fab md-primary" @click="resetPerk(); perkDialog = true">
         <md-icon>add</md-icon>
       </md-button>
     </div>
   </div>
   <div>
-    <md-dialog :md-active.sync="perkDialog">
+    <md-dialog :md-active.sync="perkDialog" class="custom-alert">
       <md-dialog-title>{{"PERKS::Criar novo Perk" | fix}}</md-dialog-title>
       <md-dialog-content>
         <div class="md-layout md-gutter">
@@ -82,7 +82,7 @@
               <md-icon>attach_money</md-icon>
               <label>{{"PERKS::Qual o valor do seu perk?" | fix}}</label>
               <money class="md-input" v-model.number="perk.price" required></money>
-              <span class="md-error">{{"PERKS::Informe o valor" | fix}}</span>
+              <span class="md-error">{{"PERKS::O valor mínimo de doação é de $1" | fix}}</span>
               <span class="md-helper-text">{{"PERKS::Insira o valor mínimo a ser doado em dólares para receber o perk" | fix}}</span>
             </md-field>
             <md-field :class="{'md-invalid': $v.perk.stock.$invalid && $v.perk.stock.$dirty}">
@@ -90,7 +90,7 @@
               <label>{{"PERKS::Qual o estoque do seu perk?" | fix}}</label>
               <md-input v-mask="'######'" v-model.number="perk.stock" required></md-input>
               <span class="md-error">{{"PERKS::Informe o estoque" | fix}}</span>
-              <span class="md-helper-text">{{"PERKS::Informe quantas pessoas devem podem resgatar esse prêmio" | fix}}</span>
+              <span class="md-helper-text">{{"PERKS::Informe quantas pessoas poderão resgatar esse prêmio" | fix}}</span>
             </md-field>
             <md-field :class="{'md-invalid': $v.perk.discount.$invalid && $v.perk.discount.$dirty}">
               <md-icon>money_off</md-icon>
@@ -104,8 +104,8 @@
             </md-field>
           </div>
         </div>
-        <md-switch class="md-primary" v-model="perk.haveFrete">{{"PERKS::Seu produto será enviado pelos correios?" | fix}}</md-switch>
-        <div v-show="perk.haveFrete">
+        <md-switch class="md-primary" v-model="perk.have_frete">{{"PERKS::Seu produto será enviado pelos correios?" | fix}}</md-switch>
+        <div v-show="perk.have_frete">
           <div class="md-layout md-gutter">
             <div class="md-layout-item md-small-size-100">
               <md-datepicker class="datepicker-correct-icon" :class="{'md-invalid': $v.perk.shipping_date.$invalid}" md-immediately v-model="perk.shipping_date" required>
@@ -118,19 +118,21 @@
             <b>{{"PERKS::Opções de envio:" | fix}}</b>
           </div>
           <div style="display:flex">
-            <md-radio v-model="perk.shipping_worldwide" value="only_country">{{"PERKS::Meu produto será enviado apenas para o país" | fix}}</md-radio>
-            <md-radio v-model="perk.shipping_worldwide" value="world_wide">{{"PERKS::Meu produto será enviado para diversos países" | fix}}</md-radio>
+            <md-radio v-model="perk.shipping_worldwide" value="only_country">{{"PERKS::Apenas para o país de cadastro da campanha" | fix}}</md-radio>
+            <md-radio v-model="perk.shipping_worldwide" value="world_wide">{{"PERKS::Para diversos países" | fix}}</md-radio>
           </div>
           <div v-if="perk.shipping_worldwide == 'only_country'" class="md-layout-item md-small-size-100">
-            <md-field :class="{'md-invalid': $v.perk.shipping_price.$invalid}" style="margin-top: 1rem;">
+            <small><strong>{{"PERKS::Com essa opção você apenas disponibilizará frete para o país:" | fix}} {{campaignCountry.country_name}}</strong></small>
+            <md-field :class="{'md-invalid': $v.perk.shipping_price.$invalid}" style="margin-top: 1rem;" class="md-focused money-input">
               <md-icon>commute</md-icon>
               <label>{{"PERKS::Qual o valor do frete?" | fix}}</label>
-              <md-input v-model.number="perk.shipping_price" required></md-input>
+              <money v-model.number="perk.shipping_price" class="md-input" required></money>
               <span class="md-error">{{"PERKS::Informe o valor do frete em dólares!" | fix}}</span>
             </md-field>
           </div>
           <div v-else-if="perk.shipping_worldwide == 'world_wide'" class="md-layout-item md-small-size-100">
-            <h4>{{"PERKS::Lista de frete:" | fix}} <span v-if="perk.shipping_data.length == 0"> {{"PERKS::Vazia!" | fix}}</span> </h4>
+            <h4 :class="{'empty-shippingData': $v.perk.shipping_data.$invalid}">{{"PERKS::Lista de frete:" | fix}} <span v-if="perk.shipping_data.length == 0"> {{"PERKS::Vazia!" | fix}}</span> </h4>
+            <span class="empty-shippingData" v-if="$v.perk.shipping_data.$invalid">{{"PERKS::Adicione pelo menos um país!" | fix}}</span>            
             <div class="shipping-list">
               <div v-for="(shipping, index) in perk.shipping_data" :key="index" class="shipping-added" @click="removeShippingPerk(index, perk.shipping_data)">
                 <div class="shipping-added-text">
@@ -159,16 +161,31 @@
                 <div style="text-align: center">
                   <small><strong>{{"PERKS::Para editar o valor do frete de um país ja adicionado, pesquise-o acima e o insira um novo valor para sobrescrever o antigo!" | fix}}</strong></small>
                 </div>
-                <md-field>
-                  <md-icon>commute</md-icon>
-                  <label class="input-label-selected">{{"PERKS::Qual o valor do frete para o(s) país(es) selecionados?" | fix}}</label>
-                  <money v-model.number="multipleShippingValue" class="md-input"></money>
-                  <span class="md-error">{{"PERKS::Informe o valor do frete em dólares!" | fix}}</span>
-                </md-field>
+                <div style="display: flex; align-items:center;">
+                  <md-field>
+                    <md-icon>commute</md-icon>
+                    <label class="input-label-selected">{{"PERKS::Qual o valor do frete para o(s) país(es) selecionados?" | fix}}</label>
+                    <money v-model.number="multipleShippingValue" class="md-input"></money>
+                  </md-field>
+                  <md-button :disabled="multipleShippingValue <= 0 || countriesSelecteds.length <= 0" class="md-raised md-icon-button" @click="addMultipleShippingPerk(perk.shipping_data)">
+                    <md-icon style="color: white">add</md-icon>
+                  </md-button>
+                </div>
+                <div>
+                  <small><strong>{{"PERKS::Caso você deseje, defina no campo abaixo um valor padrão de frete para todos os valores não adicionados na sua lista de frete" | fix}}</strong></small>
+                  <div style="display: flex; align-items:center;">
+                    <md-field>
+                      <md-icon>language</md-icon>
+                      <label class="input-label-selected">{{"PERKS::Informe o valor do frete para o restante dos países" | fix}}</label>
+                      <money v-model.number="restOfWorldShippingValue" class="md-input"></money>
+                    </md-field>
+                    <md-button :disabled="restOfWorldShippingValue <= 0" class="md-raised md-icon-button" @click="addRestOfTheWorldValue(perk.shipping_data)">
+                      <md-icon style="color: white">add</md-icon>
+                    </md-button>
+                  </div>
+                </div>
               </div>
-              <md-button :disabled="multipleShippingValue <= 0 || countriesSelecteds.length <= 0" class="md-raised md-icon-button" @click="addMultipleShippingPerk(perk.shipping_data)">
-                <md-icon style="color: white">add</md-icon>
-              </md-button>
+              
 
             </div>
 
@@ -183,7 +200,7 @@
   </div>
 
   <div>
-    <md-dialog :md-active.sync="perkEditDialog">
+    <md-dialog :md-active.sync="perkEditDialog" class="custom-alert">
       <md-dialog-title>{{"PERKS::Editar Perk" | fix}}</md-dialog-title>
       <md-dialog-content>
         <div class="md-layout md-gutter">
@@ -219,7 +236,7 @@
               <md-icon>attach_money</md-icon>
               <label>{{"PERKS::Qual o valor do seu perk?" | fix}}</label>
               <money class="md-input" v-model.number="perkEdit.price" required></money>
-              <span class="md-error">{{"PERKS::Informe o valor" | fix}}</span>
+              <span class="md-error">{{"PERKS::O valor mínimo de doação é de $1" | fix}}</span>
               <span class="md-helper-text">{{"PERKS::Insira o valor mínimo a ser doado em dólares para receber o perk" | fix}}</span>
             </md-field>
             <md-field :class="{'md-invalid': $v.perkEdit.stock.$invalid && $v.perkEdit.stock.$dirty}">
@@ -227,7 +244,7 @@
               <label>{{"PERKS::Qual o estoque do seu perk?" | fix}}</label>
               <md-input v-mask="'######'" v-model="perkEdit.stock" required></md-input>
               <span class="md-error">{{"PERKS::Informe o estoque" | fix}}</span>
-              <span class="md-helper-text">{{"PERKS::Informe quantas pessoas devem podem resgatar esse prêmio" | fix}}</span>
+              <span class="md-helper-text">{{"PERKS::Informe quantas pessoas poderão resgatar esse prêmio" | fix}}</span>
             </md-field>
             <md-field :class="{'md-invalid': $v.perkEdit.discount.$invalid && $v.perkEdit.discount.$dirty}">
               <md-icon>money_off</md-icon>
@@ -241,10 +258,10 @@
             </md-field>
           </div>
         </div>
-        <input type="checkbox" id="id-name--1" name="set-name" class="switch-input" @change="mudou()" :checked="perkEdit.haveFrete">
+        <input type="checkbox" id="id-name--1" name="set-name" class="switch-input" @change="mudou()" :checked="perkEdit.have_frete">
         <label for="id-name--1" class="switch-label">{{"PERKS::Seu produto será enviado pelos correios?" | fix}}</label>
         
-        <div v-show="perkEdit.haveFrete">
+        <div v-show="perkEdit.have_frete">
           <div class="md-layout md-gutter">
             <div class="md-layout-item md-small-size-100">
               <md-datepicker class="datepicker-correct-icon" :class="{'md-invalid': $v.perkEdit.shipping_date.$invalid}" md-immediately v-model="perkEdit.shipping_date" required>
@@ -257,19 +274,21 @@
             <b>{{"PERKS::Opções de envio:" | fix}}</b>
           </div>
           <div>
-            <md-radio v-model="perkEdit.shipping_worldwide" value="only_country">{{"PERKS::Meu produto será enviado apenas para o país" | fix}}</md-radio>
-            <md-radio v-model="perkEdit.shipping_worldwide" value="world_wide">{{"PERKS::Meu produto será enviado para diversos países" | fix}}</md-radio>
+            <md-radio v-model="perkEdit.shipping_worldwide" value="only_country">{{"PERKS::Apenas para o país de cadastro da campanha" | fix}}</md-radio>
+            <md-radio v-model="perkEdit.shipping_worldwide" value="world_wide">{{"PERKS::Para diversos países" | fix}}</md-radio>
           </div>
           <div v-if="perkEdit.shipping_worldwide == 'only_country'" class="md-layout-item md-small-size-100">
-            <md-field :class="{'md-invalid': $v.perkEdit.shipping_price.$invalid}" style="margin-top: 1rem;">
+            <small><strong>{{"PERKS::Com essa opção você apenas disponibilizará frete para o país:" | fix}} {{campaignCountry.country_name}}</strong></small>            
+            <md-field :class="{'md-invalid': $v.perkEdit.shipping_price.$invalid}" style="margin-top: 1rem;" class="md-focused money-input">
               <md-icon>commute</md-icon>
               <label>{{"PERKS::Qual o valor do frete?" | fix}}</label>
-              <md-input v-model.number="perkEdit.shipping_price" required></md-input>
+              <money v-model.number="perkEdit.shipping_price" class="md-input" required></money>
               <span class="md-error">{{"PERKS::Informe o valor do frete em dólares!" | fix}}</span>
             </md-field>
           </div>
           <div v-else-if="perkEdit.shipping_worldwide == 'world_wide'" class="md-layout-item md-small-size-100">
-            <h4>{{"PERKS::Lista de frete:" | fix}} <span v-if="perkEdit.shipping_data.length == 0"> {{"PERKS::Vazia!" | fix}}</span> </h4>
+            <h4 :class="{'empty-shippingData': $v.perkEdit.shipping_data.$invalid}">{{"PERKS::Lista de frete:" | fix}} <span v-if="perkEdit.shipping_data.length == 0"> {{"PERKS::Vazia!" | fix}}</span> </h4>
+            <span class="empty-shippingData" v-if="$v.perkEdit.shipping_data.$invalid">{{"PERKS::Adicione pelo menos um país!" | fix}}</span>
             <div class="shipping-list">
               <div v-for="(shipping, index) in perkEdit.shipping_data" :key="index" class="shipping-added" @click="removeShippingPerk(index, perkEdit.shipping_data)">
                 <div class="shipping-added-text">
@@ -299,16 +318,32 @@
                 <div style="text-align: center">
                   <small><strong>{{"PERKS::Para editar o valor do frete de um país ja adicionado, pesquise-o acima e o insira um novo valor para sobrescrever o antigo!" | fix}}</strong></small>
                 </div>
-                <md-field>
-                  <md-icon>commute</md-icon>
-                  <label class="input-label-selected">{{"PERKS::Qual o valor do frete para o(s) país(es) selecionados?" | fix}}</label>
-                  <money class="md-input" v-model.number="multipleShippingValue"></money>
-                  <span class="md-error">{{"PERKS::Informe o valor do frete em dólares!" | fix}}</span>
-                </md-field>
+                <div style="display:flex; align-items: center">
+                  <md-field>
+                    <md-icon>commute</md-icon>
+                    <label class="input-label-selected">{{"PERKS::Qual o valor do frete para o(s) país(es) selecionados?" | fix}}</label>
+                    <money class="md-input" v-model.number="multipleShippingValue"></money>
+                    <span class="md-error">{{"PERKS::Informe o valor do frete em dólares!" | fix}}</span>
+                  </md-field>
+                  <md-button :disabled="multipleShippingValue <= 0 || countriesSelecteds.length <= 0" class="md-raised md-icon-button" @click="addMultipleShippingPerk(perkEdit.shipping_data)">
+                    <md-icon style="color: white">add</md-icon>
+                  </md-button>
+                </div>
+                <div>
+                  <small><strong>{{"PERKS::Caso você deseje, defina no campo abaixo um valor padrão de frete para todos os valores não adicionados na sua lista de frete" | fix}}</strong></small>
+                  <div style="display: flex; align-items:center;">
+                    <md-field>
+                      <md-icon>language</md-icon>
+                      <label class="input-label-selected">{{"PERKS::Informe o valor do frete para o restante dos países" | fix}}</label>
+                      <money v-model.number="restOfWorldShippingValue" class="md-input"></money>
+                    </md-field>
+                    <md-button :disabled="restOfWorldShippingValue <= 0" class="md-raised md-icon-button" @click="addRestOfTheWorldValue(perkEdit.shipping_data)">
+                      <md-icon style="color: white">add</md-icon>
+                    </md-button>
+                  </div>
+                </div>
               </div>
-              <md-button :disabled="multipleShippingValue <= 0 || countriesSelecteds.length <= 0" class="md-raised md-icon-button" @click="addMultipleShippingPerk(perkEdit.shipping_data)">
-                <md-icon style="color: white">add</md-icon>
-              </md-button>
+              
 
             </div>
 
@@ -330,9 +365,7 @@
 import {
   mapState
 } from 'vuex';
-import {
-  required
-} from "vuelidate/lib/validators";
+import { required, minValue } from "vuelidate/lib/validators";
 import CardItems from '@/components/CardItems'
 import 'vue-multiselect/dist/vue-multiselect.min.css'
 import Multiselect from 'vue-multiselect'
@@ -344,11 +377,13 @@ export default {
   },
   data() {
     return {
+      campaignCountry: {},
       alertError: false,
     	alertErrorMsg: null,
       countries: [],
       countriesSelecteds: [],
       multipleShippingValue: 0,
+      restOfWorldShippingValue: 0,
       showDeleteConfirmation: false,
       perkIdToDelete: null,
       parentCall: null,
@@ -362,26 +397,26 @@ export default {
         stock: "",
         newImage: null,
         cover_url: null,
-        price: null,
+        price: 0,
         shipping_price: 0.0,
         shipping_date: null,
         description: "",
-        haveFrete: false,
-        shipping_worldwide: "world_wide",
+        have_frete: false,
+        shipping_worldwide: "only_country",
         shipping_data: []
       },
       allow: true,
       perk: {
         name: "",
         stock: "",
-        newImage: null,
+        image: null,
         discount: 0,
-        price: null,
+        price: 0,
         shipping_price: 0.0,
         shipping_date: null,
         description: "",
-        haveFrete: false,
-        shipping_worldwide: "world_wide",
+        have_frete: false,
+        shipping_worldwide: "only_country",
         shipping_data: []
       },
       perkList: [],
@@ -406,14 +441,22 @@ export default {
         required
       },
       price: {
-        required
+        required,
+        minValue: minValue(1)
+      },
+      shipping_data: {
+        validateShippingData: function() {
+          if(this.perkEdit.have_frete && this.perkEdit.shipping_worldwide == 'world_wide' && this.perkEdit.shipping_data.length == 0)
+            return false
+          return true
+        }
       },
       description: {
         required
       },
       shipping_price: {
         checkFrete: function() {
-          if (this.perkEdit.haveFrete && (!this.perkEdit.shipping_price || this.perkEdit.shipping_price <= 0)) {
+          if ((this.perkEdit.have_frete && this.perkEdit.shipping_worldwide == "only_country") && (!this.perkEdit.shipping_price || this.perkEdit.shipping_price <= 0)) {
             return false
           }
           return true
@@ -421,15 +464,16 @@ export default {
       },
       shipping_date: {
         checkDate: function() {
-          if (this.perkEdit.haveFrete && !this.perkEdit.shipping_date) {
+          if (this.perkEdit.have_frete && (!this.perkEdit.shipping_date || this.perkEdit.shipping_date == "0000-00-00")) {
             return false
           }
-          if(this.perkEdit.haveFrete && this.perkEdit.shipping_date < Date.now())
+          if(this.perkEdit.have_frete && this.perkEdit.shipping_date < Date.now())
             return false
 
           return true
-        },
-      }
+        }
+      },
+      
     },
     perk: {
       name: {
@@ -449,14 +493,22 @@ export default {
         required
       },
       price: {
-        required
+        required,
+        minValue: minValue(1)
+      },
+      shipping_data: {
+        validateShippingData: function() {
+          if(this.perk.have_frete && this.perk.shipping_worldwide == 'world_wide' && this.perk.shipping_data.length == 0)
+            return false
+          return true
+        }
       },
       description: {
         required
       },
       shipping_price: {
         checkFrete: function() {
-          if (this.perk.haveFrete && this.perk.shipping_worldwide == "only_country" && (!this.perk.shipping_price || this.perk.shipping_price <= 0)) {
+          if ((this.perk.have_frete && this.perk.shipping_worldwide == "only_country") && (!this.perk.shipping_price || this.perk.shipping_price <= 0)) {
             return false
           }
           return true
@@ -464,24 +516,49 @@ export default {
       },
       shipping_date: {
         checkDate: function() {
-          if (this.perk.haveFrete && !this.perk.shipping_date) {
+          if (this.perk.have_frete && (!this.perk.shipping_date || this.perk.shipping_date == "0000-00-00")) {
             return false
           }
-          // if(this.perk.shipping_date < Date.now())
-          //   return false
+          if(this.perk.have_frete && this.perk.shipping_date < Date.now())
+            return false
           return true
         }
-      }
+      },
     },
   },
   computed: {
     ...mapState(["user"]),
   },
+  watch: {
+    "perk.shipping_worldwide": function(val) {
+      this.perk.shipping_price = 0
+      this.perk.shipping_data = []
+      this.multipleShippingValue = 0
+      this.restOfWorldShippingValue = 0
+      this.countriesSelecteds = []
+    },
+    "perkEdit.shipping_worldwide": function(val) {
+      this.perkEdit.shipping_price = 0
+      this.perkEdit.shipping_data = []
+      this.multipleShippingValue = 0
+      this.restOfWorldShippingValue = 0
+      this.countriesSelecteds = []
+    },
+    
+  },
   methods: {
+    addRestOfTheWorldValue(arr) {
+      let restOfTheWorldObj = {country_code: "REST", country_name: this.$f("PERKS::Resto do mundo")}
+      if(!this.checkPerkshippingData(restOfTheWorldObj, arr))
+        arr.unshift({...restOfTheWorldObj, price: this.restOfWorldShippingValue})
+      else
+        this.$set(arr, 0, {...restOfTheWorldObj, price: this.restOfWorldShippingValue})
+      this.restOfWorldShippingValue = 0
+    },
     addMultipleShippingPerk(arr) {
       //verifica se tem um frete digitado
       this.countriesSelecteds.forEach((elem) => {
-        let elemPosition = this.checkPerkshipping_data(elem, arr)
+        let elemPosition = this.checkPerkshippingData(elem, arr)
         if(!elemPosition)
           arr.push({...elem, price: this.multipleShippingValue})
         else
@@ -490,10 +567,10 @@ export default {
       this.countriesSelecteds = []
       this.multipleShippingValue = 0
     },
-    checkPerkshipping_data(objToCheck, arr) {
+    checkPerkshippingData(objToCheck, arr) {
       for (const key in arr) {
         const element = arr[key];
-        if(element.id == objToCheck.id)
+        if(element.country_code == objToCheck.country_code)
           return key
       }
       return false
@@ -501,59 +578,22 @@ export default {
     removeShippingPerk(index, arr) {
       arr.splice(index, 1)
     },
-    //  addMultipleShippingPerkEdit() {
-    //    //verifica se tem um frete digitado
-    //    console.log(this.countriesSelecteds)
-    //   this.countriesSelecteds.forEach((elem) => {
-    //     let elemPosition = this.checkPerkEditshipping_data(elem)
-    //     console.log("pos", this.perkEdit.shipping_data)
-    //     if(!elemPosition)
-    //       this.perkEdit.shipping_data.push({...elem, price: this.multipleShippingValue})
-    //     else
-    //       this.$set(this.perkEdit.shipping_data, elemPosition, {...elem, price: this.multipleShippingValue})
-    //   })
-    //   this.countriesSelecteds = []
-    //   this.multipleShippingValue = 0
-    // },
-    // checkPerkEditshipping_data(objToCheck) {
-    //   for (const key in this.perkEdit.shipping_data) {
-    //     const element = this.perkEdit.shipping_data[key];
-    //     if(element.id == objToCheck.id)
-    //       return key
-    //   }
-    //   return false
-    // },
-    // removeShippingPerkEdit(index) {
-    //   this.perkEdit.shipping_data.splice(index, 1)
-    // },
     mudou() {
-      this.perkEdit.haveFrete = !this.perkEdit.haveFrete
-      if (!this.perkEdit.haveFrete) {
+      console.log('foi')
+      this.perkEdit.have_frete = !this.perkEdit.have_frete
+      if (!this.perkEdit.have_frete) {
         this.perkEdit.shipping_price = 0
         this.perkEdit.shipping_date = null
-
+        this.perkEdit.shipping_data = []
       }
 
     },
     showModalEditPerk(perkToEdit) {
+      console.log(perkToEdit)
+      this.perkEdit = {
+        ...perkToEdit
+      }
       this.perkEditDialog = true;
-      if (perkToEdit.shipping_date == "0000-00-00" && perkToEdit.shipping_price == 0) {
-        this.perkEdit = {
-          ...perkToEdit,
-          haveFrete: false,
-          shipping_date: null,
-          // shipping_data: [] //comentar essas duas linhas após o back ter sido feito!!!!!!
-        };
-      } else {
-        this.perkEdit = {
-          ...perkToEdit,
-          haveFrete: true,
-          // shipping_data: [] //comentar essas duas linhas após o back ter sido feito!!!!!!
-        };
-      }
-      if (this.perkEdit.shipping_price > 0) {
-        this.perkEdit.haveFrete = true;
-      }
     },
     loadPerk() {
       global
@@ -573,12 +613,11 @@ export default {
     },
     uploadNewPerk() {
       this.$v.perk.$touch();
-      this.$v.perk.image.$touch();
       if (!this.$v.perk.$invalid && !this.$v.perk.image.$invalid) {
         this.$v.perk.$reset();
         this.perk.campaign_id = this.$route.params.id;
         this.perk.shipping_data = JSON.stringify(this.perk.shipping_data)
-        if (this.perk.haveFrete) {
+        if (this.perk.have_frete) {
           this.perk.shipping_date = this.perk.shipping_date.toISOString().split('T')[0]
         } else {
           this.perk.shipping_price = 0
@@ -592,9 +631,7 @@ export default {
           .$post("/Content/addperk", this.perk, this.user.token)
           .then(response => {
             this.loadPerk();
-            this.perk = {};
-            // this.imageToUploadPerk = "";
-            this.base64FilePerk = "";
+            this.resetPerk()
 				  })
 				  .catch(err => {
             let validErr =
@@ -621,8 +658,7 @@ export default {
           .$post("/Content/editperk", this.perkEdit, this.user.token)
           .then(response => {
             this.loadPerk();
-            this.base64FilePerkEdit = null;
-            this.perkEdit = {};
+            this.resetEditPerk()
           })
           .catch(err => {
             let validErr =
@@ -663,16 +699,55 @@ export default {
     resetEditPerk() {
       this.perkEditDialog = false;
       this.base64FilePerkEdit = null
-      this.perkEdit = {};
+      this.perkEdit.name = "",
+      this.perkEdit.discount = 0,
+      this.perkEdit.stock = "",
+      this.perkEdit.newImage = null,
+      this.perkEdit.cover_url = null,
+      this.perkEdit.price = 0,
+      this.perkEdit.shipping_price = 0.0,
+      this.perkEdit.shipping_date = null,
+      this.perkEdit.description = "",
+      this.perkEdit.have_frete = false,
+      this.perkEdit.shipping_worldwide = "only_country",
+      this.perkEdit.shipping_data = []
+      this.countriesSelecteds = []
+      this.multipleShippingValue = 0
+      this.restOfWorldShippingValue = 0
+
       this.$v.perkEdit.$reset();
     },
     resetPerk() {
+      this.base64FilePerk = "";
       this.perkDialog = false;
-      this.perk.image = null;
-      this.perk.stock = null;
-      this.perk.price = null;
-      this.perk.name = null;
+      this.perk.name = "",
+      this.perk.stock = "",
+      this.perk.image = null,
+      this.perk.discount = 0,
+      this.perk.price = 0,
+      this.perk.shipping_price = 0.0,
+      this.perk.shipping_date = null,
+      this.perk.description = "",
+      this.perk.have_frete = false,
+      this.perk.shipping_worldwide = "only_country",
+      this.perk.shipping_data = []
+      this.countriesSelecteds = []
+      this.multipleShippingValue = 0
+      this.restOfWorldShippingValue = 0
+
       this.$v.perk.$reset();
+    },
+    getCampaignCountry() {
+      global.$get("/Campaign/getCampaignCountry?campaign_id=" + this.$route.params.id, {}, this.user.token)
+        .then(res => {
+          this.campaignCountry = res.data;
+				})
+				.catch(err => {
+					let validErr =
+						err && err.response && err.response.data && err.response.data.error;
+					this.alertErrorMsg = validErr ? err.response.data.error : "INVALID_ERROR"; // enviar alerta
+					this.alertError = true;
+				})
     },
     clickOnFileInputPerk() {
       document.getElementById("input-file-perk").click();
@@ -712,12 +787,16 @@ export default {
   mounted() {
     this.loadPerk()
     this.loadCountries()
+    this.getCampaignCountry()
     this.parentCall = this.$parent.$parent.$parent
   }
 }
 </script>
 
-<style lang="scss" >
+<style lang="scss" scoped>
+.empty-shippingData {
+  color: #ff1744;
+ }
 .shipping-list {
   display: flex;
   flex-wrap: wrap;
@@ -785,7 +864,7 @@ export default {
         width: 30%;
     }
 }
-.md-dialog {
+.custom-alert {
     width: 70%;
 }
 .switch-input {

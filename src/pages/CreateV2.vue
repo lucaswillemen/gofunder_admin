@@ -7,18 +7,17 @@
 					:md-label="$f('CREATE::Informações Básicas')"
 					:md-description="`${$f('CREATE::Bem vindo ao nosso criador de campanhas!')} ${$f('CREATE::Preencha as informações abaixo para')} ${$f('CREATE::conhecermos mais sobre a sua campanha')}`"
 				></md-empty-state>
-				<div style="height:470px;">
-					<div style="width: 50%;margin:auto;">
+				<div class="first-step-container">
+					<div class="fields-container">
 						<md-field :class="getValidationClass('title')">
 							<md-icon>title</md-icon>
-							<label>{{"CREATE::Qual o título da sua campanha?" | fix}}</label>
-							<md-input style v-model="form.title"></md-input>
+							<label class="responsive-label">{{"CREATE::Qual o título da sua campanha?" | fix}}</label>
+							<md-input v-model="form.title" ></md-input>
 							<span class="md-error">{{"CREATE::Digite algo entre 10 e 60 caracteres" | fix}}</span>
 							<span class="md-helper-text">{{"CREATE::Escolha um nome bonito e chamativo para sua campanha" | fix}}</span>
 						</md-field>
 					</div>
-					<br>
-					<div style="width: 50%;margin:auto;">
+					<div class="fields-container">
 							
 						<md-field :class="getValidationClass('country')">
 							<md-icon>public</md-icon>
@@ -34,8 +33,7 @@
 							<span class="md-helper-text">{{"CREATE::Escolha o país de origem da sua campanha" | fix}}</span>
 						</md-field>
 					</div>
-					<br>
-					<div style="width: 50%;margin:auto;">
+					<div class="fields-container">
 						<md-field :class="getValidationClass('description')">
 							<md-icon>description</md-icon>
 							<label>{{"CREATE::Qual descrição para sua campanha?" | fix}}</label>
@@ -44,10 +42,7 @@
 							<span class="md-helper-text">{{"CREATE::Faça uma breve explicação da sua campanha" | fix}}</span>
 						</md-field>
 					</div>
-					<br>
-					<br>
-
-					<div style="width: 290px;margin:auto;">
+					<div class="button-container">
 						<md-button
 							class="md-raised"
 							@click="moveStep(['title','description','country'], 'first', 'second')">
@@ -65,49 +60,50 @@
 					md-icon="monetization_on"
 					:md-label="$f('CREATE::Informações Financeiras')"
 					:md-description="`${$f('CREATE::Antes de criar uma campanha você precisa especificar por qual método você deseja receber pagamentos e quais valores para sua campanha')}`"
-				></md-empty-state>
-				<div style="height:400px;">
-					<div style="width: 50%;margin:auto;">
-						<md-field :class="getValidationClass('amount')">
+					style="padding-bottom: 0;"></md-empty-state>
+				<div class="second-step-container">
+					<div class="fields-container">
+						<md-field :class="getValidationClass('amount')" class="md-focused money-input">
 							<md-icon>attach_money</md-icon>
-							<label>{{"CREATE::Qual valor de arredacação pretendido?" | fix}}</label>
-							<md-input v-model="form.amount" type="number" min="100"/>
+							<label class="responsive-label">{{"CREATE::Qual valor de arredacação pretendido?" | fix}}</label>
+							<money v-model="form.amount" class="md-input"></money>
 							<span class="md-error">{{"CREATE::O valor de arrecadação não deve ser inferior a $100,00" | fix}}</span>
 							<span class="md-helper-text">{{"CREATE::O valor é arrecadado em dólares" | fix}}</span>
 						</md-field>
 					</div>
-					<div style="width: 50%;margin:auto;">
-						<md-field :class="getValidationClass('payment_method')">
-							<md-icon>attach_money</md-icon>
-							<label>{{"CREATE::Escolha a forma de pagamento que seu projeto aceitará" | fix}}</label>
-							<md-select v-model="form.payment_method" style="margin-left: 14px;">
+					<div class="fields-container">
+						<md-field :class="getValidationClass('payment_method')" class="md-focused money-input">
+							<md-icon>local_atm</md-icon>
+							<label class="custom-label-positioning">{{"CREATE::Escolha a forma de pagamento que seu projeto aceitará" | fix}}</label>
+							<md-select v-model="form.payment_method" style="margin-left: 14px;" id="selectFormPayment">
 								<md-option value="bitcoin">{{"CREATE::Desejo receber em Bitcoin" | fix}}</md-option>
 								<md-option value="dollar">{{"CREATE::Desejo receber em Dólar" | fix}}</md-option>
 								<md-option value="dollar_and_bitcoin">{{"CREATE::Desejo receber em Dólar e Bitcoin" | fix}}</md-option>
 							</md-select>
-							<span class="md-error">{{"CREATE::Escolha se deseja aceitar criptomoedas ou não" | fix}}</span>
+							<span class="md-error">{{"CREATE::Escolha a forma de pagamento do seu projeto" | fix}}</span>
 							<span
 								class="md-helper-text"
-							>{{"CREATE::Caso escolha receber em criptomoedas as doações em Bitcoin serão estimadas em dólar conforme a cotação do momento" | fix}}</span>
+							>{{"CREATE::Caso escolha receber em criptomoedas, as doações em Bitcoin serão estimadas em dólar conforme a cotação do momento" | fix}}</span>
 						</md-field>
 					</div>
-					<br>
-					<div style="width: 50%;margin:auto;">
+					<div class="fields-container">
 						<md-field :class="getValidationClass('flexible')">
 							<md-icon>dashboard</md-icon>
-							<label>{{"CREATE::Qual tipo de arrecadação?" | fix}}</label>
+							<label class="responsive-label">{{"CREATE::Qual o tipo de arrecadação?" | fix}}</label>
 							<md-select v-model="form.flexible" style="margin-left: 14px;">
 								<md-option value="flexible">{{"CREATE::Arrecadação Flexível" | fix}}</md-option>
 								<md-option value="static">{{"CREATE::Arrecadação Fixa" | fix}}</md-option>
 								<md-option value="everything_or_nothing">{{"CREATE::Tudo ou Nada" | fix}}</md-option>
 							</md-select>
-							<span
-								class="md-helper-text"
-							>{{"CREATE::Arrecadação flexível deixa sua campanha ainda aberta a doações mesmo após ter atingido 100%" | fix}}</span>
+							<span v-if="form.flexible == 'flexible'" class="md-helper-text">{{"CREATE::A arrecadação flexível deixa sua campanha ainda aberta a doações mesmo após ter atingido 100% do valor de arrecadação" | fix}}</span>
+							<span v-else-if="form.flexible == 'static'" class="md-helper-text">{{"CREATE::A arrecadação fixa deixa sua campanha aberta a doações mesmo após ter atingido 100% do valor de arrecadação" | fix}}</span>
+							<span v-else-if="form.flexible == 'everything_or_nothing'" class="md-helper-text">{{"CREATE::A arrecadação Tudo ou Nada devolve o dinheiro aos investidores caso a campanha fracasse" | fix}}</span>
+							<span v-else class="md-helper-text">{{"CREATE::Selecione uma opção para visualizar os detalhes" | fix}}</span>
+							<span class="md-error">{{"CREATE::Selecione o tipo de arrecadação" | fix}}</span>
+
 						</md-field>
 					</div>
-					<br>
-					<div style="width: 290px;margin:auto;">
+					<div class="button-container" style="margin-top: .5rem;">
 						<md-button
 							class="md-raised"
 							@click="moveStep(['accept_bitcoin','flexible','amount'], 'second', 'third')">
@@ -134,6 +130,7 @@
 						</div>
 
 						<md-field :class="getValidationClass('cover_url')">
+							<md-icon>camera_alt</md-icon>
 							<label>{{"CREATE::Escolha uma foto para seu produto" | fix}}</label>
 							<md-file v-model="form.cover_url" @change="pickImg($event)" accept="image/*"/>
 							<span class="md-error">{{"CREATE::Escolha uma imagem válida por favor" | fix}}</span>
@@ -163,7 +160,7 @@
 								<md-field :class="getValidationClass('product_stage')">
 									<md-icon>dashboard</md-icon>
 									<label>{{"CREATE::Qual estágio do seu produto?" | fix}}</label>
-									<md-select v-model="form.product_stage">
+									<md-select v-model="form.product_stage" style="margin-left: 14px;">
 										<md-option value="concept">{{"CREATE::Conceito" | fix}}</md-option>
 										<md-option value="prototype">{{"CREATE::Protótipo" | fix}}</md-option>
 										<md-option value="production">{{"CREATE::Produção" | fix}}</md-option>
@@ -181,7 +178,7 @@
 					<div style="width: 50%;margin:auto;">
 						<div class="md-layout md-gutter">
 							<div class="md-layout-item">
-								<md-datepicker v-model="form.startAt" :class="getValidationClass('startAt')" md-immediately class="custom-md-field">
+								<md-datepicker v-model="form.startAt" :class="getValidationClass('startAt')" md-immediately class="custom-md-field datepicker-correct-icon">
 									<label style="border-bottom:none!important;">{{"CREATE::Quando você vai iniciar a campanha?" | fix}}</label>
 									<span class="md-error">{{"CREATE::Escolha qual o prazo de finalização da campanha do seu produto" | fix}}</span>
 									<span
@@ -193,7 +190,7 @@
 								<md-datepicker
 									v-model="form.finishAt"
 									:class="getValidationClass('finishAt')"
-									md-immediately class="custom-md-field">
+									md-immediately class="custom-md-field datepicker-correct-icon">
 									<label style="border-bottom:none!important;" class="custom-md-field">{{"CREATE::Qual prazo para finalização da campanha?" | fix}}</label>
 									<span class="md-error">{{"CREATE::Escolha qual o prazo de finalização da campanha do seu produto" | fix}}</span>
 									<span class="md-helper-text">{{"CREATE::A partir dessa data sua campanha será finalizada" | fix}}</span>
@@ -225,10 +222,10 @@
 						:md-description="$f('CREATE::Toda descrição básica sobre seu projeto foi salva e seu projeto foi salvo como um rascunho pois ainda precisamos de mais algumas informações que podem ser preenchidas clicando no botão abaixo')"
 					></md-empty-state>
 					<div style="height:200px;">
-						<div style="width: 290px;margin:auto;">
+						<div style="width: 290px;margin:auto; text-align: center">
 							<br>
 							<md-button class="md-raised" @click="editProject()">
-								{{"CREATE::Editar meu projeto"}}
+								{{"CREATE::Editar meu projeto" | fix}}
 								<md-icon style="color:white;">arrow_forward</md-icon>
 							</md-button>
 						</div>
@@ -238,7 +235,7 @@
 					<br>
 					<div class="md-empty-state-container">
 						<md-progress-spinner :md-diameter="100" :md-stroke="10" md-mode="indeterminate"></md-progress-spinner>
-						<strong class="md-empty-state-label">{{"CREATE::Enviando arquivos..."}}</strong>
+						<strong class="md-empty-state-label">{{"CREATE::Enviando arquivos..." | fix}}</strong>
 					</div>
 				</div>
 			</md-card>
@@ -271,7 +268,7 @@ export default {
 			actualStep: 1,
 			loadingSpinner: null,
 			imagemInvalida: false,
-			projectID: 0,
+			editUrl: null,
 			options: {
 				country: [],
 				category: []
@@ -280,7 +277,7 @@ export default {
 				title: null,
 				description: null,
 				country: null,
-				amount: null,
+				amount: 0,
 				flexible: null,
 				payment_method: null,
 				cover_url: null,
@@ -294,7 +291,7 @@ export default {
 				first: true,
 				second: false,
 				third: false,
-				fourth: false
+				fourth: true
 			},
 			base64File: null
 		};
@@ -408,10 +405,11 @@ export default {
 		createCampaign() {
 			this.form.startAt = this.form.startAt.toISOString().split('T')[0]
 			this.form.finishAt = this.form.finishAt.toISOString().split('T')[0]
-			global
-				.$post("/campaign/create", this.form, this.user.token)
+			this.form.country = this.form.country.id
+			global.$post("/campaign/create", this.form, this.user.token)
 				.then(response => {
-					this.projectID = response.data.id
+					console.log(response)
+					this.editUrl = `/edit/${response.data.id}/${response.data.title}`
 				})
 				.catch(err => {
 					this.actualStep = 'third';
@@ -429,7 +427,7 @@ export default {
 				});
 		},
 		editProject() {
-			window.location.href = '/edit/' + this.projectID
+			this.$router.push(this.editUrl)
 		}
 	},
 	mounted() {
@@ -439,6 +437,120 @@ export default {
 </script>
 
 <style lang="scss">
+.button-container {
+	button {
+		@media (max-width: 345px) {
+			margin-top: .5rem;
+			max-width: 230px;
+			font-size: 12px;
+		}
+	}
+}
+.first-step-container {
+	padding: 2rem;	
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	.fields-container {
+		width: 50%;
+		margin-bottom: 1rem;
+		input[class="md-input"] {
+			overflow-x: auto;
+		}
+		@media (min-width: 408px) {
+			&:nth-child(1) {
+				margin-bottom: 0;
+			}
+		}
+		@media (max-width: 600px) {
+			.responsive-label {
+				top: 0;
+			}
+		}
+		@media (max-width: 385px) {
+			margin-bottom: 2rem;
+
+			.responsive-label {
+				font-size: 12px;
+			}
+		}
+		
+		@media (max-width: 505px) {
+			.multiselect__content-wrapper {
+				width: 270px;
+			}
+			// div[class*="md-focused"] {
+			
+				.responsive-label {
+					top: -21px;
+				}
+			// }
+				label[for*="md-textarea"] {
+					display: none;
+				}
+		}
+		@media (max-width: 340px) {
+			// div[class*="md-focused"] {
+			
+				.responsive-label {
+					top: -64px;
+				}
+		}
+	}
+}
+.second-step-container {
+	padding: 2rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	.fields-container {
+		width: 50%;
+		margin-bottom: 1rem;
+		input[class="md-input"] {
+			overflow-x: auto;
+		}
+		&:nth-child(1) {
+			margin-bottom: 0;
+		}
+		@media (max-width: 768px) {
+			&:nth-child(2) {
+				margin-bottom: 2rem;
+			}
+		}
+		// @media (min-width: 408px) {
+		// 	&:nth-child(1) {
+		// 		margin-bottom: 0;
+		// 	}
+		// }
+		// @media (max-width: 600px) {
+		// 	.responsive-label {
+		// 		top: 0;
+		// 	}
+		// }
+		// @media (max-width: 375px) {
+		// 	margin-bottom: 2rem;
+
+		// 	.responsive-label {
+		// 		font-size: 12px;
+		// 	}
+		// }
+		// @media (max-width: 505px) {
+		// 	// div[class*="md-focused"] {
+			
+		// 		.responsive-label {
+		// 			top: -21px;
+		// 		}
+		// 	// }
+		// 		label[for*="md-textarea"] {
+		// 			display: none;
+		// 		}
+		// }
+		// 
+	}
+}
+
 .custom-md-field {
 	label {
 		top: 6px !important;

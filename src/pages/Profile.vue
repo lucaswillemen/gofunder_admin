@@ -378,10 +378,10 @@ export default {
       this.loading = true;
       global.$post("/Auth/edit_email", this.secureUserEmail, this.user.token)
         .then(response => {
-          this.emailAlertMsg = this.$f('PROFILE::E-mail salvo com sucesso. Confirme ele na sua caixa  de entrada')
+          this.emailAlertMsg = this.$f('PROFILE::E-mail salvo com sucesso.')
         })
         .catch(err => {
-          this.emailAlertMsg = this.$f("PROFILE::E-mail ou senha inválido!")
+          this.emailAlertMsg = this.$f("PROFILE::E-mail ou senha inválidos!")
         })
         .finally(() => {
           this.showAlertEmail = true
@@ -394,9 +394,14 @@ export default {
       global.$post("/Auth/edit_password", this.secureUserPassword, this.user.token)
         .then(response => {
           this.passwordAlertMsg = this.$f("PROFILE::Senha salva com sucesso")
+          
+          for (const key in this.secureUserPassword) {
+              this.secureUserPassword[key] = null;
+          }
         })
         .catch(err => {
           this.passwordAlertMsg = this.$f("PROFILE::Senhas não conferem")
+          
         })
         .finally(() => {
           this.showAlertPassword = true

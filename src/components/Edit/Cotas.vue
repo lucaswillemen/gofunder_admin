@@ -2,11 +2,11 @@
 <main>
   <md-dialog-alert :md-active.sync="alertError" :md-title="$f('COTAS::Erro ao criar cota!')" :md-content="alertErrorMsg" />
   <md-dialog-alert :md-active.sync="alertSuccess" :md-title="$f('COTAS::Cota criada!')" :md-content="$f('COTAS::Cota adicionada com sucesso!')" />
-  <md-dialog :md-active.sync="createQuota">
+  <md-dialog :md-active.sync="createQuota" class="create-cota">
     <md-dialog-title>{{"COTAS::Criar uma cota" | fix}}</md-dialog-title>
 
     <md-card-content style="display:flex; flex-direction: column;">
-      <p>{{"COTAS::Olá, para criar sua cota preencha as informações a seguir corretamente abaixo." | fix}}<br/> {{"COTAS::Lembrando que se a soma de suas cotas superar 70% não será possível criar novas cotas uma vez que 30% das vendas do marketplace é obrigatóriamente reservado ao inventor..." | fix}}</p>
+      <p>{{"COTAS::Olá, para criar sua cota preencha corretamente as informações a seguir abaixo." | fix}}<br/> {{"COTAS::Lembrando que se a soma de suas cotas superar 70% não será possível criar novas cotas uma vez que 30% das vendas do marketplace é obrigatóriamente reservada ao inventor..." | fix}}</p>
       <div class="md-layout md-gutter" style="margin-bottom: 1.5rem;">
         <div class="md-layout-item md-size-50">
           <md-field :class="{'md-invalid': $v.cotaAdd.percent.$invalid && $v.cotaAdd.percent.$dirty}">
@@ -22,8 +22,8 @@
             <md-icon>people</md-icon>
             <label>{{"COTAS::Número de pessoas" | fix}}</label>
             <md-input v-model="cotaAdd.stock" max="1000" min="1"></md-input>
-            <span class="md-error">{{"COTAS::Digite o número de pessoas que poderão garantir a essa cota" | fix}}</span>
-            <span class="md-helper-text">{{"COTAS::Coloque aqui o número de pessoas que vão poder adquirir essa cota. A porcetagem da cota é dividido entre essas pessoas" | fix}}</span>
+            <span class="md-error">{{"COTAS::Digite o número de pessoas que poderão adquirir essa cota" | fix}}</span>
+            <span class="md-helper-text">{{"COTAS::Coloque aqui o número de pessoas que poderão adquirir essa cota. A porcentagem da cota é dividido entre essas pessoas" | fix}}</span>
           </md-field>
         </div>
       </div>
@@ -37,14 +37,14 @@
               <md-option value="24months">{{"DB::24months" | fix}}</md-option>
               <md-option value="36months">{{"DB::36months" | fix}}</md-option>
             </md-select>
-            <span class="md-helper-text">{{"COTAS::Você pode definir o tempo de expiração pras cotas vendidas vigorando a partir do lançamento no marketplace" | fix}}</span>
+            <span class="md-helper-text">{{"COTAS::Você pode definir o tempo de expiração para as cotas vendidas. Vigorando a partir do lançamento no marketplace" | fix}}</span>
           </md-field>
         </div>
         <div class="md-layout-item md-size-50">
-          <md-field :class="{'md-invalid': $v.cotaAdd.min_donation.$invalid && $v.cotaAdd.min_donation.$dirty}">
+          <md-field :class="{'md-invalid': $v.cotaAdd.min_donation.$invalid && $v.cotaAdd.min_donation.$dirty}" class="md-focused money-input">
             <md-icon>monetization_on</md-icon>
             <label>{{"COTAS::Qual doação mínima?" | fix}}</label>
-            <md-input v-model.lazy="cotaAdd.min_donation" min="1" v-money="money"></md-input>
+            <money class="md-input" v-model.lazy="cotaAdd.min_donation" min="1"></money>
             <span class="md-helper-text">{{"COTAS::Coloque aqui a doação mínima que a pessoa deve doar para ter direito à essa cota" | fix}}</span>
           </md-field>
         </div>
@@ -63,7 +63,7 @@
 
   <div class="md-layout-item md-small-size-100 md-size-100">
     <md-card>
-      <md-empty-state style="padding-bottom: 0 !important;" md-icon="find_in_page" :md-label="$f('COTAS::Criar uma cota!')" :md-description="$f('COTAS::Você pode criar cotas para pessoas que realizarem doações para seu produto. Cada vez que você vender este seu produto no marketplace (após ele ser lançado) parte do valor do produto vendido será revertido para o usuário que doou pra você e ganhou uma cota')"></md-empty-state>
+      <md-empty-state style="padding-bottom: 0 !important;" md-icon="find_in_page" :md-label="$f('COTAS::Criar uma cota!')" :md-description="$f('COTAS::As cotas são adquiridas assim que uma pessoa doa um valor específico para o seu projeto. Com isso, uma porcentagem (definida por você) de toda venda do seu produto no marketplace será revertido em dinheiro para essa pessoa')"></md-empty-state>
       <md-card-content style="display:flex; align-items: center; flex-direction: column;">
         <md-button :disabled="totalPercentage == 70" class="md-primary md-raised" @click="createQuota = true">{{"COTAS::Criar uma cota" | fix}}</md-button>
         <div v-if="totalPercentage == 70">
@@ -248,7 +248,7 @@ export default {
     font-size: 14px;
     color: #707070;
 }
-.md-dialog {
+.md-dialog[class*="create-cota"] {
     width: 70%;
 }
 .md-mini-xs {
