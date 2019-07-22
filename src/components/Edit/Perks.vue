@@ -537,13 +537,13 @@ export default {
       this.restOfWorldShippingValue = 0
       this.countriesSelecteds = []
     },
-    "perkEdit.shipping_worldwide": function(val) {
-      this.perkEdit.shipping_price = 0
-      this.perkEdit.shipping_data = []
-      this.multipleShippingValue = 0
-      this.restOfWorldShippingValue = 0
-      this.countriesSelecteds = []
-    },
+    // "perkEdit.shipping_worldwide": function(val) {
+    //   this.perkEdit.shipping_price = 0
+    //   this.perkEdit.shipping_data = []
+    //   this.multipleShippingValue = 0
+    //   this.restOfWorldShippingValue = 0
+    //   this.countriesSelecteds = []
+    // },
     
   },
   methods: {
@@ -589,7 +589,7 @@ export default {
 
     },
     showModalEditPerk(perkToEdit) {
-      console.log(perkToEdit)
+      perkToEdit.shipping_data = perkToEdit.shipping_data == null ? [] : perkToEdit.shipping_data
       this.perkEdit = {
         ...perkToEdit
       }
@@ -653,7 +653,15 @@ export default {
         this.perkEditDialog = false;
         this.perkEdit.shipping_data = JSON.stringify(this.perkEdit.shipping_data)
         this.parentCall.showLoading()
-        console.log(this.perkEdit)
+        console.log(this.perkEdit) 
+        this.multipleShippingValue = 0
+        this.restOfWorldShippingValue = 0
+        this.countriesSelecteds = []
+        if(this.perkEdit.shipping_worldwide == 'world_wide') {
+          this.perkEdit.shipping_price = 0
+        } else {
+          this.perkEdit.shipping_data = []
+        }
         global
           .$post("/Content/editperk", this.perkEdit, this.user.token)
           .then(response => {

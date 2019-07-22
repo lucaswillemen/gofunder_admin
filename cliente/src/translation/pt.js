@@ -69,4 +69,10 @@ export default {
 	"DB::diversos": "Diversos",
 	"DB::Procurar projetos": "Procurar projetos",
 	"DB::Todos": "Todos",
+	"DB::concept": "Conceito",
+	"DB::prototype": "Protótipo",
+	"DB::production": "Produção",
+	"DB::shipping": "Pronta-Entrega",
+	"DB::Resto do Mundo": "Resto do Mundo",
+	
 }

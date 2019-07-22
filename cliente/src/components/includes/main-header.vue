@@ -110,7 +110,7 @@ export default {
 		logout: function() {
 			this.$router.push({ name: 'Home'})
 			this.userLogout()
-			this.$awn.success($f("MAIN_HEADER::Deslogado com sucesso!"))
+			this.$awn.success(this.$f("MAIN_HEADER::Deslogado com sucesso!"))
 			clearInterval(this.interval)
 		},
 		isPrivateUrl() {

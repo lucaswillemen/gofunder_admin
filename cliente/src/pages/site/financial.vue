@@ -121,10 +121,13 @@
               <section class="project-development-container">
                 <header>
                   <div class="project-actual-stage">
-                    Prototype
+                    {{"DB::"+campaign.product_stage | fix}}
                   </div>
                   <div class="project-stage-description">
-                    A fase de protótipo significa que o projeto ainda esta sendo refinado antes de ir para a produção.
+                    <div v-if="campaign.product_stage == 'concept'">A fase de conceito significa que o projeto ainda está sendo pensado e planejado.</div>
+                    <div v-if="campaign.product_stage == 'prototype'">A fase de protótipo significa que o projeto ainda esta sendo refinado antes de ir para a produção.</div>
+                    <div v-if="campaign.product_stage == 'production'">A fase de produção significa que o projeto já está sendo produzido e está a um passo de ser entregue</div>
+                    <div v-if="campaign.product_stage == 'shipping'">A fase de pronta entrega significa que o projeto já esta pronto e poderá ser entregue em sua casa!</div>
                   </div>
                 </header>
                 <main class="project-timeline-container" >
@@ -146,10 +149,10 @@
                     </div>
                   </div>
                   <div class="stages">
-                    <div :class="{'active' : campaign.product_stage == 'concept', 'done': campaign.product_stage == 'prototype' || campaign.product_stage == 'production' || campaign.product_stage == 'shipping'}">Concept</div>
-                    <div :class="{'active' : campaign.product_stage == 'prototype', 'done': campaign.product_stage == 'production' || campaign.product_stage == 'shipping'}">Prototype</div>
-                    <div :class="{'active' : campaign.product_stage == 'production', 'done': campaign.product_stage == 'shipping'}">Production</div>
-                    <div :class="{'active' : campaign.product_stage == 'shipping'}">Shipping</div>
+                    <div :class="{'active' : campaign.product_stage == 'concept', 'done': campaign.product_stage == 'prototype' || campaign.product_stage == 'production' || campaign.product_stage == 'shipping'}">{{"DB::concept" | fix}}</div>
+                    <div :class="{'active' : campaign.product_stage == 'prototype', 'done': campaign.product_stage == 'production' || campaign.product_stage == 'shipping'}">{{"DB::prototype" | fix}}</div>
+                    <div :class="{'active' : campaign.product_stage == 'production', 'done': campaign.product_stage == 'shipping'}">{{"DB::production" | fix}}</div>
+                    <div :class="{'active' : campaign.product_stage == 'shipping'}">{{"DB::shipping" | fix}}</div>
                   </div>
                 </main>
               </section>
@@ -210,11 +213,27 @@
                       </ul>
                     </div> -->
                     <div class="delivery" >
-                      <div v-if="rec.shipping_price > 0">
-                        <span class="title" v-if="rec.shipping_worldwide == 'world_wide' ">Entrega em todo o mundo</span>
-                        <span class="title" v-if="rec.shipping_worldwide == 'only_country' ">Entrega apenas em {{campaign.country_info.country_name}}</span>
-                        <div class="due-date">Frete: {{rec.shipping_price | currency}}</div>
-                        <span class="due-date">Estimado em {{formattedShippingDate}}</span>
+                      <div v-if="rec.have_frete == '1'">
+                        <div v-if="rec.shipping_worldwide == 'world_wide' && checkRestOfWorld(rec.shipping_data)">
+                          <span class="title">Entrega em todo o mundo</span>
+                          <div class="shipping-country" v-for="(data, index) in JSON.parse(rec.shipping_data)" :key="index">
+                            <span v-if="index == 0">{{"DB::Resto do Mundo" | fix}}</span>
+                            <span v-else>{{data.country_name}}:</span><span class="due-date"> {{data.price | currency}}</span>
+                          </div>
+                          <span class="due-date">Estimado em {{formattedShippingDate}}</span>
+                        </div>
+                        <div v-else-if="rec.shipping_worldwide == 'world_wide' && !checkRestOfWorld(rec.shipping_data)">
+                          <span class="title">Entrega em quase todo o mundo</span>
+                          <div class="shipping-country" v-for="(data, index) in JSON.parse(rec.shipping_data)" :key="index">
+                            <span>{{data.country_name}}:</span><span class="due-date"> {{data.price | currency}}</span>
+                          </div>
+                          <span class="due-date">Estimado em {{formattedShippingDate}}</span>
+                        </div>
+                        <div v-else-if="rec.shipping_worldwide == 'only_country'">
+                          <span class="title" >Entrega apenas em {{campaign.country_info.country_name}}</span>
+                          <div class="due-date">Frete: {{rec.shipping_price | currency}}</div>
+                          <span class="due-date">Estimado em {{formattedShippingDate}}</span>
+                        </div>
                       </div>
                       <div v-else>
                         <span class="no-shipping">Não possui entrega!</span>
@@ -295,6 +314,11 @@ export default {
     }
   },
   methods: {
+    checkRestOfWorld(shippingData) {
+      return JSON.parse(shippingData).map((elem) => {
+        return elem.country_code == 'REST'
+      }).includes(true)
+    },
     openDonationPerk(id) {
       window.open('/#/payment-contribution/perk/'+this.campaign.id+'/'+id)
     },

@@ -87,7 +87,7 @@
 				.carousel-item {
 					img {
 						height: 100%;
-						object-fit: cover;
+						width: 100%;
 					}
 				}
 			}
@@ -580,9 +580,12 @@
 					width: 100%;
 
 					.title {
-						font-size: 12px;
+						font-size: 14px;
 						font-weight: 600;
 						margin-bottom: 0;
+					}
+					.shipping-country {
+						font-size: 13px;
 					}
 
 					.no-shipping {
