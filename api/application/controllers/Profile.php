@@ -1,90 +1,47 @@
 <?php
 class Profile extends CI_Controller {
 
-	public function register(){
-		$user = $this->user->check($this->input->get_request_header('Authorization'));
-		$name = $this->input->post('name');
-		$email = $this->input->post('email');
+    public function edit()
+    {
+        $data = $this->input->post(["name","birthday","description","twitter","facebook","address","zipcode","instagram","city","country","website", "linkedin", "youtube"]);
+        $user = $this->user->check($this->input->get_request_header('Authorization'));
 
-		if ( !$email || !$name) {
-			$response = ['error'=>'INVALID_FORM'];
-			return $this->output->set_content_type('application/json')->set_status_header(404)->set_output(json_encode($response));
-			exit();
-		}
-
-		$update = new stdClass;
-		$update->name = $name;
-		$update->email = $email;
-
-		$this->db->where("id", $user->id)->update('user', $update);
-
-		$this->output->set_content_type('application/json')->set_output(json_encode(true));
-	}
-
-	public function password(){
-		$user = $this->user->check($this->input->get_request_header('Authorization'));
-		$old_password = $this->input->post('old_password');
-		$new_password = $this->input->post('new_password');
-
-		if (!$old_password || !$new_password) {
-			$response = ['error'=>'INVALID_FORM'];
-			return $this->output->set_content_type('application/json')->set_status_header(404)->set_output(json_encode($response));
-			exit();
-		}
-
-		if (!password_verify($old_password, $user->password)) {
-			$response = ['error'=>'WRONG_PASSWORD'];
-			return $this->output->set_content_type('application/json')->set_status_header(400)->set_output(json_encode($response));
-			exit();
-		}
-
-		$update = new stdClass;
-		$update->password = password_hash($new_password, PASSWORD_BCRYPT, ['cost' => 7]);
-
-		$this->db->where("id", $user->id)->update('user', $update);
-
-		$this->output->set_content_type('application/json')->set_output(json_encode(true));
-	}
-
-	public function address(){
-		$user = $this->user->check($this->input->get_request_header('Authorization'));
-
-		$request = $this->input->server('REQUEST_METHOD');
-
-		if ($request == "GET") {
-			$res = $this->db->where('user_id', $user->id)->get('user_address')->row();
-			$this->output->set_content_type('application/json')->set_output(json_encode(true));
-			exit();
-		}
+        
+        $config["upload_path"]          = "./uploads/profile/";
+        $config["allowed_types"]        = "gif|jpg|png|jpeg";
+        $config["encrypt_name"]					= true;
+        $this->load->library("upload", $config);
+        
+        if($this->upload->do_upload("image")) {
+            $imageUploaded = $this->upload->data();
+            $data["img"] = "uploads/profile/" . $imageUploaded["file_name"];
+        }
 
 
-		$id = $this->input->post('id');
-		$state = $this->input->post('state');
-		$city = $this->input->post('city');
-		$address = $this->input->post('address');
-		$number = $this->input->post('number');
-		$zipcode = $this->input->post('zipcode');
-		$neighborhood = $this->input->post('neighborhood');
-		$complement = $this->input->post('complement');
+        $this->db->where("id", $user->id)->update("user", $data);
+        $this->output->set_content_type('application/json')->set_output(json_encode((array)$this->user->check($this->input->get_request_header('Authorization'))));
+    }
+    
+    public function getuserbyid() {
+      $id = $this->input->get("user_id");
+      $user_data = $this->db->
+      select("
+        name,
+        email,
+        img,
+        description,
+        instagram,
+        facebook,
+        twitter,
+        linkedin,
+        youtube,
+        website")
+      ->where('id', $id)->get('user')->row();
+      $user_data->donations_done = $this->db->where('user_id', $id)->get('campaign_donation')->num_rows();
+      $user_data->donations_received = $this->db->where('other_id', $id)->get('campaign_donation')->num_rows();
 
-		$insert = [
-		"state" => $state,
-		"city" => $city,
-		"address" => $address,
-		"number" => $number,
-		"zipcode" => $zipcode,
-		"neighborhood" => $neighborhood,
-		"complement" => $complement,
-		"user_id" => $user->id,
-		];
+      $this->output->set_content_type('application/json')->set_output(json_encode($user_data));
 
-		if ($id) {
-			$this->db->where("id", $id)->where("user_id", $user->id)->delete('user_address');
-		}else{
-			$this->db->insert('user_address', $insert);	
-		}
+    }
 
-
-		$this->output->set_content_type('application/json')->set_output(json_encode(true));
-	}
 }

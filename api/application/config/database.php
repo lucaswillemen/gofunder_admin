@@ -8,7 +8,6 @@ if($_SERVER['SERVER_ADDR'] == "localhost" || $_SERVER['SERVER_ADDR'] == "192.168
     $password = "";
 }
 
-
 /*
 | -------------------------------------------------------------------
 | DATABASE CONNECTIVITY SETTINGS
@@ -83,10 +82,10 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
-	'username' => $user,
-	'password' => $password,
-	'database' => 'gofunder',
+	'hostname' => "localhost",
+	'username' => "admin",
+	'password' => "AvBghToPY35",
+	'database' => "gofunder",
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,

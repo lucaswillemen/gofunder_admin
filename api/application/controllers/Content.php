@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 class Content extends CI_Controller
 {
 
@@ -180,6 +180,11 @@ class Content extends CI_Controller
 		$user = $this->user->check($this->input->get_request_header('Authorization'));
 		$campaign_id = $this->input->get("campaign_id");
 		$perk = $this->db->where('campaign_id', $campaign_id)->get('campaign_perk')->result();
+    foreach ($perk as $k) {
+        $k->shipping_data = json_decode($k->shipping_data);
+        $k->have_frete = filter_var($k->have_frete, FILTER_VALIDATE_BOOLEAN);
+
+    }
 		$this->output->set_content_type('application/json')->set_output(json_encode($perk));
 	}
 
@@ -194,17 +199,34 @@ class Content extends CI_Controller
 			$this->output->set_content_type('application/json')->set_status_header(400)->set_output(json_encode($response));
 			exit();
 		}
-
+    $new_image = $this->input->post("newImage");
+    if(isset($new_image)) {
+      $uri = str_replace(" ", "-", preg_replace(array("/(á|à|ã|â|ä)/", "/(Á|À|Ã|Â|Ä)/", "/(é|è|ê|ë)/", "/(É|È|Ê|Ë)/", "/(í|ì|î|ï)/", "/(Í|Ì|Î|Ï)/", "/(ó|ò|õ|ô|ö)/", "/(Ó|Ò|Õ|Ô|Ö)/", "/(ú|ù|û|ü)/", "/(Ú|Ù|Û|Ü)/", "/(ñ)/", "/(Ñ)/"), explode(" ", "a A e E i I o O u U n N"), $this->input->post("name"))) . uniqid();
+      $this->input->post("name");
+      $config['upload_path']          = './uploads/perk/';
+      $config['allowed_types']        = 'jpg|png';
+      $config['file_name']            = $uri . "-perk";
+      $this->load->library('upload', $config);
+      $this->upload->do_upload('newImage');
+      $this->db->where("id", $perk_id)->update('campaign_perk', [
+        "cover_url" => "uploads/perk/" . $this->upload->data('file_name'),
+		  ]);
+    }
 		$this->db->where("id", $perk_id)->update('campaign_perk', [
 			"name"  => $this->input->post("name"),
 			"price" => $this->input->post("price"),
-			"stock" => $this->input->post("stock"),			
+			"stock" => $this->input->post("stock"),
+      "stock_remain" => $this->input->post("stock"),		
 			"description" => $this->input->post("description"),
 			"shipping_worldwide" => $this->input->post("shipping_worldwide"),
 			"shipping_date" => $this->input->post("shipping_date"),
 			"shipping_price" => $this->input->post("shipping_price"),
-			"discount" => $this->input->post("discount")
+      "have_frete" => filter_var($this->input->post("have_frete"), FILTER_VALIDATE_BOOLEAN),
+			"discount" => $this->input->post("discount"),
+      "shipping_data" => $this->input->post("shipping_data"),
+
 		]);
+   
 		$this->output->set_content_type('application/json')->set_output(json_encode(["MSG" => "EDITED"]));
 	}
 
@@ -218,8 +240,8 @@ class Content extends CI_Controller
 			exit();
 		}
 
-		$uri = str_replace(" ", "-", preg_replace(array("/(á|à|ã|â|ä)/", "/(Á|À|Ã|Â|Ä)/", "/(é|è|ê|ë)/", "/(É|È|Ê|Ë)/", "/(í|ì|î|ï)/", "/(Í|Ì|Î|Ï)/", "/(ó|ò|õ|ô|ö)/", "/(Ó|Ò|Õ|Ô|Ö)/", "/(ú|ù|û|ü)/", "/(Ú|Ù|Û|Ü)/", "/(ñ)/", "/(Ñ)/"), explode(" ", "a A e E i I o O u U n N"), $this->input->post("title"))) . uniqid();
-		$this->input->post("title");
+		$uri = str_replace(" ", "-", preg_replace(array("/(á|à|ã|â|ä)/", "/(Á|À|Ã|Â|Ä)/", "/(é|è|ê|ë)/", "/(É|È|Ê|Ë)/", "/(í|ì|î|ï)/", "/(Í|Ì|Î|Ï)/", "/(ó|ò|õ|ô|ö)/", "/(Ó|Ò|Õ|Ô|Ö)/", "/(ú|ù|û|ü)/", "/(Ú|Ù|Û|Ü)/", "/(ñ)/", "/(Ñ)/"), explode(" ", "a A e E i I o O u U n N"), $this->input->post("name"))) . uniqid();
+		$this->input->post("name");
 		$config['upload_path']          = './uploads/perk/';
 		$config['allowed_types']        = 'jpg|png';
 		$config['file_name']            = $uri . "-perk";
@@ -231,15 +253,21 @@ class Content extends CI_Controller
 			"campaign_id"  => $campaign_id,
 			"name"  => $this->input->post("name"),
 			"price" => $this->input->post("price"),
-			"stock" => $this->input->post("stock"),			
+			"stock" => $this->input->post("stock"),	
+      "stock_remain" => $this->input->post("stock"),
 			"description" => $this->input->post("description"),
 			"shipping_worldwide" => $this->input->post("shipping_worldwide"),
 			"shipping_date" => $this->input->post("shipping_date"),
 			"shipping_price" => $this->input->post("shipping_price"),
-			"discount" => $this->input->post("discount"),
-			"cover_url" => "uploads/perk/" . $this->upload->data('file_name')
+      "have_frete" => filter_var($this->input->post("have_frete"), FILTER_VALIDATE_BOOLEAN),
+      "discount" => $this->input->post("discount"),
+			"cover_url" => "uploads/perk/" . $this->upload->data('file_name'),
+      "shipping_data" => $this->input->post("shipping_data"),
 		]);
 		$this->output->set_content_type('application/json')->set_output(json_encode(["MSG" => "ADDED"]));
 	}
+    
+    
+   
 
 }
