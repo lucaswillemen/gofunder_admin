@@ -238,18 +238,7 @@
                         </b-col>
                     </b-row>
                     <b-row>
-                        <b-col lg="3">
-                            <div class="img" v-bind:style="{ backgroundImage: 'url(' + catImg1 + ')' }"></div>
-                        </b-col>
-                        <b-col lg="3">
-                            <div class="img" v-bind:style="{ backgroundImage: 'url(' + catImg2 + ')' }"></div>
-                        </b-col>
-                        <b-col lg="3">
-                            <div class="img" v-bind:style="{ backgroundImage: 'url(' + catImg3 + ')' }"></div>
-                        </b-col>
-                        <b-col lg="3">
-                            <div class="img" v-bind:style="{ backgroundImage: 'url(' + catImg4 + ')' }"></div>
-                        </b-col>
+                       <project-card :projects="categoryCampaign" v-if="categoryCampaign.length > 0"></project-card>
                     </b-row>
                     <b-row class='button'>
                         <b-col lg="12">
@@ -354,9 +343,21 @@ export default {
                 .catch(err => {})
         },
         selectCategory: function(id) {
-            if (typeof window.orientation === 'undefined') {
-                this.selectedId = id
-            }
+            this.selectedId = id
+            this.$awn.asyncBlock(global.$post("/Campaign/getcampaignsbycategoryid", {categoryId: this.selectedId}))
+                .then(response => {
+                    for (var i in response.data) {
+                        let percent = ((100 / response.data[i].amount) * response.data[i].amount_received)
+                        response.data[i].percent = percent > 100 ? 100 : percent
+                        if(response.data[i].status == 'pending_level') response.data[i].lancamento = 'Lancamento em breve!' 
+                        if(response.data[i].status == 'draft') response.data[i].lancamento = 'Rascunho de campanha!' 
+                        if(response.data[i].status == 'approved') response.data[i].lancamento = 'Campanha ativa!'
+                        if(response.data[i].status == 'approved' && response.data[i].remain_days > 0 && response.data[i].remain_days < 10) response.data[i]['lancamento'] = 'Quase acabando!' 
+                        if(response.data[i].status == 'approved' && response.data[i].remain_days < 0) response.data[i]['lancamento'] = 'Já acabou!' 
+                    }
+                    this.categoryCampaign = response.data
+                })
+                .catch(err => {})
         },
         loadCategory() {
             this.$awn.asyncBlock(global.$post("/Other/category_list", {}))

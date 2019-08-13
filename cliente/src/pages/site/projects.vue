@@ -57,7 +57,7 @@
 <script>
 export default {
   mounted() {
-    this.changeCategory({icon_name: 'search', name: 'Procurar projetos', id: 0})
+    this.changeCategory({icon_name: 'search', name: 'Procurar projetos', id: this.category_id})
   },
   data() {
     return {
