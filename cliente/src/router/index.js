@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import Home from '@/pages/site/home'
-import UserEdit from '@/pages/admin/UserEdit'
 import UserInfo from '@/pages/admin/UserInfo'
 import Login from '@/pages/site/login'
 import Register from '@/pages/site/register'
@@ -16,6 +15,7 @@ import Financial from '@/pages/site/financial'
 
 import Marketplace from '@/pages/site/marketplace'
 import PaymentContribution from '@/pages/admin/PaymentContribution'
+import NotFound from '@/pages/site/NotFound'
 
 Vue.use(Router)
 
@@ -89,6 +89,15 @@ export default new Router({
       path: '/payment-contribution/perk/:campaign_id/:perk_id',
       name: 'PaymentContributionPerk',
       component: PaymentContribution
+    },
+    {
+      path: '/not-found',
+      name: 'NotFound',
+      component: NotFound
+    },
+    {
+      path: "*",
+      redirect: '/not-found',
     }
   ],
   scrollBehavior (to, from, savedPosition) {

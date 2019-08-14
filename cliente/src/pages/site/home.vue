@@ -232,20 +232,24 @@
                     <div id='d-cat7' v-bind:class="selectedId == 7 ? 'show' : 'hide'"></div>
                     <div id='d-cat8' v-bind:class="selectedId == 8 ? 'show' : 'hide'"></div>
                     <div id='d-cat9' v-bind:class="selectedId == 9 ? 'show' : 'hide'"></div>
-                    <b-row class='title'>
-                        <b-col lg="12">
+                    <b-row v-if="categoryCampaign.length > 0">
+                        <b-col lg="12" class='title'>
                             <span>{{"HOME::destaques_nessa_categoria"|fix}}</span>
                         </b-col>
-                    </b-row>
-                    <b-row>
-                       <project-card :projects="categoryCampaign" v-if="categoryCampaign.length > 0"></project-card>
-                    </b-row>
-                    <b-row class='button'>
                         <b-col lg="12">
+                       <project-card :projects="categoryCampaign" v-if="categoryCampaign.length > 0"></project-card>
+
+                        </b-col>
+                        <b-col lg="12" class='button'>
                             <div class="btn-noborder">
                                 <b-button @click="goCategory(selectedId)">{{"HOME::veja_mais_dessa_categoria"|fix}}</b-button>
                             </div>
-                        </b-col>
+                        </b-col>  
+                    </b-row>
+                    <b-row v-else>
+                        <div class="text-center">
+                            <h3>Nenhuma campanha em destaque</h3>
+                        </div>
                     </b-row>
                 </div>
             </b-container>
@@ -299,10 +303,11 @@ export default {
             area3img2: require('Img/area-3-img-2.png'),
             area3img3: require('Img/area-3-img-3.png'),
             area3img4: require('Img/area-3-img-4.png'),
-            catImg1: require('Img/catimg1.png'),
-            catImg2: require('Img/catimg2.png'),
-            catImg3: require('Img/catimg3.png'),
-            catImg4: require('Img/catimg4.png')
+            // catImg1: require('Img/catimg1.png'),
+            // catImg2: require('Img/catimg2.png'),
+            // catImg3: require('Img/catimg3.png'),
+            // catImg4: require('Img/catimg4.png')
+            categoryCampaign: []
         }
     },
     methods: {

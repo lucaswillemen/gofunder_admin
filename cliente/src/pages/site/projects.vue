@@ -57,10 +57,16 @@
 <script>
 export default {
   mounted() {
-    this.changeCategory({icon_name: 'search', name: 'Procurar projetos', id: this.category_id})
+    if(this.category_id == 0)
+      this.changeCategory({icon_name: 'search', name: 'Procurar projetos', id: 0})
+    else {
+      this.setSearchedCategory(this.category_id)
+      
+    }
   },
   data() {
     return {
+      searchedCategory: null,
       ascOrder: false,
       orderBy: '',
       orderText: '',
@@ -104,6 +110,16 @@ export default {
     newSearch() {
       this.projects = []
       this.getSearchItems()
+    },
+    setSearchedCategory(id) {
+      global.$post("/Campaign/getcategorybyid", {
+          categoryId: id
+        })
+        .then(response => {
+          this.changeCategory({icon_name: response.data.icon_name, name: response.data.name, id: response.data.icon_name})
+
+        })
+        .catch(err => {})
     },
     getSearchItems() {
       this.$awn.asyncBlock(global.$post("/Campaign/search", {
