@@ -61,7 +61,7 @@
                 </div>
               </div>
               <div class="bar">
-                <span class="total_cash">Total Arrecadado {{campaign.amount_received  | currency}}  ({{campaign.donators}} doadores)</span>
+                <span class="total_cash">Total Arrecadado {{campaign.amount_received  | currency}}  ({{campaign.number_of_investor}} doadores)</span>
                 <progress-bar :current="currentPercentage"></progress-bar>
                 <span class="meta">Meta de arrecadação <span class="valor">{{campaign.amount | currency}} </span></span>
                 <span class="due-date" v-if="campaign.remain_days == 1">Termina em {{campaign.remain_days}} dia</span>

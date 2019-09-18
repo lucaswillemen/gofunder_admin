@@ -240,7 +240,7 @@
                        <project-card :projects="categoryCampaign" v-if="categoryCampaign.length > 0"></project-card>
 
                         </b-col>
-                        <b-col lg="12" class='button'>
+                        <b-col lg="12" class='button' v-if="numberPages > 1">
                             <div class="btn-noborder">
                                 <b-button @click="goCategory(selectedId)">{{"HOME::veja_mais_dessa_categoria"|fix}}</b-button>
                             </div>
@@ -307,7 +307,8 @@ export default {
             // catImg2: require('Img/catimg2.png'),
             // catImg3: require('Img/catimg3.png'),
             // catImg4: require('Img/catimg4.png')
-            categoryCampaign: []
+            categoryCampaign: [],
+            numberPages: null
         }
     },
     methods: {
@@ -351,16 +352,17 @@ export default {
             this.selectedId = id
             this.$awn.asyncBlock(global.$post("/Campaign/getcampaignsbycategoryid", {categoryId: this.selectedId}))
                 .then(response => {
-                    for (var i in response.data) {
-                        let percent = ((100 / response.data[i].amount) * response.data[i].amount_received)
-                        response.data[i].percent = percent > 100 ? 100 : percent
-                        if(response.data[i].status == 'pending_level') response.data[i].lancamento = 'Lancamento em breve!' 
-                        if(response.data[i].status == 'draft') response.data[i].lancamento = 'Rascunho de campanha!' 
-                        if(response.data[i].status == 'approved') response.data[i].lancamento = 'Campanha ativa!'
-                        if(response.data[i].status == 'approved' && response.data[i].remain_days > 0 && response.data[i].remain_days < 10) response.data[i]['lancamento'] = 'Quase acabando!' 
-                        if(response.data[i].status == 'approved' && response.data[i].remain_days < 0) response.data[i]['lancamento'] = 'Já acabou!' 
+                    for (var i in response.data.campaigns) {
+                        let percent = ((100 / response.data.campaigns[i].amount) * response.data.campaigns[i].amount_received)
+                        response.data.campaigns[i].percent = percent > 100 ? 100 : percent
+                        if(response.data.campaigns[i].status == 'pending_level') response.data.campaigns[i].lancamento = 'Lancamento em breve!' 
+                        if(response.data.campaigns[i].status == 'draft') response.data.campaigns[i].lancamento = 'Rascunho de campanha!' 
+                        if(response.data.campaigns[i].status == 'approved') response.data.campaigns[i].lancamento = 'Campanha ativa!'
+                        if(response.data.campaigns[i].status == 'approved' && response.data.campaigns[i].remain_days > 0 && response.data.campaigns[i].remain_days < 10) response.data.campaigns[i]['lancamento'] = 'Quase acabando!' 
+                        if(response.data.campaigns[i].status == 'approved' && response.data.campaigns[i].remain_days < 0) response.data.campaigns[i]['lancamento'] = 'Já acabou!' 
                     }
-                    this.categoryCampaign = response.data
+                    this.categoryCampaign = response.data.campaigns
+                    this.numberPages = response.data.number_pages
                 })
                 .catch(err => {})
         },

@@ -124,7 +124,7 @@ export default {
     getSearchItems() {
       this.$awn.asyncBlock(global.$post("/Campaign/search", {
           search: this.searchText,
-          limit_page: this.curPage,
+          current_page: this.curPage,
           category_id: this.category_id,
           order_by: this.orderBy,
           asc_order: this.ascOrder,
