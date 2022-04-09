@@ -24,7 +24,7 @@
     "ckeditor-youtube-plugin": "^2.1.13",
     "flag-icon-css": "^3.2.1",
     "js-base64": "^2.5.1",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "qrcode.vue": "^1.6.1",
     "save": "^2.3.3",
     "thumbnail-slider": "^0.1.3",
