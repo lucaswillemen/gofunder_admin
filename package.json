@@ -12,7 +12,7 @@
     "@tinymce/tinymce-vue": "^2.0.0",
     "axios": "^0.18.0",
     "core-js": "^2.6.5",
-    "sass-loader": "^7.1.0",
+    "sass-loader": "^13.2.0",
     "v-money": "^0.8.1",
     "vue": "^2.6.10",
     "vue-currency-filter": "^3.4.2",
@@ -26,9 +26,9 @@
     "vuex-persistedstate": "^2.5.4"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.7.0",
-    "@vue/cli-plugin-eslint": "^3.7.0",
-    "@vue/cli-service": "^3.7.0",
+    "@vue/cli-plugin-babel": "^5.0.8",
+    "@vue/cli-plugin-eslint": "^5.0.8",
+    "@vue/cli-service": "^5.0.8",
     "babel-eslint": "^10.0.1",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
